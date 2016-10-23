@@ -3,23 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Statements;
+package HPalang.LTSGeneration;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class DelayStatement extends Statement
+public class ConditionalLabel implements Label
 {
-    private float delay;
+    private String condition;
     
-    public DelayStatement(float delay)
+    public ConditionalLabel(String condition)
     {
-        this.delay = delay;
-    }
-    
-    public float GetDelay()
-    {
-        return delay;
+        this.condition = condition;
     }
 }

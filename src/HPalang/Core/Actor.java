@@ -32,9 +32,19 @@ public class Actor
         messageHandlers.put(id,handler);
     }
     
+    public MessageHandler GetMessageHandler(String id)
+    {
+        return messageHandlers.get(id);
+    }
+    
     public int GetCapacity()
     {
         return capacity;
+    }
+    
+    public String GetName()
+    {
+        return name;
     }
     
 }

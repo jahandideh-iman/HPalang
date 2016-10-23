@@ -7,7 +7,9 @@ package HPalang.Core;
 
 import HPalang.Statements.SendStatement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  *
@@ -15,14 +17,14 @@ import java.util.List;
  */
 public class MainBlock
 {
-    private List<SendStatement> sendStatements = new ArrayList<>();
+    private Queue<SendStatement> sendStatements = new LinkedList<>();
     
     public void AddSendStatement(SendStatement sendStatement)
     {
         sendStatements.add(sendStatement);
     }
 
-    public List<SendStatement> GetSendStatements()
+    public Queue<SendStatement> GetSendStatements()
     {
         return sendStatements;
     }

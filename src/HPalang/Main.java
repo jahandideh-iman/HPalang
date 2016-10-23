@@ -10,6 +10,7 @@ import HPalang.Core.ProgramDefinition;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.LTSGeneration.LTSGenerator;
+import HPalang.LTSGeneration.NormalMessage;
 import HPalang.Statements.DelayStatement;
 import HPalang.Statements.SendStatement;
 
@@ -51,23 +52,23 @@ public class Main {
         actorB.AddMessageHandler("b2",hanlder_b2);
         actorB.AddMessageHandler("b1",hanlder_b1);
         
-        hanlder_a1.AddStatement(new DelayStatement(1.0f));
-        hanlder_a1.AddStatement(new SendStatement(actorB,"b1"));
-        hanlder_a1.AddStatement(new SendStatement(actorB,"b2"));
-
-        hanlder_b1.AddStatement(new DelayStatement(1.0f));
-        hanlder_b1.AddStatement(new SendStatement(actorA,"a1"));
-        
-        hanlder_b1.AddStatement(new DelayStatement(0.5f));
-        hanlder_b1.AddStatement(new SendStatement(actorA,"a1"));
-       
-        MainBlock mainBlock = new MainBlock();     
-        mainBlock.AddSendStatement(new SendStatement(actorB, "b1"));
-        
-                
-        definition.AddActor(actorA);
-        definition.AddActor(actorB);
-        definition.SetMainBlock(mainBlock);
+//        hanlder_a1.AddStatement(new DelayStatement(1.0f));
+//        hanlder_a1.AddStatement(new SendStatement(actorB,new NormalMessage(actorA.GetMessageHandler("a1"))));
+//        hanlder_a1.AddStatement(new SendStatement(actorB,new NormalMessage("b1")));
+//
+//        hanlder_b1.AddStatement(new DelayStatement(1.0f));
+//        hanlder_b1.AddStatement(new SendStatement(actorA,new NormalMessage("b1")));
+//        
+//        hanlder_b1.AddStatement(new DelayStatement(0.5f));
+//        hanlder_b1.AddStatement(new SendStatement(actorA,new NormalMessage("b1")));
+//       
+//        MainBlock mainBlock = new MainBlock();     
+//        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage("b1")));
+//        
+//                
+//        definition.AddActor(actorA);
+//        definition.AddActor(actorB);
+//        definition.SetMainBlock(mainBlock);
         
         return definition;
     }

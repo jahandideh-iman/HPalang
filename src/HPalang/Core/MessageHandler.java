@@ -7,7 +7,9 @@ package HPalang.Core;
 
 import HPalang.Statements.Statement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  *
@@ -15,10 +17,25 @@ import java.util.List;
  */
 public class MessageHandler
 {
-    private List<Statement> statements = new ArrayList<>();
+    private Queue<Statement> statements = new LinkedList<>();
+    private Actor owner;
+    
+    public MessageHandler()
+    {
+    }
+    
+    public void SetOwner(Actor owner)
+    {
+        this.owner = owner;
+    }
     
     public void AddStatement(Statement statement)
     {
         statements.add(statement);
+    }
+    
+    public Queue<Statement> GetBody()
+    {
+        return statements;
     }
 }

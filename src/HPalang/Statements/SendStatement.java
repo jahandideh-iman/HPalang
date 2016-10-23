@@ -7,6 +7,7 @@ package HPalang.Statements;
 
 import HPalang.Core.Actor;
 import HPalang.Core.MessageHandler;
+import HPalang.LTSGeneration.Message;
 
 /**
  *
@@ -15,12 +16,12 @@ import HPalang.Core.MessageHandler;
 public class SendStatement extends Statement
 {
     private Actor receiver;
-    private String messageID;
+    private Message message;
     
-    public SendStatement(Actor receiver, String messageID)
+    public SendStatement(Actor receiver, Message message)
     {
         this.receiver = receiver;
-        this.messageID = messageID;
+        this.message = message;
     }
     
     public Actor GetReceiver()
@@ -28,8 +29,8 @@ public class SendStatement extends Statement
         return receiver;
     }
     
-    public String GetMessageID()
+    public Message GetMessage()
     {
-        return messageID;
+        return message;
     }
 }

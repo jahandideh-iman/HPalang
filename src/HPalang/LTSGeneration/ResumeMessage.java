@@ -3,23 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Statements;
+package HPalang.LTSGeneration;
+
+import HPalang.Statements.Statement;
+import java.util.Queue;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class DelayStatement extends Statement
+public class ResumeMessage implements Message
 {
-    private float delay;
-    
-    public DelayStatement(float delay)
+
+    @Override
+    public Queue<Statement> GetMessageBody()
     {
-        this.delay = delay;
+        return null;
     }
     
-    public float GetDelay()
-    {
-        return delay;
-    }
 }

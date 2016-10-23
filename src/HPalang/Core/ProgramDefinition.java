@@ -8,6 +8,7 @@ package HPalang.Core;
 import HPalang.Statements.SendStatement;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Queue;
 
 /**
  *
@@ -33,9 +34,8 @@ public class ProgramDefinition
         return actors;
     }
 
-    public List<SendStatement> GetInitialSends()
+    public Queue<SendStatement> GetInitialSends()
     {
         return mainBlock.GetSendStatements();
     }
-    
 }
