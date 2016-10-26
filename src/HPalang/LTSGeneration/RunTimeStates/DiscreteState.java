@@ -7,17 +7,22 @@ package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.LTSGeneration.Message;
 import HPalang.Statements.Statement;
+import java.util.Arrays;
 import java.util.LinkedList;
+import java.util.Objects;
 import java.util.Queue;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class DiscreteState
+public class DiscreteState implements Cloneable
 {
     private Queue<Message> messages = new LinkedList<>();
     private Queue<Statement> statements = new LinkedList<>();
+    private boolean isDelayed = false;
 
     public Queue<Message> GetMessages()
     {
@@ -63,10 +68,69 @@ public class DiscreteState
     {
         statements.add(statement);
     }
+    
+    public void EnqueueStatements(Queue<Statement> statements)
+    {
+        for(Statement statement : statements)
+            EnqueueStatement(statement);
+    }
 
     public boolean HasStatement()
     {
         return statements.isEmpty() == false;
+    }
+    
+        public void SetDelayed(boolean delayed)
+    {
+        isDelayed = delayed;
+    }
+    
+    public boolean IsDelayed()
+    {
+        return isDelayed;
+    }
+
+    public DiscreteState Clone()
+    {
+        try {
+            DiscreteState copy = (DiscreteState) clone();
+            copy.messages = copy.messages.getClass().newInstance();
+            for(Message m : messages)
+                copy.EnqueueMessage(m);
+            
+            copy.statements = copy.statements.getClass().newInstance();
+            for(Statement s : statements)
+                copy.EnqueueStatement(s);
+            
+            return copy;
+        } catch (CloneNotSupportedException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(DiscreteState.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+         if(other == null)
+            return false;
+        
+        if (!DiscreteState.class.isAssignableFrom(other.getClass()))
+            return false;
+            
+        DiscreteState otherState = (DiscreteState) other;
+        
+        return Arrays.equals(this.messages.toArray(), otherState.messages.toArray())
+                && Arrays.equals(this.statements.toArray(),otherState.statements.toArray()); 
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 5;
+        hash = 17 * hash + Objects.hashCode(this.messages);
+        hash = 17 * hash + Objects.hashCode(this.statements);
+        return hash;
     }
 
 }

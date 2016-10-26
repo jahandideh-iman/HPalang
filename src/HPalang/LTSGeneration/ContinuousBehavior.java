@@ -19,6 +19,7 @@ public class ContinuousBehavior
     private String equation;
     private String guard;
     private Queue<Statement> actions;
+    
     public ContinuousBehavior(String inv, String ode, String guard, Queue<Statement> actions )
     {
         this.invariant = inv;

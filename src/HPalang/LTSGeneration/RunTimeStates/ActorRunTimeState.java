@@ -14,17 +14,17 @@ import java.sql.Struct;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Objects;
 import java.util.Queue;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ActorRunTimeState 
+public class ActorRunTimeState implements Cloneable
 {
-    private Actor actor;
+    private final Actor actor;
     
-    private boolean isDelayed = false;
     private DiscreteState discreteState = new DiscreteState();
     private ContinuousState continuousState = new ContinuousState();
     
@@ -32,6 +32,16 @@ public class ActorRunTimeState
     public ActorRunTimeState(Actor actor)
     {
         this.actor = actor;
+    }
+    
+    public DiscreteState GetDiscreteState()
+    {
+        return discreteState;
+    }
+    
+    public ContinuousState GetContinuousState()
+    {
+        return continuousState;
     }
        
     public void EnqueueMessage(Message message)
@@ -87,12 +97,12 @@ public class ActorRunTimeState
     
     public void SetDelayed(boolean delayed)
     {
-        isDelayed = delayed;
+        discreteState.SetDelayed(delayed);
     }
     
     public boolean IsDelayed()
     {
-        return isDelayed;
+        return discreteState.IsDelayed();
     }
      
     public void AddContinuousBehavior(ContinuousBehavior behavior)
@@ -115,9 +125,38 @@ public class ActorRunTimeState
         return discreteState.HasStatement();
     }
     
+    @Override
+    public boolean equals(Object other)
+    {
+         if(other == null)
+            return false;
+        
+        if (!ActorRunTimeState.class.isAssignableFrom(other.getClass()))
+            return false;
+            
+        ActorRunTimeState otherState = (ActorRunTimeState) other;
+       
+        return this.actor == otherState.actor
+                && this.discreteState.equals(otherState.discreteState)
+                && this.continuousState.equals(otherState.continuousState);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        return 1; // TODO: Find a better hashChode.
+    }
+    
     ActorRunTimeState Clone()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            ActorRunTimeState copy = (ActorRunTimeState) clone();
+            copy.continuousState = this.continuousState.Clone();
+            copy.discreteState = this.discreteState.Clone();
+            return copy;
+        } catch (CloneNotSupportedException ex) {
+            return null;
+        }
     }
 
 }

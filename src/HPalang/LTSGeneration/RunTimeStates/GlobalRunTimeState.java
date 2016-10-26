@@ -48,9 +48,14 @@ public class GlobalRunTimeState implements Cloneable
     public GlobalRunTimeState Clone()
     {
         try {
-            Object copy = clone();
-            return (GlobalRunTimeState) copy;
-        } catch (CloneNotSupportedException ex) {
+            GlobalRunTimeState copy = (GlobalRunTimeState)clone();
+            
+            copy.actorStates = copy.actorStates.getClass().newInstance();
+            for(ActorRunTimeState state : actorStates)
+                copy.AddActorRunTimeState(state.Clone());
+            return copy;
+        } catch (CloneNotSupportedException | InstantiationException | IllegalAccessException ex) {
+            Logger.getLogger(GlobalRunTimeState.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
@@ -70,7 +75,8 @@ public class GlobalRunTimeState implements Cloneable
             return false;
                
         for(ActorRunTimeState actorState : this.actorStates)
-            otherState.actorStates.contains(actorState);
+            if(otherState.actorStates.contains(actorState) == false)
+                return false;
         
         return true;
     }

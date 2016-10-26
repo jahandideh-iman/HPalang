@@ -29,7 +29,8 @@ public class MessageTakeRule extends ActorLevelRule
     protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
     {
         GlobalRunTimeState newGlobalState = globalState.Clone();
-        ActorRunTimeState newActorState = globalState.FindActorState(actorState.GetActor());
+        
+        ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
         
         Message message = newActorState.GetNextMessage();
         newActorState.DequeueNextMessage();
