@@ -10,8 +10,8 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Message;
-import HPalang.LTSGeneration.ResumeMessage;
 import HPalang.LTSGeneration.TauLabel;
+import HPalang.Statements.ResumeStatement;
 
 /**
  *
@@ -19,7 +19,6 @@ import HPalang.LTSGeneration.TauLabel;
  */
 public class ResumeTakeRule extends ActorLevelRule
 {
-
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
@@ -32,7 +31,7 @@ public class ResumeTakeRule extends ActorLevelRule
         GlobalRunTimeState nextGlobalState = globalState.Clone();
         ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actorState.GetActor());
         
-        ResumeMessage resumeMessage = FindResumeMessage(actorState);                                                                                     
+        Message resumeMessage = FindResumeMessage(actorState);                                                                                     
         nextActorState.RemoveMessage(resumeMessage);
         nextActorState.SetDelayed(false);
         
@@ -42,23 +41,16 @@ public class ResumeTakeRule extends ActorLevelRule
     private boolean HasResumeMessage(ActorRunTimeState actorState)
     {
         for(Message message : actorState.GetMessages())
-            if(message instanceof ResumeMessage)
+            if(message.GetMessageBody().contains(new ResumeStatement()))
                 return true;
         return false;
     }
 
-    private ResumeMessage FindResumeMessage(ActorRunTimeState actorState)
+    private Message FindResumeMessage(ActorRunTimeState actorState)
     {
         for(Message message : actorState.GetMessages())
-            if(message instanceof ResumeMessage)
-                return (ResumeMessage)message;
+            if(message.GetMessageBody().contains(new ResumeStatement()))
+                return message;
         return null;
-    }
-
-    @Override
-    public void TryApply(GlobalRunTimeState globalState, LTSGenerator generator)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
+    }  
 }

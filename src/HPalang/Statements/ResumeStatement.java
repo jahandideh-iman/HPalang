@@ -3,35 +3,26 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package HPalang.Statements;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class TauLabel implements Label
+public class ResumeStatement extends Statement
 {
     @Override
     public boolean equals(Object other)
     {
-         if(other == null)
+        if(other == null)
             return false;
         
-        if (!this.getClass().isAssignableFrom(other.getClass()))
-            return false;
-        return true;
+        return this.getClass().isAssignableFrom(other.getClass());
     }
     
     @Override
     public String toString()
     {
-        return "t";
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int hash = 7;
-        return hash;
+        return "resume";
     }
 }

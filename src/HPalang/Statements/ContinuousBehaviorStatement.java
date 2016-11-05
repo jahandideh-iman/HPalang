@@ -5,27 +5,26 @@
  */
 package HPalang.Statements;
 
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class DelayStatement extends Statement
+public class ContinuousBehaviorStatement extends Statement
 {
-    private float delay;
-    
-    public DelayStatement(float delay)
+    private final ContinuousBehavior behavior;
+
+    public ContinuousBehaviorStatement(ContinuousBehavior continuousBehavior)
     {
-        this.delay = delay;
+        behavior = continuousBehavior;
+    }
+
+    public ContinuousBehavior GetBehavior()
+    {
+        return behavior;
     }
     
-    public float GetDelay()
-    {
-        return delay;
-    }
-    
-        
     @Override
     public boolean equals(Object other)
     {
@@ -35,14 +34,15 @@ public class DelayStatement extends Statement
         if (!this.getClass().isAssignableFrom(other.getClass()))
             return false;
             
-        DelayStatement otherD = (DelayStatement) other;
+        ContinuousBehaviorStatement otherS = (ContinuousBehaviorStatement) other;
        
-        return this.delay == otherD.delay;
+        return this.behavior.equals(otherS.behavior);
     }
     
     @Override
     public String toString()
     {
-        return "delay(" + delay +")";
+        return "(" + behavior.toString() +")";
     }
+    
 }

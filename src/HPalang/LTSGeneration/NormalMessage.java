@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration;
 
-import HPalang.Core.Actor;
 import HPalang.Core.MessageHandler;
 import HPalang.Statements.Statement;
 import java.util.Queue;
@@ -47,5 +46,11 @@ public class NormalMessage implements Message
     public Queue<Statement> GetMessageBody()
     {
         return messageHandler.GetBody();
+    }
+    
+    @Override
+    public String toString()
+    {
+        return messageHandler.GetID();
     }
 }

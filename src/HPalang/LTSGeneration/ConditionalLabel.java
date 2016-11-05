@@ -5,6 +5,9 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
+import java.util.Arrays;
+
 /**
  *
  * @author Iman Jahandideh
@@ -16,5 +19,30 @@ public class ConditionalLabel implements Label
     public ConditionalLabel(String condition)
     {
         this.condition = condition;
+    }
+    
+    public String GetCondition()
+    {
+        return condition;
+    }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+         if(other == null)
+            return false;
+        
+        if (!this.getClass().isAssignableFrom(other.getClass()))
+            return false;
+            
+        ConditionalLabel otherL = (ConditionalLabel) other;
+        
+        return this.condition.equals(otherL.condition);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return condition;
     }
 }

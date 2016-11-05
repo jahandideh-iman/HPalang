@@ -11,7 +11,7 @@ import Mocks.EmptyMessage;
 import java.util.LinkedList;
 import java.util.Queue;
 import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.*;
 import static org.hamcrest.CoreMatchers.not;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -107,7 +107,7 @@ public class DiscreteStateTest
         copy.DequeueNextStatement();
         
         assertFalse(copy.equals(original));
-        assertThat(copy.GetNextStatement(), not(equalTo(statement)));
-        assertThat(original.GetNextStatement(), equalTo(statement));   
+        assertThat(copy.GetNextStatement(), not(sameInstance(statement)));
+        assertThat(original.GetNextStatement(), sameInstance(statement));   
     }
 }

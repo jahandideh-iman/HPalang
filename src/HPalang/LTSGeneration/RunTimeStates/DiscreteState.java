@@ -39,7 +39,7 @@ public class DiscreteState implements Cloneable
         messages.poll();
     }
 
-    void RemoveMessage(Message message)
+    public void RemoveMessage(Message message)
     {
         messages.remove(message);
     }
@@ -73,6 +73,11 @@ public class DiscreteState implements Cloneable
     {
         for(Statement statement : statements)
             EnqueueStatement(statement);
+    }
+
+    public Queue<Statement> GetStatements()
+    {
+        return statements;
     }
 
     public boolean HasStatement()
@@ -121,7 +126,8 @@ public class DiscreteState implements Cloneable
         DiscreteState otherState = (DiscreteState) other;
         
         return Arrays.equals(this.messages.toArray(), otherState.messages.toArray())
-                && Arrays.equals(this.statements.toArray(),otherState.statements.toArray()); 
+                && Arrays.equals(this.statements.toArray(),otherState.statements.toArray())
+                && this.isDelayed == otherState.isDelayed; 
     }
 
     @Override
@@ -132,6 +138,5 @@ public class DiscreteState implements Cloneable
         hash = 17 * hash + Objects.hashCode(this.statements);
         return hash;
     }
-
 }
 

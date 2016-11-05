@@ -19,7 +19,7 @@ public class Actor
 {
     private final String name;
     private final int capacity;
-    private Map<String,MessageHandler> messageHandlers = new HashMap<>();
+    private final Map<String,MessageHandler> messageHandlers = new HashMap<>();
 
     public Actor(String name, int capacity)
     {
@@ -29,6 +29,7 @@ public class Actor
     
     public void AddMessageHandler(String id,MessageHandler handler)
     {
+        handler.SetID(id);
         messageHandlers.put(id,handler);
     }
     
@@ -45,6 +46,11 @@ public class Actor
     public String GetName()
     {
         return name;
+    }
+    
+    public String GetDelayVariableName()
+    {
+        return name+"_delay";
     }
     
 }

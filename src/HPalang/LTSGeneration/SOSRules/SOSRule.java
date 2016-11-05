@@ -5,9 +5,7 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LTSGenerator;
 
 /**

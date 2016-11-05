@@ -6,9 +6,7 @@
 package HPalang.Core;
 
 import HPalang.Statements.Statement;
-import java.util.ArrayList;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 
 /**
@@ -17,8 +15,9 @@ import java.util.Queue;
  */
 public class MessageHandler
 {
-    private Queue<Statement> statements = new LinkedList<>();
+    private final Queue<Statement> statements = new LinkedList<>();
     private Actor owner;
+    private String id;
     
     public MessageHandler()
     {
@@ -37,5 +36,15 @@ public class MessageHandler
     public Queue<Statement> GetBody()
     {
         return statements;
+    }
+    
+    public void SetID(String id)
+    {
+        this.id = id;
+    }
+
+    public String GetID()
+    {
+       return id;
     }
 }

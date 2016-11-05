@@ -6,7 +6,6 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Actor;
-import HPalang.LTSGeneration.ContinuousBehavior;
 import HPalang.LTSGeneration.Message;
 import HPalang.Statements.SendStatement;
 import HPalang.Statements.Statement;

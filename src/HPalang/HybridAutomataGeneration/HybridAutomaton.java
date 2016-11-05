@@ -3,9 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package HPalang.HybridAutomataGeneration;
 
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.ConditionalLabel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -16,48 +16,48 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
-public class LabeledTransitionSystem
-{    
-    private Set<GlobalRunTimeState> states = new HashSet<>();
-    private GlobalRunTimeState initialState = null;
+public class HybridAutomaton
+{
+    private Set<Location> locations = new HashSet<>();
+    private Location initialLocation = null;
     
     private List<Transition> transitions = new LinkedList<>();
     
-    public void SetInitialState(GlobalRunTimeState state)
+    public void SetInitialState(Location location)
     {
-        initialState = state;
-        if(states.contains(state) == false)
-            states.add(state);
+        initialLocation = location;
+        if(locations.contains(location) == false)
+            locations.add(location);
     }
     
-    public GlobalRunTimeState GetInitialState()
+    public Location GetInitialState()
     {
-        return initialState;
+        return initialLocation;
     }
     
-    public void AddState(GlobalRunTimeState state)
+    public void AddLocation(Location location)
     {
-        states.add(state);
+        locations.add(location);
     }
     
-    public boolean HasState(GlobalRunTimeState state)
+    public boolean HasLocation(Location location)
     {
-        return states.contains(state);
+        return locations.contains(location);
     }
     
-    public Set<GlobalRunTimeState> GetStates()
+    public Set<Location> GetLocations()
     {
-        return states;
+        return locations;
     }
     
-    public void AddTransition(GlobalRunTimeState origin,Label label, GlobalRunTimeState destination)
+    public void AddTransition(Location origin,ConditionalLabel label, Location destination)
     {
         Transition transtion = new Transition(origin,label,destination);
         if(transitions.contains(transtion))
             return;
-        AddState(origin);
+        AddLocation(origin);
         transitions.add(transtion);
-        AddState(destination);
+        AddLocation(destination);
     }
     
     public List<Transition> GetTransitions()
@@ -65,12 +65,12 @@ public class LabeledTransitionSystem
         return transitions;
     }
     
-    public boolean HasTransition(GlobalRunTimeState origin,Label label, GlobalRunTimeState destination)
+    public boolean HasTransition(Location origin,ConditionalLabel label, Location destination)
     {
         return transitions.contains(new Transition(origin, label, destination));
     }  
     
-    public List<Transition> GetTransitionsFrom(GlobalRunTimeState state)
+    public List<Transition> GetTransitionsFrom(Location state)
     {
         List<Transition> trans = new ArrayList<>();
         for(Transition t : transitions)
@@ -80,7 +80,7 @@ public class LabeledTransitionSystem
         return trans;
     }
     
-    public List<Transition> GetTransitionsTo(GlobalRunTimeState state)
+    public List<Transition> GetTransitionsTo(Location state)
     {
         List<Transition> trans = new ArrayList<>();
         for(Transition t : transitions)
@@ -96,15 +96,14 @@ public class LabeledTransitionSystem
     }
     
     
-    public void RemoveState(GlobalRunTimeState state)
+    public void RemoveState(Location state)
     {
         for(Transition transition : GetTransitionsFrom(state))
             RemoveTranstion(transition);
         
         for(Transition transition : GetTransitionsTo(state))
             RemoveTranstion(transition);
-        states.remove(state);
+        locations.remove(state);
 
     }
-
 }

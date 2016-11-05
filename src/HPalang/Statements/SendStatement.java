@@ -33,4 +33,25 @@ public class SendStatement extends Statement
     {
         return message;
     }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other == null)
+            return false;
+        
+        if (!this.getClass().isAssignableFrom(other.getClass()))
+            return false;
+            
+        SendStatement otherS = (SendStatement) other;
+       
+        return this.receiver.equals(otherS.receiver)
+                && this.message.equals(otherS.message);
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "(" + receiver.GetName() + "!" + message.toString() + ")";
+    }
 }

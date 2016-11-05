@@ -55,7 +55,7 @@ public class LTSGeneratorTest
         program.SetMainBlock(mainBlock);
         program.AddActor(actor);
         
-        LabeledTransitionSystem generatedLTS = ltsGenerator.Generate(program);
+        LabeledTransitionSystem generatedLTS = ltsGenerator.Generate(program.ToGlobalState());
         
         GlobalRunTimeState initalState = generatedLTS.GetInitialState();
         Queue<Message> messages = initalState.FindActorState(actor).GetMessages();
@@ -76,7 +76,7 @@ public class LTSGeneratorTest
         ltsGenerator.AddSOSRule(rule1);
         ltsGenerator.AddSOSRule(rule2);
         
-        LabeledTransitionSystem lts = ltsGenerator.Generate(emptyProgram);
+        LabeledTransitionSystem lts = ltsGenerator.Generate(emptyProgram.ToGlobalState());
         
         assertThat(rule1.appliedStates,hasItem(equalTo(lts.GetInitialState())));
         assertThat(rule2.appliedStates,hasItem(equalTo(lts.GetInitialState())));
@@ -94,7 +94,7 @@ public class LTSGeneratorTest
         
         ltsGenerator.AddSOSRule(rule);
 
-        LabeledTransitionSystem lts = ltsGenerator.Generate(emptyProgram);
+        LabeledTransitionSystem lts = ltsGenerator.Generate(emptyProgram.ToGlobalState());
         
         assertTrue(lts.HasTransition(lts.GetInitialState(),rule.transitonLabel,rule.transitionState));
     }

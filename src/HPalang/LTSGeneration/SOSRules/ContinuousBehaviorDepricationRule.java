@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.ConditionalLabel;
-import HPalang.LTSGeneration.ContinuousBehavior;
+import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LTSGenerator;

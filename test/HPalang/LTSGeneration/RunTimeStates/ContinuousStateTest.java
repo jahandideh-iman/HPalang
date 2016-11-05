@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.LTSGeneration.ContinuousBehavior;
 import HPalang.LTSGeneration.Message;
 import HPalang.Statements.Statement;
 import Mocks.EmptyMessage;
@@ -37,8 +36,8 @@ public class ContinuousStateTest
     @Test
     public void CloneIsCorrectForContinuousBehavior()
     {
-        ContinuousBehavior behavior1 = new ContinuousBehavior("", "", "", null);
-        ContinuousBehavior behavior2 = new ContinuousBehavior("", "", "", null);
+        ContinuousBehavior behavior1 = new ContinuousBehavior("", "", "", Statement.EmptyStatements());
+        ContinuousBehavior behavior2 = new ContinuousBehavior("", "", "", Statement.EmptyStatements());
         
         original.AddBehavior(behavior1);
         original.AddBehavior(behavior2);
@@ -51,8 +50,8 @@ public class ContinuousStateTest
     @Test
     public void ClonedStateHasSeperateBehaviors()
     {
-        ContinuousBehavior behavior1 = new ContinuousBehavior("", "", "", null);
-        ContinuousBehavior behavior2 = new ContinuousBehavior("", "", "", null);
+        ContinuousBehavior behavior1 = new ContinuousBehavior("", "", "", Statement.EmptyStatements());
+        ContinuousBehavior behavior2 = new ContinuousBehavior("", "", "", Statement.EmptyStatements());
         
         original.AddBehavior(behavior1);
         original.AddBehavior(behavior2);
@@ -63,7 +62,7 @@ public class ContinuousStateTest
         copy.RemoveBehavior(behavior);
         
         assertFalse(copy.equals(original));
-        assertThat(copy.GetBehaviors(), not(hasItem(behavior)));
-        assertThat(original.GetBehaviors(), hasItem(behavior));
+        assertThat(copy.GetBehaviors(), not(hasItem(sameInstance(behavior))));
+        assertThat(original.GetBehaviors(), hasItem(sameInstance(behavior)));
     }
 }

@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration;
 
 import HPalang.Statements.Statement;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Queue;
 
@@ -26,5 +27,30 @@ public class MessageWithBody implements Message
     public Queue<Statement> GetMessageBody()
     {
         return statements;
+    }
+    
+    @Override
+    public boolean equals(Object other)
+    {
+        if(other == null)
+            return false;
+        
+        if(!this.getClass().isAssignableFrom(other.getClass()))
+            return false;
+        
+        MessageWithBody otherM = (MessageWithBody) other;
+        
+        return Arrays.equals(statements.toArray(), otherM.statements.toArray());
+    }
+    
+    @Override
+    public String toString()
+    {
+        String out = "{";
+        
+        for(Statement s : statements)
+            out += s.toString() + ",";
+        
+        return out + "}";
     }
 }

@@ -5,6 +5,8 @@
  */
 package HPalang.Core;
 
+import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Statements.SendStatement;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,5 +39,18 @@ public class ProgramDefinition
     public Queue<SendStatement> GetInitialSends()
     {
         return mainBlock.GetSendStatements();
+    }
+    
+    public GlobalRunTimeState ToGlobalState()
+    {
+        GlobalRunTimeState state = new GlobalRunTimeState();
+        
+        for(Actor actor : this.GetActors())
+            state.AddActorRunTimeState(new ActorRunTimeState(actor));
+        
+        for(SendStatement send : this.GetInitialSends())
+            state.AddSendStatement(send);
+        
+        return state;
     }
 }
