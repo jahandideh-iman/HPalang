@@ -9,7 +9,7 @@ package HPalang.Statements;
  *
  * @author Iman Jahandideh
  */
-public class ResumeStatement extends Statement
+public class ResumeStatement implements Statement
 {
     @Override
     public boolean equals(Object other)

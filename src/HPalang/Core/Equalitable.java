@@ -3,45 +3,33 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Statements;
+package HPalang.Core;
 
 
 /**
  *
  * @author Iman Jahandideh
+ * @param <T>
  */
-public class DelayStatement implements Statement
+public abstract class Equalitable<T>
 {
-    private float delay;
-    
-    public DelayStatement(float delay)
-    {
-        this.delay = delay;
-    }
-    
-    public float GetDelay()
-    {
-        return delay;
-    }
-    
-        
     @Override
     public boolean equals(Object other)
     {
         if(other == null)
             return false;
-        
         if (!this.getClass().isAssignableFrom(other.getClass()))
             return false;
             
-        DelayStatement otherD = (DelayStatement) other;
-       
-        return this.delay == otherD.delay;
+        return InternalEquals((T) other);
     }
     
     @Override
-    public String toString()
+    public int hashCode()
     {
-        return "delay(" + delay +")";
+        return InternalHashCode();
     }
+
+    abstract protected boolean InternalEquals(T other);
+    abstract protected int InternalHashCode();
 }

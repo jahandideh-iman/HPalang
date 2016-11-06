@@ -13,7 +13,7 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.SOSRules.SOSRule;
+import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.Transition;
 import java.util.ArrayList;
 import java.util.LinkedList;

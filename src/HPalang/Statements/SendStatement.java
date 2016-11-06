@@ -13,7 +13,7 @@ import HPalang.LTSGeneration.Message;
  *
  * @author Iman Jahandideh
  */
-public class SendStatement extends Statement
+public class SendStatement implements Statement
 {
     private Actor receiver;
     private Message message;

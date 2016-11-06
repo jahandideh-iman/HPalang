@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Actor;
+import HPalang.Core.DeepClonable;
 import HPalang.LTSGeneration.Message;
 import HPalang.Statements.SendStatement;
 import HPalang.Statements.Statement;
@@ -20,7 +21,7 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class ActorRunTimeState implements Cloneable
+public class ActorRunTimeState implements AbstractState<ActorRunTimeState>
 {
     private final Actor actor;
     
@@ -145,13 +146,14 @@ public class ActorRunTimeState implements Cloneable
     {
         return 1; // TODO: Find a better hashChode.
     }
-    
-    ActorRunTimeState Clone()
+
+    @Override
+    public ActorRunTimeState DeepCopy()
     {
         try {
             ActorRunTimeState copy = (ActorRunTimeState) clone();
-            copy.continuousState = this.continuousState.Clone();
-            copy.discreteState = this.discreteState.Clone();
+            copy.continuousState = this.continuousState.DeepCopy();
+            copy.discreteState = this.discreteState.DeepCopy();
             return copy;
         } catch (CloneNotSupportedException ex) {
             return null;

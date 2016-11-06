@@ -34,7 +34,7 @@ public class DelayRule extends ActorLevelRule
     @Override
     protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
     {
-        GlobalRunTimeState nextGlobalState = globalState.Clone();
+        GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actorState.GetActor());
         
         DelayStatement delayStatement = (DelayStatement)actorState.GetNextStatement();

@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Iman Jahandideh
  */
-public class DiscreteState implements Cloneable
+public class DiscreteState implements AbstractState<DiscreteState>
 {
     private Queue<Message> messages = new LinkedList<>();
     private Queue<Statement> statements = new LinkedList<>();
@@ -95,7 +95,8 @@ public class DiscreteState implements Cloneable
         return isDelayed;
     }
 
-    public DiscreteState Clone()
+    @Override
+    public DiscreteState DeepCopy()
     {
         try {
             DiscreteState copy = (DiscreteState) clone();

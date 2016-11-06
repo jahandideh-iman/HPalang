@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Iman Jahandideh
  */
-public class ContinuousState implements Cloneable
+public class ContinuousState implements AbstractState<ContinuousState>
 {
     private List<ContinuousBehavior> continuousBehaviors = new ArrayList<>();
 
@@ -35,7 +35,8 @@ public class ContinuousState implements Cloneable
         continuousBehaviors.remove(behavior);
     }
 
-    public ContinuousState Clone()
+    @Override
+    public ContinuousState DeepCopy()
     {
         try {
             ContinuousState copy = (ContinuousState) clone();

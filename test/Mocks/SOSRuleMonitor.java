@@ -9,7 +9,7 @@ import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.SOSRules.SOSRule;
+import HPalang.LTSGeneration.SOSRule;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,7 +24,7 @@ public class SOSRuleMonitor implements SOSRule
     @Override
     public void TryApply(GlobalRunTimeState globalState, LTSGenerator generator)
     {
-        appliedStates.add(globalState.Clone());
+        appliedStates.add(globalState.DeepCopy());
     }
    
 }

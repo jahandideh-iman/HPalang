@@ -44,7 +44,7 @@ public class LabeledTransitionSystemTest
         GlobalRunTimeState state = new GlobalRunTimeState();
         
         transitionSystem.AddState(state);
-        transitionSystem.AddState(state.Clone());
+        transitionSystem.AddState(state.DeepCopy());
         
         assertThat(transitionSystem.GetStates().size(),is(1));
     }

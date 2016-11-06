@@ -5,7 +5,11 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;
+import HPalang.LTSGeneration.Utilities;
+import Mocks.EmptyMessage;
+import Mocks.EmptyStatement;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -16,52 +20,38 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class GlobalRunTimeStateTest
 {
+
     @Test
-    public void CloneIsCorrectForEmptyState()
+    public void DeepCopyIsCorrect()
     {
-        GlobalRunTimeState orignal = new GlobalRunTimeState();
+        GlobalRunTimeState orignal = Utilities.NewGlobalState(
+                Utilities.NewActorState("actor1"),
+                Utilities.NewActorState("actor2"));
         
-        GlobalRunTimeState copy = orignal.Clone();
+        GlobalRunTimeState copy = orignal.DeepCopy();
         
-        assertTrue(copy.equals(orignal));
-        assertFalse(copy == orignal);
-        assertTrue(copy.getClass() == orignal.getClass());
+        assertThat(copy, equalTo(orignal));
+        assertThat(copy, not(sameInstance(orignal)));
+        assertThat(copy.getClass(), equalTo(orignal.getClass()));
     }
     
     @Test
-    public void CloneCreateNewActorStateForNotEmptyState()
+    public void CloneCreateNewActorState()
     {
-        Actor actor = new Actor("",0);
-        GlobalRunTimeState orignalGlobalState = new GlobalRunTimeState();
-        ActorRunTimeState orignalActorState = new ActorRunTimeState(actor);
+        GlobalRunTimeState orignal = Utilities.NewGlobalState(
+                Utilities.NewActorState("actor1"),
+                Utilities.NewActorState("actor2"));
         
-        orignalGlobalState.AddActorRunTimeState(orignalActorState);
+        GlobalRunTimeState copy = orignal.DeepCopy();
         
-        GlobalRunTimeState copyGlobalState = orignalGlobalState.Clone();
+        Actor actor1 = orignal.GetActorStates().get(0).GetActor();
+        Actor actor2 = orignal.GetActorStates().get(1).GetActor();
         
-        ActorRunTimeState copyActorState = copyGlobalState.FindActorState(actor);
+        assertThat(copy.FindActorState(actor1),not(sameInstance(orignal.FindActorState(actor1))));
+        assertThat(copy.FindActorState(actor1),equalTo(orignal.FindActorState(actor1)));
         
-        assertFalse(copyActorState == orignalActorState);
+        assertThat(copy.FindActorState(actor2),not(sameInstance(orignal.FindActorState(actor2))));
+        assertThat(copy.FindActorState(actor2),equalTo(orignal.FindActorState(actor2)));
     }
     
-    @Test
-    public void CloneIsCorrectForNotEmptyState()
-    {
-        Actor actor1 = new Actor("1",0);
-        Actor actor2 = new Actor("2",0);
-        
-        ActorRunTimeState actorState1 = new ActorRunTimeState(actor1);
-        ActorRunTimeState actorState2 = new ActorRunTimeState(actor2);
-        
-        GlobalRunTimeState orignal = new GlobalRunTimeState();
-        orignal.AddActorRunTimeState(actorState1);
-        orignal.AddActorRunTimeState(actorState2);
-        
-        GlobalRunTimeState copy = orignal.Clone();
-        
-        assertTrue(copy.equals(orignal));
-        assertFalse(copy == orignal);
-        assertTrue(copy.getClass() == orignal.getClass());
-        assertThat(copy.GetActorStates().size(),is(2));
-    }
 }

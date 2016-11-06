@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Iman Jahandideh
  */
-public class GlobalRunTimeState implements Cloneable
+public class GlobalRunTimeState implements AbstractState<GlobalRunTimeState>
 {
     // TODO: Change it to map
     private List<ActorRunTimeState> actorStates = new ArrayList<>();
@@ -45,14 +45,15 @@ public class GlobalRunTimeState implements Cloneable
         return actorStates;
     }
     
-    public GlobalRunTimeState Clone()
+    @Override
+    public GlobalRunTimeState DeepCopy()
     {
         try {
             GlobalRunTimeState copy = (GlobalRunTimeState)clone();
             
             copy.actorStates = copy.actorStates.getClass().newInstance();
             for(ActorRunTimeState state : actorStates)
-                copy.AddActorRunTimeState(state.Clone());
+                copy.AddActorRunTimeState(state.DeepCopy());
             return copy;
         } catch (CloneNotSupportedException | InstantiationException | IllegalAccessException ex) {
             Logger.getLogger(GlobalRunTimeState.class.getName()).log(Level.SEVERE, null, ex);

@@ -29,7 +29,7 @@ public class ContinuousBehaviorRule extends ActorLevelRule
     @Override
     protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
     {
-        GlobalRunTimeState newGlobalState = globalState.Clone();
+        GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         
         ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
         

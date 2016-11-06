@@ -5,14 +5,9 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.LTSGeneration.Message;
-import HPalang.Statements.Statement;
 import Mocks.EmptyMessage;
-import java.util.LinkedList;
-import java.util.Queue;
-import static org.hamcrest.CoreMatchers.equalTo;
+import Mocks.EmptyStatement;
 import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.CoreMatchers.not;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -22,92 +17,50 @@ import static org.junit.Assert.*;
  */
 public class DiscreteStateTest
 {
-    DiscreteState original = new DiscreteState();
+ 
+    @Test
+    public void StatesWithEqualDataAreEqual()
+    {
+        DiscreteState state1 = NewFullState();
+        DiscreteState state2 = NewFullState();
+        
+        assertThat(state2,equalTo(state1));
+    }
+
     
     @Test
-    public void CloneIsCorrectForEmptyState()
+    public void DeepCopyIsCorrect()
     {
-        DiscreteState copy = original.Clone();
+        DiscreteState original = NewFullState();
+        DiscreteState copy = original.DeepCopy();
         
-        assertTrue(copy.equals(original));
-        assertFalse(copy == original);
-        assertTrue(copy.getClass() == original.getClass());
+        assertThat(copy,equalTo(original));
+        assertThat(copy,not(sameInstance(original)));
     }
-    
+        
     @Test
-    public void CloneIsCorrectForDelayedState()
+    public void DeepCopyCreatesSeperateMessagesAndStatements()
     {
-        original.SetDelayed(true);
+        DiscreteState original = NewFullState();
+        DiscreteState copy = original.DeepCopy();
         
-        DiscreteState copy = original.Clone();
+        assertThat(copy.GetMessages(),equalTo(original.GetMessages()));
+        assertThat(copy.GetMessages(),not(sameInstance(original.GetMessages())));
         
-        assertTrue(copy.equals(original));
-        assertThat(copy.IsDelayed(),is(true));
+        assertThat(copy.GetStatements(),equalTo(original.GetStatements()));
+        assertThat(copy.GetStatements(),not(sameInstance(original.GetStatements())));
     }
-      
-    @Test
-    public void CloneIsCorrectStateWithMessage()
+     
+    private DiscreteState NewFullState()
     {
-        Message message1 = new EmptyMessage();
-        Message message2 = new EmptyMessage();
+        DiscreteState state = new DiscreteState();
         
-        original.EnqueueMessage(message1);
-        original.EnqueueMessage(message2);
+        state.SetDelayed(true);
+        state.EnqueueMessage(new EmptyMessage());
+        state.EnqueueMessage( new EmptyMessage());
+        state.EnqueueStatement(new EmptyStatement());
+        state.EnqueueStatement( new EmptyStatement());
         
-        DiscreteState copy = original.Clone();
-        
-        assertTrue(copy.equals(original));
-    }
-    
-    @Test
-    public void ClonedStateHasSeperateMessages()
-    {
-        Message message1 = new EmptyMessage();
-        Message message2 = new EmptyMessage();
-        
-        original.EnqueueMessage(message1);
-        original.EnqueueMessage(message2);
-        
-        DiscreteState copy = original.Clone();
-        
-        Message message = copy.GetNextMessage();
-        copy.DequeueNextMessage();
-        
-        assertFalse(copy.equals(original));
-        assertThat(copy.GetNextMessage(), not(equalTo(message)));
-        assertThat(original.GetNextMessage(), equalTo(message));   
-    }
-    
-    @Test
-    public void CloneIsCorrectStateWithStatement()
-    {
-        Statement statement1 = new Statement();
-        Statement statement2 = new Statement();
-             
-        original.EnqueueStatement(statement1);
-        original.EnqueueStatement(statement2);
-        
-        DiscreteState copy = original.Clone();
-        
-        assertTrue(copy.equals(original));
-    }
-    
-    @Test
-    public void ClonedStateHasSeperateStatements()
-    {
-        Statement statement1 = new Statement();
-        Statement statement2 = new Statement();
-        
-        original.EnqueueStatement(statement1);
-        original.EnqueueStatement(statement2);
-        
-        DiscreteState copy = original.Clone();
-        
-        Statement statement = copy.GetNextStatement();
-        copy.DequeueNextStatement();
-        
-        assertFalse(copy.equals(original));
-        assertThat(copy.GetNextStatement(), not(sameInstance(statement)));
-        assertThat(original.GetNextStatement(), sameInstance(statement));   
+        return state;
     }
 }

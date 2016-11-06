@@ -10,7 +10,7 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Label;
-import HPalang.LTSGeneration.SOSRules.SOSRule;
+import HPalang.LTSGeneration.SOSRule;
 
 /**
  *

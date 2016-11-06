@@ -6,16 +6,13 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Actor;
-import HPalang.LTSGeneration.Message;
-import HPalang.Statements.Statement;
+import HPalang.LTSGeneration.Utilities;
 import Mocks.EmptyMessage;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.Queue;
+import Mocks.EmptyStatement;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static org.hamcrest.CoreMatchers.*;
 import org.junit.Before;
+import static org.hamcrest.CoreMatchers.*;
 
 /**
  *
@@ -24,34 +21,32 @@ import org.junit.Before;
 public class ActorRunTimeStateTest
 {
 
-    Actor actor;
-    ActorRunTimeState original;
-    
-    @Before
-    public void Setup()
-    {
-        actor = new Actor("", 0);
-        original = new ActorRunTimeState(actor);
-    }
-    
     
     @Test
-    public void CloneIsCorrectForEmptyState()
+    public void DeepCopyIsCorrect()
     {
-        ActorRunTimeState copy = original.Clone();
+        ActorRunTimeState original = Utilities.NewActorState("actor");
         
-        assertTrue(copy.equals(original));
-        assertFalse(copy == original);
-        assertTrue(copy.getClass() == original.getClass());
-        assertTrue(copy.GetActor() == actor);
+        ActorRunTimeState copy = original.DeepCopy();
+        
+        assertThat(copy, equalTo(original));
+        assertThat(copy, not(sameInstance(original)));
+        assertThat(copy.getClass(),equalTo(original.getClass()));
+        assertThat(copy.GetActor(), sameInstance(original.GetActor()));
     }
     
     @Test
-    public void CloneCreatesNewDiscreteAndContiniuousState()
+    public void DeepCopyCreatesNewDiscreteAndContiniuousState()
     {
-        ActorRunTimeState copy = original.Clone();
+        ActorRunTimeState original = Utilities.NewActorState("actor");
+        ActorRunTimeState copy = original.DeepCopy();
         
-        assertFalse(copy.GetContinuousState() == original.GetContinuousState());
-        assertFalse(copy.GetDiscreteState() == original.GetDiscreteState());
-    }    
+        assertThat(copy.GetContinuousState(),not(sameInstance(original.GetContinuousState())));
+        assertThat(copy.GetContinuousState(),equalTo(original.GetContinuousState()));
+        
+        assertThat(copy.GetDiscreteState(),not(sameInstance(original.GetDiscreteState())));
+        assertThat(copy.GetDiscreteState(),equalTo(original.GetDiscreteState()));
+        
+    }
+      
 }

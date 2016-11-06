@@ -14,20 +14,9 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class Statement
+public interface Statement
 {
-    @Override
-    public boolean equals(Object other)
-    {
-        if(other == null)
-            return false;
-        
-        if (!this.getClass().equals(other.getClass()))
-            return false;
-            
-        return true;
-    }
-    
+
     static public Queue<Statement> EmptyStatements()
     {
         return new LinkedList<>();

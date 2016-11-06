@@ -5,11 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.LTSGeneration.Message;
 import HPalang.Statements.Statement;
-import Mocks.EmptyMessage;
-import static org.hamcrest.CoreMatchers.equalTo;
-import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -23,14 +19,33 @@ public class ContinuousStateTest
     
     ContinuousState original = new ContinuousState();
     
+    
     @Test
-    public void CloneIsCorrectForEmptyState()
+    public void StatesWithEqualBehaviorsAreEqual()
     {
-        ContinuousState copy = original.Clone();
+        ContinuousState state1 = new ContinuousState();
+        ContinuousState state2 = new ContinuousState();
         
-        assertTrue(copy.equals(original));
-        assertFalse(copy == original);
-        assertTrue(copy.getClass() == original.getClass());
+        ContinuousBehavior behavior1 = new ContinuousBehavior("inv1", "eq1", "g1", Statement.EmptyStatements());
+        ContinuousBehavior behavior2 = new ContinuousBehavior("inv2", "eq2", "g2", Statement.EmptyStatements());
+        
+        state1.AddBehavior(behavior1);
+        state1.AddBehavior(behavior2);
+        
+        state2.AddBehavior(behavior1);
+        state2.AddBehavior(behavior2);
+        
+        assertThat(state2, equalTo(state1));
+    }
+    
+    @Test
+    public void DeepCopyIsCorrectForEmptyState()
+    {
+        ContinuousState copy = original.DeepCopy();
+        
+        assertThat(copy,equalTo(original));
+        assertThat(copy,not(sameInstance(original)));
+        assertThat(copy.getClass(),equalTo(original.getClass()));
     }
     
     @Test
@@ -42,7 +57,7 @@ public class ContinuousStateTest
         original.AddBehavior(behavior1);
         original.AddBehavior(behavior2);
         
-        ContinuousState copy = original.Clone();
+        ContinuousState copy = original.DeepCopy();
         
         assertTrue(copy.equals(original));
     }
@@ -56,7 +71,7 @@ public class ContinuousStateTest
         original.AddBehavior(behavior1);
         original.AddBehavior(behavior2);
         
-        ContinuousState copy = original.Clone();
+        ContinuousState copy = original.DeepCopy();
         
         ContinuousBehavior behavior = copy.GetBehaviors().get(0);
         copy.RemoveBehavior(behavior);

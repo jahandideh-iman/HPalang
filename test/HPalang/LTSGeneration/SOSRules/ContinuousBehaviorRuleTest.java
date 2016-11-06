@@ -9,10 +9,8 @@ import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;
-import HPalang.LTSGeneration.ConditionalLabel;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.MessageWithBody;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -20,6 +18,7 @@ import HPalang.LTSGeneration.TauLabel;
 import HPalang.Statements.ContinuousBehaviorStatement;
 import HPalang.Statements.Statement;
 import static HPalang.Statements.Statement.StatementsFrom;
+import Mocks.EmptyStatement;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -47,7 +46,7 @@ public class ContinuousBehaviorRuleTest
        
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)
-                .EnqueueStatement(new ContinuousBehaviorStatement(new ContinuousBehavior("inv","ode","guard",StatementsFrom(new Statement()))));
+                .EnqueueStatement(new ContinuousBehaviorStatement(new ContinuousBehavior("inv","ode","guard",StatementsFrom(new EmptyStatement()))));
         
         
         globalState
@@ -59,7 +58,7 @@ public class ContinuousBehaviorRuleTest
         GlobalRunTimeState nextGlobalState1 = globalState.Build();
         ActorRunTimeState nextActorState1 = nextGlobalState1.FindActorState(actor1);
         nextActorState1.DequeueNextStatement();
-        nextActorState1.GetContinuousState().AddBehavior(new ContinuousBehavior("inv","ode","guard",StatementsFrom(new Statement())));
+        nextActorState1.GetContinuousState().AddBehavior(new ContinuousBehavior("inv","ode","guard",StatementsFrom(new EmptyStatement())));
         
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), nextGlobalState1));
     }

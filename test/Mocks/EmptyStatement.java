@@ -5,26 +5,18 @@
  */
 package Mocks;
 
-import HPalang.LTSGeneration.Message;
 import HPalang.Statements.Statement;
-import java.util.LinkedList;
-import java.util.Queue;
 import HPalang.Core.Equalitable;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
+public class EmptyStatement extends Equalitable<EmptyStatement> implements Statement
 {
-    @Override
-    public Queue<Statement> GetMessageBody()
-    {
-        return new LinkedList<>();
-    }
 
     @Override
-    protected boolean InternalEquals(EmptyMessage other)
+    protected boolean InternalEquals(EmptyStatement other)
     {
         return true;
     }
@@ -32,7 +24,7 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     @Override
     protected int InternalHashCode()
     {
-       return 1;
+        return 1;
     }
     
 }

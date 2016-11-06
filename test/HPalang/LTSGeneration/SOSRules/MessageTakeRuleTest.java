@@ -18,6 +18,7 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.Statements.Statement;
 import Mocks.EmptyMessage;
+import Mocks.EmptyStatement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -78,8 +79,8 @@ public class MessageTakeRuleTest
         Actor actor = new ActorBuilder().WithID("actor1").WithCapacity(1).Build();
         
         Queue<Statement> statements = new LinkedList<>();
-        statements.add(new Statement());
-        statements.add(new Statement());
+        statements.add(new EmptyStatement());
+        statements.add(new EmptyStatement());
 
         ActorRunTimeStateBuilder actorState = new ActorRunTimeStateBuilder()
                 .WithActor(actor)

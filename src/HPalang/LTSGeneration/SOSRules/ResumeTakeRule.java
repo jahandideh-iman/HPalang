@@ -28,7 +28,7 @@ public class ResumeTakeRule extends ActorLevelRule
     @Override
     protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
     {
-        GlobalRunTimeState nextGlobalState = globalState.Clone();
+        GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actorState.GetActor());
         
         Message resumeMessage = FindResumeMessage(actorState);                                                                                     

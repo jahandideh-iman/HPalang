@@ -6,7 +6,6 @@
 package HPalang.LTSGeneration;
 
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.SOSRules.SOSRule;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,9 +19,9 @@ public class LTSGenerator
 {
     private LabeledTransitionSystem transitionSystem;
         
-    private Queue<GlobalRunTimeState> notVisitedStates = new LinkedList<>();
+    private final Queue<GlobalRunTimeState> notVisitedStates = new LinkedList<>();
     
-    private List<SOSRule> sosRules = new ArrayList<>();
+    private final List<SOSRule> sosRules = new ArrayList<>();
     
     private GlobalRunTimeState currentGlobalState;
     

@@ -11,7 +11,7 @@ import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
  *
  * @author Iman Jahandideh
  */
-public class ContinuousBehaviorStatement extends Statement
+public class ContinuousBehaviorStatement implements Statement
 {
     private final ContinuousBehavior behavior;
 

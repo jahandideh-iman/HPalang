@@ -91,5 +91,4 @@ public class ContinuousBehavior
         return "B(" + invariant + ")";
     }
 
-
 }

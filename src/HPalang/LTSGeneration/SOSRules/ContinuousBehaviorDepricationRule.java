@@ -33,7 +33,7 @@ public class ContinuousBehaviorDepricationRule extends ActorLevelRule
     {
         for(ContinuousBehavior behavior : actorState.GetContinuousBehaviors())
         {
-            GlobalRunTimeState newGlobalState = globalState.Clone();
+            GlobalRunTimeState newGlobalState = globalState.DeepCopy();
             ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
             
             newActorState.RemoveContinuousBehavior(behavior);

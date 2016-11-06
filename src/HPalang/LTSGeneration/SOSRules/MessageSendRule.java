@@ -31,7 +31,7 @@ public class MessageSendRule extends ActorLevelRule
     @Override
     protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
     {
-        GlobalRunTimeState newGlobalState = globalState.Clone();
+        GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         
         SendStatement sendStatement = (SendStatement)actorState.GetDiscreteState().GetNextStatement();
         
