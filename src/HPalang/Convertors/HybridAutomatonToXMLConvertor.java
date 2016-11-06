@@ -58,13 +58,14 @@ public class HybridAutomatonToXMLConvertor
     private String LocationToString(Location location)
     {
         String locationStr = "";
+        int lastIndex;
         
         
         String invarientsStr = "";
         for(String invarient : location.GetInvarients())
             invarientsStr += invarient + "&&";
         
-        int lastIndex;
+
         lastIndex = invarientsStr.lastIndexOf("&&");
         if(lastIndex >= 0)
             invarientsStr =  invarientsStr.substring(0,lastIndex);
@@ -77,7 +78,7 @@ public class HybridAutomatonToXMLConvertor
         if(lastIndex >= 0)
         equationsStr =  equationsStr.substring(0,lastIndex);
         
-        locationStr = invarientsStr + "\t" + equationsStr;
+        locationStr = invarientsStr + "\n" + equationsStr;
         
         return xmlEscapeText(locationStr);
     }

@@ -28,7 +28,7 @@ public class ConversionRule implements TransitionSOSRule
         Location origin = generator.ToLocation(transition.GetOrign());
         Location destination = generator.ToLocation(transition.GetDestination());
         
-        ConditionalLabel label = null;
+        ConditionalLabel label;
         if(transition.GetLabel() instanceof TauLabel)
             label = new ConditionalLabel("true");
         else

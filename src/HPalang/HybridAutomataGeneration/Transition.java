@@ -6,6 +6,7 @@
 package HPalang.HybridAutomataGeneration;
 
 import HPalang.LTSGeneration.ConditionalLabel;
+import java.util.Objects;
 
 
 /**
@@ -15,9 +16,9 @@ import HPalang.LTSGeneration.ConditionalLabel;
 public class Transition
 {
         
-    private Location origin;
-    private Location destination;
-    private ConditionalLabel label;
+    private final Location origin;
+    private final Location destination;
+    private final ConditionalLabel label;
 
     public Transition(Location origin, ConditionalLabel label, Location destination)
     {
@@ -44,13 +45,25 @@ public class Transition
     @Override
     public boolean equals(Object other)
     {
-        if (other == null) {
+        if (other == null) 
             return false;
-        }
-        if (!Transition.class.isAssignableFrom(other.getClass())) {
+        
+        if (!Transition.class.isAssignableFrom(other.getClass())) 
             return false;
-        }
+        
         Transition otherTransition = (Transition) other;
-        return otherTransition.destination.equals(destination) && otherTransition.origin.equals(origin) && otherTransition.label.equals(label);
+        return otherTransition.destination.equals(this.destination) 
+                && otherTransition.origin.equals(this.origin) 
+                && otherTransition.label.equals(this.label);
+    }
+
+    @Override
+    public int hashCode()
+    {
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.origin);
+        hash = 97 * hash + Objects.hashCode(this.destination);
+        hash = 97 * hash + Objects.hashCode(this.label);
+        return hash;
     }
 }

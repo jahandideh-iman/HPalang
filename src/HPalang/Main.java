@@ -17,6 +17,7 @@ import HPalang.HybridAutomataGeneration.SOSRules.ConversionRule;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.NormalMessage;
+import HPalang.LTSGeneration.LTSUtility;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorDepricationRule;
@@ -36,7 +37,6 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import sun.rmi.runtime.Log;
 
 /**
  *
@@ -64,22 +64,24 @@ public class Main {
         
         ProgramDefinition definition = CreateProgramWithComplexMessageing();
         
-        LabeledTransitionSystem lts =  ltsGenerator.Generate(definition.ToGlobalState());
+        LabeledTransitionSystem lts =  ltsGenerator.Generate(LTSUtility.FromProgramDefinition(definition));
         
         FileWriter writer = new FileWriter();
+        
+        System.out.println("LTS(B) States  : " + lts.GetStates().size());
+        System.out.println("LTS(B) Transition : " + lts.GetTransitions().size());
         
         PrioritizeTauActions(lts);
         RemoveUnreachableStates(lts);
         RemoveTauLabels(lts);
-        //Prune(lts);
         
         HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts);
         
-        //writer.Write("output.xml", new LTSToXMLConvertor().Convert(lts));
-        writer.Write("output.xml", new HybridAutomatonToXMLConvertor().Convert(automaton));
+        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
+        writer.Write("output_HA.xml", new HybridAutomatonToXMLConvertor().Convert(automaton));
         
-        System.out.println("LTS States : " + lts.GetStates().size());
-        System.out.println("LTS Transition : " + lts.GetTransitions().size());
+        System.out.println("LTS(A) Pruning States : " + lts.GetStates().size());
+        System.out.println("LTS(A) Pruning Transition : " + lts.GetTransitions().size());
         
         System.out.println("HA Locations : " + automaton.GetLocations().size());
         System.out.println("HA Transition : " + automaton.GetTransitions().size());

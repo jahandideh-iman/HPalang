@@ -5,9 +5,10 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Objects;
+import java.util.Set;
 
 /**
  *
@@ -15,8 +16,8 @@ import java.util.List;
  */
 public class Location
 {
-    private List<String> invariants = new LinkedList<>();
-    private List<String> equations = new LinkedList<>();
+    private final Set<String> invariants = new HashSet<>();
+    private final Set<String> equations = new HashSet<>();
     
     public void AddInvariant(String invarient)
     {
@@ -38,18 +39,26 @@ public class Location
             return false;
             
         Location otherLocation = (Location) other;
-        
-        return Arrays.equals(this.equations.toArray(), otherLocation.equations.toArray())
-                && Arrays.equals(this.invariants.toArray(), otherLocation.invariants.toArray()) ;
+        return this.invariants.equals(otherLocation.invariants)
+                && this.equations.equals(otherLocation.equations);
     }
 
-    public List<String> GetInvarients()
+    @Override
+    public int hashCode()
     {
-        return invariants;
+        int hash = 7;
+        hash = 97 * hash + Objects.hashCode(this.invariants);
+        hash = 97 * hash + Objects.hashCode(this.equations);
+        return hash;
     }
 
-    public List<String> GetEquations()
+    public Set<String> GetInvarients()
     {
-        return equations;
+        return Collections.unmodifiableSet(invariants);
+    }
+
+    public Set<String> GetEquations()
+    {
+        return Collections.unmodifiableSet(equations);
     }
 }
