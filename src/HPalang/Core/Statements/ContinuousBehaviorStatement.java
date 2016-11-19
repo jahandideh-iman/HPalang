@@ -3,15 +3,16 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Statements;
+package HPalang.Core.Statements;
 
+import HPalang.Core.Statement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ContinuousBehaviorStatement implements Statement
+public class ContinuousBehaviorStatement extends AbstractStatement<ContinuousBehaviorStatement>
 {
     private final ContinuousBehavior behavior;
 
@@ -25,24 +26,23 @@ public class ContinuousBehaviorStatement implements Statement
         return behavior;
     }
     
-    @Override
-    public boolean equals(Object other)
-    {
-        if(other == null)
-            return false;
-        
-        if (!this.getClass().isAssignableFrom(other.getClass()))
-            return false;
-            
-        ContinuousBehaviorStatement otherS = (ContinuousBehaviorStatement) other;
-       
-        return this.behavior.equals(otherS.behavior);
-    }
-    
+   
     @Override
     public String toString()
     {
         return "(" + behavior.toString() +")";
+    }
+
+    @Override
+    protected boolean InternalEquals(ContinuousBehaviorStatement other)
+    {
+        return this.behavior.equals(other.behavior);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return behavior.hashCode();
     }
     
 }

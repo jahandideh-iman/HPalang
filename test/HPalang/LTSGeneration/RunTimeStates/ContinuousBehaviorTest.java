@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Statements.Statement;
+import HPalang.Core.Statement;
 import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -17,7 +17,7 @@ import static org.junit.Assert.*;
 public class ContinuousBehaviorTest
 {   
     @Test
-    public void BehaviorsWithDataAreEqual()
+    public void BehaviorsWithEqualDataAreEqual()
     {     
         ContinuousBehavior behavior1 = new ContinuousBehavior("inv", "eq", "g", Statement.EmptyStatements());
         ContinuousBehavior behavior2 = new ContinuousBehavior("inv", "eq", "g", Statement.EmptyStatements());

@@ -3,20 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Statements;
+package HPalang.Core.Statements;
 
+import HPalang.Core.Statement;
 import HPalang.Core.Actor;
 import HPalang.Core.MessageHandler;
-import HPalang.LTSGeneration.Message;
+import HPalang.Core.Message;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class SendStatement implements Statement
+public class SendStatement extends AbstractStatement<SendStatement>
 {
-    private Actor receiver;
-    private Message message;
+    private final Actor receiver;
+    private final Message message;
     
     public SendStatement(Actor receiver, Message message)
     {
@@ -35,18 +36,16 @@ public class SendStatement implements Statement
     }
     
     @Override
-    public boolean equals(Object other)
+    protected boolean InternalEquals(SendStatement other)
     {
-        if(other == null)
-            return false;
-        
-        if (!this.getClass().isAssignableFrom(other.getClass()))
-            return false;
-            
-        SendStatement otherS = (SendStatement) other;
-       
-        return this.receiver.equals(otherS.receiver)
-                && this.message.equals(otherS.message);
+        return this.receiver.equals(other.receiver)
+                && this.message.equals(other.message);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return 1;
     }
     
     @Override

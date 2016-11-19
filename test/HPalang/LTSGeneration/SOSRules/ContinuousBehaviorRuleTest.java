@@ -15,9 +15,9 @@ import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
-import HPalang.Statements.ContinuousBehaviorStatement;
-import HPalang.Statements.Statement;
-import static HPalang.Statements.Statement.StatementsFrom;
+import HPalang.Core.Statements.ContinuousBehaviorStatement;
+import HPalang.Core.Statement;
+import static HPalang.Core.Statement.StatementsFrom;
 import Mocks.EmptyStatement;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -58,7 +58,7 @@ public class ContinuousBehaviorRuleTest
         GlobalRunTimeState nextGlobalState1 = globalState.Build();
         ActorRunTimeState nextActorState1 = nextGlobalState1.FindActorState(actor1);
         nextActorState1.DequeueNextStatement();
-        nextActorState1.GetContinuousState().AddBehavior(new ContinuousBehavior("inv","ode","guard",StatementsFrom(new EmptyStatement())));
+        nextActorState1.AddContinuousBehavior(new ContinuousBehavior("inv","ode","guard",StatementsFrom(new EmptyStatement())));
         
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), nextGlobalState1));
     }

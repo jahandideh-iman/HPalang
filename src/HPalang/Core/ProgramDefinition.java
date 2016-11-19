@@ -7,7 +7,7 @@ package HPalang.Core;
 
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.Statements.SendStatement;
+import HPalang.Core.Statements.SendStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Queue;

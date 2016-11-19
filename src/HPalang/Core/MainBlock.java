@@ -5,7 +5,7 @@
  */
 package HPalang.Core;
 
-import HPalang.Statements.SendStatement;
+import HPalang.Core.Statements.SendStatement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;

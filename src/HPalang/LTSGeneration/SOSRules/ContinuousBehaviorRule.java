@@ -6,11 +6,11 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.Message;
+import HPalang.Core.Message;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
-import HPalang.Statements.ContinuousBehaviorStatement;
+import HPalang.Core.Statements.ContinuousBehaviorStatement;
 
 /**
  *
@@ -22,8 +22,8 @@ public class ContinuousBehaviorRule extends ActorLevelRule
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.GetDiscreteState().IsDelayed() == false
-                && actorState.GetDiscreteState().GetNextStatement() instanceof ContinuousBehaviorStatement;
+        return actorState.IsDelayed() == false
+                && actorState.GetNextStatement() instanceof ContinuousBehaviorStatement;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ContinuousBehaviorRule extends ActorLevelRule
         ContinuousBehaviorStatement behaviorStatement = (ContinuousBehaviorStatement) newActorState.GetNextStatement();
         newActorState.DequeueNextStatement();
         
-        newActorState.GetContinuousState().AddBehavior(behaviorStatement.GetBehavior());
+        newActorState.AddContinuousBehavior(behaviorStatement.GetBehavior());
         
         generator.AddTransition(new TauLabel(), newGlobalState);
     }

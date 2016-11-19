@@ -5,16 +5,14 @@
  */
 package Mocks;
 
-import HPalang.Statements.Statement;
-import HPalang.Core.Equalitable;
+import HPalang.Core.Statements.AbstractStatement;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class EmptyStatement extends Equalitable<EmptyStatement> implements Statement
+public class EmptyStatement extends AbstractStatement<EmptyStatement>
 {
-
     @Override
     protected boolean InternalEquals(EmptyStatement other)
     {

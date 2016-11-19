@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Statements.Statement;
+import HPalang.Core.Statement;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;

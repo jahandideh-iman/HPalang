@@ -6,10 +6,10 @@
 package Builders;
 
 import HPalang.Core.Actor;
-import HPalang.LTSGeneration.Message;
+import HPalang.Core.Message;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.Statements.Statement;
+import HPalang.Core.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -67,12 +67,12 @@ public class ActorRunTimeStateBuilder
         for(Message m : messages)
             actorState.EnqueueMessage(m);
 
-        actorState.GetDiscreteState().EnqueueStatements(statements);
+        actorState.EnqueueStatements(statements);
         
-        actorState.GetDiscreteState().SetDelayed(isDelayed);
+        actorState.SetDelayed(isDelayed);
         
         for(ContinuousBehavior b : behaviors)
-            actorState.GetContinuousState().AddBehavior(b);
+            actorState.AddContinuousBehavior(b);
         
         return actorState;
     }

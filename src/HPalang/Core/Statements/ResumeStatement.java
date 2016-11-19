@@ -3,21 +3,27 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Statements;
+package HPalang.Core.Statements;
+
+import HPalang.Core.Statement;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ResumeStatement implements Statement
+public class ResumeStatement extends AbstractStatement<ResumeStatement>
 {
     @Override
-    public boolean equals(Object other)
+    protected boolean InternalEquals(ResumeStatement other)
     {
-        if(other == null)
-            return false;
-        
-        return this.getClass().isAssignableFrom(other.getClass());
+        return true;
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        int hash = 3;
+        return hash;
     }
     
     @Override

@@ -1,0 +1,165 @@
+<DMEComponent type="FiniteStateMachine" >
+   <States>
+       <State XPos="36" YPos="408" >
+           <Name>B_delay&lt;=1.0
+B_delay&apos;=1</Name>
+           <UpdateAction></UpdateAction>
+           <EntryAction></EntryAction>
+           <ExitAction></ExitAction>
+       </State>
+       <State XPos="378" YPos="89" >
+           <Name>A_delay&lt;=1.0
+A_delay&apos;=1</Name>
+           <UpdateAction></UpdateAction>
+           <EntryAction></EntryAction>
+           <ExitAction></ExitAction>
+       </State>
+       <State XPos="504" YPos="410" >
+           <Name></Name>
+           <UpdateAction></UpdateAction>
+           <EntryAction></EntryAction>
+           <ExitAction></ExitAction>
+       </State>
+       <State XPos="-210" YPos="-68" >
+           <Name>B_delay&lt;=0.5
+B_delay&apos;=1</Name>
+           <UpdateAction></UpdateAction>
+           <EntryAction></EntryAction>
+           <ExitAction></ExitAction>
+       </State>
+       <State XPos="119" YPos="-84" >
+           <Name>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</Name>
+           <UpdateAction></UpdateAction>
+           <EntryAction></EntryAction>
+           <ExitAction></ExitAction>
+       </State>
+       <State XPos="-326" YPos="295" >
+           <Name>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</Name>
+           <UpdateAction></UpdateAction>
+           <EntryAction></EntryAction>
+           <ExitAction></ExitAction>
+       </State>
+   </States>
+   <Transitions>
+       <Transition XPos="500" YPos="500" >
+           <From>B_delay&lt;=1.0
+B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0
+A_delay&apos;=1</To>
+           <Condition>B_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>B_delay&lt;=1.0
+B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+           <Condition>B_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>B_delay&lt;=1.0
+B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+           <Condition>B_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0
+A_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+           <Condition>A_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0
+A_delay&apos;=1</From>
+           <To></To>
+           <Condition>A_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0
+A_delay&apos;=1</From>
+           <To>B_delay&lt;=1.0
+B_delay&apos;=1</To>
+           <Condition>A_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From></From>
+           <To>B_delay&lt;=1.0
+B_delay&apos;=1</To>
+           <Condition>true</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>B_delay&lt;=0.5
+B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+           <Condition>B_delay==0.5</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+           <To>B_delay&lt;=0.5
+B_delay&apos;=1</To>
+           <Condition>A_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+           <Condition>A_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0
+A_delay&apos;=1</To>
+           <Condition>B_delay==0.5</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+           <Condition>B_delay==0.5</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+           <To>B_delay&lt;=1.0
+B_delay&apos;=1</To>
+           <Condition>A_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0
+A_delay&apos;=1</To>
+           <Condition>B_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+           <Condition>B_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+           <Condition>B_delay==1.0</Condition>
+       </Transition>
+       <Transition XPos="500" YPos="500" >
+           <From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+           <To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+           <Condition>A_delay==1.0</Condition>
+       </Transition>
+    </Transitions>
+  <InitialState></InitialState>
+</DMEComponent>

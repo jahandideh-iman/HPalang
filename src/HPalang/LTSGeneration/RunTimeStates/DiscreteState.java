@@ -5,8 +5,8 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.LTSGeneration.Message;
-import HPalang.Statements.Statement;
+import HPalang.Core.Message;
+import HPalang.Core.Statement;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.Objects;

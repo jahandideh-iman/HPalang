@@ -9,7 +9,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
-import HPalang.Statements.SendStatement;
+import HPalang.Core.Statements.SendStatement;
 
 /**
  *
@@ -25,7 +25,7 @@ public class MessageSendRule extends ActorLevelRule
             sendStatement = (SendStatement) actorState.GetNextStatement();
         return  actorState.IsDelayed() == false 
                 && sendStatement != null
-                && globalState.FindActorState(sendStatement.GetReceiver()).GetDiscreteState().GetMessages().size() < sendStatement.GetReceiver().GetCapacity();
+                && globalState.FindActorState(sendStatement.GetReceiver()).GetMessages().size() < sendStatement.GetReceiver().GetCapacity();
     }
 
     @Override
@@ -33,14 +33,14 @@ public class MessageSendRule extends ActorLevelRule
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         
-        SendStatement sendStatement = (SendStatement)actorState.GetDiscreteState().GetNextStatement();
+        SendStatement sendStatement = (SendStatement)actorState.GetNextStatement();
         
         ActorRunTimeState senderState = newGlobalState.FindActorState(actorState.GetActor());
         ActorRunTimeState receiverState = newGlobalState.FindActorState(sendStatement.GetReceiver());
         
-        senderState.GetDiscreteState().DequeueNextStatement();
+        senderState.DequeueNextStatement();
         
-        receiverState.GetDiscreteState().EnqueueMessage(sendStatement.GetMessage());
+        receiverState.EnqueueMessage(sendStatement.GetMessage());
         
         generator.AddTransition(new TauLabel(), newGlobalState);
     }

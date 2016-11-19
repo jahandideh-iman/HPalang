@@ -16,7 +16,7 @@ import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.HybridAutomataGeneration.SOSRules.ConversionRule;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.NormalMessage;
+import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.LTSUtility;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -29,10 +29,10 @@ import HPalang.LTSGeneration.SOSRules.MessageTakeRule;
 import HPalang.LTSGeneration.SOSRules.ResumeTakeRule;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.LTSGeneration.Transition;
-import HPalang.Statements.ContinuousBehaviorStatement;
-import HPalang.Statements.DelayStatement;
-import HPalang.Statements.SendStatement;
-import HPalang.Statements.Statement;
+import HPalang.Core.Statements.ContinuousBehaviorStatement;
+import HPalang.Core.Statements.DelayStatement;
+import HPalang.Core.Statements.SendStatement;
+import HPalang.Core.Statement;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -279,8 +279,8 @@ public class Main {
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor actorA = new Actor("A",1);        
-        Actor actorB = new Actor("B",1);
+        Actor actorA = new Actor("A",2);        
+        Actor actorB = new Actor("B",2);
         
         MessageHandler handler_a1 = new MessageHandler();        
         MessageHandler handler_b1 = new MessageHandler();

@@ -5,8 +5,8 @@
  */
 package Mocks;
 
-import HPalang.LTSGeneration.Message;
-import HPalang.Statements.Statement;
+import HPalang.Core.Message;
+import HPalang.Core.Statement;
 import java.util.LinkedList;
 import java.util.Queue;
 import HPalang.Core.Equalitable;

@@ -6,15 +6,9 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Actor;
-import HPalang.Core.DeepClonable;
-import HPalang.LTSGeneration.Message;
-import HPalang.Statements.SendStatement;
-import HPalang.Statements.Statement;
-import java.sql.Struct;
-import java.util.ArrayList;
-import java.util.LinkedList;
+import HPalang.Core.Message;
+import HPalang.Core.Statement;
 import java.util.List;
-import java.util.Objects;
 import java.util.Queue;
 
 /**
@@ -34,11 +28,13 @@ public class ActorRunTimeState implements AbstractState<ActorRunTimeState>
         this.actor = actor;
     }
     
+    // NOTE: For Testing
     public DiscreteState GetDiscreteState()
     {
         return discreteState;
     }
     
+    // NOTE: For Testing
     public ContinuousState GetContinuousState()
     {
         return continuousState;
@@ -84,6 +80,11 @@ public class ActorRunTimeState implements AbstractState<ActorRunTimeState>
         return discreteState.GetNextStatement();
     }
     
+    public Queue<Statement> GetStatements()
+    {
+        return discreteState.GetStatements();
+    }
+    
     public void DequeueNextStatement()
     {
         discreteState.DequeueNextStatement();
@@ -93,6 +94,11 @@ public class ActorRunTimeState implements AbstractState<ActorRunTimeState>
     {
         for(Statement statement : statements)
             discreteState.EnqueueStatement(statement);
+    }
+    
+    public void EnqueueStatement(Statement statement)
+    {
+        discreteState.EnqueueStatement(statement);
     }
     
     public void SetDelayed(boolean delayed)
@@ -159,5 +165,4 @@ public class ActorRunTimeState implements AbstractState<ActorRunTimeState>
             return null;
         }
     }
-
 }

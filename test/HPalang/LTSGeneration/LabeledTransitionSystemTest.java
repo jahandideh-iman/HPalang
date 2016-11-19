@@ -39,7 +39,7 @@ public class LabeledTransitionSystemTest
     }
     
     @Test
-    public void DoesNotAddDuplicatedState()
+    public void DoesNotAddDuplicateState()
     {
         GlobalRunTimeState state = new GlobalRunTimeState();
         
@@ -52,15 +52,31 @@ public class LabeledTransitionSystemTest
     @Test
     public void HasTheAddedTransition()
     {
-        GlobalRunTimeState originlState = new GlobalRunTimeState();
+        GlobalRunTimeState originState = new GlobalRunTimeState();
         Label labled = new TauLabel();
         GlobalRunTimeState destinatioState = new GlobalRunTimeState();
         
-        transitionSystem.AddState(originlState);
+        transitionSystem.AddState(originState);
         transitionSystem.AddState(destinatioState);
         
-        transitionSystem.AddTransition(originlState, labled, destinatioState);
+        transitionSystem.AddTransition(originState, labled, destinatioState);
         
-        assertTrue(transitionSystem.HasTransition(originlState, labled, destinatioState));
+        assertTrue(transitionSystem.HasTransition(originState, labled, destinatioState));
+    }
+    
+        @Test
+    public void DoesNotAddDuplicateTransition()
+    {
+        GlobalRunTimeState originState = new GlobalRunTimeState();
+        Label labled = new TauLabel();
+        GlobalRunTimeState destinatioState = new GlobalRunTimeState();
+        
+        transitionSystem.AddState(originState);
+        transitionSystem.AddState(destinatioState);
+        
+        transitionSystem.AddTransition(originState, labled, destinatioState);
+        transitionSystem.AddTransition(originState, labled, destinatioState);
+        
+        assertThat(transitionSystem.GetTransitions().size(), equalTo(1));
     }
 }

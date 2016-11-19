@@ -11,12 +11,9 @@ import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.TauLabel;
-import HPalang.Statements.DelayStatement;
-import HPalang.Statements.ResumeStatement;
-import HPalang.Statements.SendStatement;
-import HPalang.Statements.Statement;
-import java.util.LinkedList;
-import java.util.Queue;
+import HPalang.Core.Statements.DelayStatement;
+import HPalang.Core.Statements.ResumeStatement;
+import HPalang.Core.Statement;
 
 /**
  *

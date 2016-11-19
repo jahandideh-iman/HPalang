@@ -6,12 +6,12 @@
 package HPalang.Convertors;
 
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.Message;
+import HPalang.Core.Message;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Transition;
-import HPalang.Statements.Statement;
+import HPalang.Core.Statement;
 
 /**
  *
@@ -68,18 +68,18 @@ public class LTSToXMLConvertor
 
             actorStr += "(";
             actorStr += "{";
-            for(Message m : actorState.GetDiscreteState().GetMessages())
+            for(Message m : actorState.GetMessages())
                 actorStr += m.toString() + ",";
             actorStr += "},";
             actorStr += "{";
-            for(Statement s : actorState.GetDiscreteState().GetStatements())
+            for(Statement s : actorState.GetStatements())
                 actorStr += s.toString() + ",";
             actorStr += "},";
-            actorStr += actorState.GetDiscreteState().IsDelayed();
+            actorStr += actorState.IsDelayed();
             actorStr += "),(";
 
             actorStr += "{";
-            for(ContinuousBehavior b : actorState.GetContinuousState().GetBehaviors())
+            for(ContinuousBehavior b : actorState.GetContinuousBehaviors())
                  actorStr += b.toString() + ",";
             actorStr += "})";
             actorStr += "]";

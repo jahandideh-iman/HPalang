@@ -3,16 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Statements;
+package HPalang.Core.Statements;
+
+import HPalang.Core.Statement;
 
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class DelayStatement implements Statement
+public class DelayStatement extends AbstractStatement<DelayStatement>
 {
-    private float delay;
+    private final float delay;
     
     public DelayStatement(float delay)
     {
@@ -23,22 +25,21 @@ public class DelayStatement implements Statement
     {
         return delay;
     }
-    
-        
+
     @Override
-    public boolean equals(Object other)
+    protected boolean InternalEquals(DelayStatement other)
     {
-        if(other == null)
-            return false;
-        
-        if (!this.getClass().isAssignableFrom(other.getClass()))
-            return false;
-            
-        DelayStatement otherD = (DelayStatement) other;
-       
-        return this.delay == otherD.delay;
+        return this.delay == other.delay;
     }
-    
+
+    @Override
+    protected int InternalHashCode()
+    {
+        int hash = 3;
+        hash = 97 * hash + Float.floatToIntBits(this.delay);
+        return hash;
+    }
+       
     @Override
     public String toString()
     {

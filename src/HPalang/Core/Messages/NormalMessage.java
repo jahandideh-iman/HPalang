@@ -3,17 +3,19 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package HPalang.Core.Messages;
 
+import HPalang.Core.Equalitable;
+import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
-import HPalang.Statements.Statement;
+import HPalang.Core.Statement;
 import java.util.Queue;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class NormalMessage implements Message
+public class NormalMessage extends Equalitable<NormalMessage> implements Message
 {
     private final MessageHandler messageHandler;
 
@@ -21,31 +23,23 @@ public class NormalMessage implements Message
     {
         this.messageHandler = messageHandler;
     }
-    
-    @Override
-    public boolean equals(Object other)
-    {
-        if(other == null)
-            return false;
-        
-        if (!NormalMessage.class.isAssignableFrom(other.getClass()))
-            return false;
-            
-        NormalMessage otherm = (NormalMessage) other;
-       
-        return otherm.messageHandler.equals(this.messageHandler);
-    }
-    
-    @Override
-    public int hashCode()
-    {
-        return messageHandler.hashCode();
-    }
-
+   
     @Override
     public Queue<Statement> GetMessageBody()
     {
         return messageHandler.GetBody();
+    }
+    
+    @Override
+    protected boolean InternalEquals(NormalMessage other)
+    {
+        return other.messageHandler.equals(this.messageHandler);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return messageHandler.hashCode();
     }
     
     @Override

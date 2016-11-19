@@ -9,7 +9,7 @@ import HPalang.Core.Actor;
 import HPalang.Core.ProgramDefinition;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.Statements.SendStatement;
+import HPalang.Core.Statements.SendStatement;
 
 /**
  *

@@ -10,10 +10,8 @@ import HPalang.LTSGeneration.ConditionalLabel;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.Message;
-import HPalang.LTSGeneration.MessageWithBody;
-import HPalang.Statements.SendStatement;
+import HPalang.Core.Message;
+import HPalang.Core.Messages.MessageWithBody;
 
 /**
  *

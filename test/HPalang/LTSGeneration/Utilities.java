@@ -10,7 +10,7 @@ import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.Statements.Statement;
+import HPalang.Core.Statement;
 import Mocks.EmptyMessage;
 import Mocks.EmptyStatement;
 
@@ -30,9 +30,9 @@ public class Utilities
         Actor actor = new Actor(actorName, 0);
         ActorRunTimeState state = new ActorRunTimeState(actor);
         
-        state.GetContinuousState().AddBehavior(Utilities.EmptyBehavior());
-        state.GetDiscreteState().EnqueueMessage(new EmptyMessage());
-        state.GetDiscreteState().EnqueueStatement(new EmptyStatement());
+        state.AddContinuousBehavior(Utilities.EmptyBehavior());
+        state.EnqueueMessage(new EmptyMessage());
+        state.EnqueueStatement(new EmptyStatement());
         
         return state;
     }

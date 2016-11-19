@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Actor;
-import HPalang.Statements.SendStatement;
+import HPalang.Core.Statements.SendStatement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

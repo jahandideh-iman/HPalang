@@ -3,18 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package HPalang.Core.Messages;
 
-import HPalang.Statements.Statement;
-import java.util.Arrays;
-import java.util.List;
+import HPalang.Core.Equalitable;
+import HPalang.Core.Statement;
+import HPalang.Core.Message;
 import java.util.Queue;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class MessageWithBody implements Message
+public class MessageWithBody extends Equalitable<MessageWithBody> implements Message
 {
     private final Queue<Statement> statements;
     
@@ -28,19 +28,17 @@ public class MessageWithBody implements Message
     {
         return statements;
     }
-    
+     
     @Override
-    public boolean equals(Object other)
+    protected boolean InternalEquals(MessageWithBody other)
     {
-        if(other == null)
-            return false;
-        
-        if(!this.getClass().isAssignableFrom(other.getClass()))
-            return false;
-        
-        MessageWithBody otherM = (MessageWithBody) other;
-        
-        return Arrays.equals(statements.toArray(), otherM.statements.toArray());
+        return other.statements.equals(this.statements);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return 1;
     }
     
     @Override

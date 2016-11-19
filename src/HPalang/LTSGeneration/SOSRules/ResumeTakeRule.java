@@ -9,9 +9,9 @@ import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.Message;
+import HPalang.Core.Message;
 import HPalang.LTSGeneration.TauLabel;
-import HPalang.Statements.ResumeStatement;
+import HPalang.Core.Statements.ResumeStatement;
 
 /**
  *
