@@ -18,7 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Iman Jahandideh
  */
-public class DiscreteState implements AbstractState<DiscreteState>
+public class DiscreteState extends AbstractState<DiscreteState>
 {
     private Queue<Message> messages = new LinkedList<>();
     private Queue<Statement> statements = new LinkedList<>();
@@ -116,23 +116,15 @@ public class DiscreteState implements AbstractState<DiscreteState>
     }
     
     @Override
-    public boolean equals(Object other)
+    protected boolean InternalEquals(DiscreteState other)
     {
-         if(other == null)
-            return false;
-        
-        if (!DiscreteState.class.isAssignableFrom(other.getClass()))
-            return false;
-            
-        DiscreteState otherState = (DiscreteState) other;
-        
-        return Arrays.equals(this.messages.toArray(), otherState.messages.toArray())
-                && Arrays.equals(this.statements.toArray(),otherState.statements.toArray())
-                && this.isDelayed == otherState.isDelayed; 
+        return this.messages.equals(other.messages)
+                && this.statements.equals(other.statements)
+                && this.isDelayed == other.isDelayed; 
     }
 
     @Override
-    public int hashCode()
+    protected int InternalHashCode()
     {
         int hash = 5;
         hash = 17 * hash + Objects.hashCode(this.messages);

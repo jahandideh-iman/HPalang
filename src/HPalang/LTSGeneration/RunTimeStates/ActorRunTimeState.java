@@ -15,7 +15,7 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class ActorRunTimeState implements AbstractState<ActorRunTimeState>
+public class ActorRunTimeState extends AbstractState<ActorRunTimeState>
 {
     private final Actor actor;
     
@@ -132,28 +132,6 @@ public class ActorRunTimeState implements AbstractState<ActorRunTimeState>
     }
     
     @Override
-    public boolean equals(Object other)
-    {
-         if(other == null)
-            return false;
-        
-        if (!ActorRunTimeState.class.isAssignableFrom(other.getClass()))
-            return false;
-            
-        ActorRunTimeState otherState = (ActorRunTimeState) other;
-       
-        return this.actor == otherState.actor
-                && this.discreteState.equals(otherState.discreteState)
-                && this.continuousState.equals(otherState.continuousState);
-    }
-
-    @Override
-    public int hashCode()
-    {
-        return 1; // TODO: Find a better hashChode.
-    }
-
-    @Override
     public ActorRunTimeState DeepCopy()
     {
         try {
@@ -164,5 +142,19 @@ public class ActorRunTimeState implements AbstractState<ActorRunTimeState>
         } catch (CloneNotSupportedException ex) {
             return null;
         }
+    }
+
+    @Override
+    protected boolean InternalEquals(ActorRunTimeState other)
+    {
+        return this.actor == other.actor
+                && this.discreteState.equals(other.discreteState)
+                && this.continuousState.equals(other.continuousState);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return 1;
     }
 }

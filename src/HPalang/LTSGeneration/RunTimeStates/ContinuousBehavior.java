@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.Equalitable;
 import HPalang.Core.Statement;
 import java.util.Arrays;
 import java.util.LinkedList;
@@ -16,7 +17,7 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class ContinuousBehavior
+public class ContinuousBehavior extends Equalitable<ContinuousBehavior>
 {
     private final String invariant;
     private final String equation;
@@ -52,33 +53,6 @@ public class ContinuousBehavior
     }
     
     @Override
-    public boolean equals(Object other)
-    {
-        if(other == null)
-            return false;
-        
-        if (!this.getClass().isAssignableFrom(other.getClass()))
-            return false;
-            
-        ContinuousBehavior otherBehavior = (ContinuousBehavior) other;
-        
-        return otherBehavior.invariant.equals(this.invariant)
-                && otherBehavior.equation.equals(this.equation)
-                && otherBehavior.guard.equals(this.guard)
-                && Arrays.equals(otherBehavior.actions.toArray(), this.actions.toArray());
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int hash = 7;
-        hash = 19 * hash + Objects.hashCode(this.invariant);
-        hash = 19 * hash + Objects.hashCode(this.equation);
-        hash = 19 * hash + Objects.hashCode(this.guard);
-        return hash;
-    }
-    
-    @Override
     public String toString()
     {
         String actionsStr = "{";
@@ -89,6 +63,25 @@ public class ContinuousBehavior
 //        return "Behavior("+invariant +"," + equation + "," + guard + "," +actionsStr+ ")";
 
         return "B(" + invariant + ")";
+    }
+
+    @Override
+    protected boolean InternalEquals(ContinuousBehavior other)
+    {
+        return other.invariant.equals(this.invariant)
+                && other.equation.equals(this.equation)
+                && other.guard.equals(this.guard)
+                && other.actions.equals(this.actions);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        int hash = 7;
+        hash = 19 * hash + Objects.hashCode(this.invariant);
+        hash = 19 * hash + Objects.hashCode(this.equation);
+        hash = 19 * hash + Objects.hashCode(this.guard);
+        return hash;
     }
 
 }

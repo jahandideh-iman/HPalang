@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Iman Jahandideh
  */
-public class GlobalRunTimeState implements AbstractState<GlobalRunTimeState>
+public class GlobalRunTimeState extends AbstractState<GlobalRunTimeState>
 {
     // TODO: Change it to map
     private List<ActorRunTimeState> actorStates = new ArrayList<>();
@@ -60,30 +60,22 @@ public class GlobalRunTimeState implements AbstractState<GlobalRunTimeState>
             return null;
         }
     }
-    
+
     @Override
-    public boolean equals(Object other)
+    protected boolean InternalEquals(GlobalRunTimeState other)
     {
-         if(other == null)
-            return false;
-        
-        if (!GlobalRunTimeState.class.isAssignableFrom(other.getClass()))
-            return false;
-            
-        GlobalRunTimeState otherState = (GlobalRunTimeState) other;
-       
-        if(otherState.actorStates.size() != this.actorStates.size())
+        if(other.actorStates.size() != this.actorStates.size())
             return false;
                
         for(ActorRunTimeState actorState : this.actorStates)
-            if(otherState.actorStates.contains(actorState) == false)
+            if(other.actorStates.contains(actorState) == false)
                 return false;
         
         return true;
     }
 
     @Override
-    public int hashCode()
+    protected int InternalHashCode()
     {
         int hash = 7;
         hash = 83 * hash + Objects.hashCode(this.actorStates);

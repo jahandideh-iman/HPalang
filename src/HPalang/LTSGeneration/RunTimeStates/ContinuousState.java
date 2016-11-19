@@ -16,7 +16,7 @@ import java.util.logging.Logger;
  *
  * @author Iman Jahandideh
  */
-public class ContinuousState implements AbstractState<ContinuousState>
+public class ContinuousState extends AbstractState<ContinuousState>
 {
     private List<ContinuousBehavior> continuousBehaviors = new ArrayList<>();
 
@@ -67,6 +67,20 @@ public class ContinuousState implements AbstractState<ContinuousState>
 
     @Override
     public int hashCode()
+    {
+        int hash = 3;
+        hash = 59 * hash + Objects.hashCode(this.continuousBehaviors);
+        return hash;
+    }
+
+    @Override
+    protected boolean InternalEquals(ContinuousState other)
+    {
+        return this.continuousBehaviors.equals(other.continuousBehaviors);
+    }
+
+    @Override
+    protected int InternalHashCode()
     {
         int hash = 3;
         hash = 59 * hash + Objects.hashCode(this.continuousBehaviors);

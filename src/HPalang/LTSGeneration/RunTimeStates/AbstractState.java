@@ -6,13 +6,14 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.DeepClonable;
+import HPalang.Core.Equalitable;
 
 /**
  *
  * @author Iman Jahandideh
  * @param <T>
  */
-public interface AbstractState<T> extends DeepClonable<T>
+public abstract class AbstractState<T> extends Equalitable<T> implements DeepClonable<T>
 {
     
 }
