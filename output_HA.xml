@@ -33,20 +33,6 @@ B_delay&apos;=1</To>
 		<Condition>true</Condition>
 	</Transition>
 	<Transition>
-		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
-		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
-		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
 		<From>B_delay&lt;=1.0
 B_delay&apos;=1</From>
 		<To>A_delay&lt;=1.0
@@ -54,31 +40,17 @@ A_delay&apos;=1</To>
 		<Condition>B_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
-		<To>B_delay&lt;=1.0
-B_delay&apos;=1</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
-		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+		<From>B_delay&lt;=0.5
+B_delay&apos;=1</From>
+		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
 A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
-		<To>A_delay&lt;=1.0
-A_delay&apos;=1</To>
 		<Condition>B_delay==0.5</Condition>
 	</Transition>
 	<Transition>
-		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
-		<To>A_delay&lt;=1.0
-A_delay&apos;=1</To>
+		<From>B_delay&lt;=1.0
+B_delay&apos;=1</From>
+		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
 		<Condition>B_delay==1.0</Condition>
 	</Transition>
 	<Transition>
@@ -96,15 +68,15 @@ A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
 		<Condition>A_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
-		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+		<From>B_delay&lt;=1.0
+B_delay&apos;=1</From>
+		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
 A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
-		<Condition>A_delay==1.0</Condition>
+		<Condition>B_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>A_delay&lt;=1.0
-A_delay&apos;=1</From>
+		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
 		<To>B_delay&lt;=1.0
 B_delay&apos;=1</To>
 		<Condition>A_delay==1.0</Condition>
@@ -117,25 +89,60 @@ A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
 		<Condition>A_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>B_delay&lt;=0.5
-B_delay&apos;=1</From>
+		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+		<To>A_delay&lt;=1.0
+A_delay&apos;=1</To>
+		<Condition>B_delay==0.5</Condition>
+	</Transition>
+	<Transition>
+		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+		<To>A_delay&lt;=1.0
+A_delay&apos;=1</To>
+		<Condition>B_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+		<Condition>B_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>A_delay&lt;=1.0
+A_delay&apos;=1</From>
+		<To>
+</To>
+		<Condition>A_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>A_delay&lt;=1.0
+A_delay&apos;=1</From>
+		<To>B_delay&lt;=1.0
+B_delay&apos;=1</To>
+		<Condition>A_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
 		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
 A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
 		<Condition>B_delay==0.5</Condition>
 	</Transition>
 	<Transition>
-		<From>B_delay&lt;=1.0
-B_delay&apos;=1</From>
+		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
 		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
 A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
 		<Condition>B_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>B_delay&lt;=1.0
-B_delay&apos;=1</From>
-		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=0.5
+		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
 A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
-		<Condition>B_delay==1.0</Condition>
+		<Condition>A_delay==1.0</Condition>
 	</Transition>
 </Transitions>
 <InitialState>

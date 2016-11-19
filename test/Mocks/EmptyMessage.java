@@ -17,6 +17,18 @@ import HPalang.Core.Equalitable;
  */
 public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
 {
+    private final String id;
+    
+    public EmptyMessage()
+    {
+        id = "";
+    }
+    
+    public EmptyMessage(String id)
+    {
+        this.id = id;
+    }
+    
     @Override
     public Queue<Statement> GetMessageBody()
     {
@@ -26,7 +38,7 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     @Override
     protected boolean InternalEquals(EmptyMessage other)
     {
-        return true;
+        return this.id.equals(other.id);
     }
 
     @Override

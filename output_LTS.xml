@@ -1,108 +1,45 @@
 <DMEComponent type="FiniteStateMachine" ><States>
        <State  >
+           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
+       </State>
+       <State  >
+           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
+       </State>
+       <State  >
            <Name>[({},{},false),({})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
        </State>
        <State  >
            <Name>[({},{},false),({})],[({b1,},{},false),({})],</Name>
        </State>
        <State  >
-           <Name>[({},{},false),({})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
+           <Name>[({},{},false),({})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
        </State>
        <State  >
-           <Name>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
+           <Name>[({},{},false),({})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
        </State>
        <State  >
-           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{},false),({})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{},false),({})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
+           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
        </State>
        <State  >
            <Name>[({},{},false),({})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
        </State>
        <State  >
+           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</Name>
+       </State>
+       <State  >
            <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{},false),({})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
        </State>
        <State  >
            <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
        </State>
        <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
+           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
        </State>
        <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
+           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
        </State>
        <State  >
-           <Name>[({},{},false),({})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
-       </State>
-       <State  >
-           <Name>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
+           <Name>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</Name>
        </State>
 </States>
 <Transitions>
@@ -112,208 +49,58 @@
 		<Condition>t</Condition>
 	</Transition>
 	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
 		<From>[({},{},false),({})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
 		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</To>
 		<Condition>B_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<From>[({},{},false),({})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
+		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
 		<Condition>B_delay==0.5</Condition>
 	</Transition>
 	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<From>[({},{},false),({})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
+		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
 		<Condition>B_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{},false),({})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
+		<To>[({},{},false),({})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
 		<Condition>A_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
+		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</From>
+		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<Condition>A_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>[({},{},false),({})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
+		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
 		<Condition>B_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
+		<To>[({},{},false),({})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<Condition>A_delay==1.0</Condition>
 	</Transition>
 	<Transition>
 		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{},false),({})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{},false),({})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{},false),({})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
 		<Condition>A_delay==1.0</Condition>
 	</Transition>
 	<Transition>
 		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
+		<To>[({},{},false),({})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
+		<Condition>A_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
 		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</To>
 		<Condition>B_delay==0.5</Condition>
 	</Transition>
 	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{},false),({})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</From>
-		<To>[({},{},false),({})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{},false),({})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{},false),({})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{},false),({})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{},false),({})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{},false),({})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{},false),({})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
+		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
+		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</To>
 		<Condition>B_delay==1.0</Condition>
 	</Transition>
 	<Transition>
@@ -322,68 +109,23 @@
 		<Condition>A_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
+		<To>[({},{},false),({})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
 		<Condition>A_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
+		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</To>
 		<Condition>B_delay==0.5</Condition>
 	</Transition>
 	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
+		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</To>
 		<Condition>B_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{},false),({})],[({b1,b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{},false),({})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>A_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==0.5</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
-		<Condition>B_delay==1.0</Condition>
-	</Transition>
-	<Transition>
-		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
+		<To>[({},{},false),({})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
 		<Condition>A_delay==1.0</Condition>
 	</Transition>
 	<Transition>
@@ -392,14 +134,29 @@
 		<Condition>B_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
-		<To>[({},{},false),({})],[({b1,b2,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</From>
+		<To>[({},{},false),({})],[({b1,},{},false),({})],</To>
 		<Condition>A_delay==1.0</Condition>
 	</Transition>
 	<Transition>
-		<From>[({},{},false),({})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
-		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</To>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{},false),({})],</From>
+		<To>[({},{},false),({})],[({b2,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<Condition>A_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=0.5),})],</From>
+		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<Condition>B_delay==0.5</Condition>
+	</Transition>
+	<Transition>
+		<From>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
+		<To>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
 		<Condition>B_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>[({a1,},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</From>
+		<To>[({},{(B!b1),(B!b2),},true),({B(A_delay&lt;=1.0),})],[({b1,},{(A!a1),},true),({B(B_delay&lt;=1.0),})],</To>
+		<Condition>A_delay==1.0</Condition>
 	</Transition>
 </Transitions>
 <InitialState>[({},{},false),({})],[({b1,},{},false),({})],</InitialState></DMEComponent>

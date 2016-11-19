@@ -279,8 +279,8 @@ public class Main {
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor actorA = new Actor("A",2);        
-        Actor actorB = new Actor("B",2);
+        Actor actorA = new Actor("A",1);        
+        Actor actorB = new Actor("B",1);
         
         MessageHandler handler_a1 = new MessageHandler();        
         MessageHandler handler_b1 = new MessageHandler();

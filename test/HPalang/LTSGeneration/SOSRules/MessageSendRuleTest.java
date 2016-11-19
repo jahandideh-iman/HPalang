@@ -17,9 +17,12 @@ import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.LTSGeneration.Transition;
 import Mocks.EmptyMessage;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Before;
 
 /**
@@ -73,4 +76,29 @@ public class MessageSendRuleTest
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
     } 
+    
+    @Test
+    public void DropsTheMessageIfTheRecieverMessageQueueIsFull()
+    {
+        Actor actor = new ActorBuilder().WithID("actor").WithCapacity(1).Build();
+        
+         ActorRunTimeStateBuilder fullCapacityActorState = new ActorRunTimeStateBuilder()
+                .WithActor(actor)
+                .EnqueueMessage(new EmptyMessage("Message1"))
+                .EnqueueStatement(new SendStatement(actor, new EmptyMessage("Message2")));
+        
+        globalState
+                .AddActorRunTimeState(fullCapacityActorState);
+                
+                  
+        generatedLTS = ltsGenerator.Generate(globalState.Build());
+       
+        GlobalRunTimeState droppedState = globalState.Build();
+        droppedState.FindActorState(actor).DequeueNextStatement();
+        
+        List<Transition> transitions =  generatedLTS.GetTransitionsFrom(globalState.Build());
+        
+        assertThat(transitions.size(),equalTo(1) );
+        assertThat(transitions.get(0).GetDestination(), equalTo(droppedState));
+    }
 }
