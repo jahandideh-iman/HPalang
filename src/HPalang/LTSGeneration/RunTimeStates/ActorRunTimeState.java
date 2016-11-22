@@ -70,6 +70,16 @@ public class ActorRunTimeState extends AbstractState<ActorRunTimeState>
         return discreteState.HasMessage();
     }
     
+    public int GetMessageQueueSize()
+    {
+        return GetMessages().size();
+    }
+    
+    public int GetMessageQueueCapacity()
+    {
+        return actor.GetCapacity();
+    }
+    
     public Actor GetActor()
     {
        return actor;

@@ -62,7 +62,7 @@ public class Main {
         HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
         hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
         
-        ProgramDefinition definition = CreateProgramWithComplexMessageing();
+        ProgramDefinition definition = CreateThermostatPorgram();
         
         LabeledTransitionSystem lts =  ltsGenerator.Generate(LTSUtility.FromProgramDefinition(definition));
         
@@ -95,7 +95,7 @@ public class Main {
             boolean change = false;
             for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.GetStates()))
             {
-                List<Transition> outTrans = lts.GetTransitionsFrom(state);
+                List<Transition> outTrans = lts.GetOutTransitionsFor(state);
                 boolean hasTauLabled = false;
                 for(Transition t : outTrans)
                     if(t.GetLabel() instanceof TauLabel)
@@ -125,8 +125,8 @@ public class Main {
             boolean change = false;
             for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.GetStates()))
             {
-                List<Transition> outTrans = lts.GetTransitionsFrom(state);
-                List<Transition> inTrans = lts.GetTransitionsTo(state);
+                List<Transition> outTrans = lts.GetOutTransitionsFor(state);
+                List<Transition> inTrans = lts.GetInTransitionFor(state);
                 
                 if(inTrans.size() == 1 && outTrans.size() == 1
                         && inTrans.get(0).GetLabel() instanceof TauLabel
@@ -146,7 +146,7 @@ public class Main {
         }
 //        for(GlobalRunTimeState state : lts.GetStates())
 //        {
-//            List<LabeledTransitionSystem.Transition> trans = lts.GetTransitionsFrom(state);
+//            List<LabeledTransitionSystem.Transition> trans = lts.GetOutTransitionsFor(state);
 //            
 //            boolean hasTauLabel = false;
 //            for(LabeledTransitionSystem.Transition t : trans)
@@ -170,8 +170,8 @@ public class Main {
 //        
 //        for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.GetStates()))
 //        {
-//            List<LabeledTransitionSystem.Transition> fromTrans = lts.GetTransitionsFrom(state);
-//            List<LabeledTransitionSystem.Transition> toTrans = lts.GetTransitionsTo(state);
+//            List<LabeledTransitionSystem.Transition> fromTrans = lts.GetOutTransitionsFor(state);
+//            List<LabeledTransitionSystem.Transition> toTrans = lts.GetInTransitionFor(state);
 //            
 //            if(toTrans.size() == 0 && fromTrans.size() == 0)
 //                lts.RemoveState(state);
@@ -311,7 +311,7 @@ public class Main {
         
         return definition;
     }
-
+    
     private static void RemoveUnreachableStates(LabeledTransitionSystem lts)
     {
         List<GlobalRunTimeState> reachableStates = new LinkedList<>();
@@ -326,7 +326,7 @@ public class Main {
             reachableStates.add(state);
             visitedStates.add(state);
             
-            for(Transition t : lts.GetTransitionsFrom(state))
+            for(Transition t : lts.GetOutTransitionsFor(state))
                 if(visitedStates.contains(t.GetDestination()) == false
                         && notVisitedStates.contains(t.GetDestination()) == false)
                     notVisitedStates.add(t.GetDestination());
@@ -348,9 +348,8 @@ public class Main {
                 if(state.equals(lts.GetInitialState()))
                     continue;
                 
-                
-                List<Transition> outTrans = lts.GetTransitionsFrom(state);
-                List<Transition> inTrans = lts.GetTransitionsTo(state);
+                List<Transition> outTrans = lts.GetOutTransitionsFor(state);
+                List<Transition> inTrans = lts.GetInTransitionFor(state);
                 
                 
                 boolean allTauLabled = true && outTrans.size() > 0;
@@ -380,5 +379,4 @@ public class Main {
                 break;
         }
     }
-
 }

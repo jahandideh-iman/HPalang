@@ -21,7 +21,13 @@ public class MessageSendRule extends ActorLevelRule
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.GetNextStatement() instanceof SendStatement && actorState.IsDelayed() == false;
+        if((actorState.GetNextStatement() instanceof SendStatement) == false || actorState.IsDelayed())
+            return false;
+        
+        SendStatement sendStatement = (SendStatement)actorState.GetNextStatement();
+        ActorRunTimeState receiverState = globalState.FindActorState(sendStatement.GetReceiver());
+        
+        return  receiverState.GetMessageQueueSize() < receiverState.GetMessageQueueCapacity();
     }
 
     @Override
@@ -31,25 +37,13 @@ public class MessageSendRule extends ActorLevelRule
         
         SendStatement sendStatement = (SendStatement)actorState.GetNextStatement();
         
-          
         ActorRunTimeState senderState = newGlobalState.FindActorState(actorState.GetActor());
         ActorRunTimeState receiverState = newGlobalState.FindActorState(sendStatement.GetReceiver());
         
         senderState.DequeueNextStatement();
         
-        if( GetMessageQueueSize(receiverState) < GetActorCapacity(receiverState))
-            receiverState.EnqueueMessage(sendStatement.GetMessage());
+        receiverState.EnqueueMessage(sendStatement.GetMessage());
         
         generator.AddTransition(new TauLabel(), newGlobalState);
-    }
-    
-    private int GetMessageQueueSize(ActorRunTimeState state)
-    {
-        return state.GetMessages().size();
-    }
-    
-    private int GetActorCapacity(ActorRunTimeState state)
-    {
-        return state.GetActor().GetCapacity();
     }
 }

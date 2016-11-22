@@ -70,7 +70,7 @@ public class LabeledTransitionSystem
         return transitions.contains(new Transition(origin, label, destination));
     }  
     
-    public List<Transition> GetTransitionsFrom(GlobalRunTimeState state)
+    public List<Transition> GetOutTransitionsFor(GlobalRunTimeState state)
     {
         List<Transition> trans = new ArrayList<>();
         for(Transition t : transitions)
@@ -80,7 +80,7 @@ public class LabeledTransitionSystem
         return trans;
     }
     
-    public List<Transition> GetTransitionsTo(GlobalRunTimeState state)
+    public List<Transition> GetInTransitionFor(GlobalRunTimeState state)
     {
         List<Transition> trans = new ArrayList<>();
         for(Transition t : transitions)
@@ -98,10 +98,10 @@ public class LabeledTransitionSystem
     
     public void RemoveState(GlobalRunTimeState state)
     {
-        for(Transition transition : GetTransitionsFrom(state))
+        for(Transition transition : GetOutTransitionsFor(state))
             RemoveTranstion(transition);
         
-        for(Transition transition : GetTransitionsTo(state))
+        for(Transition transition : GetInTransitionFor(state))
             RemoveTranstion(transition);
         states.remove(state);
 

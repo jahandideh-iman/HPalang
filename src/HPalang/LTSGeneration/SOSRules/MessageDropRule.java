@@ -20,25 +20,23 @@ public class MessageDropRule extends ActorLevelRule
      @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        SendStatement sendStatement = null;
-        if(actorState.GetNextStatement() instanceof SendStatement)
-            sendStatement = (SendStatement) actorState.GetNextStatement();
-        return  actorState.IsDelayed() == false 
-                && sendStatement != null
-                && globalState.FindActorState(sendStatement.GetReceiver()).GetMessages().size() >= sendStatement.GetReceiver().GetCapacity();
+        if((actorState.GetNextStatement() instanceof SendStatement) == false || actorState.IsDelayed())
+            return false;
+        
+        SendStatement sendStatement = (SendStatement)actorState.GetNextStatement();
+        ActorRunTimeState receiverState = globalState.FindActorState(sendStatement.GetReceiver());
+        
+        return  receiverState.GetMessageQueueSize() >= receiverState.GetMessageQueueCapacity();
     }
 
     @Override
     protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
-        
-        SendStatement sendStatement = (SendStatement)actorState.GetNextStatement();
-        
+               
         ActorRunTimeState senderState = newGlobalState.FindActorState(actorState.GetActor());
         
         senderState.DequeueNextStatement();
-        
         
         generator.AddTransition(new TauLabel(), newGlobalState);
     }

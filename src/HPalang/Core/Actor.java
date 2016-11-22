@@ -5,11 +5,10 @@
  */
 package HPalang.Core;
 
-import HPalang.Core.MessageHandler;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -20,6 +19,8 @@ public class Actor
     private final String name;
     private final int capacity;
     private final Map<String,MessageHandler> messageHandlers = new HashMap<>();
+    
+    private final Set<Variable> variables = new HashSet<>();
 
     public Actor(String name, int capacity)
     {
@@ -31,6 +32,11 @@ public class Actor
     {
         handler.SetID(id);
         messageHandlers.put(id,handler);
+    }
+    
+    public void AddVariable(Variable variable)
+    {
+        variables.add(variable);
     }
     
     public MessageHandler GetMessageHandler(String id)
