@@ -22,7 +22,7 @@ public class ResumeTakeRule extends ActorLevelRule
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.IsDelayed() && HasResumeMessage(actorState);
+        return actorState.IsSuspended() && HasResumeMessage(actorState);
     }
 
     @Override
@@ -32,15 +32,15 @@ public class ResumeTakeRule extends ActorLevelRule
         ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actorState.GetActor());
         
         Message resumeMessage = FindResumeMessage(actorState);                                                                                     
-        nextActorState.RemoveMessage(resumeMessage);
-        nextActorState.SetDelayed(false);
+        nextActorState.LowPriorityMessageQueue().Remove(resumeMessage);
+        nextActorState.SetSuspended(false);
         
         generator.AddTransition(new TauLabel(), nextGlobalState);
     }
     
     private boolean HasResumeMessage(ActorRunTimeState actorState)
     {
-        for(Message message : actorState.GetMessages())
+        for(Message message : actorState.LowPriorityMessageQueue())
             if(message.GetMessageBody().contains(new ResumeStatement()))
                 return true;
         return false;
@@ -48,7 +48,7 @@ public class ResumeTakeRule extends ActorLevelRule
 
     private Message FindResumeMessage(ActorRunTimeState actorState)
     {
-        for(Message message : actorState.GetMessages())
+        for(Message message : actorState.LowPriorityMessageQueue())
             if(message.GetMessageBody().contains(new ResumeStatement()))
                 return message;
         return null;

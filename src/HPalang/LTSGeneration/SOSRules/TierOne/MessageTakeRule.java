@@ -3,18 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.LTSGeneration.SOSRules.TierOne;
+
+import HPalang.LTSGeneration.SOSRules.ActorLevelRule;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class DiscreteVariable extends Variable
+public abstract class MessageTakeRule extends ActorLevelRule
 {
-    
-    public DiscreteVariable(String name)
-    {
-        super(name);
-    }
     
 }

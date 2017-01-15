@@ -22,8 +22,8 @@ public class ContinuousBehaviorRule extends ActorLevelRule
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.IsDelayed() == false
-                && actorState.GetNextStatement() instanceof ContinuousBehaviorStatement;
+        return actorState.IsSuspended() == false
+                && actorState.StatementQueue().Head() instanceof ContinuousBehaviorStatement;
     }
 
     @Override
@@ -33,10 +33,10 @@ public class ContinuousBehaviorRule extends ActorLevelRule
         
         ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
         
-        ContinuousBehaviorStatement behaviorStatement = (ContinuousBehaviorStatement) newActorState.GetNextStatement();
-        newActorState.DequeueNextStatement();
+        ContinuousBehaviorStatement behaviorStatement = (ContinuousBehaviorStatement) newActorState.StatementQueue().Head();
+        newActorState.StatementQueue().Dequeue();
         
-        newActorState.AddContinuousBehavior(behaviorStatement.GetBehavior());
+        newActorState.ContinuousBehaviors().Add(behaviorStatement.GetBehavior());
         
         generator.AddTransition(new TauLabel(), newGlobalState);
     }

@@ -84,7 +84,7 @@ public class HybridAutomatonGenerator
         Location location = new Location();
         
         for(ActorRunTimeState actorState : state.GetActorStates())
-            for(ContinuousBehavior behavior : actorState.GetContinuousBehaviors())
+            for(ContinuousBehavior behavior : actorState.ContinuousBehaviors())
             {
                 location.AddEquation(behavior.GetEquation());
                 location.AddInvariant(behavior.GetInvarient());

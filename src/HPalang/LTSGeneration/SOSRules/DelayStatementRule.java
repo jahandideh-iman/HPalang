@@ -19,13 +19,13 @@ import HPalang.Core.Statement;
  *
  * @author Iman Jahandideh
  */
-public class DelayRule extends ActorLevelRule
+public class DelayStatementRule extends ActorLevelRule
 {
 
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.GetNextStatement() instanceof DelayStatement && actorState.IsDelayed() == false;
+        return actorState.StatementQueue().Head() instanceof DelayStatement && actorState.IsSuspended() == false;
     }
 
     @Override
@@ -34,13 +34,13 @@ public class DelayRule extends ActorLevelRule
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actorState.GetActor());
         
-        DelayStatement delayStatement = (DelayStatement)actorState.GetNextStatement();
+        DelayStatement delayStatement = (DelayStatement)actorState.StatementQueue().Head();
      
         String delayVar = actorState.GetActor().GetDelayVariableName();
         ContinuousBehavior behavior = CreateDelayBehavior(actorState.GetActor(), delayStatement.GetDelay(), delayVar);
-        nextActorState.SetDelayed(true);
-        nextActorState.DequeueNextStatement();
-        nextActorState.AddContinuousBehavior(behavior);
+        nextActorState.SetSuspended(true);
+        nextActorState.StatementQueue().Dequeue();
+        nextActorState.ContinuousBehaviors().Add(behavior);
         
         generator.AddTransition(new TauLabel(),nextGlobalState);
     }

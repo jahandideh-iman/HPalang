@@ -9,12 +9,19 @@ package HPalang.Core;
  *
  * @author Iman Jahandideh
  */
-public class DiscreteVariable extends Variable
+public class ConstantDiscreteExpression implements DiscreteExpression
 {
+    private final int constant;
     
-    public DiscreteVariable(String name)
+    public ConstantDiscreteExpression(int constant)
     {
-        super(name);
+        this.constant = constant;
+    }
+    
+    @Override
+    public int Evaluate()
+    {
+        return constant;
     }
     
 }

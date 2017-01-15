@@ -22,7 +22,10 @@ public class MessageTakeRule extends ActorLevelRule
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.IsDelayed() == false && actorState.HasMessage() && actorState.HasStatement() == false;
+        return actorState.IsSuspended() == false 
+                && actorState.StatementQueue().IsEmpty() == true
+                && actorState.LowPriorityMessageQueue().IsEmpty() == false;
+
     }
 
     @Override
@@ -32,10 +35,10 @@ public class MessageTakeRule extends ActorLevelRule
         
         ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
         
-        Message message = newActorState.GetNextMessage();
-        newActorState.DequeueNextMessage();
+        Message message = newActorState.LowPriorityMessageQueue().Head();
+        newActorState.LowPriorityMessageQueue().Dequeue();
         
-        newActorState.EnqueueStatements(message.GetMessageBody());
+        newActorState.StatementQueue().Enqueue(message.GetMessageBody());
         
         generator.AddTransition(new TauLabel(), newGlobalState);
     }

@@ -68,18 +68,18 @@ public class LTSToXMLConvertor
 
             actorStr += "(";
             actorStr += "{";
-            for(Message m : actorState.GetMessages())
+            for(Message m : actorState.LowPriorityMessageQueue())
                 actorStr += m.toString() + ",";
             actorStr += "},";
             actorStr += "{";
-            for(Statement s : actorState.GetStatements())
+            for(Statement s : actorState.StatementQueue())
                 actorStr += s.toString() + ",";
             actorStr += "},";
-            actorStr += actorState.IsDelayed();
+            actorStr += actorState.IsSuspended();
             actorStr += "),(";
 
             actorStr += "{";
-            for(ContinuousBehavior b : actorState.GetContinuousBehaviors())
+            for(ContinuousBehavior b : actorState.ContinuousBehaviors())
                  actorStr += b.toString() + ",";
             actorStr += "})";
             actorStr += "]";

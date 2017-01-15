@@ -50,8 +50,8 @@ public class ResumeTakeRuleTest
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)
                 .SetDelayed(true)
-                .EnqueueMessage(new EmptyMessage())
-                .EnqueueMessage(new MessageWithBody(StatementsFrom(new ResumeStatement())));
+                .EnqueueLowPriorityMessage(new EmptyMessage())
+                .EnqueueLowPriorityMessage(new MessageWithBody(StatementsFrom(new ResumeStatement())));
         
         
         globalState
@@ -62,8 +62,8 @@ public class ResumeTakeRuleTest
         
         GlobalRunTimeState nextGlobalState = globalState.Build();
         ActorRunTimeState nextActorState =  nextGlobalState.FindActorState(actor1);
-        nextActorState .RemoveMessage(new MessageWithBody(StatementsFrom(new ResumeStatement())));
-        nextActorState .SetDelayed(false);
+        nextActorState.LowPriorityMessageQueue().Remove(new MessageWithBody(StatementsFrom(new ResumeStatement())));
+        nextActorState.SetSuspended(false);
 
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), nextGlobalState));
     }

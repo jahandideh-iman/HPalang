@@ -13,9 +13,10 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public interface Statement<T>
+public interface Statement
 {
-
+    public boolean Is(Class<? extends Statement> cc);
+    
     static public Queue<Statement> EmptyStatements()
     {
         return new LinkedList<>();

@@ -5,8 +5,6 @@
  */
 package HPalang.LTSGeneration;
 
-import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
-import java.util.Arrays;
 
 /**
  *

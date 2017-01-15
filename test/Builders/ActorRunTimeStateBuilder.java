@@ -10,10 +10,9 @@ import HPalang.Core.Message;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
-import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
+import HPalang.LTSGeneration.RunTimeStates.ContinuousBehaviorContianer;
+import HPalang.LTSGeneration.RunTimeStates.Queue;
+
 
 /**
  *
@@ -25,10 +24,12 @@ public class ActorRunTimeStateBuilder
     
     private boolean isDelayed = false;
 
-    private Queue<Message> messages = new LinkedList<>();
-    private Queue<Statement> statements = new LinkedList<>();
+    private Queue<Message> highPriorityMessages = new Queue<>();
+    private Queue<Message> lowPriorityMessages = new Queue<>();
     
-    private List<ContinuousBehavior> behaviors = new ArrayList<>();
+    private Queue<Statement> statements = new Queue<>();
+    
+    private ContinuousBehaviorContianer behaviors = new ContinuousBehaviorContianer();
 
     public ActorRunTimeStateBuilder WithActor(Actor actor)
     {
@@ -38,16 +39,22 @@ public class ActorRunTimeStateBuilder
     
     public ActorRunTimeStateBuilder AddBehavior(ContinuousBehavior behavior)
     {
-        behaviors.add(behavior);
+        behaviors.Add(behavior);
         return this;
     }
 
-    public ActorRunTimeStateBuilder EnqueueMessage(Message message)
+    public ActorRunTimeStateBuilder EnqueueLowPriorityMessage(Message message)
     {
-        messages.add(message);
+        lowPriorityMessages.Enqueue(message);
         return this;
     }
     
+    public ActorRunTimeStateBuilder EnqueueHighPriorityMessage(Message message)
+    {
+        highPriorityMessages.Enqueue(message);
+        return this;
+    }
+     
     public ActorRunTimeStateBuilder SetDelayed(boolean delayed)
     {
         isDelayed = delayed;
@@ -56,7 +63,7 @@ public class ActorRunTimeStateBuilder
     
     public ActorRunTimeStateBuilder EnqueueStatement(Statement statement)
     {
-        statements.add(statement);
+        statements.Enqueue(statement);
         return this;
     }
 
@@ -64,15 +71,15 @@ public class ActorRunTimeStateBuilder
     {
         ActorRunTimeState actorState = new ActorRunTimeState(actor);
 
-        for(Message m : messages)
-            actorState.EnqueueMessage(m);
+        actorState.LowPriorityMessageQueue().Enqueue(lowPriorityMessages);
+        actorState.HighPriorityMessageQueue().Enqueue(highPriorityMessages);
 
-        actorState.EnqueueStatements(statements);
+        actorState.StatementQueue().Enqueue(statements);
         
-        actorState.SetDelayed(isDelayed);
+        actorState.SetSuspended(isDelayed);
         
         for(ContinuousBehavior b : behaviors)
-            actorState.AddContinuousBehavior(b);
+            actorState.ContinuousBehaviors().Add(b);
         
         return actorState;
     }

@@ -9,22 +9,15 @@ import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;
-import HPalang.Core.MessageHandler;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.Core.Message;
-import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.ResumeStatement;
-import HPalang.Core.Statements.SendStatement;
-import HPalang.Core.Statement;
 import static HPalang.Core.Statement.StatementsFrom;
-import java.util.LinkedList;
-import java.util.Queue;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -35,7 +28,7 @@ import org.junit.Before;
  * @author Iman Jahandideh
  */
 
-public class DelayRuleTest
+public class DelayStatementRuleTest
 { 
     LTSGenerator ltsGenerator = new LTSGenerator();
     LabeledTransitionSystem generatedLTS;
@@ -44,7 +37,7 @@ public class DelayRuleTest
     @Before
     public void Setup()
     {
-        ltsGenerator.AddSOSRule(new DelayRule());
+        ltsGenerator.AddSOSRule(new DelayStatementRule());
     }
     
     @Test
@@ -64,10 +57,10 @@ public class DelayRuleTest
         
         GlobalRunTimeState stateAfterActor1Delay = globalState.Build();
         ActorRunTimeState stateAfterActor1Delay_Actor1 = stateAfterActor1Delay.FindActorState(actor1);
-        stateAfterActor1Delay_Actor1.DequeueNextStatement();
-        stateAfterActor1Delay_Actor1.SetDelayed(true);
+        stateAfterActor1Delay_Actor1.StatementQueue().Dequeue();
+        stateAfterActor1Delay_Actor1.SetSuspended(true);
         String actor1DelayVar = actor1.GetDelayVariableName();
-        stateAfterActor1Delay_Actor1.AddContinuousBehavior(new ContinuousBehavior(
+        stateAfterActor1Delay_Actor1.ContinuousBehaviors().Add(new ContinuousBehavior(
                 actor1DelayVar+"<="+1.0f 
                 , actor1DelayVar+"'=1"
                 , actor1DelayVar+"=="+1.0f

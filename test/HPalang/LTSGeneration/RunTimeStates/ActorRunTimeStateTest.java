@@ -5,13 +5,9 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.Actor;
 import HPalang.LTSGeneration.Utilities;
-import Mocks.EmptyMessage;
-import Mocks.EmptyStatement;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Before;
 import static org.hamcrest.CoreMatchers.*;
 
 /**
@@ -29,24 +25,20 @@ public class ActorRunTimeStateTest
         
         ActorRunTimeState copy = original.DeepCopy();
         
-        assertThat(copy, equalTo(original));
-        assertThat(copy, not(sameInstance(original)));
         assertThat(copy.getClass(),equalTo(original.getClass()));
+        
         assertThat(copy.GetActor(), sameInstance(original.GetActor()));
+        
+        assertEqualButNotSame(copy, original);
+        assertEqualButNotSame(copy.LowPriorityMessageQueue(), original.LowPriorityMessageQueue());
+        assertEqualButNotSame(copy.HighPriorityMessageQueue(), original.HighPriorityMessageQueue());
+        assertEqualButNotSame(copy.ContinuousBehaviors(), original.ContinuousBehaviors());
+        assertEqualButNotSame(copy.StatementQueue(), original.StatementQueue());
     }
     
-    @Test
-    public void DeepCopyCreatesNewDiscreteAndContiniuousState()
+    private void assertEqualButNotSame(Object obj1,Object obj2)
     {
-        ActorRunTimeState original = Utilities.NewActorState("actor");
-        ActorRunTimeState copy = original.DeepCopy();
-        
-        assertThat(copy.GetContinuousState(),not(sameInstance(original.GetContinuousState())));
-        assertThat(copy.GetContinuousState(),equalTo(original.GetContinuousState()));
-        
-        assertThat(copy.GetDiscreteState(),not(sameInstance(original.GetDiscreteState())));
-        assertThat(copy.GetDiscreteState(),equalTo(original.GetDiscreteState()));
-        
+        assertThat(obj1, equalTo(obj2));
+        assertThat(obj1, not(sameInstance(obj2)));
     }
-      
 }

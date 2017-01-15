@@ -66,12 +66,12 @@ public class MessageSendRuleTest
         generatedLTS = ltsGenerator.Generate(globalState.Build());
         
         GlobalRunTimeState stateAfterMessageTo2Sent = globalState.Build();
-        stateAfterMessageTo2Sent.FindActorState(actor1).DequeueNextStatement();
-        stateAfterMessageTo2Sent.FindActorState(actor2).EnqueueMessage(messageTo2);
+        stateAfterMessageTo2Sent.FindActorState(actor1).StatementQueue().Dequeue();
+        stateAfterMessageTo2Sent.FindActorState(actor2).LowPriorityMessageQueue().Enqueue(messageTo2);
         
         GlobalRunTimeState sateAfterMessageTo1Sent = globalState.Build();
-        sateAfterMessageTo1Sent.FindActorState(actor2).DequeueNextStatement();
-        sateAfterMessageTo1Sent.FindActorState(actor1).EnqueueMessage(messageTo1);
+        sateAfterMessageTo1Sent.FindActorState(actor2).StatementQueue().Dequeue();
+        sateAfterMessageTo1Sent.FindActorState(actor1).LowPriorityMessageQueue().Enqueue(messageTo1);
         
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
@@ -84,7 +84,7 @@ public class MessageSendRuleTest
         
         ActorRunTimeStateBuilder fullCapacityActorState = new ActorRunTimeStateBuilder()
                 .WithActor(actor)
-                .EnqueueMessage(new EmptyMessage("Message1"))
+                .EnqueueLowPriorityMessage(new EmptyMessage("Message1"))
                 .EnqueueStatement(new SendStatement(actor, new EmptyMessage("Message2")));
         
         globalState

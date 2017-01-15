@@ -6,75 +6,53 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Actor;
+import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Message;
 import HPalang.Core.Statement;
-import java.util.List;
-import java.util.Queue;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ActorRunTimeState extends AbstractState<ActorRunTimeState>
+public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
 {
     private final Actor actor;
     
-    private DiscreteState discreteState = new DiscreteState();
-    private ContinuousState continuousState = new ContinuousState();
+    private Queue<Message> lowPriorityMessages = new Queue<>();
+    private Queue<Message> highPriorityMessages = new Queue<>();
     
+    private Queue<Statement> statementQueue = new Queue<>();
+    
+    private ContinuousBehaviorContianer continuousBehaviors = new ContinuousBehaviorContianer();
+
+    private boolean isSuspended = false;
+    private Queue<Statement> suspendedStatements = new Queue<>();
     
     public ActorRunTimeState(Actor actor)
     {
         this.actor = actor;
     }
     
-    // NOTE: For Testing
-    public DiscreteState GetDiscreteState()
+    public ContinuousBehaviorContianer ContinuousBehaviors()
     {
-        return discreteState;
+        return continuousBehaviors;
     }
     
-    // NOTE: For Testing
-    public ContinuousState GetContinuousState()
+    public Queue<Message> HighPriorityMessageQueue()
     {
-        return continuousState;
-    }
-       
-    public void EnqueueMessage(Message message)
-    {
-        discreteState.EnqueueMessage(message);
+        return highPriorityMessages;
     }
     
-    public Queue<Message> GetMessages()
+    public Queue<Message> LowPriorityMessageQueue()
     {
-        return discreteState.GetMessages();
+        return lowPriorityMessages;
+    }
+    
+    public Queue<Statement> StatementQueue()
+    {
+        return statementQueue;
     }
 
-    public void RemoveMessage(Message message)
-    {
-        discreteState.RemoveMessage(message);
-    }
-            
-    public Message GetNextMessage()
-    {
-        return discreteState.GetNextMessage();
-    }
-    
-    public void DequeueNextMessage()
-    {
-        discreteState.DequeueNextMessage();
-    }
-    
-    public boolean HasMessage()
-    {
-        return discreteState.HasMessage();
-    }
-    
-    public int GetMessageQueueSize()
-    {
-        return GetMessages().size();
-    }
-    
     public int GetMessageQueueCapacity()
     {
         return actor.GetCapacity();
@@ -84,61 +62,25 @@ public class ActorRunTimeState extends AbstractState<ActorRunTimeState>
     {
        return actor;
     }
-    
-    public Statement GetNextStatement()
+       
+    public void SetSuspended(boolean suspended)
     {
-        return discreteState.GetNextStatement();
+        isSuspended = suspended;
     }
     
-    public Queue<Statement> GetStatements()
+    public boolean IsSuspended()
     {
-        return discreteState.GetStatements();
+        return isSuspended;
     }
     
-    public void DequeueNextStatement()
+    public Queue<Statement> SuspendedStatements()
     {
-        discreteState.DequeueNextStatement();
-    }
-    
-    public void EnqueueStatements(Queue<Statement> statements)
-    {
-        for(Statement statement : statements)
-            discreteState.EnqueueStatement(statement);
-    }
-    
-    public void EnqueueStatement(Statement statement)
-    {
-        discreteState.EnqueueStatement(statement);
-    }
-    
-    public void SetDelayed(boolean delayed)
-    {
-        discreteState.SetDelayed(delayed);
-    }
-    
-    public boolean IsDelayed()
-    {
-        return discreteState.IsDelayed();
+        return suspendedStatements;
     }
      
-    public void AddContinuousBehavior(ContinuousBehavior behavior)
+    public void SetDiscreteValue(DiscreteVariable dVar, int value)
     {
-        continuousState.AddBehavior(behavior);
-    }
-    
-    public List<ContinuousBehavior> GetContinuousBehaviors()
-    {
-        return continuousState.GetBehaviors();
-    }
-    
-    public void RemoveContinuousBehavior(ContinuousBehavior behavior)
-    {
-        continuousState.RemoveBehavior(behavior);
-    }
-    
-    public boolean HasStatement()
-    {
-        return discreteState.HasStatement();
+        
     }
     
     @Override
@@ -146,20 +88,35 @@ public class ActorRunTimeState extends AbstractState<ActorRunTimeState>
     {
         try {
             ActorRunTimeState copy = (ActorRunTimeState) clone();
-            copy.continuousState = this.continuousState.DeepCopy();
-            copy.discreteState = this.discreteState.DeepCopy();
+            copy.lowPriorityMessages = this.lowPriorityMessages.DeepCopy();
+            copy.highPriorityMessages = this.highPriorityMessages.DeepCopy();
+            copy.statementQueue = this.statementQueue.DeepCopy();
+            copy.suspendedStatements = this.suspendedStatements.DeepCopy();
+            copy.continuousBehaviors = this.continuousBehaviors.DeepCopy();
+            
             return copy;
         } catch (CloneNotSupportedException ex) {
             return null;
         }
+    }
+    
+    
+    public boolean ValuationEqual(ActorRunTimeState other)
+    {
+        return this.isSuspended == other.isSuspended
+                && this.suspendedStatements.equals(other.suspendedStatements);
     }
 
     @Override
     protected boolean InternalEquals(ActorRunTimeState other)
     {
         return this.actor == other.actor
-                && this.discreteState.equals(other.discreteState)
-                && this.continuousState.equals(other.continuousState);
+                && this.continuousBehaviors.equals(other.continuousBehaviors)
+                && this.highPriorityMessages.equals(other.highPriorityMessages)
+                && this.lowPriorityMessages.equals(other.lowPriorityMessages)
+                && this.statementQueue.equals(other.statementQueue)
+                && this.isSuspended == other.isSuspended;
+        
     }
 
     @Override

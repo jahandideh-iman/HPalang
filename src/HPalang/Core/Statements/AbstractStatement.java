@@ -14,4 +14,9 @@ import HPalang.Core.Statement;
  */
 public abstract class AbstractStatement<T> extends Equalitable<T> implements Statement
 {   
+    @Override
+    public boolean Is(Class<? extends Statement> cc)
+    {
+        return this.getClass().equals(cc);
+    }
 }

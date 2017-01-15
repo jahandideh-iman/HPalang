@@ -52,11 +52,11 @@ public class MessageTakeRuleTest
 
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)
-                .EnqueueMessage(new EmptyMessage());
+                .EnqueueLowPriorityMessage(new EmptyMessage());
         
         ActorRunTimeStateBuilder actor2State = new ActorRunTimeStateBuilder()
                 .WithActor(actor2)
-                .EnqueueMessage(new EmptyMessage());
+                .EnqueueLowPriorityMessage(new EmptyMessage());
         
         globalState.AddActorRunTimeState(actor1State)
                 .AddActorRunTimeState(actor2State);
@@ -64,10 +64,10 @@ public class MessageTakeRuleTest
         generatedLTS = ltsGenerator.Generate(globalState.Build());
         
         GlobalRunTimeState globalStateAfterActor1MessageTake = globalState.Build();
-        globalStateAfterActor1MessageTake.FindActorState(actor1).DequeueNextMessage();
+        globalStateAfterActor1MessageTake.FindActorState(actor1).LowPriorityMessageQueue().Dequeue();
         
         GlobalRunTimeState globalStateAfterActor2MessageTake = globalState.Build();
-        globalStateAfterActor2MessageTake.FindActorState(actor2).DequeueNextMessage();
+        globalStateAfterActor2MessageTake.FindActorState(actor2).LowPriorityMessageQueue().Dequeue();
         
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), globalStateAfterActor1MessageTake));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(),globalStateAfterActor2MessageTake));
@@ -84,15 +84,15 @@ public class MessageTakeRuleTest
 
         ActorRunTimeStateBuilder actorState = new ActorRunTimeStateBuilder()
                 .WithActor(actor)
-                .EnqueueMessage(new MessageWithBody(statements));
+                .EnqueueLowPriorityMessage(new MessageWithBody(statements));
         
         globalState.AddActorRunTimeState(actorState);
              
         generatedLTS = ltsGenerator.Generate(globalState.Build());
         
         GlobalRunTimeState globalStateAfterActor1MessageTake = globalState.Build();
-        globalStateAfterActor1MessageTake.FindActorState(actor).DequeueNextMessage();
-        globalStateAfterActor1MessageTake.FindActorState(actor).EnqueueStatements(statements);
+        globalStateAfterActor1MessageTake.FindActorState(actor).LowPriorityMessageQueue().Dequeue();
+        globalStateAfterActor1MessageTake.FindActorState(actor).StatementQueue().Enqueue(statements);
         
         assertTrue(generatedLTS.HasState(globalStateAfterActor1MessageTake));
     }

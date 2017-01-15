@@ -3,17 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.RunTimeStates;
-
-import HPalang.Core.DeepClonable;
-import HPalang.Core.Equalitable;
+package HPalang.Core;
 
 /**
  *
  * @author Iman Jahandideh
- * @param <T>
  */
-public abstract class AbstractState<T> extends Equalitable<T> implements DeepClonable<T>
+public interface DiscreteExpression
 {
-    
+    public int Evaluate();
 }

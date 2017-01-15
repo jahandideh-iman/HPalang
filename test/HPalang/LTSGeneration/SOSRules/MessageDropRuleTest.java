@@ -50,12 +50,12 @@ public class MessageDropRuleTest
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)
                 .EnqueueStatement(new SendStatement(actor2, messageTo2))
-                .EnqueueMessage(new EmptyMessage());
+                .EnqueueLowPriorityMessage(new EmptyMessage());
         
         ActorRunTimeStateBuilder actor2State = new ActorRunTimeStateBuilder()
                 .WithActor(actor2)
                 .EnqueueStatement(new SendStatement(actor1, messageTo1))
-                .EnqueueMessage(new EmptyMessage());
+                .EnqueueLowPriorityMessage(new EmptyMessage());
         
         globalState
                 .AddActorRunTimeState(actor1State)
@@ -65,10 +65,10 @@ public class MessageDropRuleTest
         generatedLTS = ltsGenerator.Generate(globalState.Build());
         
         GlobalRunTimeState stateAfterMessageTo2Sent = globalState.Build();
-        stateAfterMessageTo2Sent.FindActorState(actor1).DequeueNextStatement();
+        stateAfterMessageTo2Sent.FindActorState(actor1).StatementQueue().Dequeue();
         
         GlobalRunTimeState sateAfterMessageTo1Sent = globalState.Build();
-        sateAfterMessageTo1Sent.FindActorState(actor2).DequeueNextStatement();
+        sateAfterMessageTo1Sent.FindActorState(actor2).StatementQueue().Dequeue();
         
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));

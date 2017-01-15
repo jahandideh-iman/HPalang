@@ -21,13 +21,13 @@ public class MessageSendRule extends ActorLevelRule
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        if((actorState.GetNextStatement() instanceof SendStatement) == false || actorState.IsDelayed())
+        if((actorState.StatementQueue().Head() instanceof SendStatement) == false || actorState.IsSuspended())
             return false;
         
-        SendStatement sendStatement = (SendStatement)actorState.GetNextStatement();
+        SendStatement sendStatement = (SendStatement)actorState.StatementQueue().Head();
         ActorRunTimeState receiverState = globalState.FindActorState(sendStatement.GetReceiver());
         
-        return  receiverState.GetMessageQueueSize() < receiverState.GetMessageQueueCapacity();
+        return  receiverState.LowPriorityMessageQueue().Size() < receiverState.GetMessageQueueCapacity();
     }
 
     @Override
@@ -35,14 +35,14 @@ public class MessageSendRule extends ActorLevelRule
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         
-        SendStatement sendStatement = (SendStatement)actorState.GetNextStatement();
+        SendStatement sendStatement = (SendStatement)actorState.StatementQueue().Head();
         
         ActorRunTimeState senderState = newGlobalState.FindActorState(actorState.GetActor());
         ActorRunTimeState receiverState = newGlobalState.FindActorState(sendStatement.GetReceiver());
         
-        senderState.DequeueNextStatement();
+        senderState.StatementQueue().Dequeue();
         
-        receiverState.EnqueueMessage(sendStatement.GetMessage());
+        receiverState.LowPriorityMessageQueue().Enqueue(sendStatement.GetMessage());
         
         generator.AddTransition(new TauLabel(), newGlobalState);
     }

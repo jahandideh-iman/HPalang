@@ -20,9 +20,9 @@ import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.LTSUtility;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorDepricationRule;
+import HPalang.LTSGeneration.SOSRules.TierOne.ContinuousBehaviorExpirationRule;
 import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorRule;
-import HPalang.LTSGeneration.SOSRules.DelayRule;
+import HPalang.LTSGeneration.SOSRules.DelayStatementRule;
 import HPalang.LTSGeneration.SOSRules.MessageDropRule;
 import HPalang.LTSGeneration.SOSRules.MessageSendRule;
 import HPalang.LTSGeneration.SOSRules.MessageTakeRule;
@@ -52,11 +52,11 @@ public class Main {
         LTSGenerator ltsGenerator = new LTSGenerator();
         
         ltsGenerator.AddSOSRule(new MessageTakeRule());
-        ltsGenerator.AddSOSRule(new DelayRule());
+        ltsGenerator.AddSOSRule(new DelayStatementRule());
         ltsGenerator.AddSOSRule(new MessageSendRule());
         ltsGenerator.AddSOSRule(new MessageDropRule());
         ltsGenerator.AddSOSRule(new ResumeTakeRule());
-        ltsGenerator.AddSOSRule(new ContinuousBehaviorDepricationRule());
+        ltsGenerator.AddSOSRule(new ContinuousBehaviorExpirationRule());
         ltsGenerator.AddSOSRule(new ContinuousBehaviorRule());
         
         HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();

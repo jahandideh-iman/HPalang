@@ -7,9 +7,7 @@ package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Equalitable;
 import HPalang.Core.Statement;
-import java.util.Arrays;
 import java.util.LinkedList;
-import java.util.List;
 import java.util.Objects;
 import java.util.Queue;
 
@@ -83,5 +81,4 @@ public class ContinuousBehavior extends Equalitable<ContinuousBehavior>
         hash = 19 * hash + Objects.hashCode(this.guard);
         return hash;
     }
-
 }

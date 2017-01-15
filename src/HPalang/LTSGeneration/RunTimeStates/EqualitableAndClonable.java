@@ -3,18 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.LTSGeneration.RunTimeStates;
+
+import HPalang.Core.DeepClonable;
+import HPalang.Core.Equalitable;
 
 /**
  *
  * @author Iman Jahandideh
+ * @param <T>
  */
-public class DiscreteVariable extends Variable
+public abstract class EqualitableAndClonable<T> extends Equalitable<T> implements DeepClonable<T>
 {
-    
-    public DiscreteVariable(String name)
-    {
-        super(name);
-    }
     
 }

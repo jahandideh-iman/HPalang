@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.SOSRules;
+package HPalang.LTSGeneration.SOSRules.TierOne;
 
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.ConditionalLabel;
@@ -12,31 +12,32 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.Core.Message;
 import HPalang.Core.Messages.MessageWithBody;
+import HPalang.LTSGeneration.SOSRules.ActorLevelRule;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ContinuousBehaviorDepricationRule extends ActorLevelRule
+public class ContinuousBehaviorExpirationRule extends ActorLevelRule
 {
 
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.GetContinuousBehaviors().size() >0;
+        return actorState.ContinuousBehaviors().Size() >0;
     }
 
     @Override
     protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
     {
-        for(ContinuousBehavior behavior : actorState.GetContinuousBehaviors())
+        for(ContinuousBehavior behavior : actorState.ContinuousBehaviors())
         {
             GlobalRunTimeState newGlobalState = globalState.DeepCopy();
             ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
             
-            newActorState.RemoveContinuousBehavior(behavior);
+            newActorState.ContinuousBehaviors().Remove(behavior);
             Message message = new MessageWithBody(behavior.GetActions());
-            newActorState.EnqueueMessage(message);
+            newActorState.LowPriorityMessageQueue().Enqueue(message);
             
             generator.AddTransition(new ConditionalLabel(behavior.GetGuard()), newGlobalState);
         }

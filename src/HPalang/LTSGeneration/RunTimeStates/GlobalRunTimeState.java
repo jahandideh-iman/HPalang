@@ -17,7 +17,7 @@ import java.util.logging.Logger;
  *
  * @author Iman Jahandideh
  */
-public class GlobalRunTimeState extends AbstractState<GlobalRunTimeState>
+public class GlobalRunTimeState extends EqualitableAndClonable<GlobalRunTimeState>
 {
     // TODO: Change it to map
     private List<ActorRunTimeState> actorStates = new ArrayList<>();
@@ -29,7 +29,7 @@ public class GlobalRunTimeState extends AbstractState<GlobalRunTimeState>
 
     public void AddSendStatement(SendStatement sendStatement)
     {
-        FindActorState(sendStatement.GetReceiver()).EnqueueMessage(sendStatement.GetMessage());
+        FindActorState(sendStatement.GetReceiver()).LowPriorityMessageQueue().Enqueue(sendStatement.GetMessage());
     }
     
     public ActorRunTimeState FindActorState(Actor actor)

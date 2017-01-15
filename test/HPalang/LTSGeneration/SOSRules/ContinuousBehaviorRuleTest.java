@@ -57,8 +57,8 @@ public class ContinuousBehaviorRuleTest
         
         GlobalRunTimeState nextGlobalState1 = globalState.Build();
         ActorRunTimeState nextActorState1 = nextGlobalState1.FindActorState(actor1);
-        nextActorState1.DequeueNextStatement();
-        nextActorState1.AddContinuousBehavior(new ContinuousBehavior("inv","ode","guard",StatementsFrom(new EmptyStatement())));
+        nextActorState1.StatementQueue().Dequeue();
+        nextActorState1.ContinuousBehaviors().Add(new ContinuousBehavior("inv","ode","guard",StatementsFrom(new EmptyStatement())));
         
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), nextGlobalState1));
     }
