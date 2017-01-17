@@ -5,37 +5,27 @@
  */
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
-import HPalang.Core.Message;
 import HPalang.Core.Statements.ResumeStatement;
-import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.SOSRules.ActorLevelRule;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.SOSRules.StatementRule;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ResumeStatementRule extends ActorLevelRule
+public class ResumeStatementRule extends StatementRule<ResumeStatement>
 {
     @Override
-    protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
+    protected Class<ResumeStatement> StatementType()
     {
-        return actorState.StatementQueue().Head().Is(ResumeStatement.class);
+        return ResumeStatement.class;
     }
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
+    protected void ApplyStatement(ActorRunTimeState actorState, ResumeStatement statement)
     {
-        GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
-        ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actorState.GetActor());
-        
-        nextActorState.StatementQueue().Dequeue();
-        nextActorState.SetSuspended(false);
-        nextActorState.StatementQueue().Enqueue(actorState.SuspendedStatements());
-        nextActorState.SuspendedStatements().Clear();
-        
-        generator.AddTransition(new TauLabel(), nextGlobalState);
+        actorState.SetSuspended(false);
+        actorState.StatementQueue().Enqueue(actorState.SuspendedStatements());
+        actorState.SuspendedStatements().Clear();
     }
 }

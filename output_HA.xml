@@ -1,38 +1,27 @@
 <DMEComponent type="FiniteStateMachine" ><States>
        <State  >
-           <Name>x&gt;=50
-x&apos; = -x + 50</Name>
-       </State>
-       <State  >
            <Name>
 </Name>
        </State>
        <State  >
-           <Name>x &lt;= 100
-x&apos; = -x + 100</Name>
+           <Name>y&gt;=0
+y&apos;&apos; := -9.8</Name>
        </State>
 </States>
 <Transitions>
 	<Transition>
 		<From>
 </From>
-		<To>x &lt;= 100
-x&apos; = -x + 100</To>
+		<To>y&gt;=0
+y&apos;&apos; := -9.8</To>
 		<Condition>true</Condition>
 	</Transition>
 	<Transition>
-		<From>x &lt;= 100
-x&apos; = -x + 100</From>
-		<To>x&gt;=50
-x&apos; = -x + 50</To>
-		<Condition>x &gt;= 18</Condition>
-	</Transition>
-	<Transition>
-		<From>x&gt;=50
-x&apos; = -x + 50</From>
+		<From>y&gt;=0
+y&apos;&apos; := -9.8</From>
 		<To>
 </To>
-		<Condition>x &lt;= 2</Condition>
+		<Condition>y&lt;=0</Condition>
 	</Transition>
 </Transitions>
 <InitialState>

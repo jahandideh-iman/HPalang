@@ -5,27 +5,26 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import HPalang.LTSGeneration.LTSGenerator;
+import HPalang.Core.Statements.DiscreteAssignmentStatement;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class DiscreteAssignmentRule extends ActorLevelRule
+public class DiscreteAssignmentRule extends StatementRule<DiscreteAssignmentStatement>
 {
 
     @Override
-    protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
+    protected Class<DiscreteAssignmentStatement> StatementType()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return DiscreteAssignmentStatement.class;
     }
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
+    protected void ApplyStatement(ActorRunTimeState actorState, DiscreteAssignmentStatement statement)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        actorState.Valuations().Set(statement.Variable(), statement.Expression().Evaluate());
     }
     
 }

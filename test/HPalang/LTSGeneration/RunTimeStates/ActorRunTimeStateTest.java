@@ -16,8 +16,6 @@ import static org.hamcrest.CoreMatchers.*;
  */
 public class ActorRunTimeStateTest
 {
-
-    
     @Test
     public void DeepCopyIsCorrect()
     {
@@ -34,6 +32,7 @@ public class ActorRunTimeStateTest
         assertEqualButNotSame(copy.HighPriorityMessageQueue(), original.HighPriorityMessageQueue());
         assertEqualButNotSame(copy.ContinuousBehaviors(), original.ContinuousBehaviors());
         assertEqualButNotSame(copy.StatementQueue(), original.StatementQueue());
+        assertEqualButNotSame(copy.Valuations(), original.Valuations());
     }
     
     private void assertEqualButNotSame(Object obj1,Object obj2)

@@ -1,29 +1,21 @@
 <DMEComponent type="FiniteStateMachine" ><States>
        <State  >
-           <Name>[({TurnOn,},{},false),({})],</Name>
+           <Name>[({Fall,},{},false),({})],</Name>
        </State>
        <State  >
-           <Name>[({},{},false),({B(x &lt;= 100),})],</Name>
-       </State>
-       <State  >
-           <Name>[({},{},false),({B(x&gt;=50),})],</Name>
+           <Name>[({},{},false),({B(y&gt;=0),})],</Name>
        </State>
 </States>
 <Transitions>
 	<Transition>
-		<From>[({TurnOn,},{},false),({})],</From>
-		<To>[({},{},false),({B(x &lt;= 100),})],</To>
+		<From>[({Fall,},{},false),({})],</From>
+		<To>[({},{},false),({B(y&gt;=0),})],</To>
 		<Condition>t</Condition>
 	</Transition>
 	<Transition>
-		<From>[({},{},false),({B(x &lt;= 100),})],</From>
-		<To>[({},{},false),({B(x&gt;=50),})],</To>
-		<Condition>x &gt;= 18</Condition>
-	</Transition>
-	<Transition>
-		<From>[({},{},false),({B(x&gt;=50),})],</From>
-		<To>[({TurnOn,},{},false),({})],</To>
-		<Condition>x &lt;= 2</Condition>
+		<From>[({},{},false),({B(y&gt;=0),})],</From>
+		<To>[({Fall,},{},false),({})],</To>
+		<Condition>y&lt;=0</Condition>
 	</Transition>
 </Transitions>
-<InitialState>[({TurnOn,},{},false),({})],</InitialState></DMEComponent>
+<InitialState>[({Fall,},{},false),({})],</InitialState></DMEComponent>

@@ -5,42 +5,43 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.Statement;
+import HPalang.Core.Statements.ContinuousBehaviorStatement;
+import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.Core.Message;
 import HPalang.LTSGeneration.TauLabel;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class MessageTakeRule extends ActorLevelRule
+public abstract class StatementRule<T extends Statement> extends ActorLevelRule
 {
 
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.IsSuspended() == false 
-                && actorState.StatementQueue().IsEmpty() == true
-                && actorState.LowPriorityMessageQueue().IsEmpty() == false;
-
+        
+        return actorState.StatementQueue().IsEmpty() == false
+                && actorState.StatementQueue().Head().Is(StatementType());
     }
+    
+    protected abstract Class<T> StatementType();
 
     @Override
     protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
-        
         ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
         
-        Message message = newActorState.LowPriorityMessageQueue().Head();
-        newActorState.LowPriorityMessageQueue().Dequeue();
-        
-        newActorState.StatementQueue().Enqueue(message.GetMessageBody());
+        T statement = (T)newActorState.StatementQueue().Head();
+        newActorState.StatementQueue().Dequeue();
+        ApplyStatement(newActorState, statement);
         
         generator.AddTransition(new TauLabel(), newGlobalState);
     }
-  
+    
+    protected abstract void ApplyStatement(ActorRunTimeState actorState, T statement);
+    
 }

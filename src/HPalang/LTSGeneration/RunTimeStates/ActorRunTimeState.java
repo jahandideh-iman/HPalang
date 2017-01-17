@@ -27,6 +27,7 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
 
     private boolean isSuspended = false;
     private Queue<Statement> suspendedStatements = new Queue<>();
+    private ValuationMap valuations = new ValuationMap();
     
     public ActorRunTimeState(Actor actor)
     {
@@ -77,12 +78,20 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
     {
         return suspendedStatements;
     }
-     
-    public void SetDiscreteValue(DiscreteVariable dVar, int value)
+    
+    public ValuationMap Valuations()
     {
-        
+        return valuations;
     }
     
+    // TODO: Merge this with ValuationMap
+    public boolean ValuationEqual(ActorRunTimeState other)
+    {
+        return this.isSuspended == other.isSuspended
+                && this.suspendedStatements.equals(other.suspendedStatements)
+                && this.valuations.equals(other.valuations);
+    }
+   
     @Override
     public ActorRunTimeState DeepCopy()
     {
@@ -93,6 +102,7 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
             copy.statementQueue = this.statementQueue.DeepCopy();
             copy.suspendedStatements = this.suspendedStatements.DeepCopy();
             copy.continuousBehaviors = this.continuousBehaviors.DeepCopy();
+            copy.valuations = this.valuations.DeepCopy();
             
             return copy;
         } catch (CloneNotSupportedException ex) {
@@ -100,12 +110,6 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
         }
     }
     
-    
-    public boolean ValuationEqual(ActorRunTimeState other)
-    {
-        return this.isSuspended == other.isSuspended
-                && this.suspendedStatements.equals(other.suspendedStatements);
-    }
 
     @Override
     protected boolean InternalEquals(ActorRunTimeState other)
@@ -115,8 +119,7 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
                 && this.highPriorityMessages.equals(other.highPriorityMessages)
                 && this.lowPriorityMessages.equals(other.lowPriorityMessages)
                 && this.statementQueue.equals(other.statementQueue)
-                && this.isSuspended == other.isSuspended;
-        
+                && this.isSuspended == other.isSuspended;   
     }
 
     @Override

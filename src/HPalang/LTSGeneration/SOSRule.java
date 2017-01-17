@@ -6,7 +6,6 @@
 package HPalang.LTSGeneration;
 
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.LTSGenerator;
 
 /**
  *

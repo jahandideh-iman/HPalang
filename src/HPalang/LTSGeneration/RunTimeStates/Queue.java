@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;
 
@@ -12,9 +13,11 @@ import java.util.LinkedList;
  *
  * @author Iman Jahandideh
  */
+
+// TODO: Rename Push and Enqueu
 public class Queue<T> extends EqualitableAndClonable<Queue<T>> implements Iterable<T>
 {
-    private final java.util.Queue<T> items = new LinkedList<>();
+    private final Deque<T> items = new LinkedList<>();
     
     public T Head()
     {
@@ -29,6 +32,17 @@ public class Queue<T> extends EqualitableAndClonable<Queue<T>> implements Iterab
     public void Enqueue(T item)
     {
         items.add(item);
+    }
+    
+    public void Push(T item)
+    {
+        items.addFirst(item);
+    }
+    
+    public void Push(java.util.Queue<T> items)
+    {
+        for(T item : items)
+            Push(item);
     }
     
     public void Enqueue(java.util.Queue<T> items)

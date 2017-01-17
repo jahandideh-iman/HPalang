@@ -3,25 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.SOSRules;
+package HPalang.LTSGeneration.SOSRules.TierOne;
 
-import HPalang.LTSGeneration.SOSRules.TierOne.ContinuousBehaviorExpirationRule;
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
-import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;
 import HPalang.LTSGeneration.ConditionalLabel;
-import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.Core.Messages.MessageWithBody;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
-import HPalang.Core.Statements.ResumeStatement;
-import HPalang.Core.Statement;
+import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
 import static HPalang.Core.Statement.StatementsFrom;
-import Mocks.EmptyMessage;
 import Mocks.EmptyStatement;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -59,12 +52,12 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         GlobalRunTimeState nextGlobalState1 = globalState.Build();
         ActorRunTimeState nextActorState1 = nextGlobalState1.FindActorState(actor1);
         nextActorState1.ContinuousBehaviors().Remove(new ContinuousBehavior("inv1","ode1","guard1",StatementsFrom(new EmptyStatement())));
-        nextActorState1.LowPriorityMessageQueue().Enqueue(new MessageWithBody(StatementsFrom(new EmptyStatement())));
+        nextActorState1.HighPriorityMessageQueue().Enqueue(new MessageWithBody(StatementsFrom(new EmptyStatement())));
         
         GlobalRunTimeState nextGlobalState2 = globalState.Build();
         ActorRunTimeState nextActorState2 = nextGlobalState2.FindActorState(actor1);
         nextActorState2.ContinuousBehaviors().Remove(new ContinuousBehavior("inv2","ode2","guard2",StatementsFrom(new EmptyStatement())));
-        nextActorState2.LowPriorityMessageQueue().Enqueue(new MessageWithBody(StatementsFrom(new EmptyStatement())));
+        nextActorState2.HighPriorityMessageQueue().Enqueue(new MessageWithBody(StatementsFrom(new EmptyStatement())));
 
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new ConditionalLabel("guard1"), nextGlobalState1));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new ConditionalLabel("guard2"), nextGlobalState2));

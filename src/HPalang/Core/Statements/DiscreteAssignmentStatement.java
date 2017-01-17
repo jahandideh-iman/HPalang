@@ -23,16 +23,27 @@ public class DiscreteAssignmentStatement extends AbstractStatement<DiscreteAssig
         this.dExpr = dExpr;
     }
     
+    public DiscreteVariable Variable()
+    {
+        return dVar;
+    }
+    
+    public DiscreteExpression Expression()
+    {
+        return dExpr;
+    }
+    
     @Override
     protected boolean InternalEquals(DiscreteAssignmentStatement other)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return dVar.equals(other.dVar)
+                && dExpr.equals(other.dExpr);
     }
 
     @Override
     protected int InternalHashCode()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 1;
     }
     
 }

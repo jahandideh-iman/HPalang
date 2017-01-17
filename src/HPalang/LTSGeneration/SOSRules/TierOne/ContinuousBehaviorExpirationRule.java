@@ -37,7 +37,7 @@ public class ContinuousBehaviorExpirationRule extends ActorLevelRule
             
             newActorState.ContinuousBehaviors().Remove(behavior);
             Message message = new MessageWithBody(behavior.GetActions());
-            newActorState.LowPriorityMessageQueue().Enqueue(message);
+            newActorState.HighPriorityMessageQueue().Enqueue(message);
             
             generator.AddTransition(new ConditionalLabel(behavior.GetGuard()), newGlobalState);
         }

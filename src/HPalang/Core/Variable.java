@@ -20,6 +20,11 @@ public class Variable extends Equalitable<Variable>
         this.name = name;
     }
     
+    public String Name()
+    {
+        return name;
+    }
+    
     @Override
     protected boolean InternalEquals(Variable other)
     {

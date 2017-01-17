@@ -3,17 +3,17 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.SOSRules;
+package HPalang.LTSGeneration.SOSRules.TierOne;
 
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.Core.Actor;
-import HPalang.Core.ConstantDiscreteExpression;
-import HPalang.Core.DiscreteVariable;
-import HPalang.Core.Statements.DiscreteAssignmentStatement;
+import HPalang.Core.Statements.ResumeStatement;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
 import HPalang.LTSGeneration.TauLabel;
-import org.junit.*;
+import Mocks.EmptyStatement;
+import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 
@@ -21,27 +21,29 @@ import org.junit.Before;
  *
  * @author Iman Jahandideh
  */
-public class DiscreteAssignmentTest extends SOSRuleTestFixture
+public class ResumeStatementRuleTest extends SOSRuleTestFixture
 {
     
     @Before
     public void Setup()
     {
-        ltsGenerator.AddSOSRule(new DiscreteAssignmentRule());
+        ltsGenerator.AddSOSRule(new ResumeStatementRule());
     }
 
     @Test
-    public void ForEachActorStateIfNextStatementIsDiscreteAssignementThenAssignsTheNewValue()
+    public void UnsuspendActorAndEnqueuesSuspendedStatements()
     {
-        DiscreteVariable dVar = new DiscreteVariable("dVar");
         Actor actor1 = new ActorBuilder()
                 .WithID("actor1")
-                .WithDiscreteVariable(dVar)
                 .Build();
        
+
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)
-                .EnqueueStatement(new DiscreteAssignmentStatement(dVar, new ConstantDiscreteExpression(5)));
+                .SetSuspended(true)
+                .AddSuspendedStatement(new EmptyStatement("statement1"))
+                .AddSuspendedStatement(new EmptyStatement("statement2"))
+                .EnqueueStatement(new ResumeStatement());
         
         globalState
                 .AddActorRunTimeState(actor1State);
@@ -51,8 +53,10 @@ public class DiscreteAssignmentTest extends SOSRuleTestFixture
         
         GlobalRunTimeState expectedState = globalState.Build();
         expectedState.FindActorState(actor1).StatementQueue().Dequeue();
-        expectedState.FindActorState(actor1).Valuations().Set(dVar, 5);
-       
+        expectedState.FindActorState(actor1).SuspendedStatements().Clear();
+        expectedState.FindActorState(actor1).SetSuspended(false);
+        expectedState.FindActorState(actor1).StatementQueue().Enqueue(new EmptyStatement("statement1"));
+        expectedState.FindActorState(actor1).StatementQueue().Enqueue(new EmptyStatement("statement2"));
 
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), expectedState));
     }

@@ -12,7 +12,7 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.ActorLevelRule;
-import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorRule;
+import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorStatementRule;
 import HPalang.LTSGeneration.SOSRules.DelayStatementRule;
 import HPalang.LTSGeneration.SOSRules.MessageDropRule;
 import HPalang.LTSGeneration.SOSRules.MessageSendRule;
@@ -24,79 +24,25 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
-public class LowPriorityMessageTakeRule extends ActorLevelRule
+public class LowPriorityMessageTakeRule extends MessageTakeRule
 {
 
-    @Override
-    protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
+    public LowPriorityMessageTakeRule(LTSGenerator tierTwoGenerator)
     {
-        return actorState.IsSuspended() == false 
-                && actorState.HighPriorityMessageQueue().IsEmpty() == true 
-                && actorState.StatementQueue().IsEmpty() == true
-                && actorState.LowPriorityMessageQueue().IsEmpty() == false
-                && AllActorsHaveNoPendingStatement(globalState) == true;
-    }
-    
-    private boolean AllActorsHaveNoPendingStatement(GlobalRunTimeState globalState)
-    {
-        for(ActorRunTimeState actorState : globalState.GetActorStates())
-            if(actorState.StatementQueue().IsEmpty() == false)
-                return false;
-        return true;
+        super(tierTwoGenerator);
     }
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
+    protected boolean InternalIsRuleSatisfied(ActorRunTimeState actorState)
     {
-        GlobalRunTimeState newGlobalState = globalState.DeepCopy();
-        
-        ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
-        
-        Message message = newActorState.LowPriorityMessageQueue().Head();
-        newActorState.LowPriorityMessageQueue().Dequeue();
-        newActorState.StatementQueue().Enqueue(message.GetMessageBody());
-        
-        LTSGenerator ltsGenerator = new LTSGenerator();
-        ltsGenerator.AddSOSRule(new ContinuousBehaviorRule());
-        ltsGenerator.AddSOSRule(new MessageSendRule());
-        ltsGenerator.AddSOSRule(new MessageDropRule());
-        ltsGenerator.AddSOSRule(new DelayStatementRule());
-
-        LabeledTransitionSystem lts = ltsGenerator.Generate(newGlobalState);
-
-        List<GlobalRunTimeState> outputs = FindState(lts,actorState.GetActor(), globalState);
-
-        for(GlobalRunTimeState state : outputs)
-            generator.AddTransition(new TauLabel(), state);
+        return actorState.LowPriorityMessageQueue().IsEmpty() && actorState.IsSuspended() == false;
     }
-    
-    private List<GlobalRunTimeState> FindState(LabeledTransitionSystem lts, Actor actor, GlobalRunTimeState rootGlobalState)
+
+    @Override
+    protected Message DequeuMessage(ActorRunTimeState actorState)
     {
-        List<GlobalRunTimeState> states = new LinkedList<>();
-        
-        for(GlobalRunTimeState state : lts.GetStates())
-        {
-            boolean valid = true;
-            for(ActorRunTimeState actorState : state.GetActorStates())
-            {
-                if(actorState.GetActor() == actor)
-                {
-                    if(actorState.StatementQueue().IsEmpty() == false)
-                        valid = false;
-                }
-                else
-                {
-                    ActorRunTimeState rootActorState = rootGlobalState.FindActorState(actorState.GetActor());
-                    if(actorState.StatementQueue().IsEmpty() == false || rootActorState.ValuationEqual(actorState) == false)
-                        valid = false;
-                }
-                    
-            }
-            
-            if(valid)
-                states.add(state);
-        }
-        
-        return states;
+        Message message = actorState.LowPriorityMessageQueue().Head();
+        actorState.LowPriorityMessageQueue().Dequeue();
+        return message;
     }
 }

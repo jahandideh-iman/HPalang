@@ -21,18 +21,22 @@ import HPalang.LTSGeneration.LTSUtility;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.TierOne.ContinuousBehaviorExpirationRule;
-import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorRule;
+import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorStatementRule;
 import HPalang.LTSGeneration.SOSRules.DelayStatementRule;
 import HPalang.LTSGeneration.SOSRules.MessageDropRule;
 import HPalang.LTSGeneration.SOSRules.MessageSendRule;
-import HPalang.LTSGeneration.SOSRules.MessageTakeRule;
-import HPalang.LTSGeneration.SOSRules.ResumeTakeRule;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Statement;
+import HPalang.LTSGeneration.SOSRules.DiscreteAssignmentRule;
+import HPalang.LTSGeneration.SOSRules.IfStatementRule;
+import HPalang.LTSGeneration.SOSRules.TierOne.HighPriorityMessageTakeRule;
+import HPalang.LTSGeneration.SOSRules.TierOne.LowPriorityMessageTakeRule;
+import HPalang.LTSGeneration.SOSRules.TierOne.MessageTakeRule;
+import HPalang.LTSGeneration.SOSRules.TierOne.ResumeStatementRule;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -44,27 +48,20 @@ import java.util.Queue;
  */
 public class Main {
 
+    // TODO: ------------------------- REFACTOR THIS -------------------------------
     /**
      * @param args the command line arguments
      */
     public static void main(String[] args) 
     {
-        LTSGenerator ltsGenerator = new LTSGenerator();
-        
-        ltsGenerator.AddSOSRule(new MessageTakeRule());
-        ltsGenerator.AddSOSRule(new DelayStatementRule());
-        ltsGenerator.AddSOSRule(new MessageSendRule());
-        ltsGenerator.AddSOSRule(new MessageDropRule());
-        ltsGenerator.AddSOSRule(new ResumeTakeRule());
-        ltsGenerator.AddSOSRule(new ContinuousBehaviorExpirationRule());
-        ltsGenerator.AddSOSRule(new ContinuousBehaviorRule());
+        LTSGenerator tierOneLTSGenerator = CreateTierOneLTSGenrator(CreateTierTwoLTSGenrator());
         
         HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
         hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
         
-        ProgramDefinition definition = CreateThermostatPorgram();
+        ProgramDefinition definition = new BouncingBallModel().Create();
         
-        LabeledTransitionSystem lts =  ltsGenerator.Generate(LTSUtility.FromProgramDefinition(definition));
+        LabeledTransitionSystem lts =  tierOneLTSGenerator.Generate(LTSUtility.FromProgramDefinition(definition));
         
         FileWriter writer = new FileWriter();
         
@@ -86,6 +83,32 @@ public class Main {
         System.out.println("HA Locations : " + automaton.GetLocations().size());
         System.out.println("HA Transition : " + automaton.GetTransitions().size());
         
+    }
+    
+    private static LTSGenerator CreateTierTwoLTSGenrator()
+    {
+        LTSGenerator genetator = new LTSGenerator();
+        
+        genetator.AddSOSRule(new DelayStatementRule());
+        genetator.AddSOSRule(new MessageSendRule());
+        genetator.AddSOSRule(new MessageDropRule());
+        genetator.AddSOSRule(new ContinuousBehaviorStatementRule());
+        genetator.AddSOSRule(new DiscreteAssignmentRule());
+        genetator.AddSOSRule(new IfStatementRule());
+        
+        return genetator;
+    }
+    
+    private static LTSGenerator CreateTierOneLTSGenrator(LTSGenerator tierTwoGenerator)
+    {
+        LTSGenerator genetator = new LTSGenerator();
+        
+        genetator.AddSOSRule(new HighPriorityMessageTakeRule(tierTwoGenerator));
+        genetator.AddSOSRule(new LowPriorityMessageTakeRule(tierTwoGenerator));
+        genetator.AddSOSRule(new ResumeStatementRule());
+        genetator.AddSOSRule(new ContinuousBehaviorExpirationRule());
+        
+        return genetator;
     }
     
     private static void PrioritizeTauActions(LabeledTransitionSystem lts)

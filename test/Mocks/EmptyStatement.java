@@ -13,10 +13,20 @@ import HPalang.Core.Statements.AbstractStatement;
  */
 public class EmptyStatement extends AbstractStatement<EmptyStatement>
 {
+    private final String id;
+    public EmptyStatement(String id)
+    {
+        this.id = id;
+    }
+    
+    public EmptyStatement()
+    {
+        this.id = "";
+    }
     @Override
     protected boolean InternalEquals(EmptyStatement other)
     {
-        return true;
+        return id.equals(other.id);
     }
 
     @Override

@@ -22,12 +22,14 @@ public class ActorRunTimeStateBuilder
 {
     private Actor actor;
     
-    private boolean isDelayed = false;
+    private boolean isSuspended = false;
+    
 
     private Queue<Message> highPriorityMessages = new Queue<>();
     private Queue<Message> lowPriorityMessages = new Queue<>();
     
     private Queue<Statement> statements = new Queue<>();
+    private Queue<Statement> suspendedStatements = new Queue<>();
     
     private ContinuousBehaviorContianer behaviors = new ContinuousBehaviorContianer();
 
@@ -55,12 +57,18 @@ public class ActorRunTimeStateBuilder
         return this;
     }
      
-    public ActorRunTimeStateBuilder SetDelayed(boolean delayed)
+    public ActorRunTimeStateBuilder SetSuspended(boolean suspended)
     {
-        isDelayed = delayed;
+        isSuspended = suspended;
         return this;
     }
     
+    public ActorRunTimeStateBuilder AddSuspendedStatement(Statement statement)
+    {
+        suspendedStatements.Enqueue(statement);
+        return this;
+    }
+        
     public ActorRunTimeStateBuilder EnqueueStatement(Statement statement)
     {
         statements.Enqueue(statement);
@@ -76,7 +84,8 @@ public class ActorRunTimeStateBuilder
 
         actorState.StatementQueue().Enqueue(statements);
         
-        actorState.SetSuspended(isDelayed);
+        actorState.SetSuspended(isSuspended);
+        actorState.SuspendedStatements().Enqueue(suspendedStatements);
         
         for(ContinuousBehavior b : behaviors)
             actorState.ContinuousBehaviors().Add(b);

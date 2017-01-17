@@ -58,6 +58,8 @@ public class DelayStatementRuleTest
         GlobalRunTimeState stateAfterActor1Delay = globalState.Build();
         ActorRunTimeState stateAfterActor1Delay_Actor1 = stateAfterActor1Delay.FindActorState(actor1);
         stateAfterActor1Delay_Actor1.StatementQueue().Dequeue();
+        stateAfterActor1Delay_Actor1.SuspendedStatements().Enqueue(stateAfterActor1Delay_Actor1.StatementQueue());
+        stateAfterActor1Delay_Actor1.StatementQueue().Clear();
         stateAfterActor1Delay_Actor1.SetSuspended(true);
         String actor1DelayVar = actor1.GetDelayVariableName();
         stateAfterActor1Delay_Actor1.ContinuousBehaviors().Add(new ContinuousBehavior(

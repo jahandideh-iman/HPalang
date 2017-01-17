@@ -36,7 +36,7 @@ public class ContinuousBehaviorRuleTest
     @Before
     public void Setup()
     {
-        ltsGenerator.AddSOSRule(new ContinuousBehaviorRule());
+        ltsGenerator.AddSOSRule(new ContinuousBehaviorStatementRule());
     }
     
     @Test
