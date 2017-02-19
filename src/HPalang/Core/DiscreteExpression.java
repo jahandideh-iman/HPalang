@@ -9,7 +9,7 @@ package HPalang.Core;
  *
  * @author Iman Jahandideh
  */
-public interface DiscreteExpression
+public abstract class DiscreteExpression<T> extends Equalitable<T>
 {
-    public int Evaluate();
+    public abstract int Evaluate(ValuationContainer valuations);
 }

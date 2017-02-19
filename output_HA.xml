@@ -4,24 +4,31 @@
 </Name>
        </State>
        <State  >
-           <Name>y&gt;=0
-y&apos;&apos; := -9.8</Name>
+           <Name>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</Name>
        </State>
 </States>
 <Transitions>
 	<Transition>
 		<From>
 </From>
-		<To>y&gt;=0
-y&apos;&apos; := -9.8</To>
+		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
 		<Condition>true</Condition>
 	</Transition>
 	<Transition>
-		<From>y&gt;=0
-y&apos;&apos; := -9.8</From>
-		<To>
-</To>
-		<Condition>y&lt;=0</Condition>
+		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+		<Condition>A_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
+		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
+A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+		<Condition>B_delay==1.0</Condition>
 	</Transition>
 </Transitions>
 <InitialState>

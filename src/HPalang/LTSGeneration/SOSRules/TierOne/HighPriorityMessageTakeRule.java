@@ -5,20 +5,9 @@
  */
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
-import HPalang.Core.Actor;
 import HPalang.Core.Message;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.SOSRules.ActorLevelRule;
-import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorStatementRule;
-import HPalang.LTSGeneration.SOSRules.DelayStatementRule;
-import HPalang.LTSGeneration.SOSRules.MessageDropRule;
-import HPalang.LTSGeneration.SOSRules.MessageSendRule;
-import HPalang.LTSGeneration.TauLabel;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  *
@@ -35,7 +24,7 @@ public class HighPriorityMessageTakeRule extends MessageTakeRule
     @Override
     protected boolean InternalIsRuleSatisfied(ActorRunTimeState actorState)
     {
-        return actorState.HighPriorityMessageQueue().IsEmpty();
+        return actorState.HighPriorityMessageQueue().IsEmpty() == false;
     }
 
     @Override

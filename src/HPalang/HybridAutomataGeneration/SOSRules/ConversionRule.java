@@ -7,7 +7,7 @@ package HPalang.HybridAutomataGeneration.SOSRules;
 
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.HybridAutomataGeneration.Location;
-import HPalang.LTSGeneration.ConditionalLabel;
+import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
@@ -28,11 +28,11 @@ public class ConversionRule implements TransitionSOSRule
         Location origin = generator.ToLocation(transition.GetOrign());
         Location destination = generator.ToLocation(transition.GetDestination());
         
-        ConditionalLabel label;
+        GuardedlLabel label;
         if(transition.GetLabel() instanceof TauLabel)
-            label = new ConditionalLabel("true");
+            label = new GuardedlLabel("true");
         else
-            label = new ConditionalLabel(((ConditionalLabel)transition.GetLabel()).GetCondition());
+            label = new GuardedlLabel(((GuardedlLabel)transition.GetLabel()).GetGuard());
         
         generator.AddTransition(origin, label, destination);
     }

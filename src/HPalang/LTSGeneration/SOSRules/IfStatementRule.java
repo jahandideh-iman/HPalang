@@ -24,7 +24,7 @@ public class IfStatementRule extends StatementRule<IfStatement>
     @Override
     protected void ApplyStatement(ActorRunTimeState actorState, IfStatement statement)
     {
-        if(statement.Expression().Evaluate() > 0)
+        if(statement.Expression().Evaluate(actorState.Valuations()) > 0)
             actorState.StatementQueue().Push(statement.TrueStatements());
         else
             actorState.StatementQueue().Push(statement.FalseStatements());

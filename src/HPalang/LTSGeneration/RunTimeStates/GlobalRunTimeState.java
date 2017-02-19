@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.EqualitableAndClonable;
 import HPalang.Core.Actor;
 import HPalang.Core.Statements.SendStatement;
 import java.util.ArrayList;

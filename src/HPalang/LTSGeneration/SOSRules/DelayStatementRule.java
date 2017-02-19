@@ -33,7 +33,7 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
         String delayVar = actorState.GetActor().GetDelayVariableName();
         ContinuousBehavior behavior = CreateDelayBehavior(actorState.GetActor(), statement.GetDelay(), delayVar);
         actorState.SuspendedStatements().Enqueue(actorState.StatementQueue());
-        actorState.SuspendedStatements().Clear();
+        actorState.StatementQueue().Clear();
         actorState.SetSuspended(true);
         actorState.ContinuousBehaviors().Add(behavior);
     }

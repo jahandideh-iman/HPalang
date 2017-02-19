@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules;
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.Core.Actor;
-import HPalang.Core.ConstantDiscreteExpression;
+import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -56,5 +56,4 @@ public class DiscreteAssignmentTest extends SOSRuleTestFixture
 
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), expectedState));
     }
-    
 }

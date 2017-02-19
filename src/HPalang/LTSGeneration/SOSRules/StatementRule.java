@@ -6,7 +6,6 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Statement;
-import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -39,9 +38,15 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
         newActorState.StatementQueue().Dequeue();
         ApplyStatement(newActorState, statement);
         
-        generator.AddTransition(new TauLabel(), newGlobalState);
+        TauLabel label = CreateTransitionLabel(actorState, statement);
+        
+        generator.AddTransition(label, newGlobalState);
     }
     
     protected abstract void ApplyStatement(ActorRunTimeState actorState, T statement);
+    protected TauLabel CreateTransitionLabel(ActorRunTimeState actorState, T statement)
+    {
+        return new TauLabel();
+    }
     
 }

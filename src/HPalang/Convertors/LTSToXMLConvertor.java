@@ -66,25 +66,36 @@ public class LTSToXMLConvertor
         String stateStr = "";
         for(ActorRunTimeState actorState : state.GetActorStates())
         {
-            String actorStr = "[";
+            String actorStr = actorState.GetActor().GetName()+ "[";
 
             actorStr += "(";
-            actorStr += "{";
+            actorStr += "V:{";
             for(Entry<DiscreteVariable, Integer> m : actorState.Valuations())
                 actorStr += "{" + m.getKey().Name() +":" + m.getValue().toString() +"}"+ ",";
             actorStr += "},";
-            actorStr += "{";
+            actorStr += "HQ:{";
+            for(Message m : actorState.HighPriorityMessageQueue())
+                actorStr += m.toString() + ",";
+            actorStr += "},";
+            
+            actorStr += "LQ:{";
             for(Message m : actorState.LowPriorityMessageQueue())
                 actorStr += m.toString() + ",";
             actorStr += "},";
-            actorStr += "{";
+            
+            actorStr += "S:{";
             for(Statement s : actorState.StatementQueue())
                 actorStr += s.toString() + ",";
+            
             actorStr += "},";
             actorStr += actorState.IsSuspended();
+            actorStr += ",SS:{";
+            for(Statement s : actorState.SuspendedStatements())
+                actorStr += s.toString() + ",";
+            actorStr += "},";
             actorStr += "),(";
 
-            actorStr += "{";
+            actorStr += "CB:{";
             for(ContinuousBehavior b : actorState.ContinuousBehaviors())
                  actorStr += b.toString() + ",";
             actorStr += "})";

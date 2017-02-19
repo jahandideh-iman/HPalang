@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.EqualitableAndClonable;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;

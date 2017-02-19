@@ -38,4 +38,10 @@ public class Variable extends Equalitable<Variable>
         hash = 29 * hash + Objects.hashCode(this.name);
         return hash;
     }
+    
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }

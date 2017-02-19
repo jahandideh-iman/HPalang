@@ -3,10 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.SOSRules.TierOne;
+package HPalang.HybridAutomataGeneration.SOSRules;
 
 import HPalang.Core.Statements.ResumeStatement;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.SOSRules.StatementRule;
 import HPalang.LTSGeneration.SOSRules.StatementRule;
 
 /**

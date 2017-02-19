@@ -43,6 +43,8 @@ public class LTSGenerator
             
             for(SOSRule rule : sosRules)
                 rule.TryApply(currentGlobalState, this);
+//            if(transitionSystem.GetStates().size()>5000)
+//                break;
             
         }
         return transitionSystem;
@@ -55,7 +57,5 @@ public class LTSGenerator
                 
         transitionSystem.AddState(destination);
         transitionSystem.AddTransition(currentGlobalState, label, destination);
-        if(transitionSystem.GetTransitions().size() == 25)
-            transitionSystem.GetTransitions();       
     }
 }

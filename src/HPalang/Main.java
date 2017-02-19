@@ -36,7 +36,7 @@ import HPalang.LTSGeneration.SOSRules.IfStatementRule;
 import HPalang.LTSGeneration.SOSRules.TierOne.HighPriorityMessageTakeRule;
 import HPalang.LTSGeneration.SOSRules.TierOne.LowPriorityMessageTakeRule;
 import HPalang.LTSGeneration.SOSRules.TierOne.MessageTakeRule;
-import HPalang.LTSGeneration.SOSRules.TierOne.ResumeStatementRule;
+import HPalang.HybridAutomataGeneration.SOSRules.ResumeStatementRule;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,7 +59,7 @@ public class Main {
         HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
         hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
         
-        ProgramDefinition definition = new BouncingBallModel().Create();
+        ProgramDefinition definition = new ConcurrentDelays().Create();
         
         LabeledTransitionSystem lts =  tierOneLTSGenerator.Generate(LTSUtility.FromProgramDefinition(definition));
         
@@ -95,6 +95,8 @@ public class Main {
         genetator.AddSOSRule(new ContinuousBehaviorStatementRule());
         genetator.AddSOSRule(new DiscreteAssignmentRule());
         genetator.AddSOSRule(new IfStatementRule());
+        genetator.AddSOSRule(new ResumeStatementRule());
+
         
         return genetator;
     }
@@ -105,8 +107,8 @@ public class Main {
         
         genetator.AddSOSRule(new HighPriorityMessageTakeRule(tierTwoGenerator));
         genetator.AddSOSRule(new LowPriorityMessageTakeRule(tierTwoGenerator));
-        genetator.AddSOSRule(new ResumeStatementRule());
         genetator.AddSOSRule(new ContinuousBehaviorExpirationRule());
+        //genetator.AddSOSRule(new ResumeStatementRule(tierTwoGenerator));
         
         return genetator;
     }

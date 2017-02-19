@@ -9,10 +9,7 @@ package HPalang.Core;
  *
  * @author Iman Jahandideh
  */
-public class DiscreteVariable extends Variable
+public abstract class ContinuousExpression<T> extends Equalitable<T>
 {
-    public DiscreteVariable(String name)
-    {
-        super(name);
-    }
+    
 }

@@ -5,21 +5,24 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.Equalitable;
+
 /**
  *
  * @author Iman Jahandideh
  */
-public class TauLabel implements Label
+public class TauLabel extends Equalitable<TauLabel> implements Label
 {
-    @Override
-    public boolean equals(Object other)
+    private Reset reset = null;
+    
+    public TauLabel()
     {
-         if(other == null)
-            return false;
         
-        if (!this.getClass().isAssignableFrom(other.getClass()))
-            return false;
-        return true;
+    }
+    
+    public TauLabel(Reset reset)
+    {
+        this.reset = reset;    
     }
     
     @Override
@@ -29,7 +32,18 @@ public class TauLabel implements Label
     }
 
     @Override
-    public int hashCode()
+    protected boolean InternalEquals(TauLabel other)
+    {
+        if(this.reset == null && other.reset == null)
+            return true;
+        else if(this.reset == null || other.reset == null)
+            return false;
+        else
+            return other.reset.equals(this.reset);
+    }
+
+    @Override
+    protected int InternalHashCode()
     {
         int hash = 7;
         return hash;

@@ -7,7 +7,7 @@ package HPalang.HybridAutomataGeneration;
 
 import HPalang.Core.ProgramDefinition;
 import HPalang.HybridAutomataGeneration.SOSRules.TransitionSOSRule;
-import HPalang.LTSGeneration.ConditionalLabel;
+import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
@@ -74,7 +74,7 @@ public class HybridAutomatonGenerator
 //            transitionSystem.GetTransitions();       
 //    }
 
-    public void AddTransition(Location origin, ConditionalLabel label, Location destination)
+    public void AddTransition(Location origin, GuardedlLabel label, Location destination)
     {
         hybridAutomaton.AddTransition(origin, label, destination);
     }

@@ -20,7 +20,7 @@ public class MessageDropRule extends ActorLevelRule
      @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        if((actorState.StatementQueue().Head() instanceof SendStatement) == false || actorState.IsSuspended())
+        if((actorState.StatementQueue().Head() instanceof SendStatement) == false)
             return false;
         
         SendStatement sendStatement = (SendStatement)actorState.StatementQueue().Head();

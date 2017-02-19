@@ -3,21 +3,18 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.RunTimeStates;
+package HPalang.Core;
 
-import HPalang.Core.DiscreteVariable;
-import HPalang.Core.Equalitable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 import java.util.Map.Entry;
-import javafx.util.Pair;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ValuationMap extends EqualitableAndClonable<ValuationMap> implements Iterable<Entry<DiscreteVariable,Integer>>
+public class ValuationContainer extends EqualitableAndClonable<ValuationContainer> implements Iterable<Entry<DiscreteVariable,Integer>>
 {
     private Map<DiscreteVariable,Integer> values = new HashMap<>();
     
@@ -42,7 +39,7 @@ public class ValuationMap extends EqualitableAndClonable<ValuationMap> implement
     }
 
     @Override
-    protected boolean InternalEquals(ValuationMap other)
+    protected boolean InternalEquals(ValuationContainer other)
     {
         return values.equals(other.values);
     }
@@ -54,9 +51,9 @@ public class ValuationMap extends EqualitableAndClonable<ValuationMap> implement
     }
 
     @Override
-    public ValuationMap DeepCopy()
+    public ValuationContainer DeepCopy()
     {
-        ValuationMap copy = new ValuationMap();
+        ValuationContainer copy = new ValuationContainer();
         
         copy.values = new HashMap<>(values);
         

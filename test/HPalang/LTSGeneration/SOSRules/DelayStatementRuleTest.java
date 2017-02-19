@@ -18,6 +18,7 @@ import HPalang.LTSGeneration.TauLabel;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.ResumeStatement;
 import static HPalang.Core.Statement.StatementsFrom;
+import Mocks.EmptyStatement;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -47,7 +48,8 @@ public class DelayStatementRuleTest
        
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)
-                .EnqueueStatement(new DelayStatement(1.0f));
+                .EnqueueStatement(new DelayStatement(1.0f))
+                .EnqueueStatement(new EmptyStatement());
         
         globalState
                 .AddActorRunTimeState(actor1State);

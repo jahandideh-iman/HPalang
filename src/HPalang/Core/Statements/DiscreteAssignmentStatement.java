@@ -46,4 +46,9 @@ public class DiscreteAssignmentStatement extends AbstractStatement<DiscreteAssig
         return 1;
     }
     
+    @Override
+    public String toString()
+    {
+        return "Assign " + dVar.toString();
+    } 
 }

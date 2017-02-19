@@ -5,10 +5,13 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.EqualitableAndClonable;
+import HPalang.Core.ValuationContainer;
 import HPalang.Core.Actor;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Message;
 import HPalang.Core.Statement;
+import java.util.Map.Entry;
 
 /**
  *
@@ -27,11 +30,16 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
 
     private boolean isSuspended = false;
     private Queue<Statement> suspendedStatements = new Queue<>();
-    private ValuationMap valuations = new ValuationMap();
+    private ValuationContainer valuations = new ValuationContainer();
     
     public ActorRunTimeState(Actor actor)
     {
         this.actor = actor;
+        
+        actor.GetDiscreteVariables().entrySet().forEach((entry) -> {
+            valuations.Set(entry.getKey(), entry.getValue());
+        });
+        
     }
     
     public ContinuousBehaviorContianer ContinuousBehaviors()
@@ -79,12 +87,12 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
         return suspendedStatements;
     }
     
-    public ValuationMap Valuations()
+    public ValuationContainer Valuations()
     {
         return valuations;
     }
     
-    // TODO: Merge this with ValuationMap
+    // TODO: Merge this with ValuationContainer
     public boolean ValuationEqual(ActorRunTimeState other)
     {
         return this.isSuspended == other.isSuspended
@@ -119,7 +127,7 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
                 && this.highPriorityMessages.equals(other.highPriorityMessages)
                 && this.lowPriorityMessages.equals(other.lowPriorityMessages)
                 && this.statementQueue.equals(other.statementQueue)
-                && this.isSuspended == other.isSuspended;   
+                && this.ValuationEqual(other);
     }
 
     @Override

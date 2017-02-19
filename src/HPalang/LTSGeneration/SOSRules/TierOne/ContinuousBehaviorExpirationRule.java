@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.ConditionalLabel;
+import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
@@ -39,7 +39,7 @@ public class ContinuousBehaviorExpirationRule extends ActorLevelRule
             Message message = new MessageWithBody(behavior.GetActions());
             newActorState.HighPriorityMessageQueue().Enqueue(message);
             
-            generator.AddTransition(new ConditionalLabel(behavior.GetGuard()), newGlobalState);
+            generator.AddTransition(new GuardedlLabel(behavior.GetGuard()), newGlobalState);
         }
     }   
 }

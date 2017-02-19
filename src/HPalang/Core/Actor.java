@@ -20,7 +20,7 @@ public class Actor
     private final int capacity;
     private final Map<String,MessageHandler> messageHandlers = new HashMap<>();
     
-    private final Set<Variable> variables = new HashSet<>();
+    private final Map<DiscreteVariable, Integer> discreteVariables = new HashMap<>();
 
     public Actor(String name, int capacity)
     {
@@ -33,10 +33,15 @@ public class Actor
         handler.SetID(id);
         messageHandlers.put(id,handler);
     }
-    
-    public void AddVariable(Variable variable)
+     
+    public void AddDiscreteVariable(DiscreteVariable var, int initialValue)
     {
-        variables.add(variable);
+        discreteVariables.put(var, initialValue);
+    }
+    
+    public Map<DiscreteVariable, Integer> GetDiscreteVariables()
+    {
+        return discreteVariables;
     }
     
     public MessageHandler GetMessageHandler(String id)
@@ -58,5 +63,4 @@ public class Actor
     {
         return name+"_delay";
     }
-    
 }

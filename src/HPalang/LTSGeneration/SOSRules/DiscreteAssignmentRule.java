@@ -24,7 +24,7 @@ public class DiscreteAssignmentRule extends StatementRule<DiscreteAssignmentStat
     @Override
     protected void ApplyStatement(ActorRunTimeState actorState, DiscreteAssignmentStatement statement)
     {
-        actorState.Valuations().Set(statement.Variable(), statement.Expression().Evaluate());
+        actorState.Valuations().Set(statement.Variable(), statement.Expression().Evaluate(actorState.Valuations()));
     }
     
 }

@@ -5,7 +5,7 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.LTSGeneration.ConditionalLabel;
+import HPalang.LTSGeneration.GuardedlLabel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -50,7 +50,7 @@ public class HybridAutomaton
         return locations;
     }
     
-    public void AddTransition(Location origin,ConditionalLabel label, Location destination)
+    public void AddTransition(Location origin,GuardedlLabel label, Location destination)
     {
         Transition transtion = new Transition(origin,label,destination);
         if(transitions.contains(transtion))
@@ -65,7 +65,7 @@ public class HybridAutomaton
         return transitions;
     }
     
-    public boolean HasTransition(Location origin,ConditionalLabel label, Location destination)
+    public boolean HasTransition(Location origin,GuardedlLabel label, Location destination)
     {
         return transitions.contains(new Transition(origin, label, destination));
     }  

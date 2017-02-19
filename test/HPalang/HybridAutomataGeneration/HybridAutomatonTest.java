@@ -5,7 +5,7 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.LTSGeneration.ConditionalLabel;
+import HPalang.LTSGeneration.GuardedlLabel;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -43,8 +43,8 @@ public class HybridAutomatonTest
         automaton.AddLocation(loc1);
         automaton.AddLocation(Loc2);
         
-        automaton.AddTransition(loc1, new ConditionalLabel("Cond"), Loc2);
-        automaton.AddTransition(loc1, new ConditionalLabel("Cond"), Loc2);
+        automaton.AddTransition(loc1, new GuardedlLabel("Cond"), Loc2);
+        automaton.AddTransition(loc1, new GuardedlLabel("Cond"), Loc2);
         
         assertThat(automaton.GetTransitions().size(), equalTo(1));
     }

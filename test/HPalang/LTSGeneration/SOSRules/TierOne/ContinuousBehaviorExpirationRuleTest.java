@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules.TierOne;
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.Core.Actor;
-import HPalang.LTSGeneration.ConditionalLabel;
+import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.Core.Messages.MessageWithBody;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
@@ -59,7 +59,7 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         nextActorState2.ContinuousBehaviors().Remove(new ContinuousBehavior("inv2","ode2","guard2",StatementsFrom(new EmptyStatement())));
         nextActorState2.HighPriorityMessageQueue().Enqueue(new MessageWithBody(StatementsFrom(new EmptyStatement())));
 
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new ConditionalLabel("guard1"), nextGlobalState1));
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new ConditionalLabel("guard2"), nextGlobalState2));
+        assertTrue(generatedLTS.HasTransition(globalState.Build(), new GuardedlLabel("guard1"), nextGlobalState1));
+        assertTrue(generatedLTS.HasTransition(globalState.Build(), new GuardedlLabel("guard2"), nextGlobalState2));
     }
 }

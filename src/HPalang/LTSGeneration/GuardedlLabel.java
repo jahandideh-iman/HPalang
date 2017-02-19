@@ -10,18 +10,18 @@ package HPalang.LTSGeneration;
  *
  * @author Iman Jahandideh
  */
-public class ConditionalLabel implements Label
+public class GuardedlLabel implements Label
 {
-    private String condition;
+    private String guard;
     
-    public ConditionalLabel(String condition)
+    public GuardedlLabel(String guard)
     {
-        this.condition = condition;
+        this.guard = guard;
     }
     
-    public String GetCondition()
+    public String GetGuard()
     {
-        return condition;
+        return guard;
     }
     
     @Override
@@ -33,14 +33,14 @@ public class ConditionalLabel implements Label
         if (!this.getClass().isAssignableFrom(other.getClass()))
             return false;
             
-        ConditionalLabel otherL = (ConditionalLabel) other;
+        GuardedlLabel otherL = (GuardedlLabel) other;
         
-        return this.condition.equals(otherL.condition);
+        return this.guard.equals(otherL.guard);
     }
     
     @Override
     public String toString()
     {
-        return condition;
+        return guard;
     }
 }

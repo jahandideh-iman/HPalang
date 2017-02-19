@@ -55,7 +55,13 @@ public class IfStatement extends AbstractStatement<IfStatement>
     @Override
     protected int InternalHashCode()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 1;
+    }
+    
+    @Override
+    public String toString()
+    {
+        return "if";
     }
     
 }
