@@ -9,6 +9,7 @@ import HPalang.Convertors.HybridAutomatonToXMLConvertor;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Convertors.LTSToXMLConvertor;
 import HPalang.Core.Actor;
+import HPalang.Core.ContinuousVariable;
 import HPalang.Core.ProgramDefinition;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
@@ -19,7 +20,7 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.LTSUtility;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.TierOne.ContinuousBehaviorExpirationRule;
 import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorStatementRule;
 import HPalang.LTSGeneration.SOSRules.DelayStatementRule;
@@ -37,10 +38,18 @@ import HPalang.LTSGeneration.SOSRules.TierOne.HighPriorityMessageTakeRule;
 import HPalang.LTSGeneration.SOSRules.TierOne.LowPriorityMessageTakeRule;
 import HPalang.LTSGeneration.SOSRules.TierOne.MessageTakeRule;
 import HPalang.HybridAutomataGeneration.SOSRules.ResumeStatementRule;
+import HPalang.LTSGeneration.GuardedlLabel;
+import HPalang.LTSGeneration.Label;
+import HPalang.LTSGeneration.Reset;
+import HPalang.LTSGeneration.Trace;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  *
@@ -391,7 +400,8 @@ public class Main {
                     for(Transition outT: outTrans)
                         for(Transition inT : inTrans)
                         {
-                            lts.AddTransition(inT.GetOrign(), inT.GetLabel(), outT.GetDestination() );
+                            Label label = CreateLabelFor(inT.GetLabel(), outT.GetLabel());
+                            lts.AddTransition(inT.GetOrign(), label, outT.GetDestination() );
                             change = true;
                         }
                     lts.RemoveState(state);
@@ -404,4 +414,22 @@ public class Main {
                 break;
         }
     }
+    
+    static public Label CreateLabelFor(Label firstLabel, Label secondLabel)
+    {
+        Map<ContinuousVariable, Reset> resets = new HashMap<>();
+        
+        for(Reset re : (Set<Reset>)firstLabel.GetResets())
+                resets.put(re.Variable(), re);
+        
+        for(Reset re : (Set<Reset>)secondLabel.GetResets())
+                resets.put(re.Variable(), re);
+
+        if(firstLabel instanceof TauLabel)
+            return new TauLabel(new LinkedHashSet<>(resets.values()));
+        else
+          return new GuardedlLabel(((GuardedlLabel) firstLabel).GetGuard() ,new LinkedHashSet<>(resets.values()));  
+    }
 }
+
+  

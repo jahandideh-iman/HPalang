@@ -11,7 +11,7 @@ import HPalang.Core.Actor;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import org.junit.*;
 import static org.junit.Assert.*;

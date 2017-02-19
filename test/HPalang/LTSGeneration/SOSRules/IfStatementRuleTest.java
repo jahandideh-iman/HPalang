@@ -13,7 +13,7 @@ import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
 import HPalang.Core.Statements.IfStatement;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import Mocks.EmptyStatement;
 import org.junit.Test;

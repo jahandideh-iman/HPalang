@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration;
 
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;

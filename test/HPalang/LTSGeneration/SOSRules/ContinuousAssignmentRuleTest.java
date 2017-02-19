@@ -10,17 +10,10 @@ import Builders.ActorRunTimeStateBuilder;
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousExpressions.ConstantExpression;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DiscreteVariable;
-import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
-import HPalang.Core.Statements.DiscreteAssignmentStatement;
-import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.LTSGeneration.Reset;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -29,13 +22,13 @@ import org.junit.Before;
  *
  * @author Iman Jahandideh
  */
-public class ContinuousAssignmentTest extends SOSRuleTestFixture
+public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
 {
     
     @Before
     public void Setup()
     {
-        ltsGenerator.AddSOSRule(new ContinuousAssignment());
+        ltsGenerator.AddSOSRule(new ContinuousAssignmentRule());
     }
 
     @Test
@@ -59,7 +52,7 @@ public class ContinuousAssignmentTest extends SOSRuleTestFixture
         GlobalRunTimeState expectedState = globalState.Build();
         expectedState.FindActorState(actor).StatementQueue().Dequeue();
        
-        TauLabel label = new TauLabel(new Reset(cVar, new ConstantExpression(1.5f)));
+        TauLabel label = new TauLabel(Reset.ResetsFrom(new Reset(cVar, new ConstantExpression(1.5f))));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), label , expectedState));
     }
 }

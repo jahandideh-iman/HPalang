@@ -8,7 +8,6 @@ package HPalang.LTSGeneration;
 import HPalang.Core.Actor;
 import HPalang.Core.ProgramDefinition;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.Statements.SendStatement;
 
 /**

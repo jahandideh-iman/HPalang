@@ -9,7 +9,9 @@ import HPalang.Core.Actor;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.Trace;
+import HPalang.LTSGeneration.Transition;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -27,35 +29,64 @@ public class TierTwoLTSGeneratorHanlder
     }
     
     // TODO: Refactor and rename this Crap!
-    public List<GlobalRunTimeState> FindTracesWhereExecutedActorStatementsAreExecuted(Actor executedActor, GlobalRunTimeState rootGlobalState)
+    public List<Trace> FindTracesWhereExecutedActorStatementsAreExecuted(Actor executedActor, GlobalRunTimeState rootGlobalState)
     {
         LabeledTransitionSystem lts = tierTwoLTSGenerator.Generate(rootGlobalState);
-        List<GlobalRunTimeState> states = new LinkedList<>();
         
-        for(GlobalRunTimeState state : lts.GetStates())
+        List<Trace> validTraces = new LinkedList<>();
+        List<Trace> allTraces = GetTerminalTracesFrom(rootGlobalState,lts);
+        
+        for(Trace trace : allTraces)
         {
+            GlobalRunTimeState lastState = trace.GetLastState();
             boolean valid = true;
-            for(ActorRunTimeState actorState : state.GetActorStates())
+            for (ActorRunTimeState actorState : lastState.GetActorStates()) 
             {
-                if(actorState.GetActor() == executedActor)
+                if (actorState.GetActor() == executedActor) 
                 {
-                    if(actorState.StatementQueue().IsEmpty() == false)
-                        valid = false;
-                }
-                else
+                    if (actorState.StatementQueue().IsEmpty() == false)
+                        valid = false;    
+                } 
+                else 
                 {
                     ActorRunTimeState rootActorState = rootGlobalState.FindActorState(actorState.GetActor());
-                    if(actorState.StatementQueue().IsEmpty() == false || rootActorState.ValuationEqual(actorState) == false)
+                    if (actorState.StatementQueue().IsEmpty() == false || rootActorState.ValuationEqual(actorState) == false)
                         valid = false;
                 }
-                    
             }
-            
             if(valid)
-                states.add(state);
+                validTraces.add(trace);
         }
         
-        return states;
+        return validTraces;
+    }
+    
+    
+    private List<Trace> GetTerminalTracesFrom(GlobalRunTimeState state , LabeledTransitionSystem ts)
+    {
+        List<Trace> traces = new LinkedList<>();
+        
+        
+        List<Transition> outTrans =  ts.GetOutTransitionsFor(state);
+        
+        if(outTrans.isEmpty())
+            traces.add(new Trace(state));
+        else
+        {
+            for(Transition tr : outTrans)
+            {
+                List<Trace> outTraces = GetTerminalTracesFrom(tr.GetDestination(), ts);
+                for(Trace outTrace : outTraces)
+                {
+                    Trace trace = new Trace(outTrace);
+                    trace.InsertTransition(tr,0);
+                    trace.InsertState(state,0);
+                    traces.add(trace);
+                }
+            }
+        }
+     
+        return traces;
     }
     
 }

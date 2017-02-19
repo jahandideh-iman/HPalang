@@ -21,11 +21,14 @@ public class Actor
     private final Map<String,MessageHandler> messageHandlers = new HashMap<>();
     
     private final Map<DiscreteVariable, Integer> discreteVariables = new HashMap<>();
+    
+    private ContinuousVariable delayVariable;
 
     public Actor(String name, int capacity)
     {
         this.name = name;
         this.capacity = capacity;
+        delayVariable = new ContinuousVariable(name+"_delay");
     }
     
     public void AddMessageHandler(String id,MessageHandler handler)
@@ -59,8 +62,8 @@ public class Actor
         return name;
     }
     
-    public String GetDelayVariableName()
+    public ContinuousVariable GetDelayVariable()
     {
-        return name+"_delay";
+        return delayVariable;
     }
 }

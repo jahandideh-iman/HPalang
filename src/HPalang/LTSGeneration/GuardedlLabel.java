@@ -5,17 +5,25 @@
  */
 package HPalang.LTSGeneration;
 
+import java.util.Set;
+
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class GuardedlLabel implements Label
+public class GuardedlLabel extends Label<GuardedlLabel>
 {
-    private String guard;
+    private final String guard;
     
     public GuardedlLabel(String guard)
     {
+        this.guard = guard;
+    }
+    
+    public GuardedlLabel(String guard, Set<Reset> resets)
+    {
+        super(resets);
         this.guard = guard;
     }
     
@@ -23,24 +31,23 @@ public class GuardedlLabel implements Label
     {
         return guard;
     }
-    
-    @Override
-    public boolean equals(Object other)
-    {
-         if(other == null)
-            return false;
-        
-        if (!this.getClass().isAssignableFrom(other.getClass()))
-            return false;
-            
-        GuardedlLabel otherL = (GuardedlLabel) other;
-        
-        return this.guard.equals(otherL.guard);
-    }
-    
+      
     @Override
     public String toString()
     {
         return guard;
+    }
+
+    @Override
+    protected boolean InternalEquals(GuardedlLabel other)
+    {
+        return this.guard.equals(other.guard)
+                && other.GetResets().equals(this.resets);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return guard.hashCode();
     }
 }

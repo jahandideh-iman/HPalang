@@ -6,15 +6,26 @@
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
 import HPalang.Core.Actor;
+import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Message;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.Reset;
 import HPalang.LTSGeneration.SOSRules.ActorLevelRule;
 import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Trace;
+import HPalang.LTSGeneration.Transition;
+import java.beans.Transient;
+import java.util.Dictionary;
+import java.util.HashMap;
+import java.util.Hashtable;
+import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -57,10 +68,26 @@ public abstract class MessageTakeRule extends ActorLevelRule
         
         newActorState.StatementQueue().Enqueue(DequeuMessage(newActorState).GetMessageBody());
         
-        List<GlobalRunTimeState> outputs = tierTwoHanlder.FindTracesWhereExecutedActorStatementsAreExecuted(actorState.GetActor(), newGlobalState);
+        List<Trace> traces = tierTwoHanlder.FindTracesWhereExecutedActorStatementsAreExecuted(actorState.GetActor(), newGlobalState);
 
-        for(GlobalRunTimeState state : outputs)
-            generator.AddTransition(new TauLabel(), state);
+        for(Trace trace : traces)
+        {
+            TauLabel label = GetLabelFor(trace);
+            generator.AddTransition(label, trace.GetLastState());
+        }
+    }
+    
+    private TauLabel GetLabelFor(Trace trace)
+    {
+        Map<ContinuousVariable, Reset> resets = new HashMap<>();
+        
+        for(Transition tr : trace.GetTransitions())
+        {
+            for(Reset re : (Set<Reset>)tr.GetLabel().GetResets())
+                resets.put(re.Variable(), re);
+        }
+        
+        return new TauLabel(new LinkedHashSet<>(resets.values()));
     }
    
 }

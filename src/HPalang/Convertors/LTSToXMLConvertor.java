@@ -10,7 +10,7 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.Core.Message;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.GlobalRunTimeState;
 import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Statement;
 import java.util.Map.Entry;

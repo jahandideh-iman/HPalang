@@ -6,23 +6,23 @@
 package HPalang.LTSGeneration;
 
 import HPalang.Core.Equalitable;
+import java.util.List;
+import java.util.Set;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class TauLabel extends Equalitable<TauLabel> implements Label
-{
-    private Reset reset = null;
-    
+public class TauLabel extends Label<TauLabel>
+{  
     public TauLabel()
     {
         
     }
     
-    public TauLabel(Reset reset)
+    public TauLabel(Set<Reset> resets) 
     {
-        this.reset = reset;    
+        super(resets);
     }
     
     @Override
@@ -34,12 +34,7 @@ public class TauLabel extends Equalitable<TauLabel> implements Label
     @Override
     protected boolean InternalEquals(TauLabel other)
     {
-        if(this.reset == null && other.reset == null)
-            return true;
-        else if(this.reset == null || other.reset == null)
-            return false;
-        else
-            return other.reset.equals(this.reset);
+        return other.GetResets().equals(this.resets);
     }
 
     @Override

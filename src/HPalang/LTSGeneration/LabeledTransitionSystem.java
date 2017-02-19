@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration;
 
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -104,7 +103,6 @@ public class LabeledTransitionSystem
         for(Transition transition : GetInTransitionFor(state))
             RemoveTranstion(transition);
         states.remove(state);
-
     }
-
+    
 }

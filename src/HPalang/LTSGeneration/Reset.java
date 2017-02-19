@@ -8,6 +8,13 @@ package HPalang.LTSGeneration;
 import HPalang.Core.ContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Equalitable;
+import HPalang.Core.Statement;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
+import java.util.Set;
 
 /**
  *
@@ -34,5 +41,15 @@ public class Reset extends Equalitable<Reset>
     protected int InternalHashCode()
     {
         return variable.hashCode()+ expression.hashCode();
+    }
+    
+    public ContinuousVariable Variable()
+    {
+        return variable;
+    }
+    
+    static public Set<Reset> ResetsFrom(Reset ...resets)
+    {
+        return new LinkedHashSet<>(Arrays.asList(resets));
     }
 }

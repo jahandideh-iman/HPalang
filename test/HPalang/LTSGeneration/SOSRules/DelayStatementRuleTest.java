@@ -9,15 +9,17 @@ import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;
+import HPalang.Core.ContinuousExpressions.ConstantExpression;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.ResumeStatement;
 import static HPalang.Core.Statement.StatementsFrom;
+import HPalang.LTSGeneration.Reset;
 import Mocks.EmptyStatement;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -63,14 +65,17 @@ public class DelayStatementRuleTest
         stateAfterActor1Delay_Actor1.SuspendedStatements().Enqueue(stateAfterActor1Delay_Actor1.StatementQueue());
         stateAfterActor1Delay_Actor1.StatementQueue().Clear();
         stateAfterActor1Delay_Actor1.SetSuspended(true);
-        String actor1DelayVar = actor1.GetDelayVariableName();
+        String actor1DelayVar = actor1.GetDelayVariable().Name();
         stateAfterActor1Delay_Actor1.ContinuousBehaviors().Add(new ContinuousBehavior(
                 actor1DelayVar+"<="+1.0f 
                 , actor1DelayVar+"'=1"
                 , actor1DelayVar+"=="+1.0f
                 , StatementsFrom(new ResumeStatement())));
+        
+        TauLabel label = new TauLabel(Reset.ResetsFrom(
+                new Reset(actor1.GetDelayVariable(), new ConstantExpression(0f))));
 
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterActor1Delay));
+        assertTrue(generatedLTS.HasTransition(globalState.Build(), label, stateAfterActor1Delay));
     }
     
 }

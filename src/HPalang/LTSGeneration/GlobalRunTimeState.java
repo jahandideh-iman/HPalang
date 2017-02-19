@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.RunTimeStates;
+package HPalang.LTSGeneration;
 
 import HPalang.Core.EqualitableAndClonable;
 import HPalang.Core.Actor;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;

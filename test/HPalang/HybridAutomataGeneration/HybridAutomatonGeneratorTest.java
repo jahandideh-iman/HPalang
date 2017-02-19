@@ -10,7 +10,7 @@ import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;
 import HPalang.HybridAutomataGeneration.Mocks.TransitionSOSRuleMonitor;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.LTSGeneration.Transition;
 import Mocks.SOSRuleMock;

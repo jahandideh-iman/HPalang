@@ -8,7 +8,6 @@ package HPalang.LTSGeneration;
 import HPalang.Core.Actor;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.Statement;
 import Mocks.EmptyMessage;
 import Mocks.EmptyStatement;

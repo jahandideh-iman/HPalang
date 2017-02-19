@@ -5,11 +5,31 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.Equalitable;
+import java.util.LinkedHashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 /**
  *
  * @author Iman Jahandideh
  */
-public interface Label
+public abstract class Label<T extends Label> extends Equalitable<T> 
 {
+    protected Set<Reset> resets = new LinkedHashSet<>();
     
+    public Label()
+    {
+    }
+    
+    public Label(Set<Reset> resets)
+    {
+        this.resets.addAll(resets);
+    }
+    
+    public Set<Reset> GetResets()
+    {
+        return resets;
+    }
 }
