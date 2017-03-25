@@ -8,12 +8,17 @@ package HPalang.SpaceEx.Convertor;
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.MessageHandler;
+import HPalang.Core.Statement;
+import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
+import HPalang.SpaceEx.Core.Invarient;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  *
@@ -22,11 +27,15 @@ import java.util.Map;
 public class ActorModelData
 {
 
-    private List<String> receiveLabels = new LinkedList<>();
+    private Set<String> receiveLabels = new HashSet<>();
     private List<String> handlersName = new LinkedList<>();
     private List<ContinuousBehavior> continuousBehaviors = new LinkedList<>();
+    private Map<ContinuousBehavior,String> cBehaviorsID = new HashMap<>();
 
     private Map<String, List<String>> handlersReceiveLabelMap = new HashMap<>();
+    
+    private Set<String> sendLabels = new HashSet<>();
+    private Map<SendStatement, String> sendLabelsMap = new HashMap<>();
 
     private Actor actor;
 
@@ -37,6 +46,7 @@ public class ActorModelData
         {
             handlersName.add(handler.GetID());
             handlersReceiveLabelMap.put(handler.GetID(), new LinkedList<>());
+               
         }
     }
     
@@ -48,6 +58,11 @@ public class ActorModelData
     public String CreateTakeLabel(String handler)
     {
         return "Take_" + handler;
+    }
+    
+    public String GetUrgentVar()
+    {
+        return "urg";
     }
 
     public void AddReceiveLabel(String label, String handler)
@@ -71,6 +86,21 @@ public class ActorModelData
     {
         return handlersName;
     }
+    
+    void AddSendLabel(SendStatement stat, String sendLabel)
+    {
+        sendLabels.add(sendLabel);
+        sendLabelsMap.put(stat, sendLabel);
+    }
+    public Collection<String> GetSendLables()
+    {
+        return sendLabels;
+    }
+    
+    String GetSendLabelFor(SendStatement statement)
+    {
+        return sendLabelsMap.get(statement);
+    }
 
     public Collection<ContinuousBehavior> GetContinuousBehaviors()
     {
@@ -80,10 +110,37 @@ public class ActorModelData
     public void AddContinuousBehavior(ContinuousBehavior behavior)
     {
         continuousBehaviors.add(behavior);
+        cBehaviorsID.put(behavior, String.valueOf(continuousBehaviors.size()));
     }
 
     public Collection<ContinuousVariable> GetContinuousVariables()
     {
-        return actor.GetContinuousVariables().keySet();
+        return actor.GetContinuousVariables();
     }
+
+    public String GetUrgentInvarient()
+    {
+        return GetUrgentVar() + " == 0";
+    }
+
+    public String GetUrgentGuard()
+    {
+        return GetUrgentVar() + "== 0";
+    }
+    
+    public String GetUrgentFlow()
+    {
+        return GetUrgentVar()+"'" + " == 1";
+    }
+
+    String GetUrgentReset()
+    {
+        return GetUrgentVar() + ":= 0";
+    }
+
+    String GetStartLabelFor(ContinuousBehavior behavior)
+    {
+        return "Start_CB_" + cBehaviorsID.get(behavior);
+    }
+
 }

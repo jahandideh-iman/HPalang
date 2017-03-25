@@ -44,14 +44,22 @@ public class HPalangModelData
                     if(stat instanceof SendStatement)
                     {
                         SendStatement sendStat = (SendStatement) stat;
-                        String label;
+                        String receiveLabel;
+                        String sendLabel;
                         String sentHandler = sendStat.GetMessage().toString();
                         if(sendStat.GetReceiver() != actor)
-                            label = "Recieve_"+ actor.GetName() + "_" + sentHandler;
+                        {
+                            receiveLabel = "Recieve_"+ actor.GetName() + "_" + sentHandler;
+                            sendLabel = "Send_" + sendStat.GetReceiver().GetName() + "_" + sentHandler;
+                        }
                         else
-                            label = "Recieve_"+ "self" + "_" + sentHandler;
+                        {
+                            receiveLabel = "Recieve_"+ "self" + "_" + sentHandler;
+                            sendLabel = "Send_" +"self"+ "_" + sentHandler;
+                        }
                         
-                        GetActorData(sendStat.GetReceiver()).AddReceiveLabel(label, sentHandler);
+                        GetActorData(sendStat.GetReceiver()).AddReceiveLabel(receiveLabel, sentHandler);
+                        GetActorData(actor).AddSendLabel(sendStat, sendLabel);
                     }
                     if(stat instanceof ContinuousBehaviorStatement)
                     {

@@ -6,12 +6,14 @@
 package HPalang;
 
 import HPalang.Core.Actor;
+import HPalang.Core.ContinuousExpressions.ConstantExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.ProgramDefinition;
 import HPalang.Core.Statement;
+import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.SendStatement;
@@ -30,7 +32,8 @@ public class SimpleModel
         Actor actorA = new Actor("A",1);        
         Actor actorB = new Actor("B",1);
         
-        actorA.AddContinuousVariable(new ContinuousVariable("timer"), 0);
+        ContinuousVariable A_timer = new ContinuousVariable("timer");
+        actorA.AddContinuousVariable(A_timer, 0);
         
         MessageHandler handler_a1 = new MessageHandler();  
         MessageHandler handler_a2 = new MessageHandler();        
@@ -44,6 +47,7 @@ public class SimpleModel
         actorB.AddMessageHandler("b1",handler_b1);
         
         handler_a1.AddStatement(new DelayStatement(1.0f));
+        handler_a1.AddStatement(new ContinuousAssignmentStatement(A_timer, new ConstantExpression(0.0f)));
         handler_a1.AddStatement(
                 new ContinuousBehaviorStatement(
                         new ContinuousBehavior(

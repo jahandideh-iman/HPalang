@@ -52,9 +52,9 @@ public class Actor
         return discreteVariables;
     }
     
-    public Map<ContinuousVariable, Float> GetContinuousVariables()
+    public Collection<ContinuousVariable> GetContinuousVariables()
     {
-        return continuousVariables;
+        return continuousVariables.keySet();
     }
     
     public MessageHandler GetMessageHandler(String id)

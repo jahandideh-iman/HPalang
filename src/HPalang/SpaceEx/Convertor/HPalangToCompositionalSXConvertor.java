@@ -130,7 +130,7 @@ public class HPalangToCompositionalSXConvertor
         bLoc.AddInvarient(new Invarient(cb.GetInvarient()));
         comp.AddTransition(idleLoc, new HybridLabel().SetSyncLabel("start"), bLoc);
         
-        HybridTransition trans =  new StatementToLocationConvertor(cb.GetActions(), actorData.GetActor(), bLoc, comp, "s").ConvertStatementChain();
+        HybridTransition trans =  new StatementToLocationConvertor(cb.GetActions(), actorData, bLoc, comp, "s").ConvertStatementChain();
         
         trans.GetLabel().AddGuard(cb.GetGuard());
         
@@ -141,11 +141,22 @@ public class HPalangToCompositionalSXConvertor
     
     private BaseComponent CreateHandlers(Actor actor)
     {
+        ActorModelData actorData = hpalangModelData.GetActorData(actor);
         BaseComponent comp = new BaseComponent(actor.GetName()+"_Handlers");
         
         Location idleLoc = new Location("idle");
         comp.AddLocation(idleLoc);
+        comp.AddParameter(new RealParameter("urg", true));
         comp.AddParameter(new RealParameter(actor.GetDelayVariable().Name(), false));
+        
+        for(ContinuousVariable var : actor.GetContinuousVariables())
+            comp.AddParameter(new RealParameter(var.Name(), false));
+        
+        for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
+            comp.AddParameter(new LabelParameter(actorData.GetStartLabelFor(cb), false));
+        
+        for(String sendLables : actorData.GetSendLables())
+            comp.AddParameter(new LabelParameter(sendLables, false));
         
         for(MessageHandler handler : actor.GetMessageHandlers())
         {
@@ -154,7 +165,7 @@ public class HPalangToCompositionalSXConvertor
             
             
             StatementToLocationConvertor statementsConvertor = 
-                    new StatementToLocationConvertor(handler.GetBody(), actor, idleLoc, comp, handler.GetID());
+                    new StatementToLocationConvertor(handler.GetBody(), hpalangModelData.GetActorData(actor), idleLoc, comp, handler.GetID());
             
             HybridTransition firstTrans = statementsConvertor.ConvertStatementChain();
             firstTrans.GetLabel().SetSyncLabel(takeLabel);
