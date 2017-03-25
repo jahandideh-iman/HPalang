@@ -57,6 +57,7 @@ import java.util.Set;
  */
 public class Main {
 
+    
     // TODO: ------------------------- REFACTOR THIS -------------------------------
     /**
      * @param args the command line arguments
@@ -68,7 +69,7 @@ public class Main {
         HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
         hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
         
-        ProgramDefinition definition = new ConcurrentDelays().Create();
+        ProgramDefinition definition = new DrawBridge().Create();
         
         LabeledTransitionSystem lts =  tierOneLTSGenerator.Generate(LTSUtility.FromProgramDefinition(definition));
         
@@ -79,7 +80,7 @@ public class Main {
         
         PrioritizeTauActions(lts);
         RemoveUnreachableStates(lts);
-        RemoveTauLabels(lts);
+        //RemoveTauLabels(lts);
         
         HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts);
         

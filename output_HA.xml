@@ -1,34 +1,191 @@
 <DMEComponent type="FiniteStateMachine" ><States>
        <State  >
+           <Name>timer&lt;=d
+timer&apos;=1</Name>
+       </State>
+       <State  >
+           <Name>degree&lt;=90
+degree&apos;=degree/10+5</Name>
+       </State>
+       <State  >
+           <Name>CarDispatcher1_delay&lt;=1.0&amp;&amp;degree&gt;=0
+degree&apos;=-10&amp;&amp;CarDispatcher1_delay&apos;=1</Name>
+       </State>
+       <State  >
+           <Name>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</Name>
+       </State>
+       <State  >
+           <Name>degree&lt;=90&amp;&amp;CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1&amp;&amp;degree&apos;=degree/10+5</Name>
+       </State>
+       <State  >
            <Name>
 </Name>
        </State>
        <State  >
-           <Name>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</Name>
+           <Name>timer&lt;=d&amp;&amp;CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1&amp;&amp;timer&apos;=1</Name>
+       </State>
+       <State  >
+           <Name>degree&gt;=0
+degree&apos;=-10</Name>
        </State>
 </States>
 <Transitions>
 	<Transition>
 		<From>
 </From>
-		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
+		<To>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</To>
 		<Condition>true</Condition>
 	</Transition>
 	<Transition>
-		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
-		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
-		<Condition>A_delay==1.0</Condition>
+		<From>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</From>
+		<To>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</To>
+		<Condition>true</Condition>
 	</Transition>
 	<Transition>
-		<From>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</From>
-		<To>A_delay&lt;=1.0&amp;&amp;B_delay&lt;=1.0
-A_delay&apos;=1&amp;&amp;B_delay&apos;=1</To>
-		<Condition>B_delay==1.0</Condition>
+		<From>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</From>
+		<To>CarDispatcher1_delay&lt;=1.0&amp;&amp;degree&gt;=0
+degree&apos;=-10&amp;&amp;CarDispatcher1_delay&apos;=1</To>
+		<Condition>true</Condition>
+	</Transition>
+	<Transition>
+		<From>CarDispatcher1_delay&lt;=1.0&amp;&amp;degree&gt;=0
+degree&apos;=-10&amp;&amp;CarDispatcher1_delay&apos;=1</From>
+		<To>degree&gt;=0
+degree&apos;=-10</To>
+		<Condition>CarDispatcher1_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>CarDispatcher1_delay&lt;=1.0&amp;&amp;degree&gt;=0
+degree&apos;=-10&amp;&amp;CarDispatcher1_delay&apos;=1</From>
+		<To>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</To>
+		<Condition>degree==0</Condition>
+	</Transition>
+	<Transition>
+		<From>degree&gt;=0
+degree&apos;=-10</From>
+		<To>degree&gt;=0
+degree&apos;=-10</To>
+		<Condition>true</Condition>
+	</Transition>
+	<Transition>
+		<From>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</From>
+		<To>timer&lt;=d&amp;&amp;CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1&amp;&amp;timer&apos;=1</To>
+		<Condition>true</Condition>
+	</Transition>
+	<Transition>
+		<From>timer&lt;=d&amp;&amp;CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1&amp;&amp;timer&apos;=1</From>
+		<To>timer&lt;=d
+timer&apos;=1</To>
+		<Condition>CarDispatcher1_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>timer&lt;=d&amp;&amp;CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1&amp;&amp;timer&apos;=1</From>
+		<To>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</To>
+		<Condition>timer==d</Condition>
+	</Transition>
+	<Transition>
+		<From>degree&gt;=0
+degree&apos;=-10</From>
+		<To>
+</To>
+		<Condition>degree==0</Condition>
+	</Transition>
+	<Transition>
+		<From>timer&lt;=d
+timer&apos;=1</From>
+		<To>timer&lt;=d
+timer&apos;=1</To>
+		<Condition>true</Condition>
+	</Transition>
+	<Transition>
+		<From>
+</From>
+		<To>
+</To>
+		<Condition>true</Condition>
+	</Transition>
+	<Transition>
+		<From>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</From>
+		<To>degree&lt;=90&amp;&amp;CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1&amp;&amp;degree&apos;=degree/10+5</To>
+		<Condition>true</Condition>
+	</Transition>
+	<Transition>
+		<From>
+</From>
+		<To>timer&lt;=d
+timer&apos;=1</To>
+		<Condition>true</Condition>
+	</Transition>
+	<Transition>
+		<From>degree&lt;=90&amp;&amp;CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1&amp;&amp;degree&apos;=degree/10+5</From>
+		<To>degree&lt;=90
+degree&apos;=degree/10+5</To>
+		<Condition>CarDispatcher1_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>degree&lt;=90&amp;&amp;CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1&amp;&amp;degree&apos;=degree/10+5</From>
+		<To>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</To>
+		<Condition>degree==90</Condition>
+	</Transition>
+	<Transition>
+		<From>timer&lt;=d
+timer&apos;=1</From>
+		<To>
+</To>
+		<Condition>timer==d</Condition>
+	</Transition>
+	<Transition>
+		<From>degree&lt;=90
+degree&apos;=degree/10+5</From>
+		<To>degree&lt;=90
+degree&apos;=degree/10+5</To>
+		<Condition>true</Condition>
+	</Transition>
+	<Transition>
+		<From>CarDispatcher1_delay&lt;=1.0
+CarDispatcher1_delay&apos;=1</From>
+		<To>
+</To>
+		<Condition>CarDispatcher1_delay==1.0</Condition>
+	</Transition>
+	<Transition>
+		<From>degree&lt;=90
+degree&apos;=degree/10+5</From>
+		<To>
+</To>
+		<Condition>degree==90</Condition>
+	</Transition>
+	<Transition>
+		<From>
+</From>
+		<To>degree&lt;=90
+degree&apos;=degree/10+5</To>
+		<Condition>true</Condition>
+	</Transition>
+	<Transition>
+		<From>
+</From>
+		<To>degree&gt;=0
+degree&apos;=-10</To>
+		<Condition>true</Condition>
 	</Transition>
 </Transitions>
 <InitialState>

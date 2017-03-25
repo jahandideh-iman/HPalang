@@ -75,6 +75,7 @@ public class VendingMachine
                 , Statement.StatementsFrom(new SendStatement(Machine, new NormalMessage(hanlder_Machine_PrepareTea)), new DiscreteAssignmentStatement(user_OrderType, new ConstantDiscreteExpression(1)))
         ));
         
+        hanlder_User_RecieveOrder.AddStatement(new DelayStatement(1.0f));
         hanlder_User_RecieveOrder.AddStatement(new SendStatement(User,new NormalMessage(hanlder_User_Order)));
         
         hanlder_Machine_PrepareTea.AddStatement(new DiscreteAssignmentStatement(machine_OrderType, new ConstantDiscreteExpression(0)));

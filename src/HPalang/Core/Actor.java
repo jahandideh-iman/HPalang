@@ -5,10 +5,9 @@
  */
 package HPalang.Core;
 
+import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -21,6 +20,7 @@ public class Actor
     private final Map<String,MessageHandler> messageHandlers = new HashMap<>();
     
     private final Map<DiscreteVariable, Integer> discreteVariables = new HashMap<>();
+    private final Map<ContinuousVariable, Float> continuousVariables = new HashMap<>();
     
     private ContinuousVariable delayVariable;
 
@@ -42,14 +42,29 @@ public class Actor
         discreteVariables.put(var, initialValue);
     }
     
+    public void AddContinuousVariable(ContinuousVariable var, float initialValue)
+    {
+        continuousVariables.put(var, initialValue);
+    }
+    
     public Map<DiscreteVariable, Integer> GetDiscreteVariables()
     {
         return discreteVariables;
     }
     
+    public Map<ContinuousVariable, Float> GetContinuousVariables()
+    {
+        return continuousVariables;
+    }
+    
     public MessageHandler GetMessageHandler(String id)
     {
         return messageHandlers.get(id);
+    }
+    
+    public Collection<MessageHandler> GetMessageHandlers()
+    {
+        return messageHandlers.values();
     }
     
     public int GetCapacity()

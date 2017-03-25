@@ -5,8 +5,11 @@
  */
 package Builders;
 
+import HPalang.Core.Actor;
 import HPalang.Core.MainBlock;
 import HPalang.Core.ProgramDefinition;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -14,11 +17,21 @@ import HPalang.Core.ProgramDefinition;
  */
 public class ProgramDefinitionBuilder
 {
-    public static ProgramDefinition EmptyProgram()
+    private List<Actor> actors = new LinkedList<>();
+    public ProgramDefinitionBuilder With(Actor actor)
     {
-        ProgramDefinition emptyProgram = new ProgramDefinition();
-        emptyProgram.SetMainBlock(new MainBlock());
-        
-        return emptyProgram;
+        actors.add(actor);
+        return this;
     }
+    
+    public ProgramDefinition Build()
+    {
+        ProgramDefinition def = new ProgramDefinition();
+        
+        for(Actor actor : actors)
+            def.AddActor(actor);
+        
+        return def;
+    }
+
 }
