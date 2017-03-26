@@ -143,4 +143,26 @@ public class ActorModelData
         return "Start_CB_" + cBehaviorsID.get(behavior);
     }
 
+    String GetLockVar()
+    {
+        return "lock";
+    }
+
+    String GetLockReleaseReset()
+    {
+        return GetLockVar() + ":= 0";
+    }
+    
+    String GetLockGainReset()
+    {
+        return GetLockVar() + ":= 1";
+    }
+
+    String GetLockGainGuard()
+    {
+        return GetLockVar() + "== 0";
+    }
+
+
+
 }

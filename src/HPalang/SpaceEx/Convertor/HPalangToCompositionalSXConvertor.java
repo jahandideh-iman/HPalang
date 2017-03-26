@@ -130,12 +130,12 @@ public class HPalangToCompositionalSXConvertor
         bLoc.AddInvarient(new Invarient(cb.GetInvarient()));
         comp.AddTransition(idleLoc, new HybridLabel().SetSyncLabel("start"), bLoc);
         
-        HybridTransition trans =  new StatementToLocationConvertor(cb.GetActions(), actorData, bLoc, comp, "s").ConvertStatementChain();
+        StatementToLocationConvertor convertor = new StatementToLocationConvertor(cb.GetActions(), actorData, bLoc, comp, "s");
+        convertor.ConvertStatementChain();
+        HybridTransition trans =  convertor.GetFirstTransition();
         
         trans.GetLabel().AddGuard(cb.GetGuard());
-        
-        comp.AddTransition(trans);
-        
+
         return comp;
     }
     
@@ -146,8 +146,10 @@ public class HPalangToCompositionalSXConvertor
         
         Location idleLoc = new Location("idle");
         comp.AddLocation(idleLoc);
-        comp.AddParameter(new RealParameter("urg", true));
+        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true)); 
+        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
         comp.AddParameter(new RealParameter(actor.GetDelayVariable().Name(), false));
+        
         
         for(ContinuousVariable var : actor.GetContinuousVariables())
             comp.AddParameter(new RealParameter(var.Name(), false));
@@ -167,10 +169,10 @@ public class HPalangToCompositionalSXConvertor
             StatementToLocationConvertor statementsConvertor = 
                     new StatementToLocationConvertor(handler.GetBody(), hpalangModelData.GetActorData(actor), idleLoc, comp, handler.GetID());
             
-            HybridTransition firstTrans = statementsConvertor.ConvertStatementChain();
+            statementsConvertor.ConvertStatementChain();
+            HybridTransition firstTrans = statementsConvertor.GetFirstTransition();
             firstTrans.GetLabel().SetSyncLabel(takeLabel);
             
-            comp.AddTransition(firstTrans);
             
         }
         

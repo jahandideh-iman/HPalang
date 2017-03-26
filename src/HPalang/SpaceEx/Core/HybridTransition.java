@@ -21,4 +21,9 @@ public class HybridTransition extends Transition<Location, HybridLabel> implemen
     {
         visitor.Visit(this);
     }
+    
+    static public HybridTransition CreateEmpty(Location origin, Location destination)
+    {
+        return new HybridTransition(origin, new HybridLabel(), destination);
+    }
 }
