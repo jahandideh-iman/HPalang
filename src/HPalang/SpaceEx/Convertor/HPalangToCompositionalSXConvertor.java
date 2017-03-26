@@ -46,7 +46,7 @@ public class HPalangToCompositionalSXConvertor
     {
         hpalangModelData = new HPalangModelData(def);
         for(Actor actor : def.GetActors())
-            Convert(actor);
+            Convert(hpalangModelData.GetActorData(actor));
         
         NetworkComponent system = CreateSystem();
         model.AddComponent(system);
@@ -59,17 +59,14 @@ public class HPalangToCompositionalSXConvertor
         return new NetworkComponent("System");
     }
     
-    public void Convert(Actor actor)
-    {
-        ActorModelData actorData = hpalangModelData.GetActorData(actor);
+    public void Convert(ActorModelData actorData)
+    {              
+        NetworkComponent actorComp = new NetworkComponent(actorData.GetName()+"_Actor");
         
-                
-        NetworkComponent actorComp = new NetworkComponent(actor.GetName()+"_Actor");
-        
-        BaseComponent handlers = CreateHandlers(actor);
-        BaseComponent queue = CreateQueue(actor);
+        BaseComponent handlers = CreateHandlers(actorData);
+        BaseComponent queue = CreateQueue(actorData);
 
-        BaseComponent vars = CreateVars(actor);
+        BaseComponent vars = CreateVars(actorData);
         
         int i = 0;
         for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
@@ -139,19 +136,18 @@ public class HPalangToCompositionalSXConvertor
         return comp;
     }
     
-    private BaseComponent CreateHandlers(Actor actor)
+    private BaseComponent CreateHandlers(ActorModelData actorData)
     {
-        ActorModelData actorData = hpalangModelData.GetActorData(actor);
-        BaseComponent comp = new BaseComponent(actor.GetName()+"_Handlers");
+        BaseComponent comp = new BaseComponent(actorData.GetName()+"_Handlers");
         
         Location idleLoc = new Location("idle");
         comp.AddLocation(idleLoc);
+        
         comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true)); 
         comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
-        comp.AddParameter(new RealParameter(actor.GetDelayVariable().Name(), false));
+        comp.AddParameter(new RealParameter(actorData.GetDelayVar(), false));
         
-        
-        for(ContinuousVariable var : actor.GetContinuousVariables())
+        for(ContinuousVariable var : actorData.GetContinuousVariables())
             comp.AddParameter(new RealParameter(var.Name(), false));
         
         for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
@@ -160,29 +156,29 @@ public class HPalangToCompositionalSXConvertor
         for(String sendLables : actorData.GetSendLables())
             comp.AddParameter(new LabelParameter(sendLables, false));
         
-        for(MessageHandler handler : actor.GetMessageHandlers())
-        {
-            String takeLabel = "Take_"+handler.GetID();
-            comp.AddParameter(new LabelParameter(takeLabel, false));
-            
-            
-            StatementToLocationConvertor statementsConvertor = 
-                    new StatementToLocationConvertor(handler.GetBody(), hpalangModelData.GetActorData(actor), idleLoc, comp, handler.GetID());
-            
-            statementsConvertor.ConvertStatementChain();
-            HybridTransition firstTrans = statementsConvertor.GetFirstTransition();
-            firstTrans.GetLabel().SetSyncLabel(takeLabel);
-            
-            
-        }
+        for(MessageHandler handler : actorData.GetActor().GetMessageHandlers())
+            CreateHandler(handler,comp, actorData, idleLoc);
         
         return comp;
     }
+    
+    private void CreateHandler(MessageHandler handler, BaseComponent comp, ActorModelData actorData, Location startLoc)
+    {
+        String takeLabel = "Take_" + handler.GetID();
+        comp.AddParameter(new LabelParameter(takeLabel, false));
+
+        StatementToLocationConvertor statementsConvertor
+                = new StatementToLocationConvertor(handler.GetBody(), actorData, startLoc, comp, handler.GetID());
+
+        statementsConvertor.ConvertStatementChain();
+        HybridTransition firstTrans = statementsConvertor.GetFirstTransition();
+        firstTrans.GetLabel().SetSyncLabel(takeLabel);
+    }
 
     
-    private BaseComponent CreateVars(Actor actor)
+    private BaseComponent CreateVars(ActorModelData actorData)
     {
-        BaseComponent comp = new BaseComponent(actor.GetName()+"_Vars");
+        BaseComponent comp = new BaseComponent(actorData.GetName()+"_Vars");
         comp.AddParameter(new RealParameter("busy", false));
         
         Location location = new Location("l0");
@@ -194,33 +190,20 @@ public class HPalangToCompositionalSXConvertor
         
     }
     
-    private BaseComponent CreateQueue(Actor actor)
+    private BaseComponent CreateQueue(ActorModelData actorData)
     {
-        BaseComponent comp = new BaseComponent(actor.GetName()+"_Queue");
-        comp.AddParameter(new RealParameter("actorBusy", false));
+        BaseComponent comp = new BaseComponent(actorData.GetName()+"_Queue");
         
-        for(String label : hpalangModelData.GetActorData(actor).GetReceiveLabels())
+        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false));
+        
+        for(String label : actorData.GetReceiveLabels())
             comp.AddParameter(new LabelParameter(label, false));
         
-        for(String label : hpalangModelData.GetActorData(actor).GetHandlersName())
+        for(String label : actorData.GetHandlersName())
             comp.AddParameter(new LabelParameter(CreateTakeLabel(label), false));
         
-        new ActorQueueCreator(comp, hpalangModelData.GetActorData(actor)).Create();
-        //Location idle = new Location("idle");
-        //comp.AddLocation(idle);
+        new ActorQueueCreator(comp, actorData).Create();
         
-        //ExpandQueue(actor, comp, 3, "", idle);
-        //ExpandQueue2(actor, comp, Arrays.asList(idle), 2);
-        
-//        for(Location loc : comp.GetLocations())
-//        {
-//            for(String label : hpalangModelData.GetActorData(actor).GetHandlersName())
-//            {
-//                if(ExtractHeadLabel(loc))
-//            }
-//        }
-        
-
         return comp;
     }
     

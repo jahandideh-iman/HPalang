@@ -238,8 +238,7 @@ public class StatementToLocationConvertor
             destination.ProcessInLabel(label);
             
             comp.AddTransition(transition);
-        }
-        
+        } 
     }
     
     private final Iterator<Statement> statIterator;

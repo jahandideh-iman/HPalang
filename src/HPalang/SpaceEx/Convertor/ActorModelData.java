@@ -163,6 +163,32 @@ public class ActorModelData
         return GetLockVar() + "== 0";
     }
 
+    public String GetBusyVar()
+    {
+        return "actorBusy";
+    }
+    String GetIsBusyGuard()
+    {
+        return GetBusyVar() + " == 1";
+    }
+    
+    String GetIsNotBusyGuard()
+    {
+        return GetBusyVar() + " == 0";
+    }
 
+    String GetBusyInvarient()
+    {
+        return GetBusyVar() + " == 1";
+    }
 
+    String GetName()
+    {
+        return actor.GetName();
+    }
+    
+    public String GetDelayVar()
+    {
+        return actor.GetDelayVariable().Name();
+    }
 }

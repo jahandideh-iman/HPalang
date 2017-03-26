@@ -7,8 +7,10 @@ package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.Actor;
 import HPalang.SpaceEx.Core.BaseComponent;
+import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.HybridTransition;
+import HPalang.SpaceEx.Core.Invarient;
 import HPalang.SpaceEx.Core.Location;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,86 +23,122 @@ import java.util.Queue;
  */
 public class ActorQueueCreator
 {
-    static class QueueLocation
+    private abstract class QueueLocation
     {
+        protected Location loc;
         private Queue<String> content = new LinkedList<>();
+        protected ActorModelData actorData;
         
-        private Location loc1;
-        private Location loc2;
-        
-        public QueueLocation(Queue<String> content)
+        public QueueLocation(String name, Queue<String> content, ActorModelData actorData)
         {
             this.content.addAll(content);
-            
-            if (content.isEmpty())
-                loc1 = new Location("idle");
-            else 
-            {
-                String preFix = String.join("_", content);
-                loc1 = new Location(preFix + "_1");
-                loc2 = new Location(preFix + "_2");
-            }
-            
+            loc = new Location(name);
+            this.actorData = actorData;
         }
-              
+        
+        public Location GetLoc()
+        {
+            return loc;
+        }
         public Queue<String> GetContent()
         {
             return content;
         }
         
-        public void AddTo(BaseComponent comp)
+        public abstract void ProcessInTransition(QueueTransition transition);
+        public abstract void PrcoessOutTransition(QueueTransition transition);
+    }
+    
+    static class IdleQueueLocation extends QueueLocation
+    {
+
+        public IdleQueueLocation(String name, ActorModelData actorData)
         {
-            comp.AddLocation(loc1);
-            if (loc2 != null) 
-            {
-                comp.AddLocation(loc2);
-                comp.AddTransition(new HybridTransition(loc1, new HybridLabel().AddGuard("actorBusy == 0"), loc2));
-            }        
+            super(name, new LinkedList<String>(), actorData);
+        }
+
+        @Override
+        public void ProcessInTransition(QueueTransition transition)
+        {
+        }
+
+        @Override
+        public void PrcoessOutTransition(QueueTransition transition)
+        {
+        }   
+    }
+    
+    static class UrgentQueueLocation extends QueueLocation
+    { 
+        public UrgentQueueLocation(Queue<String> content, ActorModelData actorData)
+        {
+            super(String.join("_", content)+"_1",content, actorData);
+            loc.AddFlow(new Flow(actorData.GetUrgentFlow()));
+            loc.AddInvarient(new Invarient(actorData.GetUrgentInvarient()));
         }
         
-        public Location GetLoc1()
+        @Override
+        public void ProcessInTransition(QueueTransition transition)
         {
-            return loc1;
+            transition.label.AddAssignment(actorData.GetUrgentReset());
         }
-        
-        public Location GetLoc2()
+
+        @Override
+        public void PrcoessOutTransition(QueueTransition transition)
         {
-            return loc2;
+            if((transition.destination instanceof WaitingQueueLocation ) == false)
+                transition.label.AddGuard(actorData.GetIsNotBusyGuard());
+            
+            transition.label.AddGuard(actorData.GetUrgentGuard());
         }
     }
     
+    static class WaitingQueueLocation extends QueueLocation
+    {
+        public WaitingQueueLocation(Queue<String> content, ActorModelData actorData)
+        {
+            super(String.join("_", content)+"_2",content, actorData);
+            loc.AddInvarient(new Invarient(actorData.GetBusyInvarient()));
+        }   
+
+        @Override
+        public void ProcessInTransition(QueueTransition transition)
+        {
+        }
+
+        @Override
+        public void PrcoessOutTransition(QueueTransition transition)
+        {
+            transition.label.AddGuard(actorData.GetIsNotBusyGuard());
+        }
+    }
+
     static class QueueTransition
     {
-        private QueueLocation origin;
-        private String label;
-        private QueueLocation destination;
+        public final QueueLocation origin;
+        public final HybridLabel label;
+        public final QueueLocation destination;
         
-        public QueueTransition(QueueLocation origin, String label, QueueLocation destination)
+        public QueueTransition(QueueLocation origin, HybridLabel label, QueueLocation destination)
         {
             this.origin = origin;
             this.label = label;
             this.destination = destination;
         }
         
-        public void AddTo(BaseComponent comp)
+        public void Process(BaseComponent comp)
         {
-            comp.AddTransition(
-                    new HybridTransition(origin.GetLoc1()
-                            , new HybridLabel().SetSyncLabel(label)
-                            , destination.GetLoc1()));
-            if(origin.GetLoc2()!= null)
-                comp.AddTransition(
-                        new HybridTransition(origin.GetLoc2(),
-                                 new HybridLabel().SetSyncLabel(label),
-                                 destination.GetLoc1()));
-            
+            origin.PrcoessOutTransition(this);
+            destination.ProcessInTransition(this);
+            HybridTransition firstTrans = new HybridTransition(origin.GetLoc(), label, destination.GetLoc());
+            comp.AddTransition(firstTrans);        
         }
     }
     
-    private BaseComponent comp;
-    private List<QueueLocation> queueLocs = new LinkedList<>();
-    private List<QueueTransition> queueTrans = new LinkedList<>();
-    private ActorModelData actorData;
+    private final BaseComponent comp;
+    private final List<QueueLocation> queueLocs = new LinkedList<>();
+    private final List<QueueTransition> queueTrans = new LinkedList<>();
+    private final ActorModelData actorData;
     
     public ActorQueueCreator(BaseComponent comp, ActorModelData actorData)
     {
@@ -110,43 +148,28 @@ public class ActorQueueCreator
     
     public void Create()
     {
-        
-        QueueLocation idle = new QueueLocation(new LinkedList<>());
+        IdleQueueLocation idle = new IdleQueueLocation("idle", actorData);
         queueLocs.add(idle);
         
         ExpandQueue(1, idle);
         
-        for(QueueLocation qLoc : queueLocs)
-            qLoc.AddTo(comp);
+        AddTakeTransition();
         
-        for(QueueLocation qLoc : queueLocs)
-        {
-            if(qLoc.content.isEmpty())
-                continue;
-            
-            Queue<String> remaining = new LinkedList<>(qLoc.GetContent());
-            String head = remaining.poll();
-            
-            QueueLocation takeLoc = FindLocationWith(remaining);
-            
-            queueTrans.add(new QueueTransition(qLoc, actorData.CreateTakeLabel(head), takeLoc));
-            
-        }
-                
-        for(QueueTransition qTrans : queueTrans)
-            qTrans.AddTo(comp);
-        
-
+        for(QueueTransition qTran : queueTrans)
+            qTran.Process(comp);
     }
-   
-    private QueueLocation FindLocationWith(Queue<String> content)
+    
+    
+  
+    private QueueLocation FindUrgentLocationWith(Queue<String> content)
     {
         for(QueueLocation qLoc : queueLocs)
-            if(content.equals(qLoc.GetContent()))
+            if((qLoc instanceof WaitingQueueLocation) == false && content.equals(qLoc.GetContent()))
                 return qLoc;
         return null;
     }
-    private void ExpandQueue(int cap, QueueLocation origin /* ,Map<String,Location> takesLocation*/)
+    
+    private void ExpandQueue(int cap, IdleQueueLocation origin )
     {
         if(cap == 0)
             return;
@@ -155,24 +178,74 @@ public class ActorQueueCreator
         {          
             Queue<String> content = new LinkedList<>(origin.GetContent());
             content.add(handler);
-
            
-            QueueLocation loc = new QueueLocation(content);
-
-            queueLocs.add(loc);
-    
-            for(String recieve : actorData.GetReceiveLabelsFor(handler))
-                queueTrans.add(CreateTransition(origin, recieve, loc));
+            UrgentQueueLocation urgLoc = new UrgentQueueLocation(content, actorData);
+            WaitingQueueLocation waitLoc = new WaitingQueueLocation(content, actorData);
+            queueLocs.add(urgLoc);
+            queueLocs.add(waitLoc);
             
-            ExpandQueue(cap-1, loc);     
+            queueTrans.add(CreateQueueUnitTransition(urgLoc, waitLoc));
+            
+            for(String recieve : actorData.GetReceiveLabelsFor(handler))
+                queueTrans.add(CreateTransition(origin, recieve, urgLoc)); 
+
+            ExpandQueue(cap-1, urgLoc, waitLoc);     
         }
     }
     
-    
-    
-    private QueueTransition CreateTransition(QueueLocation origin, String label, QueueLocation destination)
+    private void ExpandQueue(int cap, UrgentQueueLocation urgOrigin , WaitingQueueLocation waitOrigin)
     {
+        if(cap == 0)
+            return;
+        
+        for(String handler : actorData.GetHandlersName())
+        {          
+            Queue<String> content = new LinkedList<>(urgOrigin.GetContent());
+            content.add(handler);
+           
+            UrgentQueueLocation urgLoc = new UrgentQueueLocation(content, actorData);
+            WaitingQueueLocation waitLoc = new WaitingQueueLocation(content, actorData);
+            queueLocs.add(urgLoc);
+            queueLocs.add(waitLoc);
+            
+            queueTrans.add(CreateQueueUnitTransition(urgLoc, waitLoc));
+            
+            for(String recieve : actorData.GetReceiveLabelsFor(handler))
+            {
+                queueTrans.add(CreateTransition(urgOrigin, recieve, urgLoc)); 
+                queueTrans.add(CreateTransition(waitOrigin, recieve, urgLoc));
+            }
+            ExpandQueue(cap-1, urgLoc, waitLoc);     
+        }
+    }
+    
+    private void AddTakeTransition()
+    {
+        for(QueueLocation qLoc : queueLocs)
+        {
+            if(qLoc.content.isEmpty())
+                continue;
+            
+            Queue<String> remaining = new LinkedList<>(qLoc.GetContent());
+            String head = remaining.poll();
+            
+            QueueLocation takeLoc = FindUrgentLocationWith(remaining);
+            queueTrans.add(CreateTransition(qLoc, actorData.CreateTakeLabel(head), takeLoc));   
+        }
+    }
+    
+    private QueueTransition CreateTransition(QueueLocation origin, String syncLabel, QueueLocation destination)
+    {
+        HybridLabel label = new HybridLabel();
+        label.SetSyncLabel(syncLabel);
         return new QueueTransition(origin, label, destination);
+    }
+    
+    private QueueTransition CreateQueueUnitTransition(UrgentQueueLocation urgent, WaitingQueueLocation waiting)
+    {
+        HybridLabel label = new HybridLabel();
+        label.AddGuard(actorData.GetIsBusyGuard());
+        return new QueueTransition(urgent, label, waiting);
     }
     
 }
