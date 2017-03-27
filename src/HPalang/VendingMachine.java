@@ -6,6 +6,8 @@
 package HPalang;
 
 import HPalang.Core.Actor;
+import HPalang.Core.ContinuousVariable;
+import HPalang.Core.DefferentialEquation;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.DiscreteExpressions.ArithmeticExpression;
 import HPalang.Core.DiscreteExpressions.ComparisonExpression;
@@ -37,9 +39,15 @@ public class VendingMachine
         Actor Machine = new Actor("Machine", 10);
         Actor Heater = new Actor("Heater", 10);
         Actor Filler = new Actor("Filler", 10);
+        
+        ContinuousVariable Heater_t = new ContinuousVariable("t");
+        ContinuousVariable Filler_h = new ContinuousVariable("h");
 
         DiscreteVariable user_OrderType = new DiscreteVariable("orderType");
         DiscreteVariable machine_OrderType = new DiscreteVariable("orderType");
+        
+        Heater.AddContinuousVariable(Heater_t, 0);
+        Filler.AddContinuousVariable(Filler_h, 0);
         
         User.AddDiscreteVariable(user_OrderType, 0);
         Machine.AddDiscreteVariable(machine_OrderType, 0);
@@ -96,24 +104,24 @@ public class VendingMachine
         
         handler_Heater_HeatUp100.AddStatement(new ContinuousBehaviorStatement(
                 new ContinuousBehavior(
-                        "t<=100", "t' = (120 - t)/20", "t == 100"
+                        "t<=100", new DefferentialEquation(Heater_t, "(120 - t)/20"), "t == 100"
                         ,Statement.StatementsFrom(new SendStatement(Machine, new NormalMessage(hanlder_Machine_Heated)))
                 )));
         handler_Heater_HeatUp90.AddStatement(new ContinuousBehaviorStatement(
                 new ContinuousBehavior(
-                        "t<=90", "t' = (120 - t)/20", "t == 90"
+                        "t<=90",  new DefferentialEquation(Heater_t, "(120 - t)/20"), "t == 90"
                         ,Statement.StatementsFrom(new SendStatement(Machine, new NormalMessage(hanlder_Machine_Heated)))
                 )));
         
         
         handler_Filler_Fill300.AddStatement(new ContinuousBehaviorStatement(
                 new ContinuousBehavior(
-                        "h<=300", "h' = 100", "h == 300"
+                        "h<=300",  new DefferentialEquation(Filler_h, "100"), "h == 300"
                         ,Statement.StatementsFrom(new SendStatement(Machine, new NormalMessage(hanlder_Machine_Filled)))
                 )));
         handler_Filler_Fill200.AddStatement(new ContinuousBehaviorStatement(
                 new ContinuousBehavior(
-                        "h<=200", "h' = 100", "h == 200"
+                        "h<=200", new DefferentialEquation(Filler_h, "100"), "h == 200"
                         ,Statement.StatementsFrom(new SendStatement(Machine, new NormalMessage(hanlder_Machine_Filled)))
                 )));
 

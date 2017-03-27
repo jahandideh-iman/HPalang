@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.DefferentialEquation;
 import HPalang.Core.Statement;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
@@ -26,8 +27,8 @@ public class ContinuousStateTest
         ContinuousBehaviorContianer state1 = new ContinuousBehaviorContianer();
         ContinuousBehaviorContianer state2 = new ContinuousBehaviorContianer();
         
-        ContinuousBehavior behavior1 = new ContinuousBehavior("inv1", "eq1", "g1", Statement.EmptyStatements());
-        ContinuousBehavior behavior2 = new ContinuousBehavior("inv2", "eq2", "g2", Statement.EmptyStatements());
+        ContinuousBehavior behavior1 = new ContinuousBehavior("inv1", DefferentialEquation.Empty("eq1"), "g1", Statement.EmptyStatements());
+        ContinuousBehavior behavior2 = new ContinuousBehavior("inv2", DefferentialEquation.Empty("eq2"), "g2", Statement.EmptyStatements());
         
         state1.Add(behavior1);
         state1.Add(behavior2);
@@ -51,8 +52,8 @@ public class ContinuousStateTest
     @Test
     public void CloneIsCorrectForContinuousBehavior()
     {
-        ContinuousBehavior behavior1 = new ContinuousBehavior("", "", "", Statement.EmptyStatements());
-        ContinuousBehavior behavior2 = new ContinuousBehavior("", "", "", Statement.EmptyStatements());
+        ContinuousBehavior behavior1 = new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.EmptyStatements());
+        ContinuousBehavior behavior2 = new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.EmptyStatements());
         
         original.Add(behavior1);
         original.Add(behavior2);
@@ -65,8 +66,8 @@ public class ContinuousStateTest
     @Test
     public void ClonedStateHasSeperateBehaviors()
     {
-        ContinuousBehavior behavior1 = new ContinuousBehavior("", "", "", Statement.EmptyStatements());
-        ContinuousBehavior behavior2 = new ContinuousBehavior("", "", "", Statement.EmptyStatements());
+        ContinuousBehavior behavior1 = new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.EmptyStatements());
+        ContinuousBehavior behavior2 = new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.EmptyStatements());
         
         original.Add(behavior1);
         original.Add(behavior2);

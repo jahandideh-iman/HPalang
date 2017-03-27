@@ -5,20 +5,15 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.Core.ProgramDefinition;
 import HPalang.HybridAutomataGeneration.SOSRules.TransitionSOSRule;
 import HPalang.LTSGeneration.GuardedlLabel;
-import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.GlobalRunTimeState;
-import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.Transition;
 import java.util.ArrayList;
-import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  *

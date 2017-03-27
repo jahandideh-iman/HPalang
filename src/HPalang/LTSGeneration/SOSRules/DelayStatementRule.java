@@ -7,6 +7,8 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousExpressions.ConstantExpression;
+import HPalang.Core.ContinuousVariable;
+import HPalang.Core.DefferentialEquation;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.TauLabel;
@@ -30,7 +32,7 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
     @Override
     protected void ApplyStatement(ActorRunTimeState actorState, DelayStatement statement)
     {
-        String delayVar = actorState.GetActor().GetDelayVariable().Name();
+        ContinuousVariable delayVar = actorState.GetActor().GetDelayVariable();
         ContinuousBehavior behavior = CreateDelayBehavior(actorState.GetActor(), statement.GetDelay(), delayVar);
         actorState.SuspendedStatements().Enqueue(actorState.StatementQueue());
         actorState.StatementQueue().Clear();
@@ -44,8 +46,9 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
         return new TauLabel(Reset.ResetsFrom(new Reset(actorState.GetActor().GetDelayVariable(), new ConstantExpression(0f))));
     }
     
-    private ContinuousBehavior CreateDelayBehavior(Actor actor,float delay, String delayVar)
+    private ContinuousBehavior CreateDelayBehavior(Actor actor,float delay, ContinuousVariable delayVar)
     {
-        return new ContinuousBehavior(delayVar+"<="+delay,delayVar+"'=1",delayVar+"=="+delay,Statement.StatementsFrom(new ResumeStatement()));
+        DefferentialEquation equation = new DefferentialEquation(delayVar, "1");
+        return new ContinuousBehavior(delayVar+"<="+delay,equation,delayVar+"=="+delay,Statement.StatementsFrom(new ResumeStatement()));
     }
 }

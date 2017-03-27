@@ -5,6 +5,7 @@
  */
 package HPalang.Convertors;
 
+import HPalang.Core.DefferentialEquation;
 import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.HybridAutomataGeneration.Location;
 import HPalang.HybridAutomataGeneration.Transition;
@@ -71,8 +72,8 @@ public class HybridAutomatonToXMLConvertor
             invarientsStr =  invarientsStr.substring(0,lastIndex);
         
         String equationsStr = "";
-        for(String equation : location.GetEquations())
-            equationsStr += equation + "&&";
+        for(DefferentialEquation equation : location.GetEquations())
+            equationsStr += equation.GetVariable().Name() + "' = " + equation.GetEquation() + "&&";
         
         lastIndex = equationsStr.lastIndexOf("&&");
         if(lastIndex >= 0)

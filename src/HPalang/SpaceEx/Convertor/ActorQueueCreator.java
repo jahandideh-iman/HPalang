@@ -49,7 +49,7 @@ public class ActorQueueCreator
         public abstract void PrcoessOutTransition(QueueTransition transition);
     }
     
-    static class IdleQueueLocation extends QueueLocation
+    class IdleQueueLocation extends QueueLocation
     {
 
         public IdleQueueLocation(String name, ActorModelData actorData)
@@ -68,7 +68,7 @@ public class ActorQueueCreator
         }   
     }
     
-    static class UrgentQueueLocation extends QueueLocation
+    class UrgentQueueLocation extends QueueLocation
     { 
         public UrgentQueueLocation(Queue<String> content, ActorModelData actorData)
         {
@@ -93,7 +93,7 @@ public class ActorQueueCreator
         }
     }
     
-    static class WaitingQueueLocation extends QueueLocation
+    class WaitingQueueLocation extends QueueLocation
     {
         public WaitingQueueLocation(Queue<String> content, ActorModelData actorData)
         {
@@ -151,7 +151,7 @@ public class ActorQueueCreator
         IdleQueueLocation idle = new IdleQueueLocation("idle", actorData);
         queueLocs.add(idle);
         
-        ExpandQueue(1, idle);
+        ExpandQueue(2, idle, idle);
         
         AddTakeTransition();
         
@@ -159,8 +159,6 @@ public class ActorQueueCreator
             qTran.Process(comp);
     }
     
-    
-  
     private QueueLocation FindUrgentLocationWith(Queue<String> content)
     {
         for(QueueLocation qLoc : queueLocs)
@@ -168,32 +166,8 @@ public class ActorQueueCreator
                 return qLoc;
         return null;
     }
-    
-    private void ExpandQueue(int cap, IdleQueueLocation origin )
-    {
-        if(cap == 0)
-            return;
-        
-        for(String handler : actorData.GetHandlersName())
-        {          
-            Queue<String> content = new LinkedList<>(origin.GetContent());
-            content.add(handler);
-           
-            UrgentQueueLocation urgLoc = new UrgentQueueLocation(content, actorData);
-            WaitingQueueLocation waitLoc = new WaitingQueueLocation(content, actorData);
-            queueLocs.add(urgLoc);
-            queueLocs.add(waitLoc);
-            
-            queueTrans.add(CreateQueueUnitTransition(urgLoc, waitLoc));
-            
-            for(String recieve : actorData.GetReceiveLabelsFor(handler))
-                queueTrans.add(CreateTransition(origin, recieve, urgLoc)); 
-
-            ExpandQueue(cap-1, urgLoc, waitLoc);     
-        }
-    }
-    
-    private void ExpandQueue(int cap, UrgentQueueLocation urgOrigin , WaitingQueueLocation waitOrigin)
+     
+    private void ExpandQueue(int cap, QueueLocation urgOrigin , QueueLocation waitOrigin)
     {
         if(cap == 0)
             return;
@@ -212,8 +186,9 @@ public class ActorQueueCreator
             
             for(String recieve : actorData.GetReceiveLabelsFor(handler))
             {
-                queueTrans.add(CreateTransition(urgOrigin, recieve, urgLoc)); 
-                queueTrans.add(CreateTransition(waitOrigin, recieve, urgLoc));
+                queueTrans.add(CreateTransition(urgOrigin, recieve, urgLoc));
+                if(waitOrigin != urgOrigin)
+                    queueTrans.add(CreateTransition(waitOrigin, recieve, urgLoc));
             }
             ExpandQueue(cap-1, urgLoc, waitLoc);     
         }

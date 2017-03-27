@@ -6,6 +6,8 @@
 package HPalang;
 
 import HPalang.Core.Actor;
+import HPalang.Core.ContinuousVariable;
+import HPalang.Core.DefferentialEquation;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
@@ -25,14 +27,17 @@ public class BouncingBallModel
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor ball = new Actor("Ball",1);        
+        Actor ball = new Actor("Ball",1);
+        ContinuousVariable ball_y = new ContinuousVariable("y");
+        
+        ball.AddContinuousVariable(ball_y, 0);
         
         MessageHandler handler_Fall = new MessageHandler();
         
         ball.AddMessageHandler("Fall",handler_Fall);
         
         handler_Fall.AddStatement(new ContinuousBehaviorStatement( 
-                new ContinuousBehavior("y>=0", "y'' := -9.8", "y<=0",Statement.StatementsFrom(new SendStatement(ball, new NormalMessage(handler_Fall))))));
+                new ContinuousBehavior("y>=0",new DefferentialEquation(ball_y, "9.8"), "y<=0",Statement.StatementsFrom(new SendStatement(ball, new NormalMessage(handler_Fall))))));
       
        
         MainBlock mainBlock = new MainBlock();     

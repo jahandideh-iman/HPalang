@@ -5,6 +5,8 @@
  */
 package HPalang.SpaceEx.Core;
 
+import HPalang.Core.DefferentialEquation;
+
 /**
  *
  * @author Iman Jahandideh
@@ -15,6 +17,11 @@ public class Flow
     public Flow(String flow)
     {
         this.flow = flow;
+    }
+    
+    public Flow(DefferentialEquation equation)
+    {
+        this.flow = equation.GetVariable().Name() + "' == " + equation.GetEquation();
     }
     
     @Override

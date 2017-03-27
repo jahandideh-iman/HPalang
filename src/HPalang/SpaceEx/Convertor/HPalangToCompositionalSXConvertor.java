@@ -9,8 +9,6 @@ import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.ProgramDefinition;
-import HPalang.Core.Statement;
-import HPalang.Core.Statements.DelayStatement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Component;
@@ -24,13 +22,6 @@ import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.NetworkComponent;
 import HPalang.SpaceEx.Core.RealParameter;
 import HPalang.SpaceEx.Core.SpaceExModel;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Map;
-import java.util.concurrent.locks.StampedLock;
 
 /**
  *
@@ -68,18 +59,11 @@ public class HPalangToCompositionalSXConvertor
 
         BaseComponent vars = CreateVars(actorData);
         
-        int i = 0;
         for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
-        {
-            model.AddComponent(CreateContinuousBehavior(cb, actorData,i));
-            i++;
-        }
+            model.AddComponent(CreateContinuousBehavior(cb, actorData));
         
         for(ContinuousVariable var : actorData.GetContinuousVariables())
             model.AddComponent(CreateContinuousVariableLock(var, actorData));
-        
-        
-
         
         actorComp.AddParameter(new RealParameter("actorBusy", true));
         
@@ -114,24 +98,47 @@ public class HPalangToCompositionalSXConvertor
         return comp;
     }
     
-    private BaseComponent CreateContinuousBehavior(ContinuousBehavior cb, ActorModelData actorData, int index)
+    private BaseComponent CreateContinuousBehavior(ContinuousBehavior cb, ActorModelData actorData)
     {
-        BaseComponent comp = new BaseComponent(actorData.GetActor().GetName() + "_CB_"+ String.valueOf(index));
+        BaseComponent comp = new BaseComponent(actorData.GetActor().GetName() +"_CB_" + actorData.GetIDFor(cb));
+        
+        String acquireLabel = "Acquire_" + cb.GetEquation().GetVariable().Name();
+        String releaseLabel = "Release_" + cb.GetEquation().GetVariable().Name();
+        
+        comp.AddParameter(new LabelParameter("Start", false));
+        comp.AddParameter(new LabelParameter(acquireLabel, false));
+        comp.AddParameter(new LabelParameter(releaseLabel, false));
+        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));
+        
+        for(String send : actorData.GetSendLables())
+            comp.AddParameter(new LabelParameter(send, false));
+        
         Location idleLoc = new Location("idle");
         comp.AddLocation(idleLoc);
+
+        Location acquireLockLoc = new Location("acquireLock");
+        MakeLocationUrgent(acquireLockLoc, actorData);
+        comp.AddLocation(acquireLockLoc);
         
-        Location bLoc = new Location("behvaior");
-        comp.AddLocation(bLoc);
+        Location behaviorLoc = new Location("behvaior");        
+        behaviorLoc.AddFlow(new Flow(cb.GetEquation()));
+        behaviorLoc.AddInvarient(new Invarient(cb.GetInvarient()));
+        comp.AddLocation(behaviorLoc);
         
-        bLoc.AddFlow(new Flow(cb.GetEquation()));
-        bLoc.AddInvarient(new Invarient(cb.GetInvarient()));
-        comp.AddTransition(idleLoc, new HybridLabel().SetSyncLabel("start"), bLoc);
+        comp.AddTransition(idleLoc, new HybridLabel().SetSyncLabel("Start").AddAssignment(actorData.GetUrgentReset()), acquireLockLoc);
         
-        StatementToLocationConvertor convertor = new StatementToLocationConvertor(cb.GetActions(), actorData, bLoc, comp, "s");
-        convertor.ConvertStatementChain();
+        comp.AddTransition(acquireLockLoc, new HybridLabel().SetSyncLabel(acquireLabel).AddGuard(actorData.GetUrgentGuard()), behaviorLoc);
+        
+        StatementToLocationConvertor convertor = new StatementToLocationConvertor(cb.GetActions(), actorData, behaviorLoc, comp, "s");
+        convertor.ConvertStatementChain(false);
         HybridTransition trans =  convertor.GetFirstTransition();
-        
         trans.GetLabel().AddGuard(cb.GetGuard());
+        
+        HybridTransition recurseTrans = new HybridTransition(convertor.GetLastLocation(), new HybridLabel().SetSyncLabel(releaseLabel), idleLoc);
+        
+        convertor.ProcessLastLocation(recurseTrans.GetLabel());
+        
+        comp.AddTransition(recurseTrans);
 
         return comp;
     }
@@ -164,18 +171,17 @@ public class HPalangToCompositionalSXConvertor
     
     private void CreateHandler(MessageHandler handler, BaseComponent comp, ActorModelData actorData, Location startLoc)
     {
-        String takeLabel = "Take_" + handler.GetID();
+        String takeLabel =  actorData.CreateTakeLabel(handler.GetID());
         comp.AddParameter(new LabelParameter(takeLabel, false));
 
         StatementToLocationConvertor statementsConvertor
                 = new StatementToLocationConvertor(handler.GetBody(), actorData, startLoc, comp, handler.GetID());
 
-        statementsConvertor.ConvertStatementChain();
+        statementsConvertor.ConvertStatementChain(true);
         HybridTransition firstTrans = statementsConvertor.GetFirstTransition();
         firstTrans.GetLabel().SetSyncLabel(takeLabel);
     }
 
-    
     private BaseComponent CreateVars(ActorModelData actorData)
     {
         BaseComponent comp = new BaseComponent(actorData.GetName()+"_Vars");
@@ -200,91 +206,14 @@ public class HPalangToCompositionalSXConvertor
             comp.AddParameter(new LabelParameter(label, false));
         
         for(String label : actorData.GetHandlersName())
-            comp.AddParameter(new LabelParameter(CreateTakeLabel(label), false));
+            comp.AddParameter(new LabelParameter(actorData.CreateTakeLabel(label), false));
         
         new ActorQueueCreator(comp, actorData).Create();
         
         return comp;
     }
     
-    private String CreateTakeLabel(String handler)
-    {
-        return "Take_" + handler;
-    }
-    private List<Location> ExpandQueue(Actor actor, BaseComponent comp, int cap, String prefix, Location origin /* ,Map<String,Location> takesLocation*/)
-    {
-        List<Location> createdLocations = new LinkedList<>();
-        if(cap == 0)
-            return createdLocations;
-        
-        for(String handler : hpalangModelData.GetActorData(actor).GetHandlersName())
-        {
-            String name = prefix+"_"+handler;
-            Location loc1 = new Location(name+"_1"); 
-            Location loc2 = new Location(name+"_2");
-
-            comp.AddLocation(loc1);            
-            comp.AddLocation(loc2);
-            
-            createdLocations.add(loc1);
-            createdLocations.add(loc2);
-            
-            HybridLabel label1 = new HybridLabel();
-            label1.AddGuard("acturBusy == 1");
-            HybridTransition trans1 = new HybridTransition(loc1, label1, loc2);
-            comp.AddTransition(trans1);
-            
-            for(String recieve : hpalangModelData.GetActorData(actor).GetReceiveLabelsFor(handler))
-            {
-                HybridLabel label = new HybridLabel();
-                label.SetSyncLabel(recieve);
-                HybridTransition trans = new HybridTransition(origin, label, loc1);
-                comp.AddTransition(trans);
-            }
-            ExpandQueue(actor, comp, cap-1, name, loc2);
-        }
-        
-        return createdLocations;
-    }
-    
-    public void ExpandQueue2(Actor actor, BaseComponent comp,Collection<Location> locs, int steps)
-    {
-        if(steps == 0)
-            return;
-        List<Location> createdLocations = new LinkedList<>();
-        
-        for(Location loc : locs)
-        {
-            for (String handler : hpalangModelData.GetActorData(actor).GetHandlersName()) 
-            {
-                String name = loc.GetName()+"_"+handler;
-                Location loc1 = new Location(name+"_1"); 
-                Location loc2 = new Location(name+"_2");
-
-                comp.AddLocation(loc1);            
-                comp.AddLocation(loc2);
-
-                createdLocations.add(loc1);
-                createdLocations.add(loc2);
-                
-                HybridLabel label1 = new HybridLabel();
-                label1.AddGuard("acturBusy == 1");
-                HybridTransition trans1 = new HybridTransition(loc1, label1, loc2);
-                comp.AddTransition(trans1);
-                
-                for (String recieve : hpalangModelData.GetActorData(actor).GetReceiveLabelsFor(handler)) 
-                {
-                    HybridLabel label = new HybridLabel();
-                    label.SetSyncLabel(recieve);
-                    HybridTransition trans = new HybridTransition(loc, label, loc1);
-                    comp.AddTransition(trans);
-                }
-            }
-        }
-        
-        ExpandQueue2(actor, comp, createdLocations, steps-1);
-
-    }
+ 
     
     public SpaceExModel GetConvertedModel()
     {
@@ -292,4 +221,9 @@ public class HPalangToCompositionalSXConvertor
     }
 
 
+    private void MakeLocationUrgent(Location location, ActorModelData actorData)
+    {
+        location.AddFlow(new Flow(actorData.GetUrgentFlow()));
+        location.AddInvarient(new Invarient(actorData.GetUrgentInvarient()));
+    }
 }

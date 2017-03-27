@@ -5,6 +5,7 @@
  */
 package HPalang.HybridAutomataGeneration;
 
+import HPalang.Core.DefferentialEquation;
 import HPalang.LTSGeneration.GuardedlLabel;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
@@ -34,11 +35,11 @@ public class HybridAutomatonTest
     
     @Test
     public void DoesNotAddANewTransitionForDuplicateTranstion()
-    {    
+    {
         Location loc1 = new Location();
-        loc1.AddEquation("eq1");
+        loc1.AddEquation(DefferentialEquation.Empty("eq1"));
         Location Loc2 = new Location();
-        loc1.AddEquation("eq2");
+        loc1.AddEquation(DefferentialEquation.Empty("eq1"));
         
         automaton.AddLocation(loc1);
         automaton.AddLocation(Loc2);

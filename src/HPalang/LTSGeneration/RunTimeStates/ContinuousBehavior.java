@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.DefferentialEquation;
 import HPalang.Core.Equalitable;
 import HPalang.Core.Statement;
 import java.util.LinkedList;
@@ -18,11 +19,11 @@ import java.util.Queue;
 public class ContinuousBehavior extends Equalitable<ContinuousBehavior>
 {
     private final String invariant;
-    private final String equation;
+    private final DefferentialEquation equation;
     private final String guard;
     private Queue<Statement> actions = new LinkedList<>();
     
-    public ContinuousBehavior(String inv, String ode, String guard, Queue<Statement> actions )
+    public ContinuousBehavior(String inv, DefferentialEquation ode, String guard, Queue<Statement> actions )
     {
         this.invariant = inv;
         this.equation = ode;
@@ -40,7 +41,7 @@ public class ContinuousBehavior extends Equalitable<ContinuousBehavior>
         return guard;
     }
     
-    public String GetEquation()
+    public DefferentialEquation GetEquation()
     {
         return equation;
     }

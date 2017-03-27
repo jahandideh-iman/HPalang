@@ -8,6 +8,7 @@ package HPalang.LTSGeneration.SOSRules.TierOne;
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.Core.Actor;
+import HPalang.Core.DefferentialEquation;
 import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.Core.Messages.MessageWithBody;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
@@ -39,8 +40,8 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
        
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)
-                .AddBehavior(new ContinuousBehavior("inv1","ode1","guard1",StatementsFrom(new EmptyStatement())))
-                .AddBehavior(new ContinuousBehavior("inv2","ode2","guard2",StatementsFrom(new EmptyStatement())));
+                .AddBehavior(new ContinuousBehavior("inv1",DefferentialEquation.Empty("eq1"),"guard1",StatementsFrom(new EmptyStatement())))
+                .AddBehavior(new ContinuousBehavior("inv2",DefferentialEquation.Empty("eq2"),"guard2",StatementsFrom(new EmptyStatement())));
         
         
         globalState
@@ -51,12 +52,12 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         
         GlobalRunTimeState nextGlobalState1 = globalState.Build();
         ActorRunTimeState nextActorState1 = nextGlobalState1.FindActorState(actor1);
-        nextActorState1.ContinuousBehaviors().Remove(new ContinuousBehavior("inv1","ode1","guard1",StatementsFrom(new EmptyStatement())));
+        nextActorState1.ContinuousBehaviors().Remove(new ContinuousBehavior("inv1",DefferentialEquation.Empty("eq1"),"guard1",StatementsFrom(new EmptyStatement())));
         nextActorState1.HighPriorityMessageQueue().Enqueue(new MessageWithBody(StatementsFrom(new EmptyStatement())));
         
         GlobalRunTimeState nextGlobalState2 = globalState.Build();
         ActorRunTimeState nextActorState2 = nextGlobalState2.FindActorState(actor1);
-        nextActorState2.ContinuousBehaviors().Remove(new ContinuousBehavior("inv2","ode2","guard2",StatementsFrom(new EmptyStatement())));
+        nextActorState2.ContinuousBehaviors().Remove(new ContinuousBehavior("inv2",DefferentialEquation.Empty("eq2"),"guard2",StatementsFrom(new EmptyStatement())));
         nextActorState2.HighPriorityMessageQueue().Enqueue(new MessageWithBody(StatementsFrom(new EmptyStatement())));
 
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new GuardedlLabel("guard1"), nextGlobalState1));

@@ -261,7 +261,7 @@ public class StatementToLocationConvertor
         this.comp = comp;
     }
     
-    public void ConvertStatementChain()
+    public void ConvertStatementChain(boolean recurse)
     {
         startLocation = new StartLocation(prefix+"_0", actorData);
         statLocations.add(startLocation);
@@ -270,9 +270,12 @@ public class StatementToLocationConvertor
         for(StatementTransition tran : statTransitions)
             tran.Process(comp);
         
-        HybridTransition trans = HybridTransition.CreateEmpty(endLocation.GetLoc(), startOrigin);
-        endLocation.ProcessOutLabel(trans.GetLabel());
-        comp.AddTransition(trans);
+        if(recurse)
+        {
+            HybridTransition trans = HybridTransition.CreateEmpty(endLocation.GetLoc(), startOrigin);
+            endLocation.ProcessOutLabel(trans.GetLabel());
+            comp.AddTransition(trans);
+        }
     }
     
     public HybridTransition GetFirstTransition()
@@ -290,6 +293,11 @@ public class StatementToLocationConvertor
     public Location GetLastLocation()
     {
         return endLocation.GetLoc();
+    }
+    
+    void ProcessLastLocation(HybridLabel label)
+    {
+        endLocation.ProcessOutLabel(label);
     }
     
     private void ConvertStatementChain(Iterator<Statement> statementIt,StatementLocation origin , String prefix, int i)

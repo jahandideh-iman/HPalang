@@ -142,6 +142,11 @@ public class ActorModelData
     {
         return "Start_CB_" + cBehaviorsID.get(behavior);
     }
+    
+    String GetIDFor(ContinuousBehavior behavior)
+    {
+        return cBehaviorsID.get(behavior);
+    }
 
     String GetLockVar()
     {

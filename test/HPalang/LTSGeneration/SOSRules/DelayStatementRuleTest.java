@@ -10,6 +10,8 @@ import Builders.ActorRunTimeStateBuilder;
 import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousExpressions.ConstantExpression;
+import HPalang.Core.ContinuousVariable;
+import HPalang.Core.DefferentialEquation;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
@@ -65,10 +67,10 @@ public class DelayStatementRuleTest
         stateAfterActor1Delay_Actor1.SuspendedStatements().Enqueue(stateAfterActor1Delay_Actor1.StatementQueue());
         stateAfterActor1Delay_Actor1.StatementQueue().Clear();
         stateAfterActor1Delay_Actor1.SetSuspended(true);
-        String actor1DelayVar = actor1.GetDelayVariable().Name();
+        ContinuousVariable actor1DelayVar = actor1.GetDelayVariable();
         stateAfterActor1Delay_Actor1.ContinuousBehaviors().Add(new ContinuousBehavior(
                 actor1DelayVar+"<="+1.0f 
-                , actor1DelayVar+"'=1"
+                , new DefferentialEquation(actor1DelayVar, "1")
                 , actor1DelayVar+"=="+1.0f
                 , StatementsFrom(new ResumeStatement())));
         

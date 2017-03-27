@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.DefferentialEquation;
 import HPalang.Core.Statement;
 import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Test;
@@ -19,8 +20,8 @@ public class ContinuousBehaviorTest
     @Test
     public void BehaviorsWithEqualDataAreEqual()
     {     
-        ContinuousBehavior behavior1 = new ContinuousBehavior("inv", "eq", "g", Statement.EmptyStatements());
-        ContinuousBehavior behavior2 = new ContinuousBehavior("inv", "eq", "g", Statement.EmptyStatements());
+        ContinuousBehavior behavior1 = new ContinuousBehavior("inv", DefferentialEquation.Empty("eq"), "g", Statement.EmptyStatements());
+        ContinuousBehavior behavior2 = new ContinuousBehavior("inv", DefferentialEquation.Empty("eq"), "g", Statement.EmptyStatements());
             
         assertThat(behavior2, equalTo(behavior1));
     }

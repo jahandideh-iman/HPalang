@@ -10,6 +10,7 @@ import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Convertors.LTSToXMLConvertor;
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
+import HPalang.Core.DefferentialEquation;
 import HPalang.Core.ProgramDefinition;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
@@ -280,7 +281,9 @@ public class Main {
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor actorThermostat = new Actor("Thermostat",1);        
+        Actor actorThermostat = new Actor("Thermostat",1);   
+        
+        ContinuousVariable x = new ContinuousVariable("x");
         
         MessageHandler hanlder_On = new MessageHandler();        
         MessageHandler hanlder_Off = new MessageHandler();
@@ -291,13 +294,13 @@ public class Main {
         
         hanlder_On.AddStatement(new ContinuousBehaviorStatement
         (new ContinuousBehavior("x <= 100"
-                , "x' = -x + 100"
+                , new DefferentialEquation(x, "-x + 100")
                 , "x >= 18"
                 , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_Off))))));
 
         hanlder_Off.AddStatement(new ContinuousBehaviorStatement
         (new ContinuousBehavior("x>=50"
-                , "x' = -x + 50"
+                ,  new DefferentialEquation(x, "-x + 50")
                 , "x <= 2"
                 , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_On))))));
         
