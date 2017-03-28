@@ -7,7 +7,6 @@ package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.Actor;
 import HPalang.Core.MessageHandler;
-import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.ProgramDefinition;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
@@ -15,8 +14,6 @@ import HPalang.Core.Statements.SendStatement;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -27,6 +24,10 @@ import java.util.Set;
 public class HPalangModelData
 {
     private Map<Actor, ActorModelData> actorsData = new HashMap<>();
+    private Set<CommunicationLabel> globalSendLabels = new HashSet<>();
+    
+    private Map<CommunicationLabel, CommunicationLabel> receiveToSendMap = new HashMap<>();
+    
     
     public HPalangModelData(ProgramDefinition hpalangModel)
     {
@@ -44,22 +45,18 @@ public class HPalangModelData
                     if(stat instanceof SendStatement)
                     {
                         SendStatement sendStat = (SendStatement) stat;
-                        String receiveLabel;
-                        String sendLabel;
-                        String sentHandler = sendStat.GetMessage().toString();
-                        if(sendStat.GetReceiver() != actor)
+                        String handlerId = sendStat.GetMessage().toString();                     
+                        GetActorData(sendStat.GetReceiver()).AddReceiveHandler(handlerId, actor);
+                        GetActorData(actor).AddSendLabel(sendStat, handlerId, sendStat.GetReceiver());
+                        
+                        CommunicationLabel sendLabel =  GetActorData(actor).CreateSendLabel(handlerId, sendStat.GetReceiver());
+                        CommunicationLabel receiveLabel = GetActorData(sendStat.GetReceiver()).CreateReceiveLabel(handlerId, actor);
+                        if(sendLabel.IsSelf() == false)
                         {
-                            receiveLabel = "Recieve_"+ actor.GetName() + "_" + sentHandler;
-                            sendLabel = "Send_" + sendStat.GetReceiver().GetName() + "_" + sentHandler;
-                        }
-                        else
-                        {
-                            receiveLabel = "Recieve_"+ "self" + "_" + sentHandler;
-                            sendLabel = "Send_" +"self"+ "_" + sentHandler;
+                            globalSendLabels.add(sendLabel);
+                            receiveToSendMap.put(receiveLabel, sendLabel);
                         }
                         
-                        GetActorData(sendStat.GetReceiver()).AddReceiveLabel(receiveLabel, sentHandler);
-                        GetActorData(actor).AddSendLabel(sendStat, sendLabel);
                     }
                     if(stat instanceof ContinuousBehaviorStatement)
                     {
@@ -74,5 +71,16 @@ public class HPalangModelData
     public final ActorModelData GetActorData(Actor actor)
     {
         return actorsData.get(actor);
+    }
+
+    Collection<CommunicationLabel> GetGlobalSendLabels()
+    {
+        return globalSendLabels;
+    }
+
+    CommunicationLabel GetSendLabelFor(CommunicationLabel receive)
+    {
+        return receiveToSendMap.get(receive);
+            
     }
 }

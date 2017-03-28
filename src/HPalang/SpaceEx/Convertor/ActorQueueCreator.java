@@ -184,11 +184,11 @@ public class ActorQueueCreator
             
             queueTrans.add(CreateQueueUnitTransition(urgLoc, waitLoc));
             
-            for(String recieve : actorData.GetReceiveLabelsFor(handler))
+            for(CommunicationLabel receive : actorData.GetReceiveLabelsFor(handler))
             {
-                queueTrans.add(CreateTransition(urgOrigin, recieve, urgLoc));
+                queueTrans.add(CreateTransition(urgOrigin, receive.GetLabel(), urgLoc));
                 if(waitOrigin != urgOrigin)
-                    queueTrans.add(CreateTransition(waitOrigin, recieve, urgLoc));
+                    queueTrans.add(CreateTransition(waitOrigin, receive.GetLabel(), urgLoc));
             }
             ExpandQueue(cap-1, urgLoc, waitLoc);     
         }

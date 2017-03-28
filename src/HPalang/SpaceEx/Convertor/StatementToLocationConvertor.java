@@ -203,7 +203,7 @@ public class StatementToLocationConvertor
         {
             super(name, actorData);
             this.statement = statement;
-            this.sendLabel = actorData.GetSendLabelFor(statement);
+            this.sendLabel = actorData.GetSendLabelFor(statement).GetLabel();
         }
 
         @Override

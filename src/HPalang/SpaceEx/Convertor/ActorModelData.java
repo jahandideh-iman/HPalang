@@ -7,11 +7,11 @@ package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
+import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
-import HPalang.Core.Statement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.SpaceEx.Core.Invarient;
+import java.sql.Struct;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,15 +27,19 @@ import java.util.Set;
 public class ActorModelData
 {
 
-    private Set<String> receiveLabels = new HashSet<>();
-    private List<String> handlersName = new LinkedList<>();
-    private List<ContinuousBehavior> continuousBehaviors = new LinkedList<>();
-    private Map<ContinuousBehavior,String> cBehaviorsID = new HashMap<>();
 
-    private Map<String, List<String>> handlersReceiveLabelMap = new HashMap<>();
+    private final Set<CommunicationLabel> receiveLabels = new HashSet<>();
+    private final Map<String, List<CommunicationLabel>> handlersReceiveLabelMap = new HashMap<>();
     
-    private Set<String> sendLabels = new HashSet<>();
-    private Map<SendStatement, String> sendLabelsMap = new HashMap<>();
+    private final List<String> handlersName = new LinkedList<>();
+    private final List<String> handlerTakeLabels = new LinkedList<>();
+    private final List<ContinuousBehavior> continuousBehaviors = new LinkedList<>();
+    private final Map<ContinuousBehavior,String> cBehaviorsID = new HashMap<>();
+
+   
+    private Set<CommunicationLabel> sendLabels = new HashSet<>();
+    
+    private Map<SendStatement, CommunicationLabel> sendLabelsMap = new HashMap<>();
 
     private Actor actor;
 
@@ -45,6 +49,7 @@ public class ActorModelData
         for (MessageHandler handler : actor.GetMessageHandlers()) 
         {
             handlersName.add(handler.GetID());
+            handlerTakeLabels.add(CreateTakeLabel(handler.GetID()));
             handlersReceiveLabelMap.put(handler.GetID(), new LinkedList<>());
                
         }
@@ -55,7 +60,7 @@ public class ActorModelData
         return actor;
     }
 
-    public String CreateTakeLabel(String handler)
+    public final String CreateTakeLabel(String handler)
     {
         return "Take_" + handler;
     }
@@ -65,20 +70,20 @@ public class ActorModelData
         return "urg";
     }
 
-    public void AddReceiveLabel(String label, String handler)
-    {
+    public void AddReceiveHandler(String handler, Actor sender)
+    {    
+        CommunicationLabel label = CreateReceiveLabel(handler, sender);
         receiveLabels.add(label);
         handlersReceiveLabelMap.get(handler).add(label);
     }
 
-    public Collection<String> GetReceiveLabels()
+    public Collection<CommunicationLabel> GetReceiveLabels()
     {
         return receiveLabels;
     }
 
-    public Collection<String> GetReceiveLabelsFor(String handler)
+    public Collection<CommunicationLabel> GetReceiveLabelsFor(String handler)
     {
-
         return handlersReceiveLabelMap.get(handler);
     }
 
@@ -87,17 +92,23 @@ public class ActorModelData
         return handlersName;
     }
     
-    void AddSendLabel(SendStatement stat, String sendLabel)
+    public Collection<String> GetHandlerTakeLabels()
     {
-        sendLabels.add(sendLabel);
-        sendLabelsMap.put(stat, sendLabel);
+        return handlerTakeLabels;
     }
-    public Collection<String> GetSendLables()
+    
+    void AddSendLabel(SendStatement stat, String handler, Actor receiver)
+    {
+        CommunicationLabel label = CreateSendLabel(handler, receiver);
+        sendLabels.add(label);
+        sendLabelsMap.put(stat, label);
+    }
+    public Collection<CommunicationLabel> GetSendLables()
     {
         return sendLabels;
     }
     
-    String GetSendLabelFor(SendStatement statement)
+    CommunicationLabel GetSendLabelFor(SendStatement statement)
     {
         return sendLabelsMap.get(statement);
     }
@@ -195,5 +206,51 @@ public class ActorModelData
     public String GetDelayVar()
     {
         return actor.GetDelayVariable().Name();
+    }
+
+    Collection<DiscreteVariable> GetDiscreteVaraible()
+    {
+        return actor.GetDiscreteVariables().keySet();
+    }
+
+    CommunicationLabel GetSelfSendLabelFor(CommunicationLabel selfReceive)
+    {
+        for(CommunicationLabel label : GetSendLables())
+            if(selfReceive.GetHandler().equals(label.GetHandler())
+            && label.IsSelf())
+                    return label;
+        return null;
+    }
+    
+    public CommunicationLabel CreateSendLabel(String handler, Actor receiver)
+    {
+        String actorName;
+        boolean isSelf = false;
+        
+        actorName = receiver.GetName();
+        
+        if(receiver == actor)
+        {
+            isSelf = true;
+            actorName = "self";
+        }
+        
+        return new CommunicationLabel("Send_" + actorName + "_" + handler, handler, isSelf);
+    }
+    
+    public CommunicationLabel CreateReceiveLabel(String handler, Actor sender)
+    {
+        String actorName;
+        boolean isSelf = false;
+        
+        actorName = sender.GetName();
+        
+        if(sender == actor)
+        {
+            isSelf = true;
+            actorName = "self";
+        }
+        
+        return new CommunicationLabel("Receive_" + actorName + "_" + handler, handler, isSelf);
     }
 }
