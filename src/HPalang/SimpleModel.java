@@ -43,11 +43,11 @@ public class SimpleModel
 
         
         actorA.AddMessageHandler("a1",handler_a1);   
-        actorA.AddMessageHandler("a2",handler_a2);
+        //actorA.AddMessageHandler("a2",handler_a2);
 
         actorB.AddMessageHandler("b1",handler_b1);
         
-        handler_a1.AddStatement(new DelayStatement(1.0f));
+        handler_a1.AddStatement(new DelayStatement(0.5f));
         handler_a1.AddStatement(new ContinuousAssignmentStatement(A_timer, new ConstantExpression(0.0f)));
         handler_a1.AddStatement(
                 new ContinuousBehaviorStatement(
@@ -55,12 +55,14 @@ public class SimpleModel
                                 "timer<=2", 
                                 new DefferentialEquation(A_timer, "1"), 
                                 "timer == 2", 
-                                Statement.StatementsFrom(new SendStatement(actorA,new NormalMessage(handler_a1))))));
-        handler_a1.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1)));
+                                Statement.StatementsFrom(
+                                        new SendStatement(actorB,new NormalMessage(handler_b1))
+                                ,new ContinuousAssignmentStatement(A_timer, new ConstantExpression(0.0f))))));
+        handler_a1.AddStatement(new DelayStatement(0.5f));
+        //handler_a1.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1)));
 
-        handler_b1.AddStatement(new DelayStatement(1.0f));
+        handler_b1.AddStatement(new DelayStatement(2f));
         handler_b1.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1))); 
-        handler_b1.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a2)));
 
         
      

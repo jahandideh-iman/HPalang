@@ -20,7 +20,7 @@ import java.util.Set;
  */
 public class SimpleGraph<NodeT extends Node, LabelT extends Label, TransitionT extends Transition<NodeT, LabelT>>
 {   
-    private final Set<NodeT> nodes = new HashSet<>();  
+    private final List<NodeT> nodes = new LinkedList<>();  
     private final List<TransitionT> transitions = new LinkedList<>();
     private final List<GraphListener<NodeT>> listeners = new LinkedList<>();
     
@@ -32,9 +32,10 @@ public class SimpleGraph<NodeT extends Node, LabelT extends Label, TransitionT e
     public void AddNode(NodeT node)
     {
         if(HasNode(node) == false)
+        {
             listeners.forEach((l)-> l.OnNodeAdded(node));
-        nodes.add(node);
-        
+            nodes.add(node);
+        }
 
     }
     

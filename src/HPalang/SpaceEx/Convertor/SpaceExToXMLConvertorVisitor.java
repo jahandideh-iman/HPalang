@@ -113,7 +113,10 @@ public class SpaceExToXMLConvertorVisitor implements Visitor
         paramElem.setAttribute("d1", "1");
         paramElem.setAttribute("d2", "1");
         paramElem.setAttribute("local", realParam.IsLocal().toString());
-        paramElem.setAttribute("dynamics", "any");
+        if(realParam.GetDynamic() == RealParameter.Dynamic.Any)
+            paramElem.setAttribute("dynamics", "any");
+        else
+            paramElem.setAttribute("dynamics", "const");
         
         currentComElem.appendChild(paramElem);
     }

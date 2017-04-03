@@ -11,6 +11,7 @@ import HPalang.Core.ProgramDefinition;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -23,6 +24,7 @@ import java.util.Set;
  */
 public class HPalangModelData
 {
+    
     private Map<Actor, ActorModelData> actorsData = new HashMap<>();
     private Set<CommunicationLabel> globalSendLabels = new HashSet<>();
     
@@ -38,33 +40,34 @@ public class HPalangModelData
         }
         
         for(Actor actor : hpalangModel.GetActors())
-        {
             for(MessageHandler handler : actor.GetMessageHandlers())
-                for(Statement stat : handler.GetBody())
-                {
-                    if(stat instanceof SendStatement)
-                    {
-                        SendStatement sendStat = (SendStatement) stat;
-                        String handlerId = sendStat.GetMessage().toString();                     
-                        GetActorData(sendStat.GetReceiver()).AddReceiveHandler(handlerId, actor);
-                        GetActorData(actor).AddSendLabel(sendStat, handlerId, sendStat.GetReceiver());
-                        
-                        CommunicationLabel sendLabel =  GetActorData(actor).CreateSendLabel(handlerId, sendStat.GetReceiver());
-                        CommunicationLabel receiveLabel = GetActorData(sendStat.GetReceiver()).CreateReceiveLabel(handlerId, actor);
-                        if(sendLabel.IsSelf() == false)
-                        {
-                            globalSendLabels.add(sendLabel);
-                            receiveToSendMap.put(receiveLabel, sendLabel);
-                        }
-                        
-                    }
-                    if(stat instanceof ContinuousBehaviorStatement)
-                    {
-                        ContinuousBehaviorStatement cbStat = (ContinuousBehaviorStatement)stat;
-                        GetActorData(actor).AddContinuousBehavior(cbStat.GetBehavior());
-                        
-                    }
+                ProcessStatements(handler.GetBody(), actor, null);
+                
+        
+    }
+    
+    private void ProcessStatements(Collection<Statement> statements, Actor actor, ContinuousBehavior ownerCB )
+    {
+        for (Statement stat :statements) {
+            if (stat instanceof SendStatement) {
+                SendStatement sendStat = (SendStatement) stat;
+                String handlerId = sendStat.GetMessage().toString();
+                GetActorData(sendStat.GetReceiver()).AddReceiveHandler(handlerId, actor, ownerCB);
+                GetActorData(actor).AddSendLabel(sendStat, handlerId, sendStat.GetReceiver(), ownerCB);
+
+                CommunicationLabel sendLabel = GetActorData(actor).CreateSendLabel(handlerId, sendStat.GetReceiver(), ownerCB);
+                CommunicationLabel receiveLabel = GetActorData(sendStat.GetReceiver()).CreateReceiveLabel(handlerId, actor, ownerCB);
+                if (sendLabel.IsSelf() == false) {
+                    globalSendLabels.add(sendLabel);
+                    receiveToSendMap.put(receiveLabel, sendLabel);
                 }
+
+            }
+            else if (stat instanceof ContinuousBehaviorStatement) {
+                ContinuousBehaviorStatement cbStat = (ContinuousBehaviorStatement) stat;
+                GetActorData(actor).AddContinuousBehavior(cbStat.GetBehavior());
+                ProcessStatements(cbStat.GetBehavior().GetActions(), actor, cbStat.GetBehavior());
+            }
         }
     }
     

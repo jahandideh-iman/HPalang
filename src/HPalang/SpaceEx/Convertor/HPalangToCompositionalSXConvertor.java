@@ -7,9 +7,16 @@ package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ProgramDefinition;
+import HPalang.SpaceEx.Core.BaseComponent;
+import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
+import HPalang.SpaceEx.Core.Flow;
+import HPalang.SpaceEx.Core.HybridLabel;
+import HPalang.SpaceEx.Core.Invarient;
 import HPalang.SpaceEx.Core.LabelParameter;
+import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.NetworkComponent;
+import HPalang.SpaceEx.Core.RealParameter;
 import HPalang.SpaceEx.Core.SpaceExModel;
 import java.util.LinkedList;
 import java.util.List;
@@ -55,7 +62,40 @@ public class HPalangToCompositionalSXConvertor
             systemComp.AddInstance(actorInst);
         }
 
+        Component timerComponent = CreateTimerComponent();
+        
+        ComponentInstance timerInst = new ComponentInstance("timer", timerComponent);
+        
+        systemComp.AddParameter(new RealParameter("time", false)); 
+
+        timerInst.SetBinding("time", "time");
+        timerInst.SetBinding("duration", "30");
+        
+        systemComp.AddInstance(timerInst);
+        
+        model.AddComponent(timerComponent);
         model.AddComponent(systemComp);    
+    }
+    
+    private Component CreateTimerComponent()
+    {
+        BaseComponent timerComp = new BaseComponent("Timer");
+        
+        timerComp.AddParameter(new RealParameter("duration", false, RealParameter.Dynamic.Const));       
+        timerComp.AddParameter(new RealParameter("time", false));
+        
+        Location loc1 = new Location("loc1");
+        Location loc2 = new Location("loc2");
+        
+        loc1.AddInvarient(new Invarient("time <= duration"));
+        loc1.AddFlow(new Flow("time' == 1"));
+        
+        loc2.AddFlow(new Flow("time' == 0"));
+        
+        timerComp.AddTransition(loc1, new HybridLabel().AddGuard("time == duration"), loc2);
+
+        
+        return timerComp;
     }
     
     public SpaceExModel GetConvertedModel()

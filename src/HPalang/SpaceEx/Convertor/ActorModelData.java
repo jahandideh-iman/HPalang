@@ -9,8 +9,11 @@ import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
+import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
+import HPalang.SpaceEx.Core.BaseComponent;
+import HPalang.SpaceEx.Core.Location;
 import java.sql.Struct;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +41,7 @@ public class ActorModelData
 
    
     private Set<CommunicationLabel> sendLabels = new HashSet<>();
+    private Set<CommunicationLabel> handlersSendLabels = new HashSet<>();
     
     private Map<SendStatement, CommunicationLabel> sendLabelsMap = new HashMap<>();
 
@@ -70,9 +74,9 @@ public class ActorModelData
         return "urg";
     }
 
-    public void AddReceiveHandler(String handler, Actor sender)
+    public void AddReceiveHandler(String handler, Actor sender, ContinuousBehavior ownerCB)
     {    
-        CommunicationLabel label = CreateReceiveLabel(handler, sender);
+        CommunicationLabel label = CreateReceiveLabel(handler, sender,ownerCB);
         receiveLabels.add(label);
         handlersReceiveLabelMap.get(handler).add(label);
     }
@@ -97,11 +101,13 @@ public class ActorModelData
         return handlerTakeLabels;
     }
     
-    void AddSendLabel(SendStatement stat, String handler, Actor receiver)
+    void AddSendLabel(SendStatement stat, String handler, Actor receiver,ContinuousBehavior ownerCB)
     {
-        CommunicationLabel label = CreateSendLabel(handler, receiver);
+        CommunicationLabel label = CreateSendLabel(handler, receiver, ownerCB);
         sendLabels.add(label);
         sendLabelsMap.put(stat, label);
+        if(ownerCB == null)
+            handlersSendLabels.add(label);
     }
     public Collection<CommunicationLabel> GetSendLables()
     {
@@ -222,7 +228,7 @@ public class ActorModelData
         return null;
     }
     
-    public CommunicationLabel CreateSendLabel(String handler, Actor receiver)
+    public CommunicationLabel CreateSendLabel(String handler, Actor receiver, ContinuousBehavior ownerCB)
     {
         String actorName;
         boolean isSelf = false;
@@ -233,12 +239,14 @@ public class ActorModelData
         {
             isSelf = true;
             actorName = "self";
+            if(ownerCB != null)
+                actorName+= "_" + GetIDFor(ownerCB);
         }
         
         return new CommunicationLabel("Send_" + actorName + "_" + handler, handler, isSelf);
     }
     
-    public CommunicationLabel CreateReceiveLabel(String handler, Actor sender)
+    public CommunicationLabel CreateReceiveLabel(String handler, Actor sender,ContinuousBehavior ownerCB)
     {
         String actorName;
         boolean isSelf = false;
@@ -249,8 +257,15 @@ public class ActorModelData
         {
             isSelf = true;
             actorName = "self";
+            if(ownerCB != null)
+                actorName+= "_" + GetIDFor(ownerCB);
         }
         
         return new CommunicationLabel("Receive_" + actorName + "_" + handler, handler, isSelf);
+    }
+
+    Collection<CommunicationLabel> GetHandlersSendLables()
+    {
+        return handlersSendLabels;
     }
 }

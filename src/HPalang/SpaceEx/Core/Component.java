@@ -6,8 +6,10 @@
 package HPalang.SpaceEx.Core;
 
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 /**
  *
@@ -15,7 +17,7 @@ import java.util.List;
  */
 public abstract class Component implements Visitable
 {
-    List<Parameter> parameters = new LinkedList<>();
+    Set<Parameter> parameters = new HashSet<>();
     private String id;
     
     public Component(String id)
@@ -33,7 +35,7 @@ public abstract class Component implements Visitable
         parameters.add(parameter);
     }
     
-    public List<Parameter> GetParameters()
+    public Collection<Parameter> GetParameters()
     {
         return parameters;
     }

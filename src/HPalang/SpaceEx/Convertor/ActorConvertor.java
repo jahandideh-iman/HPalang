@@ -5,11 +5,9 @@
  */
 package HPalang.SpaceEx.Convertor;
 
-import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
-import HPalang.Core.ProgramDefinition;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Component;
@@ -66,11 +64,19 @@ public class ActorConvertor
         
         
         actorComponent.AddParameter(new RealParameter(actorData.GetBusyVar(), true));
+        actorComponent.AddParameter(new RealParameter(actorData.GetLockVar(), true));
+
         
         BaseComponent handlers = CreateHandlers();
         BaseComponent queue = CreateQueue();
 
         BaseComponent vars = CreateVars(actorData);
+        
+        ComponentInstance varsInst = new ComponentInstance("vars", vars);
+        for(Parameter param : vars.GetParameters())
+            varsInst.SetBinding(param.GetName(), param.GetName());
+        
+        actorComponent.AddInstance(varsInst);
         
         for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
         {
@@ -127,11 +133,13 @@ public class ActorConvertor
 
        
         ComponentInstance handlersInst = new ComponentInstance("handlers", handlers);
-        handlersInst.SetBinding(actorData.GetBusyVar(), actorData.GetBusyVar());
+//        handlersInst.SetBinding(actorData.GetBusyVar(), actorData.GetBusyVar());
+//        handlersInst.SetBinding(actorData.GetLockVar(), actorData.GetLockVar());
         for(Parameter param : handlers.GetParameters())
         {
-            if(param instanceof LabelParameter)
-                handlersInst.SetBinding(param.GetName(), param.GetName());   
+            if(param.IsLocal() == false)
+                handlersInst.SetBinding(param.GetName(), param.GetName());
+            
         }
         
         
@@ -174,7 +182,8 @@ public class ActorConvertor
         comp.AddParameter(new LabelParameter("Start", false));
         comp.AddParameter(new LabelParameter(acquireLabel, false));
         comp.AddParameter(new LabelParameter(releaseLabel, false));
-        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));
+        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));       
+        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
         comp.AddParameter(new RealParameter(cb.GetEquation().GetVariable().Name(), false));
         
         for(CommunicationLabel send : actorData.GetSendLables())
@@ -192,16 +201,24 @@ public class ActorConvertor
         behaviorLoc.AddInvarient(new Invarient(cb.GetInvarient()));
         comp.AddLocation(behaviorLoc);
         
+        Location releaseLockLoc = new Location("releaseLock");
+        MakeLocationUrgent(releaseLockLoc, actorData);
+        comp.AddLocation(releaseLockLoc);
+        
         comp.AddTransition(idleLoc, new HybridLabel().SetSyncLabel("Start").AddAssignment(actorData.GetUrgentReset()), acquireLockLoc);
         
         comp.AddTransition(acquireLockLoc, new HybridLabel().SetSyncLabel(acquireLabel).AddGuard(actorData.GetUrgentGuard()), behaviorLoc);
         
-        StatementToLocationConvertor convertor = new StatementToLocationConvertor(cb.GetActions(), actorData, behaviorLoc, comp, "s");
+        comp.AddTransition(behaviorLoc, new HybridLabel().SetSyncLabel(releaseLabel)
+                .AddGuard(actorData.GetUrgentGuard())
+                .AddGuard(cb.GetGuard()), releaseLockLoc);
+        
+        StatementToLocationConvertor convertor = new StatementToLocationConvertor(cb.GetActions(), actorData, releaseLockLoc, comp, "s");
         convertor.ConvertStatementChain(false);
         HybridTransition trans =  convertor.GetFirstTransition();
-        trans.GetLabel().AddGuard(cb.GetGuard());
+
         
-        HybridTransition recurseTrans = new HybridTransition(convertor.GetLastLocation(), new HybridLabel().SetSyncLabel(releaseLabel), idleLoc);
+        HybridTransition recurseTrans = new HybridTransition(convertor.GetLastLocation(), new HybridLabel(), idleLoc);
         
         convertor.ProcessLastLocation(recurseTrans.GetLabel());
         
@@ -228,7 +245,7 @@ public class ActorConvertor
         for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
             comp.AddParameter(new LabelParameter(actorData.GetStartLabelFor(cb), false));
         
-        for(CommunicationLabel send : actorData.GetSendLables())
+        for(CommunicationLabel send : actorData.GetHandlersSendLables())
             comp.AddParameter(new LabelParameter(send.GetLabel(), false));
         
         for(MessageHandler handler : actorData.GetActor().GetMessageHandlers())
@@ -253,10 +270,13 @@ public class ActorConvertor
     private BaseComponent CreateVars(ActorModelData actorData)
     {
         BaseComponent comp = new BaseComponent(actorData.GetName() + "_DVars");
-        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false));
-        Location location = new Location("loc1");
+        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false));   
+        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
         
-        location.AddFlow(new Flow(actorData.GetBusyVar() + "' == 0"));        
+        Location location = new Location("loc1");
+        location.AddFlow(new Flow(actorData.GetBusyVar() + "' == 0"));
+        location.AddFlow(new Flow(actorData.GetLockVar() + "' == 0"));        
+       
         
         for (DiscreteVariable var : actorData.GetDiscreteVaraible()) 
         {
@@ -275,6 +295,8 @@ public class ActorConvertor
         BaseComponent comp = new BaseComponent(actorData.GetName()+"_Queue");
         
         comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false));
+        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));
+
         
         for(CommunicationLabel label : actorData.GetReceiveLabels())
             comp.AddParameter(new LabelParameter(label.GetLabel(), false));

@@ -151,7 +151,7 @@ public class ActorQueueCreator
         IdleQueueLocation idle = new IdleQueueLocation("idle", actorData);
         queueLocs.add(idle);
         
-        ExpandQueue(2, idle, idle);
+        ExpandQueue(1, idle, idle);
         
         AddTakeTransition();
         

@@ -134,10 +134,12 @@ public class StatementToLocationConvertor
         {
             this.statement = statement;
             this.loc = new Location(name);
-            this.delayVar =actorData.GetActor().GetDelayVariable().Name(); 
+            this.delayVar =actorData.GetDelayVar();
             String invarient = delayVar + "<=" + String.valueOf(statement.GetDelay());  
-
+            String flow = delayVar + "' == 1";
+            
             loc.AddInvarient(new Invarient(invarient));
+            loc.AddFlow(new Flow(flow));
         }
 
         @Override
