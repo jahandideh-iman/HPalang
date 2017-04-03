@@ -69,7 +69,7 @@ public class HPalangToCompositionalSXConvertor
         systemComp.AddParameter(new RealParameter("time", false)); 
 
         timerInst.SetBinding("time", "time");
-        timerInst.SetBinding("duration", "30");
+        timerInst.SetBinding("duration", "15");
         
         systemComp.AddInstance(timerInst);
         

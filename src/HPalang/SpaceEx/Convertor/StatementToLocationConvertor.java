@@ -49,9 +49,9 @@ public class StatementToLocationConvertor
         }
 
         @Override
-        public void ProcessOutLabel(HybridLabel label)
+        public void ProcessInLabel(HybridLabel label)
         {
-            super.ProcessOutLabel(label);
+            super.ProcessInLabel(label);
             label.AddGuard(actorData.GetLockGainGuard());
             label.AddAssignment(actorData.GetLockGainReset());
         }
@@ -99,14 +99,10 @@ public class StatementToLocationConvertor
    
     private abstract class UrgentLocation extends StatementLocation
     {
-        private String urgGaurd;
-        private String urgReset;
         protected ActorModelData actorData;
         
         public UrgentLocation(String name, ActorModelData actorData)
         {
-            this.urgGaurd = actorData.GetUrgentGuard();
-            this.urgReset = actorData.GetUrgentReset();
             this.actorData = actorData;
             
             this.loc = new Location(name);
@@ -117,13 +113,13 @@ public class StatementToLocationConvertor
         @Override
         public void ProcessInLabel(HybridLabel label)
         {
-            label.AddAssignment(urgReset);
+            label.AddAssignment(actorData.GetUrgentReset());
         }
         
         @Override
         public void ProcessOutLabel(HybridLabel label)
         {
-            label.AddGuard(urgGaurd);
+            label.AddGuard(actorData.GetUrgentGuard());
         }
     }
     private class DelayLocation extends StatementLocation
@@ -146,11 +142,14 @@ public class StatementToLocationConvertor
         public void ProcessInLabel(HybridLabel label)
         {
             label.AddAssignment(delayVar+" := 0");
+            label.AddAssignment(actorData.GetLockReleaseReset());
         }
 
         @Override
         public void ProcessOutLabel(HybridLabel label)
         {
+            label.AddGuard(actorData.GetLockGainGuard());
+            label.AddAssignment(actorData.GetLockGainReset());
             label.AddGuard(delayVar + " == " + String.valueOf(statement.GetDelay()));
         }
     }
@@ -253,6 +252,8 @@ public class StatementToLocationConvertor
     
     private final List<StatementLocation> statLocations = new LinkedList<>();   
     private final List<StatementTransition> statTransitions = new LinkedList<>();
+    
+    private HybridTransition lastTransition;
 
     public StatementToLocationConvertor(Queue<Statement> statements, ActorModelData actorData, Location origin, BaseComponent comp, String prefix)
     {
@@ -274,12 +275,14 @@ public class StatementToLocationConvertor
         
         if(recurse)
         {
-            HybridTransition trans = HybridTransition.CreateEmpty(endLocation.GetLoc(), startOrigin);
-            endLocation.ProcessOutLabel(trans.GetLabel());
-            comp.AddTransition(trans);
+            lastTransition = HybridTransition.CreateEmpty(endLocation.GetLoc(), startOrigin);
+            endLocation.ProcessOutLabel(lastTransition.GetLabel());
+            comp.AddTransition(lastTransition);
         }
     }
     
+    
+    // TODO: What will happen if this function is not called?
     public HybridTransition GetFirstTransition()
     {
         HybridLabel label = new HybridLabel();
@@ -290,6 +293,11 @@ public class StatementToLocationConvertor
         comp.AddTransition(trans);
                 
         return trans;
+    }
+    
+    public HybridTransition GetLastTransition()
+    {
+        return lastTransition;
     }
     
     public Location GetLastLocation()

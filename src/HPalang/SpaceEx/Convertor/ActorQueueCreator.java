@@ -150,7 +150,7 @@ public class ActorQueueCreator
     {
         IdleQueueLocation idle = new IdleQueueLocation("idle", actorData);
         queueLocs.add(idle);
-        
+        comp.AddLocation(idle.GetLoc());
         ExpandQueue(1, idle, idle);
         
         AddTakeTransition();

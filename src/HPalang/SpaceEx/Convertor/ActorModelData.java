@@ -189,6 +189,17 @@ public class ActorModelData
     {
         return "actorBusy";
     }
+    
+    public String GetBusyAssignment()
+    {
+        return GetBusyVar() + " := 1";
+    }
+    
+    public String GetUnBusyAssignment()
+    {
+        return GetBusyVar() + " := 0";
+    }
+    
     String GetIsBusyGuard()
     {
         return GetBusyVar() + " == 1";

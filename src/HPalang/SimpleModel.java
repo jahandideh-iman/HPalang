@@ -57,9 +57,10 @@ public class SimpleModel
                                 "timer == 2", 
                                 Statement.StatementsFrom(
                                         new SendStatement(actorB,new NormalMessage(handler_b1))
-                                ,new ContinuousAssignmentStatement(A_timer, new ConstantExpression(0.0f))))));
-        handler_a1.AddStatement(new DelayStatement(0.5f));
+                                        ,new ContinuousAssignmentStatement(A_timer, new ConstantExpression(0.0f))))));
         //handler_a1.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1)));
+        handler_a1.AddStatement(new ContinuousAssignmentStatement(A_timer, new ConstantExpression(0.0f)));
+        handler_a1.AddStatement(new ContinuousAssignmentStatement(A_timer, new ConstantExpression(0.0f)));
 
         handler_b1.AddStatement(new DelayStatement(2f));
         handler_b1.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1))); 

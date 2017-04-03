@@ -209,13 +209,23 @@ public class ActorConvertor
         
         comp.AddTransition(acquireLockLoc, new HybridLabel().SetSyncLabel(acquireLabel).AddGuard(actorData.GetUrgentGuard()), behaviorLoc);
         
-        comp.AddTransition(behaviorLoc, new HybridLabel().SetSyncLabel(releaseLabel)
-                .AddGuard(actorData.GetUrgentGuard())
-                .AddGuard(cb.GetGuard()), releaseLockLoc);
+        comp.AddTransition(
+                behaviorLoc, 
+                new HybridLabel()
+                .SetSyncLabel(releaseLabel)
+                .AddGuard(cb.GetGuard())
+                .AddAssignment(actorData.GetUrgentReset()), 
+                releaseLockLoc);
         
-        StatementToLocationConvertor convertor = new StatementToLocationConvertor(cb.GetActions(), actorData, releaseLockLoc, comp, "s");
+        StatementToLocationConvertor convertor = new StatementToLocationConvertor(
+                cb.GetActions(), 
+                actorData, 
+                releaseLockLoc, 
+                comp, 
+                "s");
         convertor.ConvertStatementChain(false);
         HybridTransition trans =  convertor.GetFirstTransition();
+        trans.GetLabel().AddGuard(actorData.GetUrgentGuard());
 
         
         HybridTransition recurseTrans = new HybridTransition(convertor.GetLastLocation(), new HybridLabel(), idleLoc);
@@ -258,13 +268,30 @@ public class ActorConvertor
     {
         String takeLabel =  actorData.CreateTakeLabel(handler.GetID());
         comp.AddParameter(new LabelParameter(takeLabel, false));
+        
+        Location preLoc = new Location("pre_" + handler.GetID());
+        MakeLocationUrgent(preLoc, actorData);
+        
+        HybridTransition trans = new HybridTransition(
+                startLoc, 
+                new HybridLabel().SetSyncLabel(takeLabel).AddAssignment(actorData.GetUrgentReset()), 
+                preLoc);
+        
+        comp.AddTransition(trans);
 
         StatementToLocationConvertor statementsConvertor
-                = new StatementToLocationConvertor(handler.GetBody(), actorData, startLoc, comp, handler.GetID());
+                = new StatementToLocationConvertor(handler.GetBody(), actorData, preLoc, comp, handler.GetID());
 
-        statementsConvertor.ConvertStatementChain(true);
-        HybridTransition firstTrans = statementsConvertor.GetFirstTransition();
-        firstTrans.GetLabel().SetSyncLabel(takeLabel);
+        statementsConvertor.ConvertStatementChain(false);
+        
+        statementsConvertor.GetFirstTransition().GetLabel()
+                .AddAssignment(actorData.GetBusyAssignment()).AddGuard(actorData.GetUrgentGuard());
+        
+        HybridTransition recursTrans =  new HybridTransition(statementsConvertor.GetLastLocation(), new HybridLabel(), startLoc);
+        statementsConvertor.ProcessLastLocation(recursTrans.GetLabel());
+        recursTrans.GetLabel().AddAssignment(actorData.GetUnBusyAssignment());
+        
+        comp.AddTransition(recursTrans);
     }
 
     private BaseComponent CreateVars(ActorModelData actorData)
