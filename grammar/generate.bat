@@ -1,0 +1,1 @@
+java -jar antlr-4.7-complete.jar "HPalang.txt" -package "HPalang.Parser.antlr" -o "../src/HPalang/Parser/antlr"

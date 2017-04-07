@@ -5,7 +5,7 @@
  */
 package HPalang;
 
-import HPalang.Convertors.HybridAutomatonToXMLConvertor;
+import HPalang.Convertors.HybridAutomatonToDMEConvertor;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Convertors.LTSToXMLConvertor;
 import HPalang.Core.Actor;
@@ -37,12 +37,15 @@ import HPalang.LTSGeneration.SOSRules.DiscreteAssignmentRule;
 import HPalang.LTSGeneration.SOSRules.IfStatementRule;
 import HPalang.LTSGeneration.SOSRules.TierOne.HighPriorityMessageTakeRule;
 import HPalang.LTSGeneration.SOSRules.TierOne.LowPriorityMessageTakeRule;
-import HPalang.LTSGeneration.SOSRules.TierOne.MessageTakeRule;
 import HPalang.HybridAutomataGeneration.SOSRules.ResumeStatementRule;
 import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.Reset;
-import HPalang.LTSGeneration.Trace;
+import HPalang.Parser.Parser;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
@@ -63,18 +66,23 @@ public class Main {
     /**
      * @param args the command line arguments
      */
-    public static void main(String[] args) 
+    public static void main(String[] args) throws FileNotFoundException, IOException 
     {
+        ProgramDefinition definition;
+        if(args.length ==0 )
+            definition = new DrawBridge().Create();
+        else
+            definition = new Parser().Parse(Read(args[0]));
         LTSGenerator tierOneLTSGenerator = CreateTierOneLTSGenrator(CreateTierTwoLTSGenrator());
         
         HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
         hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
         
-        ProgramDefinition definition = new DrawBridge().Create();
+         
         
         LabeledTransitionSystem lts =  tierOneLTSGenerator.Generate(LTSUtility.FromProgramDefinition(definition));
         
-        FileWriter writer = new FileWriter();
+        FileWriter writer = new FileWriter("output/");
         
         System.out.println("LTS(B) States  : " + lts.GetStates().size());
         System.out.println("LTS(B) Transition : " + lts.GetTransitions().size());
@@ -86,14 +94,18 @@ public class Main {
         HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts);
         
         writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
-        writer.Write("output_HA.xml", new HybridAutomatonToXMLConvertor().Convert(automaton));
+        writer.Write("output_HA.xml", new HybridAutomatonToDMEConvertor().Convert(automaton));
         
         System.out.println("LTS(A) Pruning States : " + lts.GetStates().size());
         System.out.println("LTS(A) Pruning Transition : " + lts.GetTransitions().size());
         
         System.out.println("HA Locations : " + automaton.GetLocations().size());
         System.out.println("HA Transition : " + automaton.GetTransitions().size());
-        
+    }
+    
+    private static InputStream Read(String filePath) throws FileNotFoundException
+    {
+        return new FileInputStream(filePath);
     }
     
     private static LTSGenerator CreateTierTwoLTSGenrator()

@@ -15,12 +15,24 @@ import java.util.logging.Logger;
  */
 public class FileWriter
 {
+    private final String pathPrefix;
+    
+    public FileWriter(String pathPrefix)
+    {
+        this.pathPrefix = pathPrefix;
+    }
+    
+    public FileWriter()
+    {
+        this.pathPrefix = "";
+    }
+    
     public void Write(String fileName, String data)
     {
-
+        String completePath = pathPrefix + fileName;
         java.io.FileWriter out = null;
         try {
-            out = new java.io.FileWriter(fileName);
+            out = new java.io.FileWriter(completePath);
             out.write(data);
             out.close();
         } catch (IOException ex) {

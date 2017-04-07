@@ -14,7 +14,7 @@ import HPalang.HybridAutomataGeneration.Transition;
  *
  * @author Iman Jahandideh
  */
-public class HybridAutomatonToXMLConvertor
+public class HybridAutomatonToDMEConvertor
 {
     public String Convert(HybridAutomaton hybridAutomaton)
     {

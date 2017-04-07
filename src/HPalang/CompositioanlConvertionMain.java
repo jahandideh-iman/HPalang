@@ -7,9 +7,7 @@ package HPalang;
 
 import HPalang.Core.ProgramDefinition;
 import HPalang.SpaceEx.Convertor.HPalangToCompositionalSXConvertor;
-import HPalang.SpaceEx.Convertor.HPalangToCompositionalSXConvertor;
 import HPalang.SpaceEx.Convertor.SpaceExToXMLConvertor;
-import HPalang.SpaceEx.Convertor.SpaceExToXMLConvertorVisitor;
 import HPalang.SpaceEx.Core.SpaceExModel;
 
 /**
