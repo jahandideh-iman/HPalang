@@ -38,5 +38,13 @@ public class ProgramDefinition
     {
         return mainBlock.GetSendStatements();
     }
+
+    public Actor FindActor(String name)
+    {
+        for(Actor actor : actors)
+            if(actor.GetName().equals(name))
+                return actor;
+        return null;
+    }
     
 }

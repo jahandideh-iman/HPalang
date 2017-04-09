@@ -5,7 +5,7 @@
  */
 package HPalang.Core.Statements;
 
-import HPalang.Core.DiscreteExpression;
+import HPalang.Core.DiscreteExpressions.DiscreteExpressionT;
 import HPalang.Core.Statement;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -17,19 +17,19 @@ import java.util.Queue;
 public class IfStatement extends AbstractStatement<IfStatement>
 {
 
-    private final DiscreteExpression expression;
+    private final DiscreteExpressionT expression;
     
     private final Queue<Statement> trueStatements = new LinkedList<>();
     private final Queue<Statement> falseStatements = new LinkedList<>();
     
-    public IfStatement(DiscreteExpression expression, Queue<Statement> trueStatements, Queue<Statement> falseStatements )
+    public IfStatement(DiscreteExpressionT expression, Queue<Statement> trueStatements, Queue<Statement> falseStatements )
     {
         this.expression = expression;
         this.trueStatements.addAll(trueStatements);
         this.falseStatements.addAll(falseStatements);
     }
     
-    public DiscreteExpression Expression()
+    public DiscreteExpressionT Expression()
     {
         return expression;
     }

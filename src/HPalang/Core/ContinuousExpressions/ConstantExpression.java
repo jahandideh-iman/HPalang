@@ -20,6 +20,11 @@ public class ConstantExpression extends ContinuousExpression<ConstantExpression>
         this.constant = constant;
     }
     
+    public float Value()
+    {
+        return constant;
+    }
+    
     @Override
     public String toString()
     {

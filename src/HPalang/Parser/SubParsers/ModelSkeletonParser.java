@@ -3,11 +3,12 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Parser.antlr.Listeners;
+package HPalang.Parser.SubParsers;
 
 import HPalang.Core.Actor;
 import HPalang.Core.MainBlock;
 import HPalang.Core.ProgramDefinition;
+import HPalang.Parser.SubParser;
 import HPalang.Parser.antlr.HPalangBaseListener;
 import HPalang.Parser.antlr.HPalangParser;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -16,35 +17,22 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
  *
  * @author Iman Jahandideh
  */
-public class ModelListener extends HPalangBaseListener
+public class ModelSkeletonParser extends SubParser<HPalangParser.ModelContext>
 {
-    private ProgramDefinition def;
-
-    @Override
-    public void enterModel(HPalangParser.ModelContext ctx)
+    public ModelSkeletonParser(ProgramDefinition model, HPalangParser.ModelContext ctx)
     {
-        def = new ProgramDefinition();
+        super(model, ctx);
     }
-    
     
     @Override
     public void enterActor(HPalangParser.ActorContext ctx) 
     {
-        ActorListener listener = new ActorListener(ctx);
-        ParseTreeWalker.DEFAULT.walk(listener, ctx);  
-        def.AddActor(listener.GetActor());
+        new ActorSkeletonParser(model,ctx).Parse();
     }
 
     @Override
     public void enterMain(HPalangParser.MainContext ctx)
     {
-        def.SetMainBlock(new MainBlock());
-        //def.AddActor(new Actor(ctx.ID().getText(), 0));
-    }
-    
-
-    public ProgramDefinition GetDefinition()
-    {
-        return def;
+        model.SetMainBlock(new MainBlock());
     }
 }

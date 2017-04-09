@@ -6,6 +6,7 @@
 package HPalang.Core.Statements;
 
 import HPalang.Core.DiscreteExpression;
+import HPalang.Core.DiscreteExpressions.DiscreteExpressionT;
 import HPalang.Core.DiscreteVariable;
 
 /**

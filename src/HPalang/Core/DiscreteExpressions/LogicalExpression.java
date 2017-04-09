@@ -5,25 +5,24 @@
  */
 package HPalang.Core.DiscreteExpressions;
 
-import HPalang.Core.DiscreteExpression;
 import HPalang.Core.ValuationContainer;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class LogicalExpression extends DiscreteExpression<LogicalExpression>
+public class LogicalExpression extends DiscreteExpressionT<LogicalExpression>
 {
     public enum Operator
     {
         Invalid, AND,OR
     };
     
-    private final DiscreteExpression operand1;
+    private final DiscreteExpressionT operand1;
     private final Operator operator;
-    private final DiscreteExpression operand2;
+    private final DiscreteExpressionT operand2;
         
-    public LogicalExpression(DiscreteExpression operand1, Operator operator, DiscreteExpression operand2)
+    public LogicalExpression(DiscreteExpressionT operand1, Operator operator, DiscreteExpressionT operand2)
     {
         this.operand1 = operand1;
         this.operator = operator;

@@ -5,7 +5,6 @@
  */
 package HPalang.Core.DiscreteExpressions;
 
-import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.ValuationContainer;
 
@@ -13,7 +12,7 @@ import HPalang.Core.ValuationContainer;
  *
  * @author Iman Jahandideh
  */
-public class VariableExpression extends DiscreteExpression<VariableExpression>
+public class VariableExpression extends DiscreteExpressionT<VariableExpression>
 {
     private final DiscreteVariable variable;
     

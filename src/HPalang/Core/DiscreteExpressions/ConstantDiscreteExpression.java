@@ -5,14 +5,13 @@
  */
 package HPalang.Core.DiscreteExpressions;
 
-import HPalang.Core.DiscreteExpression;
 import HPalang.Core.ValuationContainer;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ConstantDiscreteExpression extends DiscreteExpression<ConstantDiscreteExpression>
+public class ConstantDiscreteExpression extends DiscreteExpressionT<ConstantDiscreteExpression>
 {
     private final int constant;
     

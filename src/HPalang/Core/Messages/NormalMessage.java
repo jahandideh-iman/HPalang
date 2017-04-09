@@ -47,4 +47,9 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
     {
         return messageHandler.GetID();
     }
+    
+    public MessageHandler GetMessageHandler()
+    {
+        return messageHandler;
+    }
 }

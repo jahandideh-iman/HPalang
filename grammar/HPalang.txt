@@ -1,27 +1,58 @@
 // Define a grammar called Hello
 grammar HPalang;
-model  : (actor) + main ; 
+model  : (actor)* (main)? ; 
 actor : 'actor' ID '{' var_defs method_defs '}'; 
 var_defs : (var_def)* ;
-var_def : type ID END ;
+var_def : type var_name END ;
 type : 'real' #real
 		| 'int' #int
 		;
-		
+var_name : ID ;	
+
 method_defs : (method_def)* ;
 method_def : ID '(' ')'  '{' statements '}' ;
 statements : (statement END)*;
-statement : send ;
+statement : send | c_assignment | c_behavior;
+
 send : destination '.' message '(' ')' ;
 destination: 'self' | ID ;
 
+d_assignment : var_name '=' d_expr;
+
+c_assignment : var_name '=' c_expr;
+
+d_expr : d_expr0 (arithmetic_op d_expr0)?;
+d_expr0 : var_name | d_const;
+arithmetic_expr : d_expr arithmetic_op d_expr;
+
+c_expr : c_const | var_name;
+c_const : REAL ;
+
+c_behavior : 'inv' '(' inv_expr ')' '{' def_equ '}' 'guard' '('guard_expr ')' '{' statements '}' ;
+
+def_equ : first_driv '=' c_expr ;
+first_driv : var_name '\'';
+
+inv_expr : boolean_expr ;
+guard_expr : boolean_expr;
+
+boolean_expr : boolean_expr0;
+boolean_expr0 : TRUE | FALSE | c_expr comparision_op c_expr ;
+comparision_op : '>' | '>=' | '<' | '<=' | '==' ;
+
+arithmetic_op : '+' | '-';
+d_const : INT;
 
 main : 'main' '{' '}' ;
 
 message : ID ;
 
+TRUE : 'true';
+FALSE : 'false';
+REAL : [0-9]+.[0-9]+ ;
+INT : [0-9]+ ;
 END : ';' ;
-ID : ([A-Z]|[a-z])+ ;             
+ID : ([A-Z]|[a-z])([A-Z]|[a-z]|[0-9])* ;             
 WS : [ \t\r\n]+ -> skip ; 
 
 /*

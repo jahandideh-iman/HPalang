@@ -81,4 +81,30 @@ public class Actor
     {
         return delayVariable;
     }
+
+    public DiscreteVariable FindDiscreteVariable(String name)
+    {
+        for(DiscreteVariable var : discreteVariables.keySet())
+            if(var.Name().equals(name))
+                return var;
+        return null;
+    }
+    
+    public ContinuousVariable FindContinuousVariable(String name)
+    {
+        for(ContinuousVariable var : continuousVariables.keySet())
+            if(var.Name().equals(name))
+                return var;
+        return null;
+    }
+    
+    public boolean HasDiscreteVariable(String name)
+    {
+        return FindDiscreteVariable(name) != null;
+    }
+    
+    public boolean HasContinuousVariable(String name)
+    {
+        return FindContinuousVariable(name) != null;
+    }
 }

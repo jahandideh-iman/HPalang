@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.Parser.SubParsers;
+
+import HPalang.Core.DiscreteExpression;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public interface DiscreteExpression
+class ExpressionContainer
 {
-    public int Evaluate(ValuationContainer valuations);
+    public DiscreteExpression expression;
 }

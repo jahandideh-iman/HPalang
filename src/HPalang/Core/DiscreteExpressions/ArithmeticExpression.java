@@ -5,25 +5,24 @@
  */
 package HPalang.Core.DiscreteExpressions;
 
-import HPalang.Core.DiscreteExpression;
 import HPalang.Core.ValuationContainer;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ArithmeticExpression extends DiscreteExpression<ArithmeticExpression>
+public class ArithmeticExpression extends DiscreteExpressionT<ArithmeticExpression>
 {  
     public enum Operator
     {
         Invalid, Add,Subtract
     };
     
-    private final DiscreteExpression operand1;
+    private final DiscreteExpressionT operand1;
     private final Operator operator;
-    private final DiscreteExpression operand2;
+    private final DiscreteExpressionT operand2;
         
-    public ArithmeticExpression(DiscreteExpression operand1, Operator operator, DiscreteExpression operand2)
+    public ArithmeticExpression(DiscreteExpressionT operand1, Operator operator, DiscreteExpressionT operand2)
     {
         this.operand1 = operand1;
         this.operator = operator;

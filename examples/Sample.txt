@@ -2,6 +2,16 @@ actor A
 {
 	real time;
 	int isgood;
+	
+	a1()
+	{
+		
+	}
+	
+	a2()
+	{
+	
+	}
 }
 
 actor B

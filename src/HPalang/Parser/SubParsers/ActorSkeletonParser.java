@@ -3,11 +3,14 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Parser.antlr.Listeners;
+package HPalang.Parser.SubParsers;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DiscreteVariable;
+import HPalang.Core.MessageHandler;
+import HPalang.Core.ProgramDefinition;
+import HPalang.Parser.SubParser;
 import HPalang.Parser.antlr.HPalangBaseListener;
 import HPalang.Parser.antlr.HPalangParser;
 
@@ -15,12 +18,13 @@ import HPalang.Parser.antlr.HPalangParser;
  *
  * @author Iman Jahandideh
  */
-public class ActorListener extends HPalangBaseListener
+public class ActorSkeletonParser extends SubParser<HPalangParser.ActorContext>
 {
     private final Actor actor;
-    
-    public ActorListener(HPalangParser.ActorContext ctx)
+
+    public ActorSkeletonParser(ProgramDefinition model, HPalangParser.ActorContext ctx)
     {
+        super(model, ctx);
         actor = new Actor(ctx.ID().getText(), 5);
     }
 
@@ -28,7 +32,7 @@ public class ActorListener extends HPalangBaseListener
     public void enterVar_def(HPalangParser.Var_defContext ctx)
     {
         String type = ctx.type().getText();
-        String varName = ctx.ID().getText();
+        String varName = ctx.var_name().ID().getText();
         
         if(type.equals("real"))
             actor.AddContinuousVariable(new ContinuousVariable(varName),0);
@@ -40,16 +44,14 @@ public class ActorListener extends HPalangBaseListener
     @Override
     public void enterMethod_def(HPalangParser.Method_defContext ctx)
     {
-        super.enterMethod_def(ctx); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    
+        actor.AddMessageHandler(ctx.ID().getText(), new MessageHandler());
+    }  
 
-    Actor GetActor()
+    @Override
+    public void exitActor(HPalangParser.ActorContext ctx)
     {
-        return actor;
+        model.AddActor(actor);
     }
-    
     
     
 }
