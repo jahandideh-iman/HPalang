@@ -64,25 +64,25 @@ public class HPalangBaseListener implements HPalangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterReal(HPalangParser.RealContext ctx) { }
+	@Override public void enterRealT(HPalangParser.RealTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitReal(HPalangParser.RealContext ctx) { }
+	@Override public void exitRealT(HPalangParser.RealTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterInt(HPalangParser.IntContext ctx) { }
+	@Override public void enterIntT(HPalangParser.IntTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitInt(HPalangParser.IntContext ctx) { }
+	@Override public void exitIntT(HPalangParser.IntTContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -172,85 +172,73 @@ public class HPalangBaseListener implements HPalangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterD_assignment(HPalangParser.D_assignmentContext ctx) { }
+	@Override public void enterAssignment(HPalangParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitD_assignment(HPalangParser.D_assignmentContext ctx) { }
+	@Override public void exitAssignment(HPalangParser.AssignmentContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterC_assignment(HPalangParser.C_assignmentContext ctx) { }
+	@Override public void enterExpr(HPalangParser.ExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitC_assignment(HPalangParser.C_assignmentContext ctx) { }
+	@Override public void exitExpr(HPalangParser.ExprContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterD_expr(HPalangParser.D_exprContext ctx) { }
+	@Override public void enterExpr0(HPalangParser.Expr0Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitD_expr(HPalangParser.D_exprContext ctx) { }
+	@Override public void exitExpr0(HPalangParser.Expr0Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterD_expr0(HPalangParser.D_expr0Context ctx) { }
+	@Override public void enterExpr1(HPalangParser.Expr1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitD_expr0(HPalangParser.D_expr0Context ctx) { }
+	@Override public void exitExpr1(HPalangParser.Expr1Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArithmetic_expr(HPalangParser.Arithmetic_exprContext ctx) { }
+	@Override public void enterExpr2(HPalangParser.Expr2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArithmetic_expr(HPalangParser.Arithmetic_exprContext ctx) { }
+	@Override public void exitExpr2(HPalangParser.Expr2Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterC_expr(HPalangParser.C_exprContext ctx) { }
+	@Override public void enterExpr3(HPalangParser.Expr3Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitC_expr(HPalangParser.C_exprContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void enterC_const(HPalangParser.C_constContext ctx) { }
-	/**
-	 * {@inheritDoc}
-	 *
-	 * <p>The default implementation does nothing.</p>
-	 */
-	@Override public void exitC_const(HPalangParser.C_constContext ctx) { }
+	@Override public void exitExpr3(HPalangParser.Expr3Context ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -340,37 +328,133 @@ public class HPalangBaseListener implements HPalangListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterComparision_op(HPalangParser.Comparision_opContext ctx) { }
+	@Override public void enterConjunction(HPalangParser.ConjunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitComparision_op(HPalangParser.Comparision_opContext ctx) { }
+	@Override public void exitConjunction(HPalangParser.ConjunctionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterArithmetic_op(HPalangParser.Arithmetic_opContext ctx) { }
+	@Override public void enterDisjuncition(HPalangParser.DisjuncitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitArithmetic_op(HPalangParser.Arithmetic_opContext ctx) { }
+	@Override public void exitDisjuncition(HPalangParser.DisjuncitionContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void enterD_const(HPalangParser.D_constContext ctx) { }
+	@Override public void enterGreater(HPalangParser.GreaterContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
-	@Override public void exitD_const(HPalangParser.D_constContext ctx) { }
+	@Override public void exitGreater(HPalangParser.GreaterContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterGreaterEqual(HPalangParser.GreaterEqualContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitGreaterEqual(HPalangParser.GreaterEqualContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLesser(HPalangParser.LesserContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLesser(HPalangParser.LesserContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterLesserEqual(HPalangParser.LesserEqualContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitLesserEqual(HPalangParser.LesserEqualContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterEquality(HPalangParser.EqualityContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitEquality(HPalangParser.EqualityContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterPlus(HPalangParser.PlusContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitPlus(HPalangParser.PlusContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMinus(HPalangParser.MinusContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMinus(HPalangParser.MinusContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterMult(HPalangParser.MultContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMult(HPalangParser.MultContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterDiv(HPalangParser.DivContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitDiv(HPalangParser.DivContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *
@@ -395,6 +479,66 @@ public class HPalangBaseListener implements HPalangListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitMessage(HPalangParser.MessageContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterNumber(HPalangParser.NumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitNumber(HPalangParser.NumberContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterInt_num(HPalangParser.Int_numContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitInt_num(HPalangParser.Int_numContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterReal_num(HPalangParser.Real_numContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitReal_num(HPalangParser.Real_numContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterB_true(HPalangParser.B_trueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitB_true(HPalangParser.B_trueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterB_false(HPalangParser.B_falseContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitB_false(HPalangParser.B_falseContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

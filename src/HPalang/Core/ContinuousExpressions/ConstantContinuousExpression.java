@@ -11,11 +11,11 @@ import HPalang.Core.ContinuousExpression;
  *
  * @author Iman Jahandideh
  */
-public class ConstantExpression extends ContinuousExpression<ConstantExpression>
+public class ConstantContinuousExpression extends ContinuousExpressionT<ConstantContinuousExpression>
 {
     private final float constant;
     
-    public ConstantExpression(float constant)
+    public ConstantContinuousExpression(float constant)
     {
         this.constant = constant;
     }
@@ -32,7 +32,7 @@ public class ConstantExpression extends ContinuousExpression<ConstantExpression>
     }
 
     @Override
-    protected boolean InternalEquals(ConstantExpression other)
+    protected boolean InternalEquals(ConstantContinuousExpression other)
     {
         return other.constant == this.constant;
     }

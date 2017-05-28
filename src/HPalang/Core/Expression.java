@@ -9,7 +9,7 @@ package HPalang.Core;
  *
  * @author Iman Jahandideh
  */
-public interface ContinuousExpression extends Expression
+public interface Expression
 {
     
 }

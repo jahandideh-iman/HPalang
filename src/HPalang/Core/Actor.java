@@ -98,6 +98,14 @@ public class Actor
         return null;
     }
     
+    public Variable FindVariable(String name)
+    {
+        Variable var = FindDiscreteVariable(name);
+        if(var == null)
+            var = FindContinuousVariable(name);
+        return var;
+    }
+    
     public boolean HasDiscreteVariable(String name)
     {
         return FindDiscreteVariable(name) != null;

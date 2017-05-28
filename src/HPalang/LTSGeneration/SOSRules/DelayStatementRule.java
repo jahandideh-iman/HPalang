@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Actor;
-import HPalang.Core.ContinuousExpressions.ConstantExpression;
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DefferentialEquation;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
@@ -43,7 +43,7 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
     @Override
     protected TauLabel CreateTransitionLabel(ActorRunTimeState actorState, DelayStatement statement)
     {
-        return new TauLabel(Reset.ResetsFrom(new Reset(actorState.GetActor().GetDelayVariable(), new ConstantExpression(0f))));
+        return new TauLabel(Reset.ResetsFrom(new Reset(actorState.GetActor().GetDelayVariable(), new ConstantContinuousExpression(0f))));
     }
     
     private ContinuousBehavior CreateDelayBehavior(Actor actor,float delay, ContinuousVariable delayVar)

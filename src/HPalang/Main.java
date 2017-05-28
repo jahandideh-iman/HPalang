@@ -72,7 +72,7 @@ public class Main {
         if(args.length ==0 )
             definition = new DrawBridge().Create();
         else
-            definition = new Parser().Parse(Read(args[0]));
+            definition = new Parser().ParseModel(Read(args[0]));
         LTSGenerator tierOneLTSGenerator = CreateTierOneLTSGenrator(CreateTierTwoLTSGenrator());
         
         HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();

@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules;
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.Core.Actor;
-import HPalang.Core.ContinuousExpressions.ConstantExpression;
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.LTSGeneration.Reset;
@@ -41,7 +41,7 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
        
         ActorRunTimeStateBuilder actorState = new ActorRunTimeStateBuilder()
                 .WithActor(actor)
-                .EnqueueStatement(new ContinuousAssignmentStatement(cVar, new ConstantExpression(1.5f)));
+                .EnqueueStatement(new ContinuousAssignmentStatement(cVar, new ConstantContinuousExpression(1.5f)));
         
         globalState
                 .AddActorRunTimeState(actorState);
@@ -52,7 +52,7 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
         GlobalRunTimeState expectedState = globalState.Build();
         expectedState.FindActorState(actor).StatementQueue().Dequeue();
        
-        TauLabel label = new TauLabel(Reset.ResetsFrom(new Reset(cVar, new ConstantExpression(1.5f))));
+        TauLabel label = new TauLabel(Reset.ResetsFrom(new Reset(cVar, new ConstantContinuousExpression(1.5f))));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), label , expectedState));
     }
 }

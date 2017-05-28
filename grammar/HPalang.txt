@@ -4,53 +4,59 @@ model  : (actor)* (main)? ;
 actor : 'actor' ID '{' var_defs method_defs '}'; 
 var_defs : (var_def)* ;
 var_def : type var_name END ;
-type : 'real' #real
-		| 'int' #int
+type : 'real' #realT
+		| 'int' #intT
 		;
 var_name : ID ;	
 
 method_defs : (method_def)* ;
 method_def : ID '(' ')'  '{' statements '}' ;
 statements : (statement END)*;
-statement : send | c_assignment | c_behavior;
+statement : send | assignment | c_behavior;
 
 send : destination '.' message '(' ')' ;
 destination: 'self' | ID ;
 
-d_assignment : var_name '=' d_expr;
+assignment : var_name '=' expr;
 
-c_assignment : var_name '=' c_expr;
-
-d_expr : d_expr0 (arithmetic_op d_expr0)?;
-d_expr0 : var_name | d_const;
-arithmetic_expr : d_expr arithmetic_op d_expr;
-
-c_expr : c_const | var_name;
-c_const : REAL ;
+expr : expr0 (logical_op expr0)*;
+expr0 : expr1 (comparision_op expr1)*;
+expr1 : expr2 (arithmetic_op1 expr2)*;
+expr2 : expr3 (arithmetic_op2 expr3)*;
+expr3 : var_name | number | '(' expr ')' | b_true |b_false;
 
 c_behavior : 'inv' '(' inv_expr ')' '{' def_equ '}' 'guard' '('guard_expr ')' '{' statements '}' ;
 
-def_equ : first_driv '=' c_expr ;
+def_equ : first_driv '=' expr ;
 first_driv : var_name '\'';
 
-inv_expr : boolean_expr ;
-guard_expr : boolean_expr;
+inv_expr : expr ;
+guard_expr : expr;
 
-boolean_expr : boolean_expr0;
-boolean_expr0 : TRUE | FALSE | c_expr comparision_op c_expr ;
-comparision_op : '>' | '>=' | '<' | '<=' | '==' ;
+boolean_expr : boolean_expr0 (comparision_op boolean_expr0)* ;
 
-arithmetic_op : '+' | '-';
-d_const : INT;
+boolean_expr0 : TRUE | FALSE | var_name| number | '(' boolean_expr ')' ;
+
+logical_op : '&&' #conjunction | '||' #disjuncition;
+comparision_op : '>' #greater | '>=' #greaterEqual | '<' #lesser | '<=' #lesserEqual | '==' #equality ;
+
+arithmetic_op1 : '+' #plus | '-' #minus;
+arithmetic_op2 : '*' #mult | '/' #div;
 
 main : 'main' '{' '}' ;
 
 message : ID ;
 
+number : int_num | real_num;
+int_num : INT;
+real_num : REAL;
+b_true : TRUE;
+b_false : FALSE;
+
+INT : '0'..'9' + ;
+REAL : '0'..'9' + ('.' '0'..'9' *)? ;
 TRUE : 'true';
 FALSE : 'false';
-REAL : [0-9]+.[0-9]+ ;
-INT : [0-9]+ ;
 END : ';' ;
 ID : ([A-Z]|[a-z])([A-Z]|[a-z]|[0-9])* ;             
 WS : [ \t\r\n]+ -> skip ; 

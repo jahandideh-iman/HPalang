@@ -9,7 +9,7 @@ package HPalang.Core;
  *
  * @author Iman Jahandideh
  */
-public interface DiscreteExpression
+public interface DiscreteExpression extends Expression
 {
     public int Evaluate(ValuationContainer valuations);
 }

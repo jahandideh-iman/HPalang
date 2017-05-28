@@ -5,7 +5,9 @@
  */
 package HPalang.Parser;
 
+import HPalang.Core.Expression;
 import HPalang.Core.ProgramDefinition;
+import HPalang.Parser.SubParsers.Expression.ExpressionParser;
 import HPalang.Parser.antlr.HPalangBaseListener;
 import HPalang.Parser.antlr.HPalangLexer;
 import HPalang.Parser.antlr.HPalangListener;
@@ -27,13 +29,9 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
  */
 public class Parser
 {
-    public ProgramDefinition Parse(InputStream inputStream) throws IOException  
+    public ProgramDefinition ParseModel(InputStream inputStream) throws IOException  
     {
-        CharStream charStream = new ANTLRInputStream(inputStream);
-        HPalangLexer lexer = new HPalangLexer(charStream);
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        HPalangParser parser = new HPalangParser(tokens);
-        
+        HPalangParser parser = CreateAndSetupParser(inputStream); 
         HPalangParser.ModelContext tree = parser.model();
         
         ProgramDefinition model = new ProgramDefinition();
@@ -43,6 +41,13 @@ public class Parser
         
         return model;
     }
+    
+    public HPalangParser.ExprContext GetExprContext(InputStream inputStream) throws IOException
+    {
+        HPalangParser parser = CreateAndSetupParser(inputStream);
+        return parser.expr();
+    }
+    
 
     private void ProcessPhaseOne(HPalangParser.ModelContext tree, ProgramDefinition model)
     {
@@ -52,5 +57,13 @@ public class Parser
     private void ProcessPhaseTwo(HPalangParser.ModelContext tree, ProgramDefinition model)
     {
         new ModelFleshParser(model,tree).Parse(); 
+    }
+    
+    private HPalangParser CreateAndSetupParser(InputStream inputStream) throws IOException
+    {
+        CharStream charStream = new ANTLRInputStream(inputStream);
+        HPalangLexer lexer = new HPalangLexer(charStream);
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        return new HPalangParser(tokens);
     }
 }

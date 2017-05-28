@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules.TierOne;
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.Core.Actor;
-import HPalang.Core.ContinuousExpressions.ConstantExpression;
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Message;
 import HPalang.Core.Messages.MessageWithBody;
@@ -78,10 +78,9 @@ public class LowPriorityMessageTakeRuleTest extends SOSRuleTestFixture
         ContinuousVariable cVar1 = new ContinuousVariable("cVar1");
         ContinuousVariable cVar2 = new ContinuousVariable("cVar2");
         
-        Message message = new MessageWithBody(StatementsFrom(
-                new ContinuousAssignmentStatement(cVar1, new ConstantExpression(1.0f))
-                , new ContinuousAssignmentStatement(cVar2, new ConstantExpression(1.5f))
-                , new ContinuousAssignmentStatement(cVar1, new ConstantExpression(2.0f))));
+        Message message = new MessageWithBody(StatementsFrom(new ContinuousAssignmentStatement(cVar1, new ConstantContinuousExpression(1.0f))
+                , new ContinuousAssignmentStatement(cVar2, new ConstantContinuousExpression(1.5f))
+                , new ContinuousAssignmentStatement(cVar1, new ConstantContinuousExpression(2.0f))));
         
         ActorRunTimeStateBuilder actorState = new ActorRunTimeStateBuilder()
                 .WithActor(actor)
@@ -97,9 +96,8 @@ public class LowPriorityMessageTakeRuleTest extends SOSRuleTestFixture
         ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actor);
         nextActorState.LowPriorityMessageQueue().Dequeue();
 
-        TauLabel label = new TauLabel(Reset.ResetsFrom(
-            new Reset(cVar1, new ConstantExpression(2.0f))
-            ,new Reset(cVar2, new ConstantExpression(1.5f))));
+        TauLabel label = new TauLabel(Reset.ResetsFrom(new Reset(cVar1, new ConstantContinuousExpression(2.0f))
+            ,new Reset(cVar2, new ConstantContinuousExpression(1.5f))));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), label, nextGlobalState));
     }
 }

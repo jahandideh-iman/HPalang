@@ -6,42 +6,24 @@
 package HPalang.Parser;
 
 import HPalang.Core.Actor;
-import HPalang.Core.ContinuousExpressions.ConstantExpression;
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.DefferentialEquation;
-import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
-import HPalang.Core.ProgramDefinition;
-import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.SendStatement;
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import org.junit.Before;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ParserTest
+public class ParserTest extends ParserTestBase
 {
-    Parser parser;
-    ByteArrayInputStream input;
-    
-    ProgramDefinition model;
-    
-    
-    @Before
-    public void Setup()
-    {
-        parser = new Parser();
-        input = null;
-        model = null;
-    }
-    
+
     @Test
     public void ParsesMultipleActor() throws IOException
     {
@@ -50,7 +32,7 @@ public class ParserTest
                 + "actor B{} "
         );
         
-        model = parser.Parse(input);
+        model = parser.ParseModel(input);
         
         assertThat(model.FindActor("A"),is(notNullValue()));
         assertThat(model.FindActor("B"),is(notNullValue()));       
@@ -68,7 +50,7 @@ public class ParserTest
                 + "} "
         );
         
-        model = parser.Parse(input);
+        model = parser.ParseModel(input);
         
         Actor actor = model.FindActor("A");
         
@@ -89,7 +71,7 @@ public class ParserTest
                 + "} "
         );
         
-        model = parser.Parse(input);
+        model = parser.ParseModel(input);
         
         Actor actor = model.FindActor("A");
         
@@ -111,7 +93,7 @@ public class ParserTest
                 + "}"
         );
         
-        model = parser.Parse(input);
+        model = parser.ParseModel(input);
         
         Actor actorA = model.FindActor("A");
         Actor actorB = model.FindActor("B");
@@ -135,12 +117,12 @@ public class ParserTest
                 + "} "
         );
         
-        model = parser.Parse(input);
+        model = parser.ParseModel(input);
         
         Actor actorA = model.FindActor("A");
         
         ContinuousAssignmentStatement assignment = GetFirstStatement(actorA.GetMessageHandler("a1"));
-        ConstantExpression constExpr = (ConstantExpression) assignment.Expression();
+        ConstantContinuousExpression constExpr = (ConstantContinuousExpression) assignment.Expression();
 
         
         assertThat( assignment.Variable(),is(actorA.FindContinuousVariable("var")));  
@@ -162,7 +144,7 @@ public class ParserTest
                 + "} "
         );
         
-        model = parser.Parse(input);
+        model = parser.ParseModel(input);
         
         Actor actorA = model.FindActor("A");
         
@@ -191,7 +173,7 @@ public class ParserTest
                 + "} "
         );
         
-        model = parser.Parse(input);
+        model = parser.ParseModel(input);
         
         Actor actorA = model.FindActor("A");
         
@@ -199,15 +181,5 @@ public class ParserTest
           
         assertThat(statement.GetBehavior().GetInvarient(), is(equalTo("var<=2.0")));
         assertThat(statement.GetBehavior().GetGuard(), is(equalTo("var==2.0")));
-    }
-    
-    private ByteArrayInputStream CreateInput(String input)
-    {
-        return new ByteArrayInputStream(input.getBytes());
-    }
-    
-    private <T extends Statement> T GetFirstStatement(MessageHandler handler)
-    {
-        return (T) handler.GetBody().element();
     }
 }

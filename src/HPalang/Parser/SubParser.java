@@ -27,8 +27,13 @@ public abstract class SubParser<CTX extends RuleContext> extends HPalangBaseList
         this.ctx = ctx;
     }
     
-    public void Parse()
+    final public void Parse()
     {
-        ParseTreeWalker.DEFAULT.walk(this, ctx);
+        GetParseTreeWalker().walk(this, ctx);
+    }
+    
+    protected ParseTreeWalker GetParseTreeWalker()
+    {
+        return ParseTreeWalker.DEFAULT;
     }
 }

@@ -48,29 +48,29 @@ public interface HPalangListener extends ParseTreeListener {
 	 */
 	void exitVar_def(HPalangParser.Var_defContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code real}
+	 * Enter a parse tree produced by the {@code realT}
 	 * labeled alternative in {@link HPalangParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterReal(HPalangParser.RealContext ctx);
+	void enterRealT(HPalangParser.RealTContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code real}
+	 * Exit a parse tree produced by the {@code realT}
 	 * labeled alternative in {@link HPalangParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitReal(HPalangParser.RealContext ctx);
+	void exitRealT(HPalangParser.RealTContext ctx);
 	/**
-	 * Enter a parse tree produced by the {@code int}
+	 * Enter a parse tree produced by the {@code intT}
 	 * labeled alternative in {@link HPalangParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void enterInt(HPalangParser.IntContext ctx);
+	void enterIntT(HPalangParser.IntTContext ctx);
 	/**
-	 * Exit a parse tree produced by the {@code int}
+	 * Exit a parse tree produced by the {@code intT}
 	 * labeled alternative in {@link HPalangParser#type}.
 	 * @param ctx the parse tree
 	 */
-	void exitInt(HPalangParser.IntContext ctx);
+	void exitIntT(HPalangParser.IntTContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HPalangParser#var_name}.
 	 * @param ctx the parse tree
@@ -142,75 +142,65 @@ public interface HPalangListener extends ParseTreeListener {
 	 */
 	void exitDestination(HPalangParser.DestinationContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HPalangParser#d_assignment}.
+	 * Enter a parse tree produced by {@link HPalangParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void enterD_assignment(HPalangParser.D_assignmentContext ctx);
+	void enterAssignment(HPalangParser.AssignmentContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HPalangParser#d_assignment}.
+	 * Exit a parse tree produced by {@link HPalangParser#assignment}.
 	 * @param ctx the parse tree
 	 */
-	void exitD_assignment(HPalangParser.D_assignmentContext ctx);
+	void exitAssignment(HPalangParser.AssignmentContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HPalangParser#c_assignment}.
+	 * Enter a parse tree produced by {@link HPalangParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void enterC_assignment(HPalangParser.C_assignmentContext ctx);
+	void enterExpr(HPalangParser.ExprContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HPalangParser#c_assignment}.
+	 * Exit a parse tree produced by {@link HPalangParser#expr}.
 	 * @param ctx the parse tree
 	 */
-	void exitC_assignment(HPalangParser.C_assignmentContext ctx);
+	void exitExpr(HPalangParser.ExprContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HPalangParser#d_expr}.
+	 * Enter a parse tree produced by {@link HPalangParser#expr0}.
 	 * @param ctx the parse tree
 	 */
-	void enterD_expr(HPalangParser.D_exprContext ctx);
+	void enterExpr0(HPalangParser.Expr0Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link HPalangParser#d_expr}.
+	 * Exit a parse tree produced by {@link HPalangParser#expr0}.
 	 * @param ctx the parse tree
 	 */
-	void exitD_expr(HPalangParser.D_exprContext ctx);
+	void exitExpr0(HPalangParser.Expr0Context ctx);
 	/**
-	 * Enter a parse tree produced by {@link HPalangParser#d_expr0}.
+	 * Enter a parse tree produced by {@link HPalangParser#expr1}.
 	 * @param ctx the parse tree
 	 */
-	void enterD_expr0(HPalangParser.D_expr0Context ctx);
+	void enterExpr1(HPalangParser.Expr1Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link HPalangParser#d_expr0}.
+	 * Exit a parse tree produced by {@link HPalangParser#expr1}.
 	 * @param ctx the parse tree
 	 */
-	void exitD_expr0(HPalangParser.D_expr0Context ctx);
+	void exitExpr1(HPalangParser.Expr1Context ctx);
 	/**
-	 * Enter a parse tree produced by {@link HPalangParser#arithmetic_expr}.
+	 * Enter a parse tree produced by {@link HPalangParser#expr2}.
 	 * @param ctx the parse tree
 	 */
-	void enterArithmetic_expr(HPalangParser.Arithmetic_exprContext ctx);
+	void enterExpr2(HPalangParser.Expr2Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link HPalangParser#arithmetic_expr}.
+	 * Exit a parse tree produced by {@link HPalangParser#expr2}.
 	 * @param ctx the parse tree
 	 */
-	void exitArithmetic_expr(HPalangParser.Arithmetic_exprContext ctx);
+	void exitExpr2(HPalangParser.Expr2Context ctx);
 	/**
-	 * Enter a parse tree produced by {@link HPalangParser#c_expr}.
+	 * Enter a parse tree produced by {@link HPalangParser#expr3}.
 	 * @param ctx the parse tree
 	 */
-	void enterC_expr(HPalangParser.C_exprContext ctx);
+	void enterExpr3(HPalangParser.Expr3Context ctx);
 	/**
-	 * Exit a parse tree produced by {@link HPalangParser#c_expr}.
+	 * Exit a parse tree produced by {@link HPalangParser#expr3}.
 	 * @param ctx the parse tree
 	 */
-	void exitC_expr(HPalangParser.C_exprContext ctx);
-	/**
-	 * Enter a parse tree produced by {@link HPalangParser#c_const}.
-	 * @param ctx the parse tree
-	 */
-	void enterC_const(HPalangParser.C_constContext ctx);
-	/**
-	 * Exit a parse tree produced by {@link HPalangParser#c_const}.
-	 * @param ctx the parse tree
-	 */
-	void exitC_const(HPalangParser.C_constContext ctx);
+	void exitExpr3(HPalangParser.Expr3Context ctx);
 	/**
 	 * Enter a parse tree produced by {@link HPalangParser#c_behavior}.
 	 * @param ctx the parse tree
@@ -282,35 +272,137 @@ public interface HPalangListener extends ParseTreeListener {
 	 */
 	void exitBoolean_expr0(HPalangParser.Boolean_expr0Context ctx);
 	/**
-	 * Enter a parse tree produced by {@link HPalangParser#comparision_op}.
+	 * Enter a parse tree produced by the {@code conjunction}
+	 * labeled alternative in {@link HPalangParser#logical_op}.
 	 * @param ctx the parse tree
 	 */
-	void enterComparision_op(HPalangParser.Comparision_opContext ctx);
+	void enterConjunction(HPalangParser.ConjunctionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HPalangParser#comparision_op}.
+	 * Exit a parse tree produced by the {@code conjunction}
+	 * labeled alternative in {@link HPalangParser#logical_op}.
 	 * @param ctx the parse tree
 	 */
-	void exitComparision_op(HPalangParser.Comparision_opContext ctx);
+	void exitConjunction(HPalangParser.ConjunctionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HPalangParser#arithmetic_op}.
+	 * Enter a parse tree produced by the {@code disjuncition}
+	 * labeled alternative in {@link HPalangParser#logical_op}.
 	 * @param ctx the parse tree
 	 */
-	void enterArithmetic_op(HPalangParser.Arithmetic_opContext ctx);
+	void enterDisjuncition(HPalangParser.DisjuncitionContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HPalangParser#arithmetic_op}.
+	 * Exit a parse tree produced by the {@code disjuncition}
+	 * labeled alternative in {@link HPalangParser#logical_op}.
 	 * @param ctx the parse tree
 	 */
-	void exitArithmetic_op(HPalangParser.Arithmetic_opContext ctx);
+	void exitDisjuncition(HPalangParser.DisjuncitionContext ctx);
 	/**
-	 * Enter a parse tree produced by {@link HPalangParser#d_const}.
+	 * Enter a parse tree produced by the {@code greater}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
 	 * @param ctx the parse tree
 	 */
-	void enterD_const(HPalangParser.D_constContext ctx);
+	void enterGreater(HPalangParser.GreaterContext ctx);
 	/**
-	 * Exit a parse tree produced by {@link HPalangParser#d_const}.
+	 * Exit a parse tree produced by the {@code greater}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
 	 * @param ctx the parse tree
 	 */
-	void exitD_const(HPalangParser.D_constContext ctx);
+	void exitGreater(HPalangParser.GreaterContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code greaterEqual}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterGreaterEqual(HPalangParser.GreaterEqualContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code greaterEqual}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitGreaterEqual(HPalangParser.GreaterEqualContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code lesser}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterLesser(HPalangParser.LesserContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code lesser}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitLesser(HPalangParser.LesserContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code lesserEqual}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterLesserEqual(HPalangParser.LesserEqualContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code lesserEqual}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitLesserEqual(HPalangParser.LesserEqualContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code equality}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
+	 * @param ctx the parse tree
+	 */
+	void enterEquality(HPalangParser.EqualityContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code equality}
+	 * labeled alternative in {@link HPalangParser#comparision_op}.
+	 * @param ctx the parse tree
+	 */
+	void exitEquality(HPalangParser.EqualityContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code plus}
+	 * labeled alternative in {@link HPalangParser#arithmetic_op1}.
+	 * @param ctx the parse tree
+	 */
+	void enterPlus(HPalangParser.PlusContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code plus}
+	 * labeled alternative in {@link HPalangParser#arithmetic_op1}.
+	 * @param ctx the parse tree
+	 */
+	void exitPlus(HPalangParser.PlusContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code minus}
+	 * labeled alternative in {@link HPalangParser#arithmetic_op1}.
+	 * @param ctx the parse tree
+	 */
+	void enterMinus(HPalangParser.MinusContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code minus}
+	 * labeled alternative in {@link HPalangParser#arithmetic_op1}.
+	 * @param ctx the parse tree
+	 */
+	void exitMinus(HPalangParser.MinusContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code mult}
+	 * labeled alternative in {@link HPalangParser#arithmetic_op2}.
+	 * @param ctx the parse tree
+	 */
+	void enterMult(HPalangParser.MultContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code mult}
+	 * labeled alternative in {@link HPalangParser#arithmetic_op2}.
+	 * @param ctx the parse tree
+	 */
+	void exitMult(HPalangParser.MultContext ctx);
+	/**
+	 * Enter a parse tree produced by the {@code div}
+	 * labeled alternative in {@link HPalangParser#arithmetic_op2}.
+	 * @param ctx the parse tree
+	 */
+	void enterDiv(HPalangParser.DivContext ctx);
+	/**
+	 * Exit a parse tree produced by the {@code div}
+	 * labeled alternative in {@link HPalangParser#arithmetic_op2}.
+	 * @param ctx the parse tree
+	 */
+	void exitDiv(HPalangParser.DivContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link HPalangParser#main}.
 	 * @param ctx the parse tree
@@ -331,4 +423,54 @@ public interface HPalangListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitMessage(HPalangParser.MessageContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HPalangParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void enterNumber(HPalangParser.NumberContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HPalangParser#number}.
+	 * @param ctx the parse tree
+	 */
+	void exitNumber(HPalangParser.NumberContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HPalangParser#int_num}.
+	 * @param ctx the parse tree
+	 */
+	void enterInt_num(HPalangParser.Int_numContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HPalangParser#int_num}.
+	 * @param ctx the parse tree
+	 */
+	void exitInt_num(HPalangParser.Int_numContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HPalangParser#real_num}.
+	 * @param ctx the parse tree
+	 */
+	void enterReal_num(HPalangParser.Real_numContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HPalangParser#real_num}.
+	 * @param ctx the parse tree
+	 */
+	void exitReal_num(HPalangParser.Real_numContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HPalangParser#b_true}.
+	 * @param ctx the parse tree
+	 */
+	void enterB_true(HPalangParser.B_trueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HPalangParser#b_true}.
+	 * @param ctx the parse tree
+	 */
+	void exitB_true(HPalangParser.B_trueContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link HPalangParser#b_false}.
+	 * @param ctx the parse tree
+	 */
+	void enterB_false(HPalangParser.B_falseContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link HPalangParser#b_false}.
+	 * @param ctx the parse tree
+	 */
+	void exitB_false(HPalangParser.B_falseContext ctx);
 }

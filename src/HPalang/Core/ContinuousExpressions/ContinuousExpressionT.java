@@ -3,13 +3,15 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.Core.ContinuousExpressions;
+
+import HPalang.Core.ContinuousExpression;
+import HPalang.Core.Equalitable;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public interface ContinuousExpression extends Expression
+public abstract class ContinuousExpressionT<T> extends Equalitable<T> implements ContinuousExpression
 {
-    
 }

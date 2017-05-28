@@ -20,6 +20,11 @@ public class ConstantDiscreteExpression extends DiscreteExpressionT<ConstantDisc
         this.constant = constant;
     }
     
+    public int Constant()
+    {
+        return constant;
+    }
+    
     @Override
     public int Evaluate(ValuationContainer valuations)
     {
@@ -37,5 +42,4 @@ public class ConstantDiscreteExpression extends DiscreteExpressionT<ConstantDisc
     {
         return Integer.hashCode(constant);
     }
-    
 }
