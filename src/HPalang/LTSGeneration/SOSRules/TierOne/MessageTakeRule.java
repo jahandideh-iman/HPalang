@@ -11,7 +11,7 @@ import HPalang.Core.Message;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Reset;
 import HPalang.LTSGeneration.SOSRules.ActorLevelRule;
 import HPalang.LTSGeneration.TauLabel;

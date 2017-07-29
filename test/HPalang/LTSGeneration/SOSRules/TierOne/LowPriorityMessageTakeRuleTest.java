@@ -15,7 +15,7 @@ import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.Messages.NormalMessage;
 import static HPalang.Core.Statement.StatementsFrom;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Reset;

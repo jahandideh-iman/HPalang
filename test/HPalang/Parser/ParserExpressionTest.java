@@ -8,6 +8,14 @@ package HPalang.Parser;
 import HPalang.Core.Actor;
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.ArithmeticExpression;
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterEqualOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserEqualOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalOrOperator;
 import HPalang.Core.DiscreteExpressions.ComparisonExpression;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.FalseConst;
@@ -132,14 +140,14 @@ public class ParserExpressionTest extends ParserTestBase
         return new ArithmeticExpression(op1, ArithmeticExpression.Operator.Subtract, op2);
     }
     
-    private LogicalExpression And(DiscreteExpression op1, DiscreteExpression op2)
+    private BinaryExpression And(DiscreteExpression op1, DiscreteExpression op2)
     {
-        return new LogicalExpression(op1,LogicalExpression.Operator.AND, op2);
+        return new BinaryExpression(op1,new LogicalAndOperator(), op2);
     }
      
-    private LogicalExpression Or(DiscreteExpression op1, DiscreteExpression op2)
+    private BinaryExpression Or(DiscreteExpression op1, DiscreteExpression op2)
     {
-        return new LogicalExpression(op1,LogicalExpression.Operator.OR, op2);
+        return new BinaryExpression(op1,new LogicalOrOperator(), op2);
     }
     
     private ConstantDiscreteExpression True()
@@ -151,26 +159,26 @@ public class ParserExpressionTest extends ParserTestBase
     {
         return new FalseConst();
     } 
-    private ComparisonExpression L(DiscreteExpression exp1, DiscreteExpression exp2)
+    private BinaryExpression L(DiscreteExpression exp1, DiscreteExpression exp2)
     {
-        return new ComparisonExpression(exp1, ComparisonExpression.Operator.Lesser, exp2);
+        return new BinaryExpression(exp1, new LesserOperator(), exp2);
     }
     
-    private ComparisonExpression LE(DiscreteExpression exp1, DiscreteExpression exp2)
+    private BinaryExpression LE(DiscreteExpression exp1, DiscreteExpression exp2)
     {
-        return new ComparisonExpression(exp1, ComparisonExpression.Operator.LesserEqual, exp2);
+        return new BinaryExpression(exp1, new LesserEqualOperator(), exp2);
     }
-    private ComparisonExpression EQ(DiscreteExpression exp1, DiscreteExpression exp2)
+    private BinaryExpression EQ(DiscreteExpression exp1, DiscreteExpression exp2)
     {
-        return new ComparisonExpression(exp1, ComparisonExpression.Operator.Equal, exp2);
+        return new BinaryExpression(exp1, new EqualityOperator(), exp2);
     }
-        private ComparisonExpression GE(DiscreteExpression exp1, DiscreteExpression exp2)
+        private BinaryExpression GE(DiscreteExpression exp1, DiscreteExpression exp2)
     {
-        return new ComparisonExpression(exp1, ComparisonExpression.Operator.GreaterEqual, exp2);
+        return new BinaryExpression(exp1, new GreaterEqualOperator(), exp2);
     }
-    private ComparisonExpression G(DiscreteExpression exp1, DiscreteExpression exp2)
+    private BinaryExpression G(DiscreteExpression exp1, DiscreteExpression exp2)
     {
-        return new ComparisonExpression(exp1, ComparisonExpression.Operator.Greater, exp2);
+        return new BinaryExpression(exp1, new GreaterOperator(), exp2);
     }
 
 }

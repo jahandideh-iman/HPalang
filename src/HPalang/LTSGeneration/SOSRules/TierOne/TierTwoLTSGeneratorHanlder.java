@@ -9,7 +9,7 @@ import HPalang.Core.Actor;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Trace;
 import HPalang.LTSGeneration.Transition;
 import java.util.LinkedList;

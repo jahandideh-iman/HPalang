@@ -13,7 +13,7 @@ import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.Core.Messages.MessageWithBody;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
 import static HPalang.Core.Statement.StatementsFrom;
 import Mocks.EmptyStatement;

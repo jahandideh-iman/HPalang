@@ -12,7 +12,7 @@ import HPalang.Core.ValuationContainer;
  *
  * @author Iman Jahandideh
  */
-public interface BinaryOperator 
+public interface BinaryOperator
 {
-    int Evaluate(DiscreteExpression op1,DiscreteExpression op2 ,ValuationContainer valuations);
+    int Evaluate(DiscreteExpression operand1,DiscreteExpression operand2 ,ValuationContainer valuations);
 }

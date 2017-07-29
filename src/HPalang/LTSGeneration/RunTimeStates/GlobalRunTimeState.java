@@ -3,12 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.EqualitableAndClonable;
 import HPalang.Core.Actor;
+import HPalang.Core.StateT;
 import HPalang.Core.Statements.SendStatement;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -19,11 +18,11 @@ import java.util.logging.Logger;
  *
  * @author Iman Jahandideh
  */
-public class GlobalRunTimeState extends EqualitableAndClonable<GlobalRunTimeState>
+public class GlobalRunTimeState extends StateT<GlobalRunTimeState>
 {
     // TODO: Change it to map
     private List<ActorRunTimeState> actorStates = new ArrayList<>();
-    
+
     public void AddActorRunTimeState(ActorRunTimeState actorRunTimeState)
     {
         actorStates.add(actorRunTimeState);
@@ -82,6 +81,24 @@ public class GlobalRunTimeState extends EqualitableAndClonable<GlobalRunTimeStat
         int hash = 7;
         hash = 83 * hash + Objects.hashCode(this.actorStates);
         return hash;
+    }
+
+    @Override
+    protected boolean DataEquals(GlobalRunTimeState other)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected GlobalRunTimeState NewInstance()
+    {
+        return new GlobalRunTimeState();
+    }
+
+    @Override
+    protected void CloneData(GlobalRunTimeState copy)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

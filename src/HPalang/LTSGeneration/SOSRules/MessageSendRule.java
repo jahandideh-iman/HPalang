@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.Core.Statements.SendStatement;
 

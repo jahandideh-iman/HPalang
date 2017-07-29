@@ -7,6 +7,11 @@ package HPalang.Parser.SubParsers.Expression;
 
 import HPalang.Core.Actor;
 import HPalang.Core.DiscreteExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterEqualOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserEqualOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserOperator;
 import HPalang.Core.DiscreteExpressions.ComparisonExpression;
 import HPalang.Core.Expression;
 import HPalang.Core.ProgramDefinition;
@@ -18,11 +23,9 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
-public class Expression0Pasrser extends ExpressionParserT<HPalangParser.Expr0Context>
+public class Expression0Pasrser extends BinaryExpressionParser<HPalangParser.Expr0Context>
 {   
-    List<ExpressionHolder> expressionHolders = new LinkedList<>();
-    List<ComparisonExpression.Operator> operators = new LinkedList<>();
-    
+   
     public Expression0Pasrser(ProgramDefinition model, HPalangParser.Expr0Context ctx, ExpressionHolder holder, Actor actor)
     {
         super(model, ctx, holder, actor);
@@ -48,31 +51,31 @@ public class Expression0Pasrser extends ExpressionParserT<HPalangParser.Expr0Con
     @Override
     public void enterLesser(HPalangParser.LesserContext ctx)
     {
-        operators.add(ComparisonExpression.Operator.Lesser);
+        operators.add(new LesserOperator());
     }
 
     @Override
     public void enterLesserEqual(HPalangParser.LesserEqualContext ctx)
     {
-        operators.add(ComparisonExpression.Operator.LesserEqual);
+        operators.add(new LesserEqualOperator());
     }
 
     @Override
     public void enterEquality(HPalangParser.EqualityContext ctx)
     {
-        operators.add(ComparisonExpression.Operator.Equal);
+        operators.add(new EqualityOperator());
     }
 
     @Override
     public void enterGreaterEqual(HPalangParser.GreaterEqualContext ctx)
     {
-        operators.add(ComparisonExpression.Operator.GreaterEqual);
+        operators.add(new GreaterEqualOperator());
     }
     
     @Override
     public void enterGreater(HPalangParser.GreaterContext ctx)
     {
-        operators.add(ComparisonExpression.Operator.Greater);
+        operators.add(new GreaterOperator());
     }
 
     @Override
@@ -82,33 +85,5 @@ public class Expression0Pasrser extends ExpressionParserT<HPalangParser.Expr0Con
         new Expression1Pasrser(model, ctx, c, actor).Parse();
 
         expressionHolders.add(c);
-        UpdateExpressionWith(c.Expression());
     }
-
-    private Expression ProcessExpression()
-    {
-        Expression expr = expressionHolders.get(0).Expression();
-        
-        for(int i = 0 ; i< operators.size(); i++)
-            expr = new ComparisonExpression(
-                    (DiscreteExpression) expr,
-                    operators.get(i),
-                    (DiscreteExpression)expressionHolders.get(i+1).Expression());
-        
-        return expr;
-    }
-    
-    
-    private void UpdateExpressionWith(Expression expression)
-    {
-        parsedExpression = expression;
-//        if (lastOperator == ComparisonExpression.Operator.Invalid) 
-//            this.lastExpr = expression;
-//         else 
-//            this.lastExpr = new LogicalExpression(
-//                    (DiscreteExpression) expression,
-//                    lastOperator,
-//                    (DiscreteExpression) lastExpr);   
-    }
-  
 }

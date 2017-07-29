@@ -5,7 +5,7 @@
  */
 package Builders;
 
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.ArrayList;
 import java.util.List;
 

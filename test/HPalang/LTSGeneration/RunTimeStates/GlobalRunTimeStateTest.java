@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.LTSGeneration.GlobalRunTimeState;
 import HPalang.Core.Actor;
 import HPalang.LTSGeneration.Utilities;
 import org.junit.Test;

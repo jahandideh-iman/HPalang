@@ -6,23 +6,18 @@
 package HPalang.Parser.SubParsers.Expression;
 
 import HPalang.Core.Actor;
-import HPalang.Core.DiscreteExpression;
-import HPalang.Core.DiscreteExpressions.LogicalExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalOrOperator;
 import HPalang.Core.Expression;
 import HPalang.Core.ProgramDefinition;
 import HPalang.Parser.antlr.HPalangParser;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ExpressionParser extends ExpressionParserT<HPalangParser.ExprContext>
+public class ExpressionParser extends BinaryExpressionParser<HPalangParser.ExprContext>
 {
-    private LogicalExpression.Operator lastOperator;
-    List<ExpressionHolder> expressionHolders = new LinkedList<>();
-    List<LogicalExpression.Operator> operators = new LinkedList<>();
 
     public ExpressionParser(ProgramDefinition model, HPalangParser.ExprContext ctx, ExpressionHolder holder, Actor actor)
     {
@@ -33,9 +28,7 @@ public class ExpressionParser extends ExpressionParserT<HPalangParser.ExprContex
     public void enterExpr(HPalangParser.ExprContext ctx)
     {
         if(this.ctx != ctx)
-            return;
-             
-        lastOperator = LogicalExpression.Operator.Invalid;
+            return;  
     }
 
     @Override
@@ -43,20 +36,20 @@ public class ExpressionParser extends ExpressionParserT<HPalangParser.ExprContex
     {
         if (this.ctx != ctx) 
             return;
-        
-        holder.TrySetExpression(parsedExpression);
+        Expression expr= ProcessExpression();
+        holder.TrySetExpression(expr);
     }
 
     @Override
     public void enterConjunction(HPalangParser.ConjunctionContext ctx)
     {
-        lastOperator = LogicalExpression.Operator.AND;
+        operators.add(new LogicalAndOperator());
     }
 
     @Override
     public void enterDisjuncition(HPalangParser.DisjuncitionContext ctx)
     {
-        lastOperator = LogicalExpression.Operator.OR;
+        operators.add(new LogicalOrOperator());
     }
 
     @Override
@@ -64,18 +57,6 @@ public class ExpressionParser extends ExpressionParserT<HPalangParser.ExprContex
     {
         ExpressionHolder c = new ExpressionHolder();
         new Expression0Pasrser(model, ctx, c, actor).Parse();
-
-        UpdateExpressionWith(c.Expression());
-    }
-
-    private void UpdateExpressionWith(Expression expression)
-    {
-        if (lastOperator == LogicalExpression.Operator.Invalid) 
-            this.parsedExpression = expression;
-         else 
-            this.parsedExpression = new LogicalExpression(
-                    (DiscreteExpression) parsedExpression,
-                    lastOperator,
-                    (DiscreteExpression) expression);   
+        expressionHolders.add(c);
     }
 }

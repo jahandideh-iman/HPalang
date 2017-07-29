@@ -11,7 +11,7 @@ import Builders.ActorRunTimeStateBuilder;
 import HPalang.Core.Actor;
 import HPalang.Core.Statements.ResumeStatement;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
 import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
 import HPalang.LTSGeneration.TauLabel;

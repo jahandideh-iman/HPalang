@@ -12,7 +12,7 @@ import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.LTSGeneration.Reset;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import org.junit.Test;
 import static org.junit.Assert.*;

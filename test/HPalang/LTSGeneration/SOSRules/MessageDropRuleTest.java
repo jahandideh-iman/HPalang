@@ -15,7 +15,7 @@ import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import Mocks.EmptyMessage;
 import org.junit.Test;

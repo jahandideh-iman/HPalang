@@ -21,7 +21,7 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.LTSUtility;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.TierOne.ContinuousBehaviorExpirationRule;
 import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorStatementRule;
 import HPalang.LTSGeneration.SOSRules.DelayStatementRule;

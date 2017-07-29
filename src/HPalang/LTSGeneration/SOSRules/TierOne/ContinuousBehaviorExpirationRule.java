@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules.TierOne;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.LTSGeneration.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.Core.Message;
 import HPalang.Core.Messages.MessageWithBody;
