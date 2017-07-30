@@ -46,4 +46,9 @@ public class Utilities
         
         return state;
     }
+    
+    public static Actor NewActor(String actorName)
+    {
+        return new Actor(actorName, 0);
+    }
 }

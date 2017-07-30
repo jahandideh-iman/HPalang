@@ -6,9 +6,10 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Actor;
-import HPalang.Core.StateT;
+import HPalang.LTSGeneration.CompositeStateT;
 import HPalang.Core.Statements.SendStatement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.logging.Level;
@@ -18,10 +19,10 @@ import java.util.logging.Logger;
  *
  * @author Iman Jahandideh
  */
-public class GlobalRunTimeState extends StateT<GlobalRunTimeState>
+public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
 {
     // TODO: Change it to map
-    private List<ActorRunTimeState> actorStates = new ArrayList<>();
+    private List<ActorRunTimeState> actorStates = new LinkedList<>();
 
     public void AddActorRunTimeState(ActorRunTimeState actorRunTimeState)
     {
@@ -45,25 +46,29 @@ public class GlobalRunTimeState extends StateT<GlobalRunTimeState>
     {
         return actorStates;
     }
-    
-    @Override
-    public GlobalRunTimeState DeepCopy()
-    {
-        try {
-            GlobalRunTimeState copy = (GlobalRunTimeState)clone();
-            
-            copy.actorStates = copy.actorStates.getClass().newInstance();
-            for(ActorRunTimeState state : actorStates)
-                copy.AddActorRunTimeState(state.DeepCopy());
-            return copy;
-        } catch (CloneNotSupportedException | InstantiationException | IllegalAccessException ex) {
-            Logger.getLogger(GlobalRunTimeState.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        }
-    }
+//    @Override
+//    protected boolean InternalEquals(GlobalRunTimeState other)
+//    {
+//        if(other.actorStates.size() != this.actorStates.size())
+//            return false;
+//               
+//        for(ActorRunTimeState actorState : this.actorStates)
+//            if(other.actorStates.contains(actorState) == false)
+//                return false;
+//        
+//        return true;
+//    }
+
+//    @Override
+//    protected int InternalHashCode()
+//    {
+//        int hash = 7;
+//        hash = 83 * hash + Objects.hashCode(this.actorStates);
+//        return hash;
+//    }
 
     @Override
-    protected boolean InternalEquals(GlobalRunTimeState other)
+    protected boolean DataEquals(GlobalRunTimeState other)
     {
         if(other.actorStates.size() != this.actorStates.size())
             return false;
@@ -76,20 +81,6 @@ public class GlobalRunTimeState extends StateT<GlobalRunTimeState>
     }
 
     @Override
-    protected int InternalHashCode()
-    {
-        int hash = 7;
-        hash = 83 * hash + Objects.hashCode(this.actorStates);
-        return hash;
-    }
-
-    @Override
-    protected boolean DataEquals(GlobalRunTimeState other)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     protected GlobalRunTimeState NewInstance()
     {
         return new GlobalRunTimeState();
@@ -98,7 +89,9 @@ public class GlobalRunTimeState extends StateT<GlobalRunTimeState>
     @Override
     protected void CloneData(GlobalRunTimeState copy)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        for(ActorRunTimeState state : actorStates)
+            copy.AddActorRunTimeState((ActorRunTimeState) state.DeepCopy());
+
     }
     
 }

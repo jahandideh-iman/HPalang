@@ -5,11 +5,13 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Utilities.Queue;
 import HPalang.Core.EqualitableAndClonable;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.Actor;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Message;
+import HPalang.LTSGeneration.CompositeStateT;
 import HPalang.Core.Statement;
 import java.util.Map.Entry;
 
@@ -17,20 +19,20 @@ import java.util.Map.Entry;
  *
  * @author Iman Jahandideh
  */
-public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
+public class ActorRunTimeState extends CompositeStateT<ActorRunTimeState>
 {
     private final Actor actor;
     
-    private Queue<Message> lowPriorityMessages = new Queue<>();
-    private Queue<Message> highPriorityMessages = new Queue<>();
+    private  Queue<Message> lowPriorityMessages = new Queue<>();
+    private  Queue<Message> highPriorityMessages = new Queue<>();
     
-    private Queue<Statement> statementQueue = new Queue<>();
+    private  Queue<Statement> statementQueue = new Queue<>();
     
-    private ContinuousBehaviorContianer continuousBehaviors = new ContinuousBehaviorContianer();
+    private  ContinuousBehaviorContianer continuousBehaviors = new ContinuousBehaviorContianer();
 
     private boolean isSuspended = false;
-    private Queue<Statement> suspendedStatements = new Queue<>();
-    private ValuationContainer valuations = new ValuationContainer();
+    private  Queue<Statement> suspendedStatements = new Queue<>();
+    private  ValuationContainer valuations = new ValuationContainer();
     
     public ActorRunTimeState(Actor actor)
     {
@@ -100,27 +102,27 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
                 && this.valuations.equals(other.valuations);
     }
    
+
+   
     @Override
-    public ActorRunTimeState DeepCopy()
+    protected ActorRunTimeState NewInstance()
     {
-        try {
-            ActorRunTimeState copy = (ActorRunTimeState) clone();
+        return new ActorRunTimeState(actor);
+    }
+
+    @Override
+    protected void CloneData(ActorRunTimeState copy)
+    {
             copy.lowPriorityMessages = this.lowPriorityMessages.DeepCopy();
             copy.highPriorityMessages = this.highPriorityMessages.DeepCopy();
             copy.statementQueue = this.statementQueue.DeepCopy();
             copy.suspendedStatements = this.suspendedStatements.DeepCopy();
             copy.continuousBehaviors = this.continuousBehaviors.DeepCopy();
             copy.valuations = this.valuations.DeepCopy();
-            
-            return copy;
-        } catch (CloneNotSupportedException ex) {
-            return null;
-        }
     }
-    
 
     @Override
-    protected boolean InternalEquals(ActorRunTimeState other)
+    protected boolean DataEquals(ActorRunTimeState other)
     {
         return this.actor == other.actor
                 && this.continuousBehaviors.equals(other.continuousBehaviors)
@@ -128,11 +130,5 @@ public class ActorRunTimeState extends EqualitableAndClonable<ActorRunTimeState>
                 && this.lowPriorityMessages.equals(other.lowPriorityMessages)
                 && this.statementQueue.equals(other.statementQueue)
                 && this.ValuationEqual(other);
-    }
-
-    @Override
-    protected int InternalHashCode()
-    {
-        return 1;
     }
 }

@@ -25,7 +25,7 @@ public class GlobalRunTimeStateTest
                 Utilities.NewActorState("actor1"),
                 Utilities.NewActorState("actor2"));
         
-        GlobalRunTimeState copy = orignal.DeepCopy();
+        GlobalRunTimeState copy = (GlobalRunTimeState) orignal.DeepCopy();
         
         assertThat(copy, equalTo(orignal));
         assertThat(copy, not(sameInstance(orignal)));
@@ -39,7 +39,7 @@ public class GlobalRunTimeStateTest
                 Utilities.NewActorState("actor1"),
                 Utilities.NewActorState("actor2"));
         
-        GlobalRunTimeState copy = orignal.DeepCopy();
+        GlobalRunTimeState copy = (GlobalRunTimeState)orignal.DeepCopy();
         
         Actor actor1 = orignal.GetActorStates().get(0).GetActor();
         Actor actor2 = orignal.GetActorStates().get(1).GetActor();

@@ -18,6 +18,7 @@ import HPalang.Core.Equalitable;
 public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
 {
     private final String id;
+    private int priority;
     
     public EmptyMessage()
     {
@@ -45,6 +46,18 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     protected int InternalHashCode()
     {
        return 1;
+    }
+
+    @Override
+    public void SetPriority(int priority)
+    {
+        this.priority = priority;
+    }
+
+    @Override
+    public int Priority()
+    {
+        return priority;
     }
     
 }

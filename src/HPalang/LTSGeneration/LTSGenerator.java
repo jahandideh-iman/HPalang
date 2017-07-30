@@ -50,6 +50,7 @@ public class LTSGenerator
         return transitionSystem;
     }
     
+    
     public void AddTransition(Label label,GlobalRunTimeState destination)
     {
         if(transitionSystem.HasState(destination) == false)

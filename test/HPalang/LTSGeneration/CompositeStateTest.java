@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.LTSGeneration;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -13,9 +13,9 @@ import static org.hamcrest.CoreMatchers.*;
  *
  * @author Iman Jahandideh
  */
-public class StateTTest
+public class CompositeStateTest
 {
-    class ConcreteStateT extends StateT<ConcreteStateT>
+    class ConcreteStateT extends CompositeStateT<ConcreteStateT>
     {
         public int value;
         
@@ -87,9 +87,9 @@ public class StateTTest
     @Test
     public void HasTheAddedSubstate()
     {
-        State state = new ConcreteStateT();
-        State substateA = new ConcreteSubstateA();
-        State substateB = new ConcreteSubstateB();
+        CompositeStateT state = new ConcreteStateT();
+        CompositeStateT substateA = new ConcreteSubstateA();
+        CompositeStateT substateB = new ConcreteSubstateB();
 
         state.AddSubstate(substateA);
         state.AddSubstate(substateB);
@@ -101,9 +101,9 @@ public class StateTTest
     @Test
     public void CanHaveMultipleSubstatesOfTheSameKine()
     {
-        State state = new ConcreteStateT();
-        State substateOne = new ConcreteSubstateA();
-        State substateTwo = new ConcreteSubstateA();
+        CompositeState state = new ConcreteStateT();
+        CompositeState substateOne = new ConcreteSubstateA();
+        CompositeState substateTwo = new ConcreteSubstateA();
 
         state.AddSubstate(substateOne);
         state.AddSubstate(substateTwo);
@@ -115,14 +115,14 @@ public class StateTTest
     @Test
     public void CanCloneTheSubstates()
     {
-        State state = new ConcreteStateT(69);
-        State substateA = new ConcreteSubstateA(42);
-        State substateB = new ConcreteSubstateB(13);
+        CompositeState state = new ConcreteStateT(69);
+        CompositeState substateA = new ConcreteSubstateA(42);
+        CompositeState substateB = new ConcreteSubstateB(13);
         
         state.AddSubstate(substateA);
         state.AddSubstate(substateB);
         
-        State copy = state.DeepCopy();
+        CompositeState copy = (CompositeState) state.DeepCopy();
         
         assertThat(copy, is(not(sameInstance(state))));
         assertThat(copy, is(equalTo(state)));

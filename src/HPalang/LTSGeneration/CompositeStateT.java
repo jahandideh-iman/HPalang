@@ -3,20 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.LTSGeneration;
 
+import HPalang.Core.Equalitable;
+import HPalang.LTSGeneration.State;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
  * @author Iman Jahandideh
  * @param <T>
  */
-public abstract class StateT<T extends State> extends Equalitable<T> implements State
+public abstract class CompositeStateT<T extends CompositeStateT> extends Equalitable<T> implements CompositeState
 {
     private final List<State> substates = new LinkedList<>();
         
@@ -54,7 +54,7 @@ public abstract class StateT<T extends State> extends Equalitable<T> implements 
     }
     
     @Override
-    public State DeepCopy()
+    public final T DeepCopy()
     {
         T copy = NewInstance();
         CloneSubStates(copy);
@@ -74,7 +74,7 @@ public abstract class StateT<T extends State> extends Equalitable<T> implements 
 
 
     @Override
-    protected boolean InternalEquals(T other)
+    protected final boolean InternalEquals(T other)
     {
         return this.substates.equals(other.Substates())
                 && DataEquals(other);
@@ -83,7 +83,7 @@ public abstract class StateT<T extends State> extends Equalitable<T> implements 
     protected abstract boolean DataEquals(T other);
 
     @Override
-    protected int InternalHashCode()
+    protected final int InternalHashCode()
     {
         int hash = 7;
         for(State state : substates)

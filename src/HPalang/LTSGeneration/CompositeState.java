@@ -3,20 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.LTSGeneration;
 
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public interface State extends DeepClonable<State>
-{    
+public interface CompositeState extends State
+{
     public void AddSubstate(State substate);
-    
     public <T extends State> T FindSubState(Class<T> clazz);
     public <T extends State> Collection<T> FindSubStates(Class<T> clazz);
-    
     public Collection<State> Substates();
 }

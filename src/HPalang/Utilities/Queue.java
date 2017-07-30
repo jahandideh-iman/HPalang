@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.RunTimeStates;
+package HPalang.Utilities;
 
+import HPalang.Core.EqualitableAndClonable;
 import HPalang.Core.EqualitableAndClonable;
 import java.util.Deque;
 import java.util.Iterator;

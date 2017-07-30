@@ -21,7 +21,7 @@ public class ActorRunTimeStateTest
     {
         ActorRunTimeState original = Utilities.NewActorState("actor");
         
-        ActorRunTimeState copy = original.DeepCopy();
+        ActorRunTimeState copy = (ActorRunTimeState) original.DeepCopy();
         
         assertThat(copy.getClass(),equalTo(original.getClass()));
         

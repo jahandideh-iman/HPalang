@@ -11,7 +11,7 @@ import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehaviorContianer;
-import HPalang.LTSGeneration.RunTimeStates.Queue;
+import HPalang.Utilities.Queue;
 
 
 /**
@@ -25,13 +25,13 @@ public class ActorRunTimeStateBuilder
     private boolean isSuspended = false;
     
 
-    private Queue<Message> highPriorityMessages = new Queue<>();
-    private Queue<Message> lowPriorityMessages = new Queue<>();
+    private final Queue<Message> highPriorityMessages = new Queue<>();
+    private final Queue<Message> lowPriorityMessages = new Queue<>();
     
-    private Queue<Statement> statements = new Queue<>();
-    private Queue<Statement> suspendedStatements = new Queue<>();
+    private final Queue<Statement> statements = new Queue<>();
+    private final Queue<Statement> suspendedStatements = new Queue<>();
     
-    private ContinuousBehaviorContianer behaviors = new ContinuousBehaviorContianer();
+    private final ContinuousBehaviorContianer behaviors = new ContinuousBehaviorContianer();
 
     public ActorRunTimeStateBuilder WithActor(Actor actor)
     {
