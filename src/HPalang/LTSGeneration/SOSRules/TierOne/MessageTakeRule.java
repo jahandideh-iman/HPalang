@@ -13,6 +13,7 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Reset;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.SOSRules.ActorLevelRule;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.LTSGeneration.Trace;
@@ -47,14 +48,14 @@ public abstract class MessageTakeRule extends ActorLevelRule
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
         return InternalIsRuleSatisfied(actorState) == true 
-                && actorState.StatementQueue().IsEmpty() == true
+                && actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == true
                 && AllActorsHaveNoPendingStatement(globalState) == true;
     }
     
     private boolean AllActorsHaveNoPendingStatement(GlobalRunTimeState globalState)
     {
         for(ActorRunTimeState actorState : globalState.GetActorStates())
-            if(actorState.StatementQueue().IsEmpty() == false)
+            if(actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false)
                 return false;
         return true;
     }
@@ -66,7 +67,7 @@ public abstract class MessageTakeRule extends ActorLevelRule
         
         ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
         
-        newActorState.StatementQueue().Enqueue(DequeuMessage(newActorState).GetMessageBody());
+        newActorState.FindSubState(ExecutionQueueState.class).Statements().Enqueue(DequeuMessage(newActorState).GetMessageBody());
         
         List<Trace> traces = tierTwoHanlder.FindTracesWhereExecutedActorStatementsAreExecuted(actorState.GetActor(), newGlobalState);
 

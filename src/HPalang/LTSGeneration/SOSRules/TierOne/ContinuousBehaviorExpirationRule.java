@@ -24,22 +24,23 @@ public class ContinuousBehaviorExpirationRule extends ActorLevelRule
     @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.ContinuousBehaviors().Size() >0;
+        return false;
+        //return actorState.ContinuousBehaviors().Size() >0;
     }
 
     @Override
     protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
     {
-        for(ContinuousBehavior behavior : actorState.ContinuousBehaviors())
-        {
-            GlobalRunTimeState newGlobalState = globalState.DeepCopy();
-            ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
-            
-            newActorState.ContinuousBehaviors().Remove(behavior);
-            Message message = new MessageWithBody(behavior.GetActions());
-            newActorState.HighPriorityMessageQueue().Enqueue(message);
-            
-            generator.AddTransition(new GuardedlLabel(behavior.GetGuard()), newGlobalState);
-        }
+//        for(ContinuousBehavior behavior : actorState.ContinuousBehaviors())
+//        {
+//            GlobalRunTimeState newGlobalState = globalState.DeepCopy();
+//            ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
+//            
+//            newActorState.ContinuousBehaviors().Remove(behavior);
+//            Message message = new MessageWithBody(behavior.GetActions());
+//            //newActorState.HighPriorityMessageQueue().Enqueue(message);
+//            
+//            generator.AddTransition(new GuardedlLabel(behavior.GetGuard()), newGlobalState);
+//        }
     }   
 }

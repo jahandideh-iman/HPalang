@@ -12,6 +12,7 @@ import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.LTSGeneration.Reset;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import org.junit.Test;
@@ -50,7 +51,7 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
         generatedLTS = ltsGenerator.Generate(globalState.Build());
         
         GlobalRunTimeState expectedState = globalState.Build();
-        expectedState.FindActorState(actor).StatementQueue().Dequeue();
+        expectedState.FindActorState(actor).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
        
         TauLabel label = new TauLabel(Reset.ResetsFrom(new Reset(cVar, new ConstantContinuousExpression(1.5f))));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), label , expectedState));

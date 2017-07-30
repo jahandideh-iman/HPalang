@@ -13,6 +13,7 @@ import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
 import HPalang.Core.Statements.IfStatement;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import Mocks.EmptyStatement;
@@ -51,8 +52,8 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         generatedLTS = ltsGenerator.Generate(globalState.Build());
         
         GlobalRunTimeState expectedState = globalState.Build();
-        expectedState.FindActorState(actor1).StatementQueue().Dequeue();
-        expectedState.FindActorState(actor1).StatementQueue().Push(ifStatement.TrueStatements());
+        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Push(ifStatement.TrueStatements());
        
 
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), expectedState));
@@ -77,8 +78,8 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         generatedLTS = ltsGenerator.Generate(globalState.Build());
         
         GlobalRunTimeState expectedState = globalState.Build();
-        expectedState.FindActorState(actor1).StatementQueue().Dequeue();
-        expectedState.FindActorState(actor1).StatementQueue().Push(ifStatement.FalseStatements());
+        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Push(ifStatement.FalseStatements());
        
 
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), expectedState));

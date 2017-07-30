@@ -12,6 +12,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.NetworkLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.SOSRule;
 import java.util.Collection;
@@ -35,8 +36,8 @@ public class NetwrokCommunicationRule implements SOSRule
         NetworkPacket packet = FindHighestPriority(networkState.Buffer());
         
         ActorRunTimeState receiverState = newGlobalState.FindActorState(packet.Receiver());
-        
-        receiverState.LowPriorityMessageQueue().Enqueue(packet.Message());
+        MessageQueueState messageQueueState = receiverState.FindSubState(MessageQueueState.class);
+        messageQueueState.Messages().Enqueue(packet.Message());
         networkState.Debuffer(packet);
         
         generator.AddTransition(new NetworkLabel(), newGlobalState); 

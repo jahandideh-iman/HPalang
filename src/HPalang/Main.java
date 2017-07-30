@@ -35,7 +35,6 @@ import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Statement;
 import HPalang.LTSGeneration.SOSRules.DiscreteAssignmentRule;
 import HPalang.LTSGeneration.SOSRules.IfStatementRule;
-import HPalang.LTSGeneration.SOSRules.TierOne.HighPriorityMessageTakeRule;
 import HPalang.LTSGeneration.SOSRules.TierOne.LowPriorityMessageTakeRule;
 import HPalang.HybridAutomataGeneration.SOSRules.ResumeStatementRule;
 import HPalang.LTSGeneration.GuardedlLabel;
@@ -128,7 +127,6 @@ public class Main {
     {
         LTSGenerator genetator = new LTSGenerator();
         
-        genetator.AddSOSRule(new HighPriorityMessageTakeRule(tierTwoGenerator));
         genetator.AddSOSRule(new LowPriorityMessageTakeRule(tierTwoGenerator));
         genetator.AddSOSRule(new ContinuousBehaviorExpirationRule());
         //genetator.AddSOSRule(new ResumeStatementRule(tierTwoGenerator));

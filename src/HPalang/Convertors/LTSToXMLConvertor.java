@@ -13,6 +13,9 @@ import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Statement;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
+import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
+import HPalang.LTSGeneration.RunTimeStates.ValuationState;
 import java.util.Map.Entry;
 
 /**
@@ -70,21 +73,17 @@ public class LTSToXMLConvertor
 
             actorStr += "(";
             actorStr += "V:{";
-            for(Entry<DiscreteVariable, Integer> m : actorState.Valuations())
+            for(Entry<DiscreteVariable, Integer> m : actorState.FindSubState(ValuationState.class).Valuation())
                 actorStr += "{" + m.getKey().Name() +":" + m.getValue().toString() +"}"+ ",";
-            actorStr += "},";
-            actorStr += "HQ:{";
-            for(Message m : actorState.HighPriorityMessageQueue())
-                actorStr += m.toString() + ",";
             actorStr += "},";
             
             actorStr += "LQ:{";
-            for(Message m : actorState.LowPriorityMessageQueue())
+            for(Message m : actorState.FindSubState(MessageQueueState.class).Messages())
                 actorStr += m.toString() + ",";
             actorStr += "},";
             
             actorStr += "S:{";
-            for(Statement s : actorState.StatementQueue())
+            for(Statement s : actorState.FindSubState(ExecutionQueueState.class).Statements())
                 actorStr += s.toString() + ",";
             
             actorStr += "},";
@@ -96,8 +95,8 @@ public class LTSToXMLConvertor
             actorStr += "),(";
 
             actorStr += "CB:{";
-            for(ContinuousBehavior b : actorState.ContinuousBehaviors())
-                 actorStr += b.toString() + ",";
+//            for(ContinuousBehavior b : actorState.ContinuousBehaviors())
+//                 actorStr += b.toString() + ",";
             actorStr += "})";
             actorStr += "]";
 

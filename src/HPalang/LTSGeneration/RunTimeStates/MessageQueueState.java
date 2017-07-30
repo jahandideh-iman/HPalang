@@ -16,7 +16,12 @@ import HPalang.Utilities.Queue;
  */
 public class MessageQueueState extends SimpleState<MessageQueueState>
 {
-    private  Queue<Message> messages = new Queue<>();
+    private final Queue<Message> messages = new Queue<>();
+    
+    public Queue<Message> Messages()
+    {
+        return messages;
+    }
     
     @Override
     protected MessageQueueState NewInstance()

@@ -9,6 +9,7 @@ import HPalang.Core.Actor;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Trace;
 import HPalang.LTSGeneration.Transition;
@@ -44,13 +45,13 @@ public class TierTwoLTSGeneratorHanlder
             {
                 if (actorState.GetActor() == executedActor) 
                 {
-                    if (actorState.StatementQueue().IsEmpty() == false)
+                    if (actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false)
                         valid = false;    
                 } 
                 else 
                 {
                     ActorRunTimeState rootActorState = rootGlobalState.FindActorState(actorState.GetActor());
-                    if (actorState.StatementQueue().IsEmpty() == false || rootActorState.ValuationEqual(actorState) == false)
+                    if (actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false || rootActorState.ValuationEqual(actorState) == false)
                         valid = false;
                 }
             }

@@ -31,7 +31,7 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
 
     public void AddSendStatement(SendStatement sendStatement)
     {
-        FindActorState(sendStatement.GetReceiver()).LowPriorityMessageQueue().Enqueue(sendStatement.GetMessage());
+        FindActorState(sendStatement.GetReceiver()).FindSubState(MessageQueueState.class).Messages().Enqueue(sendStatement.GetMessage());
     }
     
     public ActorRunTimeState FindActorState(Actor actor)

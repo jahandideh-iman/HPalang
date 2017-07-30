@@ -8,6 +8,7 @@ package HPalang.LTSGeneration.SOSRules.TierOne;
 import HPalang.Core.Message;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 
 /**
  *
@@ -24,14 +25,16 @@ public class LowPriorityMessageTakeRule extends MessageTakeRule
     @Override
     protected boolean InternalIsRuleSatisfied(ActorRunTimeState actorState)
     {
-        return actorState.LowPriorityMessageQueue().IsEmpty() == false && actorState.IsSuspended() == false;
+        MessageQueueState queueState = actorState.FindSubState(MessageQueueState.class);
+        return queueState.Messages().IsEmpty() == false && actorState.IsSuspended() == false;
     }
 
     @Override
     protected Message DequeuMessage(ActorRunTimeState actorState)
     {
-        Message message = actorState.LowPriorityMessageQueue().Head();
-        actorState.LowPriorityMessageQueue().Dequeue();
+        MessageQueueState queueState = actorState.FindSubState(MessageQueueState.class);
+        Message message = queueState.Messages().Head();
+        queueState.Messages().Dequeue();
         return message;
     }
 }

@@ -23,16 +23,9 @@ public class ActorRunTimeStateTest
         
         ActorRunTimeState copy = (ActorRunTimeState) original.DeepCopy();
         
-        assertThat(copy.getClass(),equalTo(original.getClass()));
-        
         assertThat(copy.GetActor(), sameInstance(original.GetActor()));
         
         assertEqualButNotSame(copy, original);
-        assertEqualButNotSame(copy.LowPriorityMessageQueue(), original.LowPriorityMessageQueue());
-        assertEqualButNotSame(copy.HighPriorityMessageQueue(), original.HighPriorityMessageQueue());
-        assertEqualButNotSame(copy.ContinuousBehaviors(), original.ContinuousBehaviors());
-        assertEqualButNotSame(copy.StatementQueue(), original.StatementQueue());
-        assertEqualButNotSame(copy.Valuations(), original.Valuations());
     }
     
     private void assertEqualButNotSame(Object obj1,Object obj2)

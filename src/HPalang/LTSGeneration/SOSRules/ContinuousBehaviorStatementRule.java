@@ -28,7 +28,7 @@ public class ContinuousBehaviorStatementRule extends StatementRule<ContinuousBeh
     @Override
     protected void ApplyStatement(ActorRunTimeState actorState, ContinuousBehaviorStatement statement)
     {           
-        actorState.ContinuousBehaviors().Add(statement.GetBehavior());
+        //actorState.ContinuousBehaviors().Add(statement.GetBehavior());
     }
     
 }

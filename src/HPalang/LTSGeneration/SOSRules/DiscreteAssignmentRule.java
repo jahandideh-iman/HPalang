@@ -6,7 +6,9 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
+import HPalang.Core.ValuationContainer;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.ValuationState;
 
 /**
  *
@@ -24,7 +26,8 @@ public class DiscreteAssignmentRule extends StatementRule<DiscreteAssignmentStat
     @Override
     protected void ApplyStatement(ActorRunTimeState actorState, DiscreteAssignmentStatement statement)
     {
-        actorState.Valuations().Set(statement.Variable(), statement.Expression().Evaluate(actorState.Valuations()));
+        actorState.FindSubState(ValuationState.class).Valuation().
+                Set(statement.Variable(), statement.Expression().Evaluate(actorState.FindSubState(ValuationState.class).Valuation()));
     }
     
 }

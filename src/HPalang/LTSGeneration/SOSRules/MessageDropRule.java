@@ -10,6 +10,8 @@ import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
+import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 
 /**
  *
@@ -20,13 +22,15 @@ public class MessageDropRule extends ActorLevelRule
      @Override
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
-        if((actorState.StatementQueue().Head() instanceof SendStatement) == false)
+        if((actorState.FindSubState(ExecutionQueueState.class).Statements().Head() instanceof SendStatement) == false)
             return false;
         
-        SendStatement sendStatement = (SendStatement)actorState.StatementQueue().Head();
+        SendStatement sendStatement = (SendStatement)actorState.FindSubState(ExecutionQueueState.class).Statements().Head();
         ActorRunTimeState receiverState = globalState.FindActorState(sendStatement.GetReceiver());
         
-        return  receiverState.LowPriorityMessageQueue().Size() >= receiverState.GetMessageQueueCapacity();
+        MessageQueueState queueState = receiverState.FindSubState(MessageQueueState.class);
+        
+        return  queueState.Messages().Size() >= receiverState.GetMessageQueueCapacity();
     }
 
     @Override
@@ -36,7 +40,7 @@ public class MessageDropRule extends ActorLevelRule
                
         ActorRunTimeState senderState = newGlobalState.FindActorState(actorState.GetActor());
         
-        senderState.StatementQueue().Dequeue();
+        senderState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         
         generator.AddTransition(new TauLabel(), newGlobalState);
     }

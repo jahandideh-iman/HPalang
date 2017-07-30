@@ -16,7 +16,7 @@ import java.util.Map.Entry;
  */
 public class ValuationContainer extends EqualitableAndClonable<ValuationContainer> implements Iterable<Entry<DiscreteVariable,Integer>>
 {
-    private Map<DiscreteVariable,Integer> values = new HashMap<>();
+    private final Map<DiscreteVariable,Integer> values = new HashMap<>();
     
     public void Set(DiscreteVariable var, int value)
     {
@@ -26,6 +26,16 @@ public class ValuationContainer extends EqualitableAndClonable<ValuationContaine
     public void Add(DiscreteVariable var)
     {
         values.put(var, 0);
+    }
+    
+    public void Add(ValuationContainer valuation)
+    {
+        values.putAll(valuation.values);
+    }
+    
+    public void Add(Map<DiscreteVariable,Integer> values)
+    {
+        values.putAll(values);
     }
     
     public boolean Has(DiscreteVariable var)
@@ -55,7 +65,7 @@ public class ValuationContainer extends EqualitableAndClonable<ValuationContaine
     {
         ValuationContainer copy = new ValuationContainer();
         
-        copy.values = new HashMap<>(values);
+        copy.Add(this);
         
         return copy;
     }

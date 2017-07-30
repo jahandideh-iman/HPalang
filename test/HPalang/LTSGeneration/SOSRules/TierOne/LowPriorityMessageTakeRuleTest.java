@@ -21,6 +21,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
+import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.SOSRules.ContinuousAssignmentRule;
 import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
 import HPalang.LTSGeneration.SOSRules.StatementRule;
@@ -65,7 +66,7 @@ public class LowPriorityMessageTakeRuleTest extends SOSRuleTestFixture
         
         GlobalRunTimeState nextGlobalState = globalState.Build();
         ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actor);
-        nextActorState.LowPriorityMessageQueue().Dequeue();
+        nextActorState.FindSubState(MessageQueueState.class).Messages().Dequeue();
 
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), nextGlobalState));
     }
@@ -94,7 +95,7 @@ public class LowPriorityMessageTakeRuleTest extends SOSRuleTestFixture
         
         GlobalRunTimeState nextGlobalState = globalState.Build();
         ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actor);
-        nextActorState.LowPriorityMessageQueue().Dequeue();
+        nextActorState.FindSubState(MessageQueueState.class).Messages().Dequeue();
 
         TauLabel label = new TauLabel(Reset.ResetsFrom(new Reset(cVar1, new ConstantContinuousExpression(2.0f))
             ,new Reset(cVar2, new ConstantContinuousExpression(1.5f))));

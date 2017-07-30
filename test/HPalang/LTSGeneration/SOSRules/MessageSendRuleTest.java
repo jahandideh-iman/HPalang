@@ -17,6 +17,8 @@ import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
+import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.Transition;
 import Mocks.EmptyMessage;
 import java.util.List;
@@ -66,12 +68,12 @@ public class MessageSendRuleTest
         generatedLTS = ltsGenerator.Generate(globalState.Build());
         
         GlobalRunTimeState stateAfterMessageTo2Sent = globalState.Build();
-        stateAfterMessageTo2Sent.FindActorState(actor1).StatementQueue().Dequeue();
-        stateAfterMessageTo2Sent.FindActorState(actor2).LowPriorityMessageQueue().Enqueue(messageTo2);
+        stateAfterMessageTo2Sent.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        stateAfterMessageTo2Sent.FindActorState(actor2).FindSubState(MessageQueueState.class).Messages().Enqueue(messageTo2);
         
         GlobalRunTimeState sateAfterMessageTo1Sent = globalState.Build();
-        sateAfterMessageTo1Sent.FindActorState(actor2).StatementQueue().Dequeue();
-        sateAfterMessageTo1Sent.FindActorState(actor1).LowPriorityMessageQueue().Enqueue(messageTo1);
+        sateAfterMessageTo1Sent.FindActorState(actor2).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        sateAfterMessageTo1Sent.FindActorState(actor1).FindSubState(MessageQueueState.class).Messages().Enqueue(messageTo1);
         
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));

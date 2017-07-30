@@ -14,6 +14,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.NetworkLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
 import HPalang.LTSGeneration.TauLabel;
@@ -61,7 +62,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
         
        GlobalRunTimeState nextGlobalState = globalState.Build();
        ActorRunTimeState nextActorState = nextGlobalState.FindActorState(receiver);
-       nextActorState.LowPriorityMessageQueue().Enqueue(m2);
+       nextActorState.FindSubState(MessageQueueState.class).Messages().Enqueue(m2);
        NetworkState nextNetworkState = nextGlobalState.FindSubState(NetworkState.class);
        nextNetworkState.Debuffer(new NetworkPacket(sender, m2, receiver));
        

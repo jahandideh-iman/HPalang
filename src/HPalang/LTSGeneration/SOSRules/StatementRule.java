@@ -8,6 +8,7 @@ package HPalang.LTSGeneration.SOSRules;
 import HPalang.Core.Statement;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TauLabel;
 
@@ -22,8 +23,8 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
     protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
     {
         
-        return actorState.StatementQueue().IsEmpty() == false
-                && actorState.StatementQueue().Head().Is(StatementType());
+        return actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false
+                && actorState.FindSubState(ExecutionQueueState.class).Statements().Head().Is(StatementType());
     }
     
     protected abstract Class<T> StatementType();
@@ -34,8 +35,8 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
         
-        T statement = (T)newActorState.StatementQueue().Head();
-        newActorState.StatementQueue().Dequeue();
+        T statement = (T)newActorState.FindSubState(ExecutionQueueState.class).Statements().Head();
+        newActorState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         ApplyStatement(newActorState, statement);
         
         TauLabel label = CreateTransitionLabel(actorState, statement);

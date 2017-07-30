@@ -32,12 +32,12 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
     @Override
     protected void ApplyStatement(ActorRunTimeState actorState, DelayStatement statement)
     {
-        ContinuousVariable delayVar = actorState.GetActor().GetDelayVariable();
-        ContinuousBehavior behavior = CreateDelayBehavior(actorState.GetActor(), statement.GetDelay(), delayVar);
-        actorState.SuspendedStatements().Enqueue(actorState.StatementQueue());
-        actorState.StatementQueue().Clear();
-        actorState.SetSuspended(true);
-        actorState.ContinuousBehaviors().Add(behavior);
+//        ContinuousVariable delayVar = actorState.GetActor().GetDelayVariable();
+//        ContinuousBehavior behavior = CreateDelayBehavior(actorState.GetActor(), statement.GetDelay(), delayVar);
+////        actorState.SuspendedStatements().Enqueue(actorState.StatementQueue());
+////        actorState.StatementQueue().Clear();
+//        actorState.SetSuspended(true);
+//        actorState.ContinuousBehaviors().Add(behavior);
     }
     
     @Override

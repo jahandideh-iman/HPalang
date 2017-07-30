@@ -11,7 +11,9 @@ import HPalang.Core.Actor;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.ValuationState;
 import HPalang.LTSGeneration.TauLabel;
 import org.junit.*;
 import static org.junit.Assert.*;
@@ -50,8 +52,8 @@ public class DiscreteAssignmentTest extends SOSRuleTestFixture
         generatedLTS = ltsGenerator.Generate(globalState.Build());
         
         GlobalRunTimeState expectedState = globalState.Build();
-        expectedState.FindActorState(actor1).StatementQueue().Dequeue();
-        expectedState.FindActorState(actor1).Valuations().Set(dVar, 5);
+        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        expectedState.FindActorState(actor1).FindSubState(ValuationState.class).Valuation().Set(dVar, 5);
        
 
         assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), expectedState));
