@@ -7,11 +7,8 @@ package HPalang.LTSGeneration.SOSRules;
 
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
-import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;
 import HPalang.Core.MessageHandler;
-import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.Core.Message;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -31,12 +28,8 @@ import org.junit.Before;
  *
  * @author Iman Jahandideh
  */
-public class MessageSendRuleTest
+public class MessageSendRuleTest extends SOSRuleTestFixture
 {
-    LTSGenerator ltsGenerator = new LTSGenerator();
-    LabeledTransitionSystem generatedLTS;
-    GlobalRunTimeStateBuilder globalState = new GlobalRunTimeStateBuilder();
-    
     @Before
     public void Setup()
     {
@@ -60,23 +53,22 @@ public class MessageSendRuleTest
                 .WithActor(actor2)
                 .EnqueueStatement(new SendStatement(actor1, messageTo1));
         
-        globalState
-                .AddActorRunTimeState(actor1State)
-                .AddActorRunTimeState(actor2State);
+        globalState.AddActorRunTimeState(actor1State.Build());
+        globalState.AddActorRunTimeState(actor2State.Build());
                 
                   
-        generatedLTS = ltsGenerator.Generate(globalState.Build());
+        generatedLTS = ltsGenerator.Generate(globalState);
         
-        GlobalRunTimeState stateAfterMessageTo2Sent = globalState.Build();
+        GlobalRunTimeState stateAfterMessageTo2Sent = globalState.DeepCopy();
         stateAfterMessageTo2Sent.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         stateAfterMessageTo2Sent.FindActorState(actor2).FindSubState(MessageQueueState.class).Messages().Enqueue(messageTo2);
         
-        GlobalRunTimeState sateAfterMessageTo1Sent = globalState.Build();
+        GlobalRunTimeState sateAfterMessageTo1Sent = globalState.DeepCopy();
         sateAfterMessageTo1Sent.FindActorState(actor2).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         sateAfterMessageTo1Sent.FindActorState(actor1).FindSubState(MessageQueueState.class).Messages().Enqueue(messageTo1);
         
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new SoftwareLabel(), stateAfterMessageTo2Sent));
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new SoftwareLabel(), stateAfterMessageTo2Sent));
+        assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), stateAfterMessageTo2Sent));
+        assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), stateAfterMessageTo2Sent));
     } 
     
     @Test
@@ -90,13 +82,13 @@ public class MessageSendRuleTest
                 .EnqueueStatement(new SendStatement(actor, new EmptyMessage("Message2")));
         
         globalState
-                .AddActorRunTimeState(fullCapacityActorState);
+                .AddActorRunTimeState(fullCapacityActorState.Build());
                 
                   
-        generatedLTS = ltsGenerator.Generate(globalState.Build());
+        generatedLTS = ltsGenerator.Generate(globalState);
        
         
-        List<Transition> transitions =  generatedLTS.GetOutTransitionsFor(globalState.Build());
+        List<Transition> transitions =  generatedLTS.GetOutTransitionsFor(globalState);
         
         assertThat(transitions.size(),equalTo(0) );
     }

@@ -31,7 +31,7 @@ public class Utilities
         return new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.StatementsFrom(new EmptyStatement()));
     }
     
-    static public ActorRunTimeState NewActorState(String actorName)
+    static public ActorRunTimeState CreateActorState(String actorName)
     {
         ActorRunTimeStateBuilder builder = new ActorRunTimeStateBuilder().
                 WithActor(new Actor(actorName, 0));

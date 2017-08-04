@@ -28,6 +28,7 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -104,7 +105,7 @@ public class ParserExpressionTest extends ParserTestBase
     }
     
     
-    @Test
+    @Test @Ignore
     public void ParsesArithmeticExpression() throws IOException
     {
         input = CreateInput("1 + 2 - 3 ");

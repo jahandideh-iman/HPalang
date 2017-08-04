@@ -8,7 +8,6 @@ package HPalang.LTSGeneration;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import Builders.GlobalRunTimeStateBuilder;
 import HPalang.Core.Actor;
 import Mocks.SOSRuleMock;
 import Mocks.SOSRuleMonitor;
@@ -27,7 +26,7 @@ public class LTSGeneratorTest
     @Test
     public void InitialGlobalStateIsGivenToSOSRules()
     {
-        GlobalRunTimeState initialState = new GlobalRunTimeStateBuilder().Build();
+        GlobalRunTimeState initialState = new GlobalRunTimeState();
         
         SOSRuleMonitor rule1 = new SOSRuleMonitor();        
         SOSRuleMonitor rule2 = new SOSRuleMonitor();
@@ -44,7 +43,7 @@ public class LTSGeneratorTest
     @Test
     public void TransitionCanBeAddedDuringGeneration()
     {
-        GlobalRunTimeState initialState = new GlobalRunTimeStateBuilder().Build();
+        GlobalRunTimeState initialState = new GlobalRunTimeState();
         
         GlobalRunTimeState transitionState = new GlobalRunTimeState();
         transitionState.AddActorRunTimeState(new ActorRunTimeState(new Actor("actor",0)));

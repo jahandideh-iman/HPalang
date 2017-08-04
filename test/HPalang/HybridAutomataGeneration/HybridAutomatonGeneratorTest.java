@@ -5,15 +5,12 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import Builders.ActorRunTimeStateBuilder;
-import Builders.GlobalRunTimeStateBuilder;
-import HPalang.Core.Actor;
 import HPalang.HybridAutomataGeneration.Mocks.TransitionSOSRuleMonitor;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Transition;
-import Mocks.SOSRuleMock;
+import TestUtilities.Utilities;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -30,15 +27,13 @@ public class HybridAutomatonGeneratorTest
         HybridAutomatonGenerator generator = new HybridAutomatonGenerator();
         
         LabeledTransitionSystem lts = new LabeledTransitionSystem();
-        
-        
-        
-        GlobalRunTimeState state1 = new GlobalRunTimeStateBuilder()
-                .AddActorRunTimeState(new ActorRunTimeStateBuilder().WithActor(new Actor("1",0))).Build();
-        
-        GlobalRunTimeState state2 = new GlobalRunTimeStateBuilder()
-                .AddActorRunTimeState(new ActorRunTimeStateBuilder().WithActor(new Actor("2",0))).Build();
-        
+          
+        GlobalRunTimeState state1 = new GlobalRunTimeState();
+        state1.AddActorRunTimeState(Utilities.CreateActorState("1"));
+
+        GlobalRunTimeState state2 = new GlobalRunTimeState();
+        state1.AddActorRunTimeState(Utilities.CreateActorState("2"));
+
         lts.AddState(state1);
         lts.AddState(state2);
         lts.SetInitialState(state1);

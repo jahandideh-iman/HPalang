@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import Builders.GlobalRunTimeStateBuilder;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;

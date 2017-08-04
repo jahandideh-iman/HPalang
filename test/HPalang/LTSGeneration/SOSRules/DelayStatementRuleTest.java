@@ -5,27 +5,7 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import Builders.ActorBuilder;
-import Builders.ActorRunTimeStateBuilder;
-import Builders.GlobalRunTimeStateBuilder;
-import HPalang.Core.Actor;
-import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
-import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DefferentialEquation;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.Labels.SoftwareLabel;
-import HPalang.Core.Statements.DelayStatement;
-import HPalang.Core.Statements.ResumeStatement;
-import static HPalang.Core.Statement.StatementsFrom;
-import HPalang.LTSGeneration.Labels.Reset;
-import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
-import Mocks.EmptyStatement;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
 
 
@@ -34,12 +14,8 @@ import org.junit.Before;
  * @author Iman Jahandideh
  */
 
-public class DelayStatementRuleTest
+public class DelayStatementRuleTest extends SOSRuleTestFixture
 { 
-    LTSGenerator ltsGenerator = new LTSGenerator();
-    LabeledTransitionSystem generatedLTS;
-    GlobalRunTimeStateBuilder globalState = new GlobalRunTimeStateBuilder();
-    
     @Before
     public void Setup()
     {

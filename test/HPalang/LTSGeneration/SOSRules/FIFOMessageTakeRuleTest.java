@@ -37,7 +37,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
     {
         Message message = new MessageWithBody(StatementsFrom(new EmptyStatement("s1"), new EmptyStatement("s2")));
         
-        ActorRunTimeState actorState =  Utilities.NewActorState("actor");
+        ActorRunTimeState actorState =  Utilities.CreateActorState("actor");
         actorState.SetSuspended(false);
         actorState.ExecutionQueueState().Statements().Clear();
         actorState.MessageQueueState().Messages().Enqueue(message);

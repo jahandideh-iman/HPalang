@@ -22,8 +22,8 @@ public class GlobalRunTimeStateTest
     public void DeepCopyIsCorrect()
     {
         GlobalRunTimeState orignal = Utilities.NewGlobalState(
-                Utilities.NewActorState("actor1"),
-                Utilities.NewActorState("actor2"));
+                Utilities.CreateActorState("actor1"),
+                Utilities.CreateActorState("actor2"));
         
         GlobalRunTimeState copy = (GlobalRunTimeState) orignal.DeepCopy();
         
@@ -36,8 +36,8 @@ public class GlobalRunTimeStateTest
     public void CloneCreateNewActorState()
     {
         GlobalRunTimeState orignal = Utilities.NewGlobalState(
-                Utilities.NewActorState("actor1"),
-                Utilities.NewActorState("actor2"));
+                Utilities.CreateActorState("actor1"),
+                Utilities.CreateActorState("actor2"));
         
         GlobalRunTimeState copy = (GlobalRunTimeState)orignal.DeepCopy();
         

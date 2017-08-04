@@ -19,7 +19,7 @@ public class ActorRunTimeStateTest
     @Test
     public void DeepCopyIsCorrect()
     {
-        ActorRunTimeState original = Utilities.NewActorState("actor");
+        ActorRunTimeState original = Utilities.CreateActorState("actor");
         
         ActorRunTimeState copy = (ActorRunTimeState) original.DeepCopy();
         
