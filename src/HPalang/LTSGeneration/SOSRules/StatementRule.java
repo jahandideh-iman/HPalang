@@ -10,7 +10,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 
 /**
  *
@@ -39,15 +39,15 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
         newActorState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         ApplyStatement(newActorState, statement);
         
-        TauLabel label = CreateTransitionLabel(actorState, statement);
+        SoftwareLabel label = CreateTransitionLabel(actorState, statement);
         
         generator.AddTransition(label, newGlobalState);
     }
     
     protected abstract void ApplyStatement(ActorRunTimeState actorState, T statement);
-    protected TauLabel CreateTransitionLabel(ActorRunTimeState actorState, T statement)
+    protected SoftwareLabel CreateTransitionLabel(ActorRunTimeState actorState, T statement)
     {
-        return new TauLabel();
+        return new SoftwareLabel();
     }
     
 }

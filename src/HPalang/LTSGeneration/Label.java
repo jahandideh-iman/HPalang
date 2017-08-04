@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.Core.Equalitable;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;

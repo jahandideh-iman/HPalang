@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Actor;
-import HPalang.LTSGeneration.Utilities;
+import TestUtilities.Utilities;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;

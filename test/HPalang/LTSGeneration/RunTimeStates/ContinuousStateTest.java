@@ -5,11 +5,11 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.DefferentialEquation;
-import HPalang.Core.Statement;
-import static org.hamcrest.CoreMatchers.*;
+import HPalang.Core.PhysicalActor;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static TestUtilities.Utilities.assertEqualButNotSame;
+
 
 /**
  *
@@ -18,67 +18,21 @@ import static org.junit.Assert.*;
 public class ContinuousStateTest
 {
     
-    ContinuousBehaviorContianer original = new ContinuousBehaviorContianer();
-    
-    
     @Test
-    public void StatesWithEqualBehaviorsAreEqual()
+    public void ClonesThePhysicalActorStates()
     {
-        ContinuousBehaviorContianer state1 = new ContinuousBehaviorContianer();
-        ContinuousBehaviorContianer state2 = new ContinuousBehaviorContianer();
+        ContinuousState original = new ContinuousState();
+        PhysicalActorState actorState1 = new PhysicalActorState(new PhysicalActor("actor1"));       
+        PhysicalActorState actorState2 = new PhysicalActorState(new PhysicalActor("actor2"));
         
-        ContinuousBehavior behavior1 = new ContinuousBehavior("inv1", DefferentialEquation.Empty("eq1"), "g1", Statement.EmptyStatements());
-        ContinuousBehavior behavior2 = new ContinuousBehavior("inv2", DefferentialEquation.Empty("eq2"), "g2", Statement.EmptyStatements());
+        original.AddPhysicalActorState(actorState1);        
+        original.AddPhysicalActorState(actorState2);
         
-        state1.Add(behavior1);
-        state1.Add(behavior2);
-        
-        state2.Add(behavior1);
-        state2.Add(behavior2);
-        
-        assertThat(state2, equalTo(state1));
+        ContinuousState copy = original.DeepCopy();
+
+        assertEqualButNotSame(original,copy);
+        assertEqualButNotSame(actorState1, copy.FindActorState(actorState1.Actor())); 
+        assertEqualButNotSame(actorState2, copy.FindActorState(actorState2.Actor()));
     }
     
-    @Test
-    public void DeepCopyIsCorrectForEmptyState()
-    {
-        ContinuousBehaviorContianer copy = original.DeepCopy();
-        
-        assertThat(copy,equalTo(original));
-        assertThat(copy,not(sameInstance(original)));
-        assertThat(copy.getClass(),equalTo(original.getClass()));
-    }
-    
-    @Test
-    public void CloneIsCorrectForContinuousBehavior()
-    {
-        ContinuousBehavior behavior1 = new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.EmptyStatements());
-        ContinuousBehavior behavior2 = new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.EmptyStatements());
-        
-        original.Add(behavior1);
-        original.Add(behavior2);
-        
-        ContinuousBehaviorContianer copy = original.DeepCopy();
-        
-        assertTrue(copy.equals(original));
-    }
-    
-    @Test
-    public void ClonedStateHasSeperateBehaviors()
-    {
-        ContinuousBehavior behavior1 = new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.EmptyStatements());
-        ContinuousBehavior behavior2 = new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.EmptyStatements());
-        
-        original.Add(behavior1);
-        original.Add(behavior2);
-        
-        ContinuousBehaviorContianer copy = original.DeepCopy();
-//        
-//        ContinuousBehavior behavior = copy.GetBehaviors().get(0);
-//        copy.Remove(behavior);
-//        
-//        assertFalse(copy.equals(original));
-//        assertThat(copy.GetBehaviors(), not(hasItem(sameInstance(behavior))));
-//        assertThat(original.GetBehaviors(), hasItem(sameInstance(behavior)));
-    }
 }

@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package TestUtilities;
 
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -15,6 +15,10 @@ import HPalang.Core.Statement;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import Mocks.EmptyMessage;
 import Mocks.EmptyStatement;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.not;
+import static org.hamcrest.CoreMatchers.sameInstance;
+import static org.junit.Assert.assertThat;
 
 /**
  *
@@ -33,6 +37,12 @@ public class Utilities
                 WithActor(new Actor(actorName, 0));
         
         return builder.Build();
+    }
+    
+    public static void assertEqualButNotSame(Object obj1,Object obj2)
+    {
+        assertThat(obj1, equalTo(obj2));
+        assertThat(obj1, not(sameInstance(obj2)));
     }
     
     public static GlobalRunTimeState NewGlobalState(ActorRunTimeState ... actorStates)

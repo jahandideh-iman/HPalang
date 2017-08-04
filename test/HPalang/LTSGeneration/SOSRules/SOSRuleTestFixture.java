@@ -10,8 +10,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
-import HPalang.LTSGeneration.SOSRule;
-import org.junit.Before;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 
 /**
  *
@@ -21,7 +20,7 @@ public class SOSRuleTestFixture
 {
     protected LTSGenerator ltsGenerator = new LTSGenerator();
     protected LabeledTransitionSystem generatedLTS;
-    protected GlobalRunTimeStateBuilder globalState = new GlobalRunTimeStateBuilder();
+    protected GlobalRunTimeState globalState = new GlobalRunTimeState();
     
     protected void DequeueOneStatemenet(ActorRunTimeState actorState)
     {

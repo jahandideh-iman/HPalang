@@ -3,24 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package HPalang.LTSGeneration.Labels;
 
-import HPalang.Core.Equalitable;
-import java.util.List;
+import HPalang.LTSGeneration.Label;
 import java.util.Set;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class TauLabel extends Label<TauLabel>
+public class SoftwareLabel extends Label<SoftwareLabel>
 {  
-    public TauLabel()
+    public SoftwareLabel()
     {
         
     }
-    
-    public TauLabel(Set<Reset> resets) 
+    public SoftwareLabel(Set<Reset> resets) 
     {
         super(resets);
     }
@@ -28,11 +26,11 @@ public class TauLabel extends Label<TauLabel>
     @Override
     public String toString()
     {
-        return "t";
+        return "s";
     }
 
     @Override
-    protected boolean InternalEquals(TauLabel other)
+    protected boolean InternalEquals(SoftwareLabel other)
     {
         return other.GetResets().equals(this.resets);
     }
@@ -40,7 +38,7 @@ public class TauLabel extends Label<TauLabel>
     @Override
     protected int InternalHashCode()
     {
-        int hash = 7;
+        int hash = 17;
         return hash;
     }
 }

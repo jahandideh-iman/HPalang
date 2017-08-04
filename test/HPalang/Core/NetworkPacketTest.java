@@ -5,7 +5,7 @@
  */
 package HPalang.Core;
 
-import HPalang.LTSGeneration.Utilities;
+import TestUtilities.Utilities;
 import Mocks.EmptyMessage;
 import org.junit.Test;
 import static org.junit.Assert.*;

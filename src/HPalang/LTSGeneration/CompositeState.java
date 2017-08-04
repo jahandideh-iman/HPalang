@@ -15,7 +15,7 @@ import java.util.List;
  */
 public interface CompositeState extends State
 {
-    public void AddSubstate(State substate);
+    public CompositeState AddSubstate(State substate);
     public <T extends State> T FindSubState(Class<T> clazz);
     public <T extends State> Collection<T> FindSubStates(Class<T> clazz);
     public Collection<State> Substates();

@@ -21,11 +21,17 @@ public abstract class CompositeStateT<T extends CompositeStateT> extends Equalit
     private final List<State> substates = new LinkedList<>();
         
     @Override
-    public void AddSubstate(State substate)
+    public CompositeState AddSubstate(State substate)
     {
         substates.add(substate);
+        OnSubstateAdded(substate);
+        return this;
     }
-
+    
+    protected void OnSubstateAdded(State substate)
+    {
+    }
+    
     @Override
     public <T extends State> T FindSubState(Class<T> clazz)
     {

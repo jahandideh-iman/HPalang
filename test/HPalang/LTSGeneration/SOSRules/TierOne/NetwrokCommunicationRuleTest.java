@@ -11,15 +11,18 @@ import HPalang.Core.Actor;
 import HPalang.Core.Message;
 import HPalang.Core.NetworkPacket;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.NetworkLabel;
+import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
-import HPalang.LTSGeneration.TauLabel;
-import HPalang.LTSGeneration.Utilities;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import TestUtilities.Utilities;
 import Mocks.EmptyMessage;
+import static org.hamcrest.CoreMatchers.is;
+import org.hamcrest.core.IsEqual;
+import static org.junit.Assert.assertThat;
 import static org.junit.Assert.assertTrue;
 import org.junit.Before;
 import org.junit.Test;
@@ -46,8 +49,8 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
        ActorRunTimeStateBuilder receiverState = new ActorRunTimeStateBuilder()
                .WithActor(receiver);
        
-       globalState.AddActorRunTimeState(receiverState)
-               .AddSubstate(networkState);
+       globalState.AddActorRunTimeState(receiverState.Build());
+       globalState.AddSubstate(networkState);
        
        
        Message m1 = new EmptyMessage();
@@ -58,14 +61,14 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
        networkState.Buffer(new NetworkPacket(sender, m1, receiver));
        networkState.Buffer(new NetworkPacket(sender, m2, receiver));
        
-       generatedLTS = ltsGenerator.Generate(globalState.Build());
+       generatedLTS = ltsGenerator.Generate(globalState);
         
-       GlobalRunTimeState nextGlobalState = globalState.Build();
+       GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
        ActorRunTimeState nextActorState = nextGlobalState.FindActorState(receiver);
        nextActorState.FindSubState(MessageQueueState.class).Messages().Enqueue(m2);
        NetworkState nextNetworkState = nextGlobalState.FindSubState(NetworkState.class);
        nextNetworkState.Debuffer(new NetworkPacket(sender, m2, receiver));
        
-       assertTrue(generatedLTS.HasTransition(globalState.Build(), new NetworkLabel(), nextGlobalState));
+       assertTrue(generatedLTS.HasTransition(globalState, new NetworkLabel(), nextGlobalState));       
    }
 }

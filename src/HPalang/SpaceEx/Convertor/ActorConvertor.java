@@ -55,8 +55,8 @@ public class ActorConvertor
         for (CommunicationLabel sned : actorData.GetSendLables()) 
             actorComponent.AddParameter(new LabelParameter(sned.GetLabel(), sned.IsSelf()));
         
-        
-        for(CommunicationLabel send : actorData.GetSendLables())
+        // NOTE: What is the difference of bellow "for" with about "for"?!!
+        for (CommunicationLabel send : actorData.GetSendLables())
             actorComponent.AddParameter(new LabelParameter(send.GetLabel(), send.IsSelf()));
         
         for (String take : actorData.GetHandlerTakeLabels()) 

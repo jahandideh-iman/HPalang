@@ -27,7 +27,7 @@ import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorStatementRule;
 import HPalang.LTSGeneration.SOSRules.DelayStatementRule;
 import HPalang.LTSGeneration.SOSRules.MessageDropRule;
 import HPalang.LTSGeneration.SOSRules.MessageSendRule;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.DelayStatement;
@@ -35,11 +35,11 @@ import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Statement;
 import HPalang.LTSGeneration.SOSRules.DiscreteAssignmentRule;
 import HPalang.LTSGeneration.SOSRules.IfStatementRule;
-import HPalang.LTSGeneration.SOSRules.TierOne.LowPriorityMessageTakeRule;
+import HPalang.LTSGeneration.SOSRules.FIFOMessageTakeRule;
 import HPalang.HybridAutomataGeneration.SOSRules.ResumeStatementRule;
 import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
-import HPalang.LTSGeneration.Reset;
+import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.Parser.Parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -127,7 +127,7 @@ public class Main {
     {
         LTSGenerator genetator = new LTSGenerator();
         
-        genetator.AddSOSRule(new LowPriorityMessageTakeRule(tierTwoGenerator));
+        genetator.AddSOSRule(new FIFOMessageTakeRule());
         genetator.AddSOSRule(new ContinuousBehaviorExpirationRule());
         //genetator.AddSOSRule(new ResumeStatementRule(tierTwoGenerator));
         
@@ -144,7 +144,7 @@ public class Main {
                 List<Transition> outTrans = lts.GetOutTransitionsFor(state);
                 boolean hasTauLabled = false;
                 for(Transition t : outTrans)
-                    if(t.GetLabel() instanceof TauLabel)
+                    if(t.GetLabel() instanceof SoftwareLabel)
                     {
                         hasTauLabled = true;
                         break;
@@ -153,7 +153,7 @@ public class Main {
                 if(hasTauLabled)
                 {
                     for(Transition t : outTrans)
-                        if(t.GetLabel() instanceof  TauLabel == false)
+                        if(t.GetLabel() instanceof  SoftwareLabel == false)
                             lts.RemoveTranstion(t);
                 }
             }
@@ -175,7 +175,7 @@ public class Main {
                 List<Transition> inTrans = lts.GetInTransitionFor(state);
                 
                 if(inTrans.size() == 1 && outTrans.size() == 1
-                        && inTrans.get(0).GetLabel() instanceof TauLabel
+                        && inTrans.get(0).GetLabel() instanceof SoftwareLabel
                         && state.equals(lts.GetInitialState()) == false)
                 {
                     lts.RemoveTranstion(inTrans.get(0));
@@ -197,7 +197,7 @@ public class Main {
 //            boolean hasTauLabel = false;
 //            for(LabeledTransitionSystem.Transition t : trans)
 //            {
-//                if(t.GetLabel() instanceof TauLabel)
+//                if(t.GetLabel() instanceof SoftwareLabel)
 //                {
 //                    hasTauLabel = true;
 //                    break;
@@ -207,7 +207,7 @@ public class Main {
 //            {
 //                for(LabeledTransitionSystem.Transition t : trans)
 //                {
-//                    if(t.GetLabel() instanceof TauLabel == false)
+//                    if(t.GetLabel() instanceof SoftwareLabel == false)
 //                         lts.RemoveTranstion(t);
 //                }
 //            }
@@ -403,7 +403,7 @@ public class Main {
                 boolean allTauLabled = true && outTrans.size() > 0;
 
                 for(Transition outT : outTrans)
-                    if(outT.GetLabel() instanceof TauLabel == false)
+                    if(outT.GetLabel() instanceof SoftwareLabel == false)
                     {
                         allTauLabled = false;
                         break;
@@ -439,8 +439,8 @@ public class Main {
         for(Reset re : (Set<Reset>)secondLabel.GetResets())
                 resets.put(re.Variable(), re);
 
-        if(firstLabel instanceof TauLabel)
-            return new TauLabel(new LinkedHashSet<>(resets.values()));
+        if(firstLabel instanceof SoftwareLabel)
+            return new SoftwareLabel(new LinkedHashSet<>(resets.values()));
         else
           return new GuardedlLabel(((GuardedlLabel) firstLabel).GetGuard() ,new LinkedHashSet<>(resets.values()));  
     }

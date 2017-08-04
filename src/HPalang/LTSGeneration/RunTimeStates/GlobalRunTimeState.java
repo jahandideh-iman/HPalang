@@ -22,11 +22,18 @@ import java.util.logging.Logger;
 public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
 {
     // TODO: Change it to map
-    private List<ActorRunTimeState> actorStates = new LinkedList<>();
+    private List<ActorRunTimeState> actorStates = new LinkedList<>();   
+    
+
 
     public void AddActorRunTimeState(ActorRunTimeState actorRunTimeState)
     {
         actorStates.add(actorRunTimeState);
+    }
+    
+    public ContinuousState ContinuousState()
+    {
+        return FindSubState(ContinuousState.class);
     }
 
     public void AddSendStatement(SendStatement sendStatement)
@@ -72,7 +79,7 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
     {
         if(other.actorStates.size() != this.actorStates.size())
             return false;
-               
+        
         for(ActorRunTimeState actorState : this.actorStates)
             if(other.actorStates.contains(actorState) == false)
                 return false;
@@ -93,5 +100,5 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
             copy.AddActorRunTimeState((ActorRunTimeState) state.DeepCopy());
 
     }
-    
+
 }

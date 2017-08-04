@@ -5,20 +5,8 @@
  */
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
-import Builders.ActorBuilder;
-import Builders.ActorRunTimeStateBuilder;
-import HPalang.Core.Actor;
-import HPalang.Core.DefferentialEquation;
-import HPalang.LTSGeneration.GuardedlLabel;
-import HPalang.Core.Messages.MessageWithBody;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
-import static HPalang.Core.Statement.StatementsFrom;
-import Mocks.EmptyStatement;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**

@@ -6,19 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.HybridAutomataGeneration.SOSRules.ResumeStatementRule;
-import Builders.ActorBuilder;
-import Builders.ActorRunTimeStateBuilder;
-import HPalang.Core.Actor;
-import HPalang.Core.Statements.ResumeStatement;
-import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
-import HPalang.LTSGeneration.SOSRules.SOSRuleTestFixture;
-import HPalang.LTSGeneration.TauLabel;
-import Mocks.EmptyStatement;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**

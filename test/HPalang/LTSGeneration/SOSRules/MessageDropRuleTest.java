@@ -17,7 +17,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import Mocks.EmptyMessage;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -71,8 +71,8 @@ public class MessageDropRuleTest
         GlobalRunTimeState sateAfterMessageTo1Sent = globalState.Build();
         sateAfterMessageTo1Sent.FindActorState(actor2).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
+        assertTrue(generatedLTS.HasTransition(globalState.Build(), new SoftwareLabel(), stateAfterMessageTo2Sent));
+        assertTrue(generatedLTS.HasTransition(globalState.Build(), new SoftwareLabel(), stateAfterMessageTo2Sent));
     } 
     
 }

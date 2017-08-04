@@ -5,11 +5,8 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Utilities.Queue;
-import HPalang.Core.ValuationContainer;
 import HPalang.Core.Actor;
 import HPalang.LTSGeneration.CompositeStateT;
-import HPalang.Core.Statement;
 
 /**
  *
@@ -20,15 +17,22 @@ public class ActorRunTimeState extends CompositeStateT<ActorRunTimeState>
     private final Actor actor;
     
     private boolean isSuspended = false;
-    private  Queue<Statement> suspendedStatements = new Queue<>();
-
-    
+   
     public ActorRunTimeState(Actor actor)
     {
         this.actor = actor;     
     }
     
+    public ExecutionQueueState ExecutionQueueState()
+    {
+        return FindSubState(ExecutionQueueState.class);
+    }
 
+    public MessageQueueState MessageQueueState()
+    {
+        return FindSubState(MessageQueueState.class);
+    }
+    
     public int GetMessageQueueCapacity()
     {
         return actor.GetCapacity();
@@ -49,21 +53,6 @@ public class ActorRunTimeState extends CompositeStateT<ActorRunTimeState>
         return isSuspended;
     }
     
-    public Queue<Statement> SuspendedStatements()
-    {
-        return suspendedStatements;
-    }
-    
-    
-    // TODO: Merge this with ValuationContainer
-    public boolean ValuationEqual(ActorRunTimeState other)
-    {
-        return this.isSuspended == other.isSuspended
-                && this.suspendedStatements.equals(other.suspendedStatements);
-    }
-   
-
-   
     @Override
     protected ActorRunTimeState NewInstance()
     {
@@ -73,13 +62,14 @@ public class ActorRunTimeState extends CompositeStateT<ActorRunTimeState>
     @Override
     protected void CloneData(ActorRunTimeState copy)
     {
-            //copy.statementQueue = this.statementQueue.DeepCopy();
-            copy.suspendedStatements = this.suspendedStatements.DeepCopy();
+        copy.isSuspended = isSuspended;
     }
 
     @Override
     protected boolean DataEquals(ActorRunTimeState other)
     {
-        return this.actor == other.actor && isSuspended == other.isSuspended;
+        return this.actor == other.actor && 
+                isSuspended == other.isSuspended;
     }
+
 }

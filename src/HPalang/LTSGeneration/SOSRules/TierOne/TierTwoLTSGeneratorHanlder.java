@@ -11,6 +11,7 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.ValuationState;
 import HPalang.LTSGeneration.Trace;
 import HPalang.LTSGeneration.Transition;
 import java.util.LinkedList;
@@ -51,7 +52,9 @@ public class TierTwoLTSGeneratorHanlder
                 else 
                 {
                     ActorRunTimeState rootActorState = rootGlobalState.FindActorState(actorState.GetActor());
-                    if (actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false || rootActorState.ValuationEqual(actorState) == false)
+                    if (actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false || 
+                            rootActorState.FindSubState(ValuationState.class)
+                                    .equals(actorState.FindSubState(ValuationState.class)) == false)
                         valid = false;
                 }
             }

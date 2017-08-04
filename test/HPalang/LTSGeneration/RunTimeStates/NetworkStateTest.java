@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Actor;
 import HPalang.Core.NetworkPacket;
-import HPalang.LTSGeneration.Utilities;
+import TestUtilities.Utilities;
 import Mocks.EmptyMessage;
 import org.junit.Test;
 import static org.junit.Assert.*;

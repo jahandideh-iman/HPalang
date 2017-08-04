@@ -17,11 +17,11 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.ResumeStatement;
 import static HPalang.Core.Statement.StatementsFrom;
-import HPalang.LTSGeneration.Reset;
+import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import Mocks.EmptyStatement;
 import org.junit.Test;
@@ -75,7 +75,7 @@ public class DelayStatementRuleTest
 //                , actor1DelayVar+"=="+1.0f
 //                , StatementsFrom(new ResumeStatement())));
 //        
-//        TauLabel label = new TauLabel(Reset.ResetsFrom(new Reset(actor1.GetDelayVariable(), new ConstantContinuousExpression(0f))));
+//        SoftwareLabel label = new SoftwareLabel(Reset.ResetsFrom(new Reset(actor1.GetDelayVariable(), new ConstantContinuousExpression(0f))));
 //
 //        assertTrue(generatedLTS.HasTransition(globalState.Build(), label, stateAfterActor1Delay));
     }

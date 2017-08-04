@@ -26,9 +26,9 @@ public class Queue<T> extends EqualitableAndClonable<Queue<T>> implements Iterab
         return items.peek();
     }
 
-    public void Dequeue()
+    public T Dequeue()
     {
-        items.poll();
+        return items.poll();
     }
 
     public void Enqueue(T item)

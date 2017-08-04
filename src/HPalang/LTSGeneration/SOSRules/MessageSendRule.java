@@ -9,7 +9,7 @@ import HPalang.Core.Statements.DelayStatement;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
@@ -47,6 +47,6 @@ public class MessageSendRule extends ActorLevelRule
         
         reciverMessageQueueState.Messages().Enqueue(sendStatement.GetMessage());
         
-        generator.AddTransition(new TauLabel(), newGlobalState);
+        generator.AddTransition(new SoftwareLabel(), newGlobalState);
     }
 }

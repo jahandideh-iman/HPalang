@@ -5,16 +5,20 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import Builders.ActorBuilder;
-import Builders.ActorRunTimeStateBuilder;
-import HPalang.Core.Actor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
+import HPalang.Core.PhysicalActor;
+import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
-import HPalang.LTSGeneration.Reset;
+import HPalang.LTSGeneration.Labels.Reset;
+import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import HPalang.LTSGeneration.State;
+import static org.hamcrest.CoreMatchers.*;
+import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -33,27 +37,46 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
     }
 
     @Test
-    public void ForEachActorStateIfNextStatementIsDiscreteAssignementThenAssignsTheNewValue()
+    public void SetsTheContinuousAssignmentLabel()
     {
         ContinuousVariable cVar = new ContinuousVariable("cVar");
-        Actor actor = new ActorBuilder()
-                .WithID("actor")
-                .Build();
-       
-        ActorRunTimeStateBuilder actorState = new ActorRunTimeStateBuilder()
-                .WithActor(actor)
-                .EnqueueStatement(new ContinuousAssignmentStatement(cVar, new ConstantContinuousExpression(1.5f)));
+        ContinuousAssignmentStatement assignment = new ContinuousAssignmentStatement(cVar, new ConstantContinuousExpression(1.5f));
         
-        globalState
-                .AddActorRunTimeState(actorState);
-                
+        PhysicalActorState pActorState = CreatePhysicalState("pActor", new ExecutionQueueState());
+        pActorState.ExecutionQueueState().Statements().Enqueue(assignment);
+
+        ContinuousState continuousState = CreateContinuousState(pActorState);
+        
+        GlobalRunTimeState globalState = new GlobalRunTimeState();
+        globalState.AddSubstate(continuousState);
                  
-        generatedLTS = ltsGenerator.Generate(globalState.Build());
+        generatedLTS = ltsGenerator.Generate(globalState);
         
-        GlobalRunTimeState expectedState = globalState.Build();
-        expectedState.FindActorState(actor).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
-       
-        TauLabel label = new TauLabel(Reset.ResetsFrom(new Reset(cVar, new ConstantContinuousExpression(1.5f))));
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), label , expectedState));
+        GlobalRunTimeState expectedState = globalState.DeepCopy();
+        PhysicalActorState expectedPhysicalState = expectedState.ContinuousState().FindActorState(pActorState.Actor());
+        expectedPhysicalState.ExecutionQueueState().Statements().Clear();
+
+        SoftwareLabel label = new SoftwareLabel(Reset.ResetsFrom(new Reset(assignment.Variable(), assignment.Expression())));
+        
+        assertTrue(generatedLTS.HasTransition(globalState, label , expectedState));
+        assertThat(generatedLTS.GetStates().size(), is(IsEqual.equalTo(2)));
+    }
+    
+    private PhysicalActorState CreatePhysicalState(String actorName, State substate)
+    {
+        PhysicalActorState state =  new PhysicalActorState(new PhysicalActor(actorName));
+        
+        state.AddSubstate(substate);
+        
+        return state;
+    }
+    
+    private ContinuousState CreateContinuousState(PhysicalActorState actorState)
+    {
+        ContinuousState continuousState = new ContinuousState();
+        
+        continuousState.AddPhysicalActorState(actorState);
+        
+        return continuousState;
     }
 }

@@ -3,27 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.SOSRules.TierOne;
+package HPalang.LTSGeneration.SOSRules;
 
-import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Message;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.Reset;
+import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
-import HPalang.LTSGeneration.SOSRules.ActorLevelRule;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.SOSRules.TierOne.TierTwoLTSGeneratorHanlder;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Trace;
 import HPalang.LTSGeneration.Transition;
-import java.beans.Transient;
-import java.util.Dictionary;
 import java.util.HashMap;
-import java.util.Hashtable;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -73,12 +67,12 @@ public abstract class MessageTakeRule extends ActorLevelRule
 
         for(Trace trace : traces)
         {
-            TauLabel label = GetLabelFor(trace);
+            SoftwareLabel label = GetLabelFor(trace);
             generator.AddTransition(label, trace.GetLastState());
         }
     }
     
-    private TauLabel GetLabelFor(Trace trace)
+    private SoftwareLabel GetLabelFor(Trace trace)
     {
         Map<ContinuousVariable, Reset> resets = new HashMap<>();
         
@@ -88,7 +82,7 @@ public abstract class MessageTakeRule extends ActorLevelRule
                 resets.put(re.Variable(), re);
         }
         
-        return new TauLabel(new LinkedHashSet<>(resets.values()));
+        return new SoftwareLabel(new LinkedHashSet<>(resets.values()));
     }
    
 }

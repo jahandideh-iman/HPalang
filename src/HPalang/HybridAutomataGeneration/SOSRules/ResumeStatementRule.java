@@ -28,6 +28,6 @@ public class ResumeStatementRule extends StatementRule<ResumeStatement>
     {
         actorState.SetSuspended(false);
         //actorState.FindSubState(ExecutionQueueState.class).Statements().Enqueue(actorState.SuspendedStatements());
-        actorState.SuspendedStatements().Clear();
+        //actorState.SuspendedStatements().Clear();
     }
 }

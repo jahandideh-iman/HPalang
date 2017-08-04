@@ -15,7 +15,7 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.Core.Message;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
@@ -75,8 +75,8 @@ public class MessageSendRuleTest
         sateAfterMessageTo1Sent.FindActorState(actor2).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         sateAfterMessageTo1Sent.FindActorState(actor1).FindSubState(MessageQueueState.class).Messages().Enqueue(messageTo1);
         
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), stateAfterMessageTo2Sent));
+        assertTrue(generatedLTS.HasTransition(globalState.Build(), new SoftwareLabel(), stateAfterMessageTo2Sent));
+        assertTrue(generatedLTS.HasTransition(globalState.Build(), new SoftwareLabel(), stateAfterMessageTo2Sent));
     } 
     
     @Test

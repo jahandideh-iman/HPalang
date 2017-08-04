@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
@@ -53,7 +54,7 @@ public class LabeledTransitionSystemTest
     public void HasTheAddedTransition()
     {
         GlobalRunTimeState originState = new GlobalRunTimeState();
-        Label labled = new TauLabel();
+        Label labled = new SoftwareLabel();
         GlobalRunTimeState destinatioState = new GlobalRunTimeState();
         
         transitionSystem.AddState(originState);
@@ -68,7 +69,7 @@ public class LabeledTransitionSystemTest
     public void DoesNotAddDuplicateTransition()
     {
         GlobalRunTimeState originState = new GlobalRunTimeState();
-        Label labled = new TauLabel();
+        Label labled = new SoftwareLabel();
         GlobalRunTimeState destinatioState = new GlobalRunTimeState();
         
         transitionSystem.AddState(originState);

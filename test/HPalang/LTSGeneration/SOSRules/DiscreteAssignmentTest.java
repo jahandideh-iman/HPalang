@@ -14,7 +14,9 @@ import HPalang.Core.Statements.DiscreteAssignmentStatement;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import static org.hamcrest.CoreMatchers.is;
+import org.hamcrest.core.IsEqual;
 import org.junit.*;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -45,17 +47,17 @@ public class DiscreteAssignmentTest extends SOSRuleTestFixture
                 .WithActor(actor1)
                 .EnqueueStatement(new DiscreteAssignmentStatement(dVar, new ConstantDiscreteExpression(5)));
         
-        globalState
-                .AddActorRunTimeState(actor1State);
+        globalState.AddActorRunTimeState(actor1State.Build());
                 
                  
-        generatedLTS = ltsGenerator.Generate(globalState.Build());
+        generatedLTS = ltsGenerator.Generate(globalState);
         
-        GlobalRunTimeState expectedState = globalState.Build();
+        GlobalRunTimeState expectedState = globalState.DeepCopy();
         expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         expectedState.FindActorState(actor1).FindSubState(ValuationState.class).Valuation().Set(dVar, 5);
        
 
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), expectedState));
+        assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), expectedState));
+        assertThat(generatedLTS.GetStates().size(), is(IsEqual.equalTo(2)));
     }
 }

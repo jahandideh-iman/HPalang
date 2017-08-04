@@ -88,10 +88,6 @@ public class LTSToXMLConvertor
             
             actorStr += "},";
             actorStr += actorState.IsSuspended();
-            actorStr += ",SS:{";
-            for(Statement s : actorState.SuspendedStatements())
-                actorStr += s.toString() + ",";
-            actorStr += "},";
             actorStr += "),(";
 
             actorStr += "CB:{";

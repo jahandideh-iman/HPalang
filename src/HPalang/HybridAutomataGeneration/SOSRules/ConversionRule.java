@@ -12,7 +12,7 @@ import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Transition;
 
 /**
@@ -29,7 +29,7 @@ public class ConversionRule implements TransitionSOSRule
         Location destination = generator.ToLocation(transition.GetDestination());
         
         GuardedlLabel label;
-        if(transition.GetLabel() instanceof TauLabel)
+        if(transition.GetLabel() instanceof SoftwareLabel)
             label = new GuardedlLabel("true");
         else
             label = new GuardedlLabel(((GuardedlLabel)transition.GetLabel()).GetGuard());

@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import Builders.GlobalRunTimeStateBuilder;
@@ -48,7 +49,7 @@ public class LTSGeneratorTest
         GlobalRunTimeState transitionState = new GlobalRunTimeState();
         transitionState.AddActorRunTimeState(new ActorRunTimeState(new Actor("actor",0)));
         
-        SOSRuleMock rule = new SOSRuleMock(new TauLabel(),transitionState);        
+        SOSRuleMock rule = new SOSRuleMock(new SoftwareLabel(),transitionState);        
         
         ltsGenerator.AddSOSRule(rule);
 

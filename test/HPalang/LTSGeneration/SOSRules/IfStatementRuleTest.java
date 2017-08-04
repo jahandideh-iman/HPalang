@@ -9,14 +9,14 @@ import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.Core.Actor;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
-import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Statement;
-import HPalang.Core.Statements.DiscreteAssignmentStatement;
 import HPalang.Core.Statements.IfStatement;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import Mocks.EmptyStatement;
+import static org.hamcrest.CoreMatchers.is;
+import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -46,17 +46,18 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
                 .EnqueueStatement(ifStatement);
         
         globalState
-                .AddActorRunTimeState(actor1State);
+                .AddActorRunTimeState(actor1State.Build());
                 
                  
-        generatedLTS = ltsGenerator.Generate(globalState.Build());
+        generatedLTS = ltsGenerator.Generate(globalState);
         
-        GlobalRunTimeState expectedState = globalState.Build();
+        GlobalRunTimeState expectedState = globalState.DeepCopy();
         expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Push(ifStatement.TrueStatements());
        
 
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), expectedState));
+        assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), expectedState));
+        assertThat(generatedLTS.GetStates().size(), is(IsEqual.equalTo(2)));
     }
     
     @Test
@@ -72,17 +73,18 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
                 .EnqueueStatement(ifStatement);
         
         globalState
-                .AddActorRunTimeState(actor1State);
+                .AddActorRunTimeState(actor1State.Build());
                 
                  
-        generatedLTS = ltsGenerator.Generate(globalState.Build());
+        generatedLTS = ltsGenerator.Generate(globalState);
         
-        GlobalRunTimeState expectedState = globalState.Build();
+        GlobalRunTimeState expectedState = globalState.DeepCopy();
         expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Push(ifStatement.FalseStatements());
        
 
-        assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), expectedState));
+        assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), expectedState));
+        assertThat(generatedLTS.GetStates().size(), is(IsEqual.equalTo(2)));
     }
     
     private IfStatement CreateTrueIfStatement()

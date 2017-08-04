@@ -15,7 +15,7 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statement;
 import static HPalang.Core.Statement.StatementsFrom;
@@ -62,6 +62,6 @@ public class ContinuousBehaviorRuleTest
 //        nextActorState1.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
 //        nextActorState1.ContinuousBehaviors().Add(new ContinuousBehavior("inv",DefferentialEquation.Empty("eq"),"guard",StatementsFrom(new EmptyStatement())));
 //        
-//        assertTrue(generatedLTS.HasTransition(globalState.Build(), new TauLabel(), nextGlobalState1));
+//        assertTrue(generatedLTS.HasTransition(globalState.Build(), new SoftwareLabel(), nextGlobalState1));
     }
 }

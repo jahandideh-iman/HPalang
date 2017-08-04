@@ -6,15 +6,16 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
-import HPalang.LTSGeneration.Reset;
+import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ContinuousAssignmentRule extends StatementRule<ContinuousAssignmentStatement>
+public class ContinuousAssignmentRule extends PhysicalStatementRule<ContinuousAssignmentStatement>
 {
     @Override
     protected Class<ContinuousAssignmentStatement> StatementType()
@@ -23,15 +24,15 @@ public class ContinuousAssignmentRule extends StatementRule<ContinuousAssignment
     }
 
     @Override
-    protected void ApplyStatement(ActorRunTimeState actorState, ContinuousAssignmentStatement statement)
+    protected void ApplyStatement(PhysicalActorState actorState, ContinuousAssignmentStatement statement)
     {
         
     }
     
     @Override
-    protected TauLabel CreateTransitionLabel(ActorRunTimeState actorState, ContinuousAssignmentStatement statement)
+    protected SoftwareLabel CreateTransitionLabel(PhysicalActorState actorState, ContinuousAssignmentStatement statement)
     {
-        return new TauLabel(Reset.ResetsFrom(new Reset(statement.Variable(), statement.Expression())));
+        return new SoftwareLabel(Reset.ResetsFrom(new Reset(statement.Variable(), statement.Expression())));
     }
     
 }

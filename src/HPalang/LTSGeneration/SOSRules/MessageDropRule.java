@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
@@ -42,6 +42,6 @@ public class MessageDropRule extends ActorLevelRule
         
         senderState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         
-        generator.AddTransition(new TauLabel(), newGlobalState);
+        generator.AddTransition(new SoftwareLabel(), newGlobalState);
     }
 }

@@ -9,7 +9,7 @@ import HPalang.Core.Actor;
 import HPalang.Core.Message;
 import HPalang.Core.NetworkPacket;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.NetworkLabel;
+import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;

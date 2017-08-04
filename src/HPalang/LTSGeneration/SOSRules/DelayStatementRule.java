@@ -11,11 +11,11 @@ import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DefferentialEquation;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.LTSGeneration.TauLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.ResumeStatement;
 import HPalang.Core.Statement;
-import HPalang.LTSGeneration.Reset;
+import HPalang.LTSGeneration.Labels.Reset;
 
 /**
  *
@@ -41,9 +41,9 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
     }
     
     @Override
-    protected TauLabel CreateTransitionLabel(ActorRunTimeState actorState, DelayStatement statement)
+    protected SoftwareLabel CreateTransitionLabel(ActorRunTimeState actorState, DelayStatement statement)
     {
-        return new TauLabel(Reset.ResetsFrom(new Reset(actorState.GetActor().GetDelayVariable(), new ConstantContinuousExpression(0f))));
+        return new SoftwareLabel(Reset.ResetsFrom(new Reset(actorState.GetActor().GetDelayVariable(), new ConstantContinuousExpression(0f))));
     }
     
     private ContinuousBehavior CreateDelayBehavior(Actor actor,float delay, ContinuousVariable delayVar)
