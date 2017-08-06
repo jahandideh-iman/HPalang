@@ -33,7 +33,7 @@ public class SoftwareLabel extends Label<SoftwareLabel>
     @Override
     protected boolean InternalEquals(SoftwareLabel other)
     {
-        return other.GetResets().equals(this.resets);
+        return super.InternalEquals(other);
     }
 
     @Override

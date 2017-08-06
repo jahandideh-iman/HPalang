@@ -27,7 +27,7 @@ public abstract class SimpleState<T extends SimpleState> extends Equalitable<T> 
         return DataEquals(other);
     }
     
-    abstract protected boolean DataEquals(T other);
     abstract protected T NewInstance();
+    abstract protected boolean DataEquals(T other);
     abstract protected void CloneData(T copy);
 }

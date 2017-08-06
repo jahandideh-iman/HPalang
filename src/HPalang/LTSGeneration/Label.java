@@ -7,6 +7,7 @@ package HPalang.LTSGeneration;
 
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.Core.Equalitable;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -32,5 +33,12 @@ public abstract class Label<T extends Label> extends Equalitable<T>
     public Set<Reset> GetResets()
     {
         return resets;
+    }
+    
+    
+    @Override
+    protected boolean InternalEquals(T other)
+    {
+        return other.GetResets().equals(this.resets);
     }
 }

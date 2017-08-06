@@ -8,12 +8,8 @@ package HPalang.LTSGeneration.RunTimeStates;
 import HPalang.Core.Actor;
 import HPalang.LTSGeneration.CompositeStateT;
 import HPalang.Core.Statements.SendStatement;
-import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -22,9 +18,8 @@ import java.util.logging.Logger;
 public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
 {
     // TODO: Change it to map
-    private List<ActorRunTimeState> actorStates = new LinkedList<>();   
+    private final List<ActorRunTimeState> actorStates = new LinkedList<>();   
     
-
 
     public void AddActorRunTimeState(ActorRunTimeState actorRunTimeState)
     {
@@ -34,6 +29,11 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
     public ContinuousState ContinuousState()
     {
         return FindSubState(ContinuousState.class);
+    }
+    
+    public EventsState EventsState()
+    {
+        return FindSubState(EventsState.class);
     }
 
     public void AddSendStatement(SendStatement sendStatement)

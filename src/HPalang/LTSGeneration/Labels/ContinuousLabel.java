@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration.Labels;
 
 import HPalang.LTSGeneration.Label;
+import java.util.Set;
 
 /**
  *
@@ -19,11 +20,17 @@ public class ContinuousLabel extends Label<ContinuousLabel>
     {
         this.guard = guard;
     }
+        
+    public ContinuousLabel(String guard, Set<Reset> resets)
+    {
+        super(resets);
+        this.guard = guard;
+    }
     
     @Override
     protected boolean InternalEquals(ContinuousLabel other)
     {
-        return guard.equals(other.guard);
+        return super.InternalEquals(other) && guard.equals(other.guard);
     }
 
     @Override
