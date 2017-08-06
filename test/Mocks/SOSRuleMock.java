@@ -11,6 +11,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.SOSRule;
+import HPalang.LTSGeneration.StateInfo;
 
 /**
  *
@@ -28,7 +29,7 @@ public class SOSRuleMock implements SOSRule
     }
 
     @Override
-    public void TryApply(GlobalRunTimeState globalState, LTSGenerator generator)
+    public void TryApply(StateInfo stateInfo, LTSGenerator generator)
     {
         generator.AddTransition(transitonLabel, transitionState);
     }

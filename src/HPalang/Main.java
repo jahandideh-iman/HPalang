@@ -10,7 +10,7 @@ import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Convertors.LTSToXMLConvertor;
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import HPalang.Core.ProgramDefinition;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
@@ -22,7 +22,7 @@ import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.LTSUtility;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.SOSRules.TierOne.ContinuousBehaviorExpirationRule;
+import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorExpirationRule;
 import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorStatementRule;
 import HPalang.LTSGeneration.SOSRules.DelayStatementRule;
 import HPalang.LTSGeneration.SOSRules.MessageDropRule;
@@ -36,7 +36,7 @@ import HPalang.Core.Statement;
 import HPalang.LTSGeneration.SOSRules.DiscreteAssignmentRule;
 import HPalang.LTSGeneration.SOSRules.IfStatementRule;
 import HPalang.LTSGeneration.SOSRules.FIFOMessageTakeRule;
-import HPalang.HybridAutomataGeneration.SOSRules.ResumeStatementRule;
+import HPalang.LTSGeneration.SOSRules.ResumeStatementRule;
 import HPalang.LTSGeneration.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.Labels.Reset;
@@ -304,13 +304,13 @@ public class Main {
         
         hanlder_On.AddStatement(new ContinuousBehaviorStatement
         (new ContinuousBehavior("x <= 100"
-                , new DefferentialEquation(x, "-x + 100")
+                , new DifferentialEquation(x, "-x + 100")
                 , "x >= 18"
                 , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_Off))))));
 
         hanlder_Off.AddStatement(new ContinuousBehaviorStatement
         (new ContinuousBehavior("x>=50"
-                ,  new DefferentialEquation(x, "-x + 50")
+                ,  new DifferentialEquation(x, "-x + 50")
                 , "x <= 2"
                 , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_On))))));
         

@@ -5,7 +5,7 @@
  */
 package HPalang.Convertors;
 
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.HybridAutomataGeneration.Location;
 import HPalang.HybridAutomataGeneration.Transition;
@@ -72,7 +72,7 @@ public class HybridAutomatonToDMEConvertor
             invarientsStr =  invarientsStr.substring(0,lastIndex);
         
         String equationsStr = "";
-        for(DefferentialEquation equation : location.GetEquations())
+        for(DifferentialEquation equation : location.GetEquations())
             equationsStr += equation.GetVariable().Name() + "' = " + equation.GetEquation() + "&&";
         
         lastIndex = equationsStr.lastIndexOf("&&");

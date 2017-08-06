@@ -5,7 +5,7 @@
  */
 package HPalang.Statements;
 
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
@@ -23,7 +23,7 @@ public class ContinuousBehaviorStatementTest
     @Test
     public void StatementsWithEqualBehaviorsAreEqual()
     {
-        ContinuousBehavior behavior = new ContinuousBehavior("inv", DefferentialEquation.Empty("eq"), "guard", Statement.EmptyStatements());
+        ContinuousBehavior behavior = new ContinuousBehavior("inv", DifferentialEquation.Empty("eq"), "guard", Statement.EmptyStatements());
         
         ContinuousBehaviorStatement statement1 = new ContinuousBehaviorStatement(behavior);
         ContinuousBehaviorStatement statement2 = new ContinuousBehaviorStatement(behavior);

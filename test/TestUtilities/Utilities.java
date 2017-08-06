@@ -8,7 +8,7 @@ package TestUtilities;
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.Actor;
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
@@ -28,7 +28,7 @@ public class Utilities
 {
     static public ContinuousBehavior EmptyBehavior()
     {
-        return new ContinuousBehavior("", DefferentialEquation.Empty(""), "", Statement.StatementsFrom(new EmptyStatement()));
+        return new ContinuousBehavior("", DifferentialEquation.Empty(""), "", Statement.StatementsFrom(new EmptyStatement()));
     }
     
     static public ActorRunTimeState CreateActorState(String actorName)

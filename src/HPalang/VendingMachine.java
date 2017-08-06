@@ -7,7 +7,7 @@ package HPalang;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.DiscreteExpressions.ArithmeticExpression;
 import HPalang.Core.DiscreteExpressions.ComparisonExpression;
@@ -104,24 +104,24 @@ public class VendingMachine
         
         handler_Heater_HeatUp100.AddStatement(new ContinuousBehaviorStatement(
                 new ContinuousBehavior(
-                        "t<=100", new DefferentialEquation(Heater_t, "(120 - t)/20"), "t == 100"
+                        "t<=100", new DifferentialEquation(Heater_t, "(120 - t)/20"), "t == 100"
                         ,Statement.StatementsFrom(new SendStatement(Machine, new NormalMessage(hanlder_Machine_Heated)))
                 )));
         handler_Heater_HeatUp90.AddStatement(new ContinuousBehaviorStatement(
                 new ContinuousBehavior(
-                        "t<=90",  new DefferentialEquation(Heater_t, "(120 - t)/20"), "t == 90"
+                        "t<=90",  new DifferentialEquation(Heater_t, "(120 - t)/20"), "t == 90"
                         ,Statement.StatementsFrom(new SendStatement(Machine, new NormalMessage(hanlder_Machine_Heated)))
                 )));
         
         
         handler_Filler_Fill300.AddStatement(new ContinuousBehaviorStatement(
                 new ContinuousBehavior(
-                        "h<=300",  new DefferentialEquation(Filler_h, "100"), "h == 300"
+                        "h<=300",  new DifferentialEquation(Filler_h, "100"), "h == 300"
                         ,Statement.StatementsFrom(new SendStatement(Machine, new NormalMessage(hanlder_Machine_Filled)))
                 )));
         handler_Filler_Fill200.AddStatement(new ContinuousBehaviorStatement(
                 new ContinuousBehavior(
-                        "h<=200", new DefferentialEquation(Filler_h, "100"), "h == 200"
+                        "h<=200", new DifferentialEquation(Filler_h, "100"), "h == 200"
                         ,Statement.StatementsFrom(new SendStatement(Machine, new NormalMessage(hanlder_Machine_Filled)))
                 )));
 

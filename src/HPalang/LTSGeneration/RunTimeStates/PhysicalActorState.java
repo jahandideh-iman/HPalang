@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.Mode;
 import HPalang.LTSGeneration.CompositeStateT;
 import HPalang.Core.PhysicalActor;
 
@@ -15,6 +16,7 @@ import HPalang.Core.PhysicalActor;
 public class PhysicalActorState extends  CompositeStateT<PhysicalActorState>
 {
     private final PhysicalActor actor;
+    private Mode mode = Mode.None();
     
     public PhysicalActorState(PhysicalActor actor)
     {
@@ -31,22 +33,35 @@ public class PhysicalActorState extends  CompositeStateT<PhysicalActorState>
     {
         return actor;
     }
+    
+    public void SetMode(Mode mode)
+    {
+        // TODO: Check whether mode is actually a mode in the physical actor.
+        this.mode = mode;
+    }
+    
+    public Mode Mode()
+    {
+        return mode;
+    }
+
     @Override
     protected void CloneData(PhysicalActorState copy)
     {
-        
+        copy.mode = mode;
     }
 
     @Override
     protected boolean DataEquals(PhysicalActorState other)
     {
-        return this.actor.equals(other.actor);
+        return this.actor.equals(other.actor) &&
+                this.mode.equals(other.mode);
     }
 
     public ExecutionQueueState ExecutionQueueState()
     {
         return FindSubState(ExecutionQueueState.class);
-    }
+    }   
 
-    
+
 }

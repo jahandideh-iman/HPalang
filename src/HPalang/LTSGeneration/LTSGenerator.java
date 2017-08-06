@@ -40,9 +40,13 @@ public class LTSGenerator
         while (!notVisitedStates.isEmpty()) 
         { 
             currentGlobalState = notVisitedStates.poll();
-            
             for(SOSRule rule : sosRules)
-                rule.TryApply(currentGlobalState, this);
+                rule.TryApply(
+                        new StateInfo(
+                                currentGlobalState, 
+                                transitionSystem.GetInTransitionFor(currentGlobalState),
+                                transitionSystem.GetOutTransitionsFor(currentGlobalState)),
+                        this);
 //            if(transitionSystem.GetStates().size()>5000)
 //                break;
             
@@ -50,7 +54,7 @@ public class LTSGenerator
         return transitionSystem;
     }
     
-    
+      
     public void AddTransition(Label label,GlobalRunTimeState destination)
     {
         if(transitionSystem.HasState(destination) == false)

@@ -9,19 +9,19 @@ package HPalang.Core;
  *
  * @author Iman Jahandideh
  */
-public class DefferentialEquation extends Equalitable<DefferentialEquation>
+public class DifferentialEquation extends Equalitable<DifferentialEquation>
 {
     private final ContinuousVariable variable;
     private final String equation;
     
-    public DefferentialEquation(ContinuousVariable variable, String equation)
+    public DifferentialEquation(ContinuousVariable variable, String equation)
     {
         this.variable = variable;
         this.equation = equation;
     }
 
     @Override
-    protected boolean InternalEquals(DefferentialEquation other)
+    protected boolean InternalEquals(DifferentialEquation other)
     {
         return variable.equals(other.variable)
                 && equation.equals(other.equation);
@@ -43,8 +43,13 @@ public class DefferentialEquation extends Equalitable<DefferentialEquation>
         return variable;
     }
     
-    static public DefferentialEquation Empty(String eq)
+    static public DifferentialEquation Empty(String eq)
     {
-        return new DefferentialEquation(new ContinuousVariable("empty"), eq);
+        return new DifferentialEquation(new ContinuousVariable("empty"), eq);
+    }
+    
+        static public DifferentialEquation Empty()
+    {
+        return new DifferentialEquation(new ContinuousVariable("empty"), "empty");
     }
 }

@@ -5,8 +5,8 @@
  */
 package HPalang.Core;
 
-import java.util.LinkedList;
 import java.util.Queue;
+import java.util.LinkedList;
 
 
 /**
@@ -23,7 +23,7 @@ public interface Statement
     }
     static public Queue<Statement> StatementsFrom(Statement ...statements)
     {
-        Queue<Statement> queue =  new LinkedList<>();
+        Queue<Statement> queue = new LinkedList<>();
         for(Statement s : statements)
             queue.add(s);
         return queue;

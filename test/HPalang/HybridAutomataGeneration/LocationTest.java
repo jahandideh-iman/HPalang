@@ -6,7 +6,7 @@
 package HPalang.HybridAutomataGeneration;
 
 
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -25,13 +25,13 @@ public class LocationTest
         Location loc2 = new Location();
         
         
-        loc1.AddEquation(DefferentialEquation.Empty("equ1"));
-        loc1.AddEquation(DefferentialEquation.Empty("equ2"));
+        loc1.AddEquation(DifferentialEquation.Empty("equ1"));
+        loc1.AddEquation(DifferentialEquation.Empty("equ2"));
         loc1.AddInvariant("inv1");
         loc1.AddInvariant("inv2");
         
-        loc2.AddEquation(DefferentialEquation.Empty("equ2"));
-        loc2.AddEquation(DefferentialEquation.Empty("equ1"));
+        loc2.AddEquation(DifferentialEquation.Empty("equ2"));
+        loc2.AddEquation(DifferentialEquation.Empty("equ1"));
         loc2.AddInvariant("inv2");
         loc2.AddInvariant("inv1");
         

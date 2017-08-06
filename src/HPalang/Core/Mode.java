@@ -3,11 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.RunTimeStates;
+package HPalang.Core;
 
-import HPalang.Core.DifferentialEquation;
-import HPalang.Core.Equalitable;
-import HPalang.Core.Statement;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
@@ -16,14 +13,14 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class ContinuousBehavior extends Equalitable<ContinuousBehavior>
+public class Mode extends Equalitable<Mode>
 {
     private final String invariant;
     private final DifferentialEquation equation;
     private final String guard;
     private Queue<Statement> actions = new LinkedList<>();
     
-    public ContinuousBehavior(String inv, DifferentialEquation ode, String guard, Queue<Statement> actions )
+    public Mode(String inv, DifferentialEquation ode, String guard, Queue<Statement> actions )
     {
         this.invariant = inv;
         this.equation = ode;
@@ -31,12 +28,12 @@ public class ContinuousBehavior extends Equalitable<ContinuousBehavior>
         this.actions = actions;
     }
     
-    public Queue<Statement> GetActions()
+    public Queue<Statement> Actions()
     {
         return actions;
     }
     
-    public String GetGuard()
+    public String Guard()
     {
         return guard;
     }
@@ -52,20 +49,7 @@ public class ContinuousBehavior extends Equalitable<ContinuousBehavior>
     }
     
     @Override
-    public String toString()
-    {
-        String actionsStr = "{";
-        
-//        for(Statement s : actions)
-//            actionsStr+= s.toString() + ",";
-//        actionsStr += "}";
-//        return "Behavior("+invariant +"," + equation + "," + guard + "," +actionsStr+ ")";
-
-        return "B(" + invariant + ")";
-    }
-
-    @Override
-    protected boolean InternalEquals(ContinuousBehavior other)
+    protected boolean InternalEquals(Mode other)
     {
         return other.invariant.equals(this.invariant)
                 && other.equation.equals(this.equation)
@@ -81,5 +65,10 @@ public class ContinuousBehavior extends Equalitable<ContinuousBehavior>
         hash = 19 * hash + Objects.hashCode(this.equation);
         hash = 19 * hash + Objects.hashCode(this.guard);
         return hash;
+    }
+    
+    public static Mode None()
+    {
+        return new Mode("", DifferentialEquation.Empty(), "", Statement.EmptyStatements());
     }
 }

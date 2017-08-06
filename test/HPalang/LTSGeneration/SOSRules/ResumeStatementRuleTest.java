@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import HPalang.HybridAutomataGeneration.SOSRules.ResumeStatementRule;
 import org.junit.Test;
 import org.junit.Before;
 

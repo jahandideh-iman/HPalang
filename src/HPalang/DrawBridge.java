@@ -7,7 +7,7 @@ package HPalang;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.DiscreteExpressions.ArithmeticExpression;
@@ -69,10 +69,9 @@ public class DrawBridge
        
         handler_Bridge_StartLowering.AddStatement(new IfStatement(
                 new ComparisonExpression(new VariableExpression(Bridge_bridgeStatus), ComparisonExpression.Operator.Equal, new ConstantDiscreteExpression(0)),
-                Statement.StatementsFrom(
-                        new DiscreteAssignmentStatement(Bridge_bridgeStatus, new ConstantDiscreteExpression(1))
+                Statement.StatementsFrom(new DiscreteAssignmentStatement(Bridge_bridgeStatus, new ConstantDiscreteExpression(1))
                         ,new ContinuousBehaviorStatement(
-                                new ContinuousBehavior("degree>=0", new DefferentialEquation(Bridge_degree, "-10"), "degree==0",
+                                new ContinuousBehavior("degree>=0", new DifferentialEquation(Bridge_degree, "-10"), "degree==0",
                                         Statement.StatementsFrom(
                                                 new DiscreteAssignmentStatement(Bridge_bridgeStatus, new ConstantDiscreteExpression(2)),
                                                  new SendStatement(Bridge, new NormalMessage(handler_Bridge_PassACar)))))),
@@ -80,7 +79,7 @@ public class DrawBridge
 
         handler_Bridge_PassACar.AddStatement
         (new ContinuousBehaviorStatement(
-                new ContinuousBehavior("timer<=d", new DefferentialEquation(Bridge_timer, "1"), "timer==d",
+                new ContinuousBehavior("timer<=d", new DifferentialEquation(Bridge_timer, "1"), "timer==d",
                 Statement.StatementsFrom(
                         new DiscreteAssignmentStatement(Bridge_cars,new ArithmeticExpression(new VariableExpression(Bridge_cars), ArithmeticExpression.Operator.Subtract ,new ConstantDiscreteExpression(1)))
                         ,new IfStatement(
@@ -91,7 +90,7 @@ public class DrawBridge
 
         handler_Bridge_StartRaising.AddStatement(new DiscreteAssignmentStatement(Bridge_bridgeStatus, new ConstantDiscreteExpression(1)));
         handler_Bridge_StartRaising.AddStatement(new ContinuousBehaviorStatement(
-                new ContinuousBehavior("degree<=90", new DefferentialEquation(Bridge_degree, "degree/10+5"), "degree==90",
+                new ContinuousBehavior("degree<=90", new DifferentialEquation(Bridge_degree, "degree/10+5"), "degree==90",
                         Statement.StatementsFrom(new DiscreteAssignmentStatement(Bridge_bridgeStatus, new ConstantDiscreteExpression(0)),
                                 new IfStatement(
                                         new ComparisonExpression(new VariableExpression(Bridge_cars), ComparisonExpression.Operator.Greater, new ConstantDiscreteExpression(0)),

@@ -5,7 +5,7 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Objects;
@@ -18,14 +18,14 @@ import java.util.Set;
 public class Location
 {
     private final Set<String> invariants = new HashSet<>();
-    private final Set<DefferentialEquation> equations = new HashSet<>();
+    private final Set<DifferentialEquation> equations = new HashSet<>();
     
     public void AddInvariant(String invarient)
     {
         invariants.add(invarient);
     }
     
-    public void AddEquation(DefferentialEquation equation)
+    public void AddEquation(DifferentialEquation equation)
     {
         equations.add(equation);
     }
@@ -58,7 +58,7 @@ public class Location
         return Collections.unmodifiableSet(invariants);
     }
 
-    public Set<DefferentialEquation> GetEquations()
+    public Set<DifferentialEquation> GetEquations()
     {
         return Collections.unmodifiableSet(equations);
     }

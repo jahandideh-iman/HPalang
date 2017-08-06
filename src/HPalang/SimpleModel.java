@@ -8,7 +8,7 @@ package HPalang;
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
@@ -52,7 +52,7 @@ public class SimpleModel
         handler_a1.AddStatement(new ContinuousBehaviorStatement(
                         new ContinuousBehavior(
                                 "timer<=2", 
-                                new DefferentialEquation(A_timer, "1"), 
+                                new DifferentialEquation(A_timer, "1"), 
                                 "timer == 2", 
                                 Statement.StatementsFrom(new SendStatement(actorB,new NormalMessage(handler_b1))
                                         ,new ContinuousAssignmentStatement(A_timer, new ConstantContinuousExpression(0.0f))))));

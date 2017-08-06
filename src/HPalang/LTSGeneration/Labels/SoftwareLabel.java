@@ -18,6 +18,7 @@ public class SoftwareLabel extends Label<SoftwareLabel>
     {
         
     }
+    
     public SoftwareLabel(Set<Reset> resets) 
     {
         super(resets);

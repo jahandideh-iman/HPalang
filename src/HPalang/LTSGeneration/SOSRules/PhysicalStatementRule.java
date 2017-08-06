@@ -12,6 +12,7 @@ import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
+import HPalang.LTSGeneration.StateInfo;
 
 /**
  *
@@ -21,7 +22,7 @@ public abstract class PhysicalStatementRule<T extends Statement> extends Physica
 {
 
     @Override
-    protected boolean IsRuleSatisfied(PhysicalActorState actorState, GlobalRunTimeState globalState)
+    protected boolean IsRuleSatisfied(PhysicalActorState actorState, StateInfo globalStateInfo)
     {
         
         return actorState.ExecutionQueueState().Statements().IsEmpty() == false

@@ -7,7 +7,7 @@ package HPalang.Parser;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
@@ -149,7 +149,7 @@ public class ParserTest extends ParserTestBase
         Actor actorA = model.FindActor("A");
         
         ContinuousBehaviorStatement statement = GetFirstStatement(actorA.GetMessageHandler("a1"));
-        DefferentialEquation equ = statement.GetBehavior().GetEquation();
+        DifferentialEquation equ = statement.GetBehavior().GetEquation();
         
         assertThat(statement,is(notNullValue()));  
         assertThat(statement.GetBehavior().GetInvarient(), is(equalTo("true")));

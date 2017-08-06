@@ -47,7 +47,7 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
 
         ContinuousState continuousState = CreateContinuousState(pActorState);
         
-        GlobalRunTimeState globalState = new GlobalRunTimeState();
+        globalState = new GlobalRunTimeState();
         globalState.AddSubstate(continuousState);
                  
         generatedLTS = ltsGenerator.Generate(globalState);
@@ -61,22 +61,5 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
         assertTrue(generatedLTS.HasTransition(globalState, label , expectedState));
         assertThat(generatedLTS.GetStates().size(), is(IsEqual.equalTo(2)));
     }
-    
-    private PhysicalActorState CreatePhysicalState(String actorName, State substate)
-    {
-        PhysicalActorState state =  new PhysicalActorState(new PhysicalActor(actorName));
-        
-        state.AddSubstate(substate);
-        
-        return state;
-    }
-    
-    private ContinuousState CreateContinuousState(PhysicalActorState actorState)
-    {
-        ContinuousState continuousState = new ContinuousState();
-        
-        continuousState.AddPhysicalActorState(actorState);
-        
-        return continuousState;
-    }
+   
 }

@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration;
 
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import java.util.Collection;
 
 /**
  *
@@ -13,5 +14,5 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
  */
 public interface SOSRule
 {
-    public void TryApply(GlobalRunTimeState globalState, LTSGenerator generator); 
+    public void TryApply(StateInfo globalStateInfo, LTSGenerator generator); 
 }

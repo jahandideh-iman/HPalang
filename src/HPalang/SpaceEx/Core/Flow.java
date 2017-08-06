@@ -5,7 +5,7 @@
  */
 package HPalang.SpaceEx.Core;
 
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 
 /**
  *
@@ -19,7 +19,7 @@ public class Flow
         this.flow = flow;
     }
     
-    public Flow(DefferentialEquation equation)
+    public Flow(DifferentialEquation equation)
     {
         this.flow = equation.GetVariable().Name() + "' == " + equation.GetEquation();
     }

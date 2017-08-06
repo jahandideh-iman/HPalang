@@ -10,7 +10,7 @@ import HPalang.Parser.SubParsers.Expression.ExpressionHolder;
 import HPalang.Core.Actor;
 import HPalang.Core.ContinuousExpression;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DefferentialEquation;
+import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
@@ -85,7 +85,7 @@ public class MethodDefinitionParser extends SubParser<HPalangParser.Method_defCo
     { 
         ContinuousVariable var = actor.FindContinuousVariable(ctx.def_equ().first_driv().var_name().ID().getText());
         String rightSide = ctx.def_equ().expr().getText();
-        DefferentialEquation equ = new DefferentialEquation(var, rightSide);
+        DifferentialEquation equ = new DifferentialEquation(var, rightSide);
         ContinuousBehavior behavior = new ContinuousBehavior(ctx.inv_expr().getText(), equ,ctx.guard_expr().getText(), Statement.EmptyStatements());
         
         ContinuousBehaviorStatement statement = new ContinuousBehaviorStatement(behavior);

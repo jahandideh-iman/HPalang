@@ -5,8 +5,8 @@
  */
 package HPalang.Core;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *
@@ -15,9 +15,15 @@ import java.util.Map;
 public class PhysicalActor 
 {
     private final String name;
+    private final Set<Mode> modes = new HashSet<>();
 
     public PhysicalActor(String name)
     {
         this.name = name;
+    }
+    
+    public void AddMode(Mode mode)
+    {
+        modes.add(mode);
     }
 }

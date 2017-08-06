@@ -10,6 +10,9 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
+import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.Transition;
+import java.util.Collection;
 
 /**
  *
@@ -19,16 +22,16 @@ public abstract class PhysicalActorLevelRule implements SOSRule
 {
 
     @Override
-    public void TryApply(GlobalRunTimeState globalState, LTSGenerator generator)
+    public void TryApply(StateInfo globalStateInfo, LTSGenerator generator)
     {
-        for(PhysicalActorState actorState : globalState.ContinuousState().ActorStates())
+        for(PhysicalActorState actorState : globalStateInfo.State().ContinuousState().ActorStates())
         {
-            if(IsRuleSatisfied(actorState, globalState))
-                ApplyToActorState(actorState, globalState, generator);
+            if(IsRuleSatisfied(actorState, globalStateInfo))
+                ApplyToActorState(actorState, globalStateInfo.State(), generator);
         }
     }
-
-    protected abstract boolean IsRuleSatisfied(PhysicalActorState actorState, GlobalRunTimeState globalState);
+    
+    protected abstract boolean IsRuleSatisfied(PhysicalActorState actorState, StateInfo globalStateInfo);
 
     protected abstract void ApplyToActorState(PhysicalActorState actorState, GlobalRunTimeState globalState, LTSGenerator generator);
     
