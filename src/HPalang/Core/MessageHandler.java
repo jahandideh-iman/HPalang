@@ -15,14 +15,14 @@ import java.util.Queue;
 public class MessageHandler
 {
     private final Queue<Statement> statements = new LinkedList<>();
-    private Actor owner;
+    private SoftwareActor owner;
     private String id;
     
     public MessageHandler()
     {
     }
     
-    public void SetOwner(Actor owner)
+    public void SetOwner(SoftwareActor owner)
     {
         this.owner = owner;
     }

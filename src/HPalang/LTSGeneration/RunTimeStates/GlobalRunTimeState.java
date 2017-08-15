@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.CompositeStateT;
 import HPalang.Core.Statements.SendStatement;
 import java.util.LinkedList;
@@ -41,7 +41,7 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
         FindActorState(sendStatement.GetReceiver()).FindSubState(MessageQueueState.class).Messages().Enqueue(sendStatement.GetMessage());
     }
     
-    public ActorRunTimeState FindActorState(Actor actor)
+    public ActorRunTimeState FindActorState(SoftwareActor actor)
     {
         for(ActorRunTimeState state : actorStates)
             if(state.GetActor() == actor)

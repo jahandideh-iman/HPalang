@@ -8,7 +8,7 @@ package HPalang.SpaceEx.Convertor;
 import Builders.ActorBuilder;
 import Builders.ProgramDefinitionBuilder;
 import Builders.SpaceExModelBuilder;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ProgramDefinition;
 import HPalang.SpaceEx.Core.SpaceExModel;
 import jdk.nashorn.internal.objects.annotations.Setter;
@@ -45,7 +45,7 @@ public class HPalangToCompositionalSXVisitorTest
 //    @Test
 //    public void ConvertsEmptyActorCorrectly()
 //    {
-//        Actor actor = new ActorBuilder().WithID("actor").Build();
+//        SoftwareActor actor = new ActorBuilder().WithID("actor").Build();
 //        ProgramDefinition hpalangModel = new ProgramDefinitionBuilder()
 //                .With(actor)
 //                .Build();

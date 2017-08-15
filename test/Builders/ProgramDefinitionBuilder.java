@@ -5,7 +5,7 @@
  */
 package Builders;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.MainBlock;
 import HPalang.Core.ProgramDefinition;
 import java.util.LinkedList;
@@ -17,8 +17,8 @@ import java.util.List;
  */
 public class ProgramDefinitionBuilder
 {
-    private List<Actor> actors = new LinkedList<>();
-    public ProgramDefinitionBuilder With(Actor actor)
+    private List<SoftwareActor> actors = new LinkedList<>();
+    public ProgramDefinitionBuilder With(SoftwareActor actor)
     {
         actors.add(actor);
         return this;
@@ -28,7 +28,7 @@ public class ProgramDefinitionBuilder
     {
         ProgramDefinition def = new ProgramDefinition();
         
-        for(Actor actor : actors)
+        for(SoftwareActor actor : actors)
             def.AddActor(actor);
         
         return def;

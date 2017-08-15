@@ -16,12 +16,17 @@ public class PhysicalActor
 {
     private final String name;
     private final Set<Mode> modes = new HashSet<>();
+    private final Set<ContinuousVariable> variables = new HashSet<>();
 
     public PhysicalActor(String name)
     {
         this.name = name;
     }
     
+    public void AddVariable(ContinuousVariable variable)
+    {
+        variables.add(variable);
+    }
     public void AddMode(Mode mode)
     {
         modes.add(mode);

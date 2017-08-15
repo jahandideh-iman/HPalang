@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration;
 
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ProgramDefinition;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.Core.Statements.SendStatement;
@@ -21,7 +21,7 @@ public class LTSUtility
     {
         GlobalRunTimeState state = new GlobalRunTimeState();
         
-        for(Actor actor : program.GetActors())
+        for(SoftwareActor actor : program.GetActors())
             state.AddActorRunTimeState(new ActorRunTimeState(actor));
         
         for(SendStatement send : program.GetInitialSends())

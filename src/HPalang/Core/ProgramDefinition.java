@@ -16,10 +16,10 @@ import java.util.Queue;
  */
 public class ProgramDefinition
 {
-    private List<Actor> actors = new ArrayList<>();
+    private List<SoftwareActor> actors = new ArrayList<>();
     private MainBlock mainBlock;
     
-    public void AddActor(Actor actor)
+    public void AddActor(SoftwareActor actor)
     {
         actors.add(actor);
     }
@@ -29,7 +29,7 @@ public class ProgramDefinition
         this.mainBlock = mainBlock;
     }
 
-    public List<Actor> GetActors()
+    public List<SoftwareActor> GetActors()
     {
         return actors;
     }
@@ -39,9 +39,9 @@ public class ProgramDefinition
         return mainBlock.GetSendStatements();
     }
 
-    public Actor FindActor(String name)
+    public SoftwareActor FindActor(String name)
     {
-        for(Actor actor : actors)
+        for(SoftwareActor actor : actors)
             if(actor.GetName().equals(name))
                 return actor;
         return null;

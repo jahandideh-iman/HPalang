@@ -5,7 +5,7 @@
  */
 package HPalang.SpaceEx.Convertor;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ProgramDefinition;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Component;
@@ -44,7 +44,7 @@ public class HPalangToCompositionalSXConvertor
             systemComp.AddParameter(new LabelParameter(send.GetLabel(), true));
         }
 
-        for(Actor actor : def.GetActors())
+        for(SoftwareActor actor : def.GetActors())
         {
             ActorModelData actorData = hpalangModelData.GetActorData(actor);
             ActorConvertor convertor = new ActorConvertor(actorData, model);

@@ -5,7 +5,7 @@
  */
 package HPalang;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
@@ -40,7 +40,7 @@ public class DrawBridge
         ContinuousVariable Bridge_timer = new ContinuousVariable("timer");
         ContinuousVariable Bridge_degree = new ContinuousVariable("degree");
         
-        Actor Bridge = new Actor("Bridge",10); 
+        SoftwareActor Bridge = new SoftwareActor("Bridge",10); 
         Bridge.AddDiscreteVariable(Bridge_cars, 0 );
         Bridge.AddDiscreteVariable(Bridge_bridgeStatus , 0 );
         Bridge.AddContinuousVariable(Bridge_timer, 0);
@@ -56,8 +56,8 @@ public class DrawBridge
         Bridge.AddMessageHandler("StartLowering", handler_Bridge_StartLowering);
         Bridge.AddMessageHandler("StartRaising", handler_Bridge_StartRaising);
         
-        Actor CarDispatcher1 = CreateCarDispatcher("CarDispatcher1", 1.0f, Bridge, handler_Bridge_EnqueueCar);
-        Actor CarDispatcher2 = CreateCarDispatcher("CarDispatcher2", 1.0f, Bridge, handler_Bridge_EnqueueCar);
+        SoftwareActor CarDispatcher1 = CreateCarDispatcher("CarDispatcher1", 1.0f, Bridge, handler_Bridge_EnqueueCar);
+        SoftwareActor CarDispatcher2 = CreateCarDispatcher("CarDispatcher2", 1.0f, Bridge, handler_Bridge_EnqueueCar);
         
 
         handler_Bridge_EnqueueCar.AddStatement(new DiscreteAssignmentStatement(Bridge_cars , 
@@ -112,9 +112,9 @@ public class DrawBridge
         return definition;
     }
     
-    private Actor CreateCarDispatcher(String id, float delay, Actor bridge, MessageHandler handler_Bridge_EnqueueCar)
+    private SoftwareActor CreateCarDispatcher(String id, float delay, SoftwareActor bridge, MessageHandler handler_Bridge_EnqueueCar)
     {
-        Actor CarDispatcher = new Actor(id,1);
+        SoftwareActor CarDispatcher = new SoftwareActor(id,1);
         DiscreteVariable totalCars = new DiscreteVariable("totalCars");
         
         CarDispatcher.AddDiscreteVariable(totalCars,2 );

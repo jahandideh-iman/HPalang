@@ -7,7 +7,7 @@ package TestUtilities;
 
 import Builders.ActorRunTimeStateBuilder;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.DifferentialEquation;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
@@ -34,7 +34,7 @@ public class Utilities
     static public ActorRunTimeState CreateActorState(String actorName)
     {
         ActorRunTimeStateBuilder builder = new ActorRunTimeStateBuilder().
-                WithActor(new Actor(actorName, 0));
+                WithActor(new SoftwareActor(actorName, 0));
         
         return builder.Build();
     }
@@ -55,8 +55,8 @@ public class Utilities
         return state;
     }
     
-    public static Actor NewActor(String actorName)
+    public static SoftwareActor NewActor(String actorName)
     {
-        return new Actor(actorName, 0);
+        return new SoftwareActor(actorName, 0);
     }
 }

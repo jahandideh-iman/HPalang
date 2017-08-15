@@ -5,7 +5,7 @@
  */
 package Builders;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
@@ -23,7 +23,7 @@ import HPalang.Utilities.Queue;
  */
 public class ActorRunTimeStateBuilder
 {
-    private Actor actor;
+    private SoftwareActor actor;
     
     private boolean isSuspended = false;
     
@@ -32,7 +32,7 @@ public class ActorRunTimeStateBuilder
     
     private final Queue<Statement> statements = new Queue<>();
 
-    public ActorRunTimeStateBuilder WithActor(Actor actor)
+    public ActorRunTimeStateBuilder WithActor(SoftwareActor actor)
     {
         this.actor = actor;
         return this;

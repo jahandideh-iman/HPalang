@@ -5,7 +5,7 @@
  */
 package HPalang;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteVariable;
@@ -31,14 +31,14 @@ import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
  */
 public class VendingMachine
 {
-        public ProgramDefinition Create()
+    public ProgramDefinition Create()
     {
         ProgramDefinition definition = new ProgramDefinition();
                 
-        Actor User = new Actor("User", 10);
-        Actor Machine = new Actor("Machine", 10);
-        Actor Heater = new Actor("Heater", 10);
-        Actor Filler = new Actor("Filler", 10);
+        SoftwareActor User = new SoftwareActor("User", 10);
+        SoftwareActor Machine = new SoftwareActor("Machine", 10);
+        SoftwareActor Heater = new SoftwareActor("Heater", 10);
+        SoftwareActor Filler = new SoftwareActor("Filler", 10);
         
         ContinuousVariable Heater_t = new ContinuousVariable("t");
         ContinuousVariable Filler_h = new ContinuousVariable("h");

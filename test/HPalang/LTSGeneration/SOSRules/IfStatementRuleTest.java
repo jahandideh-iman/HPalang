@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.IfStatement;
@@ -36,7 +36,7 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
     @Test
     public void IfEvaluationIsTrueThenAddTrueStatementsToHeadOfStatementQueue()
     {
-        Actor actor1 = new ActorBuilder()
+        SoftwareActor actor1 = new ActorBuilder()
                 .WithID("actor1")
                 .Build();
        
@@ -63,7 +63,7 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
     @Test
     public void IfEvaluationIsFalseThenAddFalseStatementsToHeadOfStatementQueue()
     {
-        Actor actor1 = new ActorBuilder()
+        SoftwareActor actor1 = new ActorBuilder()
                 .WithID("actor1")
                 .Build();
        

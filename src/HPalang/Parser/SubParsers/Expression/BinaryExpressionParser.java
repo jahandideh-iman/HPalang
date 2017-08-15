@@ -5,7 +5,7 @@
  */
 package HPalang.Parser.SubParsers.Expression;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperator;
@@ -24,7 +24,7 @@ public class BinaryExpressionParser<T extends RuleContext> extends ExpressionPar
     List<ExpressionHolder> expressionHolders = new LinkedList<>();
     List<BinaryOperator> operators = new LinkedList<>();
 
-    public BinaryExpressionParser(ProgramDefinition model, T ctx, ExpressionHolder holder, Actor actor)
+    public BinaryExpressionParser(ProgramDefinition model, T ctx, ExpressionHolder holder, SoftwareActor actor)
     {
         super(model, ctx, holder, actor);
     }

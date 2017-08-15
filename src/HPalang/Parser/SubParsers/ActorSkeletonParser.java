@@ -5,7 +5,7 @@
  */
 package HPalang.Parser.SubParsers;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
@@ -20,12 +20,12 @@ import HPalang.Parser.antlr.HPalangParser;
  */
 public class ActorSkeletonParser extends SubParser<HPalangParser.ActorContext>
 {
-    private final Actor actor;
+    private final SoftwareActor actor;
 
     public ActorSkeletonParser(ProgramDefinition model, HPalangParser.ActorContext ctx)
     {
         super(model, ctx);
-        actor = new Actor(ctx.ID().getText(), 5);
+        actor = new SoftwareActor(ctx.ID().getText(), 5);
     }
 
     @Override

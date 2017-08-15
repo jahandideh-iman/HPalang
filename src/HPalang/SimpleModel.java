@@ -5,7 +5,7 @@
  */
 package HPalang;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
@@ -30,8 +30,8 @@ public class SimpleModel
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor actorA = new Actor("A",1);        
-        Actor actorB = new Actor("B",1);
+        SoftwareActor actorA = new SoftwareActor("A",1);        
+        SoftwareActor actorB = new SoftwareActor("B",1);
         
         ContinuousVariable A_timer = new ContinuousVariable("timer");
         actorA.AddContinuousVariable(A_timer, 0);

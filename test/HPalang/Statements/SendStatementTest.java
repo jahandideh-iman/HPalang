@@ -6,7 +6,7 @@
 package HPalang.Statements;
 
 import HPalang.Core.Statements.SendStatement;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import Mocks.EmptyMessage;
 import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Test;
@@ -22,7 +22,7 @@ public class SendStatementTest
     @Test
     public void  StatementsWithSameRecieverAndEqualMessagesAreEqual()
     {
-        Actor actor = new Actor("Actor", 0);
+        SoftwareActor actor = new SoftwareActor("Actor", 0);
         
         SendStatement statement1 = new SendStatement(actor, new EmptyMessage());
         SendStatement statement2 = new SendStatement(actor, new EmptyMessage());

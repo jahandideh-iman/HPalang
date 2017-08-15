@@ -5,7 +5,7 @@
  */
 package HPalang.SpaceEx.Convertor;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
@@ -45,9 +45,9 @@ public class ActorModelData
     
     private Map<SendStatement, CommunicationLabel> sendLabelsMap = new HashMap<>();
 
-    private Actor actor;
+    private SoftwareActor actor;
 
-    public ActorModelData(Actor actor)
+    public ActorModelData(SoftwareActor actor)
     {
         this.actor = actor;
         for (MessageHandler handler : actor.GetMessageHandlers()) 
@@ -59,7 +59,7 @@ public class ActorModelData
         }
     }
     
-    public Actor GetActor()
+    public SoftwareActor GetActor()
     {
         return actor;
     }
@@ -74,7 +74,7 @@ public class ActorModelData
         return "urg";
     }
 
-    public void AddReceiveHandler(String handler, Actor sender, ContinuousBehavior ownerCB)
+    public void AddReceiveHandler(String handler, SoftwareActor sender, ContinuousBehavior ownerCB)
     {    
         CommunicationLabel label = CreateReceiveLabel(handler, sender,ownerCB);
         receiveLabels.add(label);
@@ -101,7 +101,7 @@ public class ActorModelData
         return handlerTakeLabels;
     }
     
-    void AddSendLabel(SendStatement stat, String handler, Actor receiver,ContinuousBehavior ownerCB)
+    void AddSendLabel(SendStatement stat, String handler, SoftwareActor receiver,ContinuousBehavior ownerCB)
     {
         CommunicationLabel label = CreateSendLabel(handler, receiver, ownerCB);
         sendLabels.add(label);
@@ -239,7 +239,7 @@ public class ActorModelData
         return null;
     }
     
-    public CommunicationLabel CreateSendLabel(String handler, Actor receiver, ContinuousBehavior ownerCB)
+    public CommunicationLabel CreateSendLabel(String handler, SoftwareActor receiver, ContinuousBehavior ownerCB)
     {
         String actorName;
         boolean isSelf = false;
@@ -257,7 +257,7 @@ public class ActorModelData
         return new CommunicationLabel("Send_" + actorName + "_" + handler, handler, isSelf);
     }
     
-    public CommunicationLabel CreateReceiveLabel(String handler, Actor sender,ContinuousBehavior ownerCB)
+    public CommunicationLabel CreateReceiveLabel(String handler, SoftwareActor sender,ContinuousBehavior ownerCB)
     {
         String actorName;
         boolean isSelf = false;

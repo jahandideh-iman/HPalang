@@ -5,7 +5,7 @@
  */
 package HPalang;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
@@ -26,8 +26,8 @@ public class ConcurrentDelays
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor actorA = new Actor("A",1);        
-        Actor actorB = new Actor("B",1);
+        SoftwareActor actorA = new SoftwareActor("A",1);        
+        SoftwareActor actorB = new SoftwareActor("B",1);
         
         MessageHandler handler_a1 = new MessageHandler();        
         MessageHandler handler_b1 = new MessageHandler();

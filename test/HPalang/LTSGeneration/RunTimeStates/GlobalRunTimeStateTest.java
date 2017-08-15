@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import TestUtilities.Utilities;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -41,8 +41,8 @@ public class GlobalRunTimeStateTest
         
         GlobalRunTimeState copy = (GlobalRunTimeState)orignal.DeepCopy();
         
-        Actor actor1 = orignal.GetActorStates().get(0).GetActor();
-        Actor actor2 = orignal.GetActorStates().get(1).GetActor();
+        SoftwareActor actor1 = orignal.GetActorStates().get(0).GetActor();
+        SoftwareActor actor2 = orignal.GetActorStates().get(1).GetActor();
         
         assertThat(copy.FindActorState(actor1),not(sameInstance(orignal.FindActorState(actor1))));
         assertThat(copy.FindActorState(actor1),equalTo(orignal.FindActorState(actor1)));

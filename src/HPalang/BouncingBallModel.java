@@ -5,7 +5,7 @@
  */
 package HPalang;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.MainBlock;
@@ -27,7 +27,7 @@ public class BouncingBallModel
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor ball = new Actor("Ball",1);
+        SoftwareActor ball = new SoftwareActor("Ball",1);
         ContinuousVariable ball_y = new ContinuousVariable("y");
         
         ball.AddContinuousVariable(ball_y, 0);

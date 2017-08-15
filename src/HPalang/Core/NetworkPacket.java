@@ -11,18 +11,18 @@ package HPalang.Core;
  */
 public class NetworkPacket extends Equalitable<NetworkPacket>
 {
-    private final Actor sender;
+    private final SoftwareActor sender;
     private final Message message;
-    private final Actor receiver;
+    private final SoftwareActor receiver;
     
-    public NetworkPacket(Actor sender, Message message, Actor receiver)
+    public NetworkPacket(SoftwareActor sender, Message message, SoftwareActor receiver)
     {
         this.sender = sender;
         this.message = message;
         this.receiver = receiver;
     }
     
-    public Actor Receiver()
+    public SoftwareActor Receiver()
     {
         return receiver;
     }

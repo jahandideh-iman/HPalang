@@ -5,7 +5,7 @@
  */
 package HPalang.Parser.SubParsers;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.MainBlock;
 import HPalang.Core.ProgramDefinition;
 import HPalang.Parser.SubParser;

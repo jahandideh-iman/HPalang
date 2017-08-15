@@ -8,7 +8,7 @@ package HPalang;
 import HPalang.Convertors.HybridAutomatonToDMEConvertor;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Convertors.LTSToXMLConvertor;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.ProgramDefinition;
@@ -230,8 +230,8 @@ public class Main {
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor actorA = new Actor("A",2);        
-        Actor actorB = new Actor("B",2);
+        SoftwareActor actorA = new SoftwareActor("A",2);        
+        SoftwareActor actorB = new SoftwareActor("B",2);
         
         MessageHandler hanlder_a1 = new MessageHandler();        
         MessageHandler hanlder_b1 = new MessageHandler();
@@ -260,8 +260,8 @@ public class Main {
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor actorA = new Actor("A",1);        
-        Actor actorB = new Actor("B",1);
+        SoftwareActor actorA = new SoftwareActor("A",1);        
+        SoftwareActor actorB = new SoftwareActor("B",1);
         
         MessageHandler hanlder_a1 = new MessageHandler();        
         MessageHandler hanlder_b1 = new MessageHandler();
@@ -291,7 +291,7 @@ public class Main {
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor actorThermostat = new Actor("Thermostat",1);   
+        SoftwareActor actorThermostat = new SoftwareActor("Thermostat",1);   
         
         ContinuousVariable x = new ContinuousVariable("x");
         
@@ -327,8 +327,8 @@ public class Main {
     {
         ProgramDefinition definition = new ProgramDefinition();
         
-        Actor actorA = new Actor("A",1);        
-        Actor actorB = new Actor("B",1);
+        SoftwareActor actorA = new SoftwareActor("A",1);        
+        SoftwareActor actorB = new SoftwareActor("B",1);
         
         MessageHandler handler_a1 = new MessageHandler();        
         MessageHandler handler_b1 = new MessageHandler();

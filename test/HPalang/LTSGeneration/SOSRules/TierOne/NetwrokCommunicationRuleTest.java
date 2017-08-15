@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.SOSRules.TierOne;
 
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
 import HPalang.Core.NetworkPacket;
 import HPalang.LTSGeneration.LTSGenerator;
@@ -43,8 +43,8 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
    public void SendsHighestPriorityMessageWhenIsNotIdleAndThereIsNoSoftwareTransition()
    {
        NetworkState networkState = new NetworkState();
-       Actor receiver = Utilities.NewActor("receiver");
-       Actor sender = Utilities.NewActor("sender");
+       SoftwareActor receiver = Utilities.NewActor("receiver");
+       SoftwareActor sender = Utilities.NewActor("sender");
        
        ActorRunTimeStateBuilder receiverState = new ActorRunTimeStateBuilder()
                .WithActor(receiver);

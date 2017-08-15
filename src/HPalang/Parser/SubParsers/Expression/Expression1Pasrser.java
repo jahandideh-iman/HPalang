@@ -5,7 +5,7 @@
  */
 package HPalang.Parser.SubParsers.Expression;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
@@ -22,7 +22,7 @@ import HPalang.Parser.antlr.HPalangParser;
 public class Expression1Pasrser extends ExpressionParserT<HPalangParser.Expr1Context>
 {
 
-    public Expression1Pasrser(ProgramDefinition model, HPalangParser.Expr1Context ctx, ExpressionHolder holder, Actor actor)
+    public Expression1Pasrser(ProgramDefinition model, HPalangParser.Expr1Context ctx, ExpressionHolder holder, SoftwareActor actor)
     {
         super(model, ctx, holder, actor);
     }

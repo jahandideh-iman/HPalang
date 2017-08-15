@@ -6,7 +6,7 @@
 package HPalang.Core.Statements;
 
 import HPalang.Core.Statement;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Message;
 
@@ -16,16 +16,22 @@ import HPalang.Core.Message;
  */
 public class SendStatement extends AbstractStatement<SendStatement>
 {
-    private final Actor receiver;
+    private final SoftwareActor receiver;
     private final Message message;
     
-    public SendStatement(Actor receiver, Message message)
+    public interface Receiver
+    {
+        SoftwareActor GetActor();
+    }
+            
+    
+    public SendStatement(SoftwareActor receiver, Message message)
     {
         this.receiver = receiver;
         this.message = message;
     }
     
-    public Actor GetReceiver()
+    public SoftwareActor GetReceiver()
     {
         return receiver;
     }

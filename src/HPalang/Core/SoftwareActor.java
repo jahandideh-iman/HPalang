@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author Iman Jahandideh
  */
-public class Actor
+public class SoftwareActor 
 {
     private final String name;
     private final int capacity;
@@ -23,10 +23,22 @@ public class Actor
     private final Map<ContinuousVariable, Float> continuousVariables = new HashMap<>();
     
     private ContinuousVariable delayVariable;
-
-    public Actor(String name, int capacity)
+    
+    private final SoftwareActorType type;
+    
+    
+    public SoftwareActor(String name, int capacity)
     {
         this.name = name;
+        this.capacity = capacity;
+        delayVariable = new ContinuousVariable(name+"_delay");
+        this.type = null;
+    }
+
+    public SoftwareActor(String name, SoftwareActorType type , int capacity)
+    {
+        this.name = name;
+        this.type = type;
         this.capacity = capacity;
         delayVariable = new ContinuousVariable(name+"_delay");
     }
@@ -114,5 +126,10 @@ public class Actor
     public boolean HasContinuousVariable(String name)
     {
         return FindContinuousVariable(name) != null;
+    }
+
+    public SoftwareActorType Type()
+    {
+        return type;
     }
 }

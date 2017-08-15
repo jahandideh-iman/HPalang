@@ -5,7 +5,7 @@
  */
 package HPalang.SpaceEx.Convertor;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.ProgramDefinition;
 import HPalang.Core.Statement;
@@ -25,7 +25,7 @@ import java.util.Set;
 public class HPalangModelData
 {
     
-    private Map<Actor, ActorModelData> actorsData = new HashMap<>();
+    private Map<SoftwareActor, ActorModelData> actorsData = new HashMap<>();
     private Set<CommunicationLabel> globalSendLabels = new HashSet<>();
     
     private Map<CommunicationLabel, CommunicationLabel> receiveToSendMap = new HashMap<>();
@@ -33,20 +33,20 @@ public class HPalangModelData
     
     public HPalangModelData(ProgramDefinition hpalangModel)
     {
-        for(Actor actor : hpalangModel.GetActors())
+        for(SoftwareActor actor : hpalangModel.GetActors())
         {
             ActorModelData actorData = new ActorModelData(actor);
             actorsData.put(actor,actorData);
         }
         
-        for(Actor actor : hpalangModel.GetActors())
+        for(SoftwareActor actor : hpalangModel.GetActors())
             for(MessageHandler handler : actor.GetMessageHandlers())
                 ProcessStatements(handler.GetBody(), actor, null);
                 
         
     }
     
-    private void ProcessStatements(Collection<Statement> statements, Actor actor, ContinuousBehavior ownerCB )
+    private void ProcessStatements(Collection<Statement> statements, SoftwareActor actor, ContinuousBehavior ownerCB )
     {
         for (Statement stat :statements) {
             if (stat instanceof SendStatement) {
@@ -71,7 +71,7 @@ public class HPalangModelData
         }
     }
     
-    public final ActorModelData GetActorData(Actor actor)
+    public final ActorModelData GetActorData(SoftwareActor actor)
     {
         return actorsData.get(actor);
     }

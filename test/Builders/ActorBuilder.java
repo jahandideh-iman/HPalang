@@ -5,7 +5,7 @@
  */
 package Builders;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
 import java.security.KeyPair;
@@ -50,9 +50,9 @@ public class ActorBuilder
         return this;
     }
     
-    public Actor Build()
+    public SoftwareActor Build()
     {
-        Actor actor = new Actor(id, capacity);
+        SoftwareActor actor = new SoftwareActor(id, capacity);
         for(Map.Entry<String,MessageHandler> entry :messageHandlers.entrySet())
             actor.AddMessageHandler(entry.getKey(), entry.getValue());
         

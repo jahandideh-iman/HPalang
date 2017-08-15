@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.PhysicalActor;
 import HPalang.LTSGeneration.CompositeStateT;
 import HPalang.LTSGeneration.State;

@@ -21,7 +21,7 @@ public class ModeBuilder
     
     public Mode Build()
     {
-        return new Mode(inv, DifferentialEquation.Empty(), "guard", StatementsFrom(new EmptyStatement()));
+        return new Mode(inv, Mode.EquationsFrom(DifferentialEquation.Empty()), "guard", StatementsFrom(new EmptyStatement()));
     }
 
     public ModeBuilder WithInvarient(String inv)

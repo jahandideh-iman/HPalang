@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
@@ -38,7 +38,7 @@ public class DiscreteAssignmentTest extends SOSRuleTestFixture
     public void ForEachActorStateIfNextStatementIsDiscreteAssignementThenAssignsTheNewValue()
     {
         DiscreteVariable dVar = new DiscreteVariable("dVar");
-        Actor actor1 = new ActorBuilder()
+        SoftwareActor actor1 = new ActorBuilder()
                 .WithID("actor1")
                 .WithDiscreteVariable(dVar)
                 .Build();

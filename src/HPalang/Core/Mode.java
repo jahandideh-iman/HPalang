@@ -5,9 +5,11 @@
  */
 package HPalang.Core;
 
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Objects;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  *
@@ -16,14 +18,14 @@ import java.util.Queue;
 public class Mode extends Equalitable<Mode>
 {
     private final String invariant;
-    private final DifferentialEquation equation;
+    private final Set<DifferentialEquation> equations;
     private final String guard;
     private Queue<Statement> actions = new LinkedList<>();
     
-    public Mode(String inv, DifferentialEquation ode, String guard, Queue<Statement> actions )
+    public Mode(String inv, Set<DifferentialEquation> odes, String guard, Queue<Statement> actions )
     {
         this.invariant = inv;
-        this.equation = ode;
+        this.equations = odes;
         this.guard = guard;
         this.actions = actions;
     }
@@ -38,9 +40,9 @@ public class Mode extends Equalitable<Mode>
         return guard;
     }
     
-    public DifferentialEquation GetEquation()
+    public Set<DifferentialEquation> GetEquations()
     {
-        return equation;
+        return equations;
     }
 
     public String GetInvarient()
@@ -52,7 +54,7 @@ public class Mode extends Equalitable<Mode>
     protected boolean InternalEquals(Mode other)
     {
         return other.invariant.equals(this.invariant)
-                && other.equation.equals(this.equation)
+                && other.equations.equals(this.equations)
                 && other.guard.equals(this.guard)
                 && other.actions.equals(this.actions);
     }
@@ -62,13 +64,21 @@ public class Mode extends Equalitable<Mode>
     {
         int hash = 7;
         hash = 19 * hash + Objects.hashCode(this.invariant);
-        hash = 19 * hash + Objects.hashCode(this.equation);
+        hash = 19 * hash + Objects.hashCode(this.equations);
         hash = 19 * hash + Objects.hashCode(this.guard);
         return hash;
     }
     
     public static Mode None()
     {
-        return new Mode("", DifferentialEquation.Empty(), "", Statement.EmptyStatements());
+        return new Mode("", EquationsFrom(DifferentialEquation.Empty()), "", Statement.EmptyStatements());
+    }
+    
+    static public Set<DifferentialEquation> EquationsFrom(DifferentialEquation ...equations)
+    {
+        Set<DifferentialEquation> odes = new HashSet<>();
+        for(DifferentialEquation e : equations)
+            odes.add(e);
+        return odes;
     }
 }

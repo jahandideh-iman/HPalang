@@ -8,7 +8,7 @@ package HPalang.LTSGeneration;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import Mocks.SOSRuleMock;
 import Mocks.SOSRuleMonitor;
 import static org.hamcrest.CoreMatchers.*;
@@ -46,7 +46,7 @@ public class LTSGeneratorTest
         GlobalRunTimeState initialState = new GlobalRunTimeState();
         
         GlobalRunTimeState transitionState = new GlobalRunTimeState();
-        transitionState.AddActorRunTimeState(new ActorRunTimeState(new Actor("actor",0)));
+        transitionState.AddActorRunTimeState(new ActorRunTimeState(new SoftwareActor("actor",0)));
         
         SOSRuleMock rule = new SOSRuleMock(new SoftwareLabel(),transitionState);        
         

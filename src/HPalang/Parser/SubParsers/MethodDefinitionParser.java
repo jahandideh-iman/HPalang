@@ -7,7 +7,7 @@ package HPalang.Parser.SubParsers;
 
 import HPalang.Parser.SubParsers.Expression.ExpressionParser;
 import HPalang.Parser.SubParsers.Expression.ExpressionHolder;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
@@ -33,12 +33,12 @@ import HPalang.Parser.antlr.HPalangParser;
 public class MethodDefinitionParser extends SubParser<HPalangParser.Method_defContext>
 {
     private final MessageHandler handler;
-    private final Actor actor;
+    private final SoftwareActor actor;
     
     public MethodDefinitionParser(
             ProgramDefinition model,
             HPalangParser.Method_defContext ctx,
-            Actor actor,
+            SoftwareActor actor,
             MessageHandler handler)
     {
         super(model, ctx);
@@ -49,7 +49,7 @@ public class MethodDefinitionParser extends SubParser<HPalangParser.Method_defCo
     @Override
     public void enterSend(HPalangParser.SendContext ctx)
     {
-        Actor destination = model.FindActor(ctx.destination().getText()); 
+        SoftwareActor destination = model.FindActor(ctx.destination().getText()); 
         MessageHandler message = destination.GetMessageHandler(ctx.message().getText());
         
         SendStatement send = new SendStatement(destination, new NormalMessage(message));

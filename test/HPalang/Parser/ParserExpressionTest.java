@@ -5,7 +5,7 @@
  */
 package HPalang.Parser;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.ArithmeticExpression;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
@@ -42,7 +42,7 @@ public class ParserExpressionTest extends ParserTestBase
     {
         input = CreateInput("true && false || false");
 
-        Actor a = new Actor("actor", 0);
+        SoftwareActor a = new SoftwareActor("actor", 0);
         ExpressionHolder holder = new ExpressionHolder();
 
         new ExpressionParser(
@@ -61,7 +61,7 @@ public class ParserExpressionTest extends ParserTestBase
     {
         input = CreateInput("1 < 2 && 3 <= 4 && 5==6 && 7>=8 && 9>10 ");
 
-        Actor a = new Actor("actor", 0);
+        SoftwareActor a = new SoftwareActor("actor", 0);
         ExpressionHolder holder = new ExpressionHolder();
 
         new ExpressionParser(
@@ -89,7 +89,7 @@ public class ParserExpressionTest extends ParserTestBase
     {
         input = CreateInput("true && (false || false)");
 
-        Actor a = new Actor("actor", 0);
+        SoftwareActor a = new SoftwareActor("actor", 0);
         ExpressionHolder holder = new ExpressionHolder();
 
         new ExpressionParser(
@@ -110,7 +110,7 @@ public class ParserExpressionTest extends ParserTestBase
     {
         input = CreateInput("1 + 2 - 3 ");
         
-        Actor a = new Actor("actor", 0);
+        SoftwareActor a = new SoftwareActor("actor", 0);
         ExpressionHolder holder = new ExpressionHolder();
 
         new ExpressionParser(

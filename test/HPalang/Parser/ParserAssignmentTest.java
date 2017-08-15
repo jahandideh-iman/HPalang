@@ -5,7 +5,7 @@
  */
 package HPalang.Parser;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.Expression;
@@ -38,7 +38,7 @@ public class ParserAssignmentTest extends ParserTestBase
         
         model = parser.ParseModel(input);
         
-        Actor actorA = model.FindActor("A");
+        SoftwareActor actorA = model.FindActor("A");
         MessageHandler handler =actorA.GetMessageHandler("a1"); 
         
         DiscreteAssignmentStatement assignment = GetStatement(0,handler);
@@ -63,7 +63,7 @@ public class ParserAssignmentTest extends ParserTestBase
         
         model = parser.ParseModel(input);
         
-        Actor actorA = model.FindActor("A");
+        SoftwareActor actorA = model.FindActor("A");
         MessageHandler handler = actorA.GetMessageHandler("a1"); 
         
         ContinuousAssignmentStatement assignment = GetStatement(0,handler);

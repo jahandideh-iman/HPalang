@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
@@ -46,7 +46,7 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
         return new SoftwareLabel(Reset.ResetsFrom(new Reset(actorState.GetActor().GetDelayVariable(), new ConstantContinuousExpression(0f))));
     }
     
-    private ContinuousBehavior CreateDelayBehavior(Actor actor,float delay, ContinuousVariable delayVar)
+    private ContinuousBehavior CreateDelayBehavior(SoftwareActor actor,float delay, ContinuousVariable delayVar)
     {
         DifferentialEquation equation = new DifferentialEquation(delayVar, "1");
         return new ContinuousBehavior(delayVar+"<="+delay,equation,delayVar+"=="+delay,Statement.StatementsFrom(new ResumeStatement()));

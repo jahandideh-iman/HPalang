@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
 import HPalang.Core.NetworkPacket;
 import HPalang.LTSGeneration.LTSGenerator;

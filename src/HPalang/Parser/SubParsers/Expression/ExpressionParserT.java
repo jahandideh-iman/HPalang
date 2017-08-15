@@ -5,7 +5,7 @@
  */
 package HPalang.Parser.SubParsers.Expression;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.Expression;
 import HPalang.Core.ProgramDefinition;
 import HPalang.Parser.SingleLevelParseTreeWalker;
@@ -22,10 +22,10 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 public abstract class ExpressionParserT<T extends RuleContext> extends SubParser<T>
 {
     protected final ExpressionHolder holder;
-    protected final Actor actor;
+    protected final SoftwareActor actor;
     protected Expression parsedExpression;
     
-    public ExpressionParserT(ProgramDefinition model, T ctx, ExpressionHolder holder, Actor actor)
+    public ExpressionParserT(ProgramDefinition model, T ctx, ExpressionHolder holder, SoftwareActor actor)
     {
         super(model, ctx);
         this.holder = holder;

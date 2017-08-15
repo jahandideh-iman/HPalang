@@ -48,7 +48,7 @@ public class DifferentialEquation extends Equalitable<DifferentialEquation>
         return new DifferentialEquation(new ContinuousVariable("empty"), eq);
     }
     
-        static public DifferentialEquation Empty()
+    static public DifferentialEquation Empty()
     {
         return new DifferentialEquation(new ContinuousVariable("empty"), "empty");
     }

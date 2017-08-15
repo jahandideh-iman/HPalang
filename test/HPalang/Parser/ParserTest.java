@@ -5,7 +5,7 @@
  */
 package HPalang.Parser;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.Messages.NormalMessage;
@@ -52,7 +52,7 @@ public class ParserTest extends ParserTestBase
         
         model = parser.ParseModel(input);
         
-        Actor actor = model.FindActor("A");
+        SoftwareActor actor = model.FindActor("A");
         
         assertThat(actor.HasDiscreteVariable("dVar1"),is(true));  
         assertThat(actor.HasDiscreteVariable("dVar2"),is(true)); 
@@ -73,7 +73,7 @@ public class ParserTest extends ParserTestBase
         
         model = parser.ParseModel(input);
         
-        Actor actor = model.FindActor("A");
+        SoftwareActor actor = model.FindActor("A");
         
         assertThat(actor.GetMessageHandler("handler1"),is(notNullValue()));  
         assertThat(actor.GetMessageHandler("handler2"),is(notNullValue())); 
@@ -95,8 +95,8 @@ public class ParserTest extends ParserTestBase
         
         model = parser.ParseModel(input);
         
-        Actor actorA = model.FindActor("A");
-        Actor actorB = model.FindActor("B");
+        SoftwareActor actorA = model.FindActor("A");
+        SoftwareActor actorB = model.FindActor("B");
         
         SendStatement sendStat = GetFirstStatement(actorA.GetMessageHandler("a1"));
         NormalMessage message = (NormalMessage)sendStat.GetMessage();
@@ -119,7 +119,7 @@ public class ParserTest extends ParserTestBase
         
         model = parser.ParseModel(input);
         
-        Actor actorA = model.FindActor("A");
+        SoftwareActor actorA = model.FindActor("A");
         
         ContinuousAssignmentStatement assignment = GetFirstStatement(actorA.GetMessageHandler("a1"));
         ConstantContinuousExpression constExpr = (ConstantContinuousExpression) assignment.Expression();
@@ -146,7 +146,7 @@ public class ParserTest extends ParserTestBase
         
         model = parser.ParseModel(input);
         
-        Actor actorA = model.FindActor("A");
+        SoftwareActor actorA = model.FindActor("A");
         
         ContinuousBehaviorStatement statement = GetFirstStatement(actorA.GetMessageHandler("a1"));
         DifferentialEquation equ = statement.GetBehavior().GetEquation();
@@ -175,7 +175,7 @@ public class ParserTest extends ParserTestBase
         
         model = parser.ParseModel(input);
         
-        Actor actorA = model.FindActor("A");
+        SoftwareActor actorA = model.FindActor("A");
         
         ContinuousBehaviorStatement statement = GetFirstStatement(actorA.GetMessageHandler("a1"));
           

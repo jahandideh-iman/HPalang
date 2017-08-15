@@ -21,9 +21,9 @@ public class NetworkPacketTest
     @Test
     public void PacketsWithEqualDataAreEqual()
     {
-        Actor sender = Utilities.NewActor("sender");
+        SoftwareActor sender = Utilities.NewActor("sender");
         Message message = new EmptyMessage("Message");
-        Actor receiver = Utilities.NewActor("receiver");
+        SoftwareActor receiver = Utilities.NewActor("receiver");
         
         NetworkPacket packet = new NetworkPacket(sender, message, receiver);
         

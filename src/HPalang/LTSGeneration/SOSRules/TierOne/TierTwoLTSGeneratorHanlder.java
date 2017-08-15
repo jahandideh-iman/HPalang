@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
@@ -31,7 +31,7 @@ public class TierTwoLTSGeneratorHanlder
     }
     
     // TODO: Refactor and rename this Crap!
-    public List<Trace> FindTracesWhereExecutedActorStatementsAreExecuted(Actor executedActor, GlobalRunTimeState rootGlobalState)
+    public List<Trace> FindTracesWhereExecutedActorStatementsAreExecuted(SoftwareActor executedActor, GlobalRunTimeState rootGlobalState)
     {
         LabeledTransitionSystem lts = tierTwoLTSGenerator.Generate(rootGlobalState);
         

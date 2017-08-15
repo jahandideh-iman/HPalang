@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import Builders.ActorBuilder;
 import Builders.ActorRunTimeStateBuilder;
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Message;
 import HPalang.Core.Messages.NormalMessage;
@@ -39,8 +39,8 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
     @Test
     public void ForEachActorStateIfThereIsSendStatementSendsTheMessage()
     {
-        Actor actor1 = new ActorBuilder().WithID("actor1").WithCapacity(1).WithHandler("a", new MessageHandler()).Build();
-        Actor actor2 = new ActorBuilder().WithID("actor2").WithCapacity(1).WithHandler("b", new MessageHandler()).Build();
+        SoftwareActor actor1 = new ActorBuilder().WithID("actor1").WithCapacity(1).WithHandler("a", new MessageHandler()).Build();
+        SoftwareActor actor2 = new ActorBuilder().WithID("actor2").WithCapacity(1).WithHandler("b", new MessageHandler()).Build();
         
         Message messageTo2 = new NormalMessage(actor2.GetMessageHandler("b"));
         Message messageTo1 = new NormalMessage(actor1.GetMessageHandler("a"));
@@ -74,7 +74,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
     @Test
     public void DoesNotSendTheMessageIfTheRecieverMessageQueueIsFull()
     {
-        Actor actor = new ActorBuilder().WithID("actor").WithCapacity(1).Build();
+        SoftwareActor actor = new ActorBuilder().WithID("actor").WithCapacity(1).Build();
         
         ActorRunTimeStateBuilder fullCapacityActorState = new ActorRunTimeStateBuilder()
                 .WithActor(actor)

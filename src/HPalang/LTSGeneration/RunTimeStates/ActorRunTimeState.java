@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.CompositeStateT;
 
 /**
@@ -14,11 +14,11 @@ import HPalang.LTSGeneration.CompositeStateT;
  */
 public class ActorRunTimeState extends CompositeStateT<ActorRunTimeState>
 {
-    private final Actor actor;
+    private final SoftwareActor actor;
     
     private boolean isSuspended = false;
    
-    public ActorRunTimeState(Actor actor)
+    public ActorRunTimeState(SoftwareActor actor)
     {
         this.actor = actor;     
     }
@@ -38,7 +38,7 @@ public class ActorRunTimeState extends CompositeStateT<ActorRunTimeState>
         return actor.GetCapacity();
     }
     
-    public Actor GetActor()
+    public SoftwareActor GetActor()
     {
        return actor;
     }

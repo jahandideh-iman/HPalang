@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.Actor;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.NetworkPacket;
 import TestUtilities.Utilities;
 import Mocks.EmptyMessage;
@@ -24,8 +24,8 @@ public class NetworkStateTest
     public void HasTheBufferedPackets()
     {
         NetworkState networkState = new NetworkState();
-        Actor actor1 = Utilities.NewActor("actor1");
-        Actor actor2 = Utilities.NewActor("actor2");
+        SoftwareActor actor1 = Utilities.NewActor("actor1");
+        SoftwareActor actor2 = Utilities.NewActor("actor2");
         
         NetworkPacket packet1 = new NetworkPacket(actor1, new EmptyMessage("1to2"), actor2);
         NetworkPacket packet2 = new NetworkPacket(actor1, new EmptyMessage("2to1"), actor2);

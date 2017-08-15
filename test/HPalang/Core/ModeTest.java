@@ -8,6 +8,7 @@ package HPalang.Core;
 import static HPalang.Core.Statement.StatementsFrom;
 import Mocks.EmptyStatement;
 import java.util.Queue;
+import java.util.Set;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
@@ -24,12 +25,12 @@ public class ModeTest
     public void ModesWithEqualDataAreEqual()
     {
         String inv = "inv";
-        DifferentialEquation equation = DifferentialEquation.Empty("eq1");
+        Set<DifferentialEquation> equations = Mode.EquationsFrom(DifferentialEquation.Empty("eq1"));
         String guard = "guard";
         Queue<Statement> actions = StatementsFrom(new EmptyStatement());
         
-        Mode mode1 = new Mode("inv", equation , "guard", actions);
-        Mode mode2 = new Mode("inv", equation , "guard", actions);
+        Mode mode1 = new Mode("inv", equations , "guard", actions);
+        Mode mode2 = new Mode("inv", equations , "guard", actions);
         
         assertThat(mode1, is(equalTo(mode2)));
     }
