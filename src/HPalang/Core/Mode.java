@@ -17,17 +17,43 @@ import java.util.Set;
  */
 public class Mode extends Equalitable<Mode>
 {
-    private final String invariant;
-    private final Set<DifferentialEquation> equations;
-    private final String guard;
+    private final String name;
+    private String invariant;
+    private Set<DifferentialEquation> equations;
+    private String guard;
     private Queue<Statement> actions = new LinkedList<>();
     
-    public Mode(String inv, Set<DifferentialEquation> odes, String guard, Queue<Statement> actions )
+    public Mode(String name)
     {
+        this.name = name;
+    }
+    public Mode(String name, String inv, Set<DifferentialEquation> odes, String guard, Queue<Statement> actions )
+    {
+        this.name = name;
         this.invariant = inv;
         this.equations = odes;
         this.guard = guard;
         this.actions = actions;
+    }
+    
+    public void SetInvarient(String invariant)
+    {
+        this.invariant = invariant;
+    }
+    
+    public void SetGuard(String guard)
+    {
+        this.guard = guard;
+    }
+    
+    public void AddDifferentialEquation(DifferentialEquation ode)
+    {
+        equations.add(ode);
+    }
+    
+    public void AddAction(Statement statment)
+    {
+        actions.add(statment);
     }
     
     public Queue<Statement> Actions()
@@ -53,7 +79,8 @@ public class Mode extends Equalitable<Mode>
     @Override
     protected boolean InternalEquals(Mode other)
     {
-        return other.invariant.equals(this.invariant)
+        return other.name.equals(this.name)
+                && other.invariant.equals(this.invariant)
                 && other.equations.equals(this.equations)
                 && other.guard.equals(this.guard)
                 && other.actions.equals(this.actions);
@@ -62,16 +89,12 @@ public class Mode extends Equalitable<Mode>
     @Override
     protected int InternalHashCode()
     {
-        int hash = 7;
-        hash = 19 * hash + Objects.hashCode(this.invariant);
-        hash = 19 * hash + Objects.hashCode(this.equations);
-        hash = 19 * hash + Objects.hashCode(this.guard);
-        return hash;
+        return 0;
     }
     
     public static Mode None()
     {
-        return new Mode("", EquationsFrom(DifferentialEquation.Empty()), "", Statement.EmptyStatements());
+        return new Mode("None","", EquationsFrom(DifferentialEquation.Empty()), "", Statement.EmptyStatements());
     }
     
     static public Set<DifferentialEquation> EquationsFrom(DifferentialEquation ...equations)
@@ -80,5 +103,10 @@ public class Mode extends Equalitable<Mode>
         for(DifferentialEquation e : equations)
             odes.add(e);
         return odes;
+    }
+
+    public String Name()
+    {
+        return name;
     }
 }

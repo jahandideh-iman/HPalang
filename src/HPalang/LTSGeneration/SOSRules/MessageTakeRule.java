@@ -61,7 +61,7 @@ public abstract class MessageTakeRule extends ActorLevelRule
         
         ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
         
-        newActorState.FindSubState(ExecutionQueueState.class).Statements().Enqueue(DequeuMessage(newActorState).GetMessageBody());
+        newActorState.ExecutionQueueState().Statements().Enqueue(DequeuMessage(newActorState).GetMessageBody());
         
         List<Trace> traces = tierTwoHanlder.FindTracesWhereExecutedActorStatementsAreExecuted(actorState.GetActor(), newGlobalState);
 

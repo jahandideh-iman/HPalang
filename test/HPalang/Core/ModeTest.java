@@ -29,8 +29,8 @@ public class ModeTest
         String guard = "guard";
         Queue<Statement> actions = StatementsFrom(new EmptyStatement());
         
-        Mode mode1 = new Mode("inv", equations , "guard", actions);
-        Mode mode2 = new Mode("inv", equations , "guard", actions);
+        Mode mode1 = new Mode("mode","inv", equations , "guard", actions);
+        Mode mode2 = new Mode("mode","inv", equations , "guard", actions);
         
         assertThat(mode1, is(equalTo(mode2)));
     }

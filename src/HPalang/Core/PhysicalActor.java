@@ -12,7 +12,7 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
-public class PhysicalActor 
+public class PhysicalActor extends Actor
 {
     private final String name;
     private final Set<Mode> modes = new HashSet<>();

@@ -18,12 +18,19 @@ import Mocks.EmptyStatement;
 public class ModeBuilder
 {
     private String inv = "inv";
+    private String name = "mode";
     
     public Mode Build()
     {
-        return new Mode(inv, Mode.EquationsFrom(DifferentialEquation.Empty()), "guard", StatementsFrom(new EmptyStatement()));
+        return new Mode(name,inv, Mode.EquationsFrom(DifferentialEquation.Empty()), "guard", StatementsFrom(new EmptyStatement()));
     }
 
+    public ModeBuilder WithName(String name)
+    {
+        this.name = name;
+        return this;
+    }
+    
     public ModeBuilder WithInvarient(String inv)
     {
         this.inv = inv;

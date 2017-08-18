@@ -14,10 +14,36 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
-public class SoftwareActorType
+public class SoftwareActorType extends ActorType
 {
-    private final Set<DiscreteVariable> variables = new HashSet<>();
+    private final String name;
     
+    private final Map<String,DiscreteVariable> variables = new HashMap<>();
     private final Map<String,MessageHandler> messageHandlers = new HashMap<>();
     
+    public SoftwareActorType(String name)
+    {
+        this.name = name;
+    }
+    
+    public void AddMessageHandler(String id, MessageHandler handler)
+    {
+        handler.SetID(id);
+        messageHandlers.put(id,handler);
+    }
+     
+    public void AddVariable(DiscreteVariable var)
+    {
+        variables.put(var.Name(),var);
+    }
+
+    public MessageHandler FindMessageHandler(String messageHandlerName)
+    {
+        return messageHandlers.get(messageHandlerName);
+    }
+
+    public DiscreteVariable FindVariable(String variableName)
+    {
+        return variables.get(variableName);
+    }
 }

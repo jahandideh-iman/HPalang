@@ -5,8 +5,12 @@
  */
 package HPalang.Core;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedList;
+import java.util.Map;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  *
@@ -17,6 +21,7 @@ public class MessageHandler
     private final Queue<Statement> statements = new LinkedList<>();
     private SoftwareActor owner;
     private String id;
+    private final Map<String, VariableParameter> parameters = new HashMap<>();
     
     public MessageHandler()
     {
@@ -45,5 +50,15 @@ public class MessageHandler
     public String GetID()
     {
        return id;
+    }
+
+    public void AddParameter(VariableParameter variableParameter)
+    {
+        parameters.put(variableParameter.Name(),variableParameter);
+    }
+
+    public VariableParameter FindVariableParameter(String parameterName)
+    {
+        return parameters.get(parameterName);
     }
 }

@@ -9,14 +9,14 @@ package HPalang.Core;
  *
  * @author Iman Jahandideh
  */
-public class InstanceParameter
+public class InstanceParameter extends Equalitable<InstanceParameter>
 {
     private final String name;
-    private final SoftwareActorType type;
+    private final ActorType type;
     
     private SoftwareActor instance;
     
-    public InstanceParameter(String name, SoftwareActorType type)
+    public InstanceParameter(String name, ActorType type)
     {
         this.name = name;
         this.type = type;
@@ -28,5 +28,23 @@ public class InstanceParameter
         assert (this.type.equals(instance.Type()));
         
         this.instance = instance;
+    }
+
+    @Override
+    protected boolean InternalEquals(InstanceParameter other)
+    {
+        return name.equals(other.name) &&
+                type.equals(other.type);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return 0;
+    }
+
+    public String Name()
+    {
+        return name;
     }
 }

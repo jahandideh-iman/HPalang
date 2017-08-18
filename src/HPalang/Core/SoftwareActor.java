@@ -13,7 +13,7 @@ import java.util.Map;
  *
  * @author Iman Jahandideh
  */
-public class SoftwareActor 
+public class SoftwareActor extends Actor
 {
     private final String name;
     private final int capacity;
