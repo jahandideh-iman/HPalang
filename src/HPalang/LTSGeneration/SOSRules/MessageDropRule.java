@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
@@ -21,13 +21,13 @@ import HPalang.LTSGeneration.TransitionCollector;
 public class MessageDropRule extends ActorLevelRule
 {
      @Override
-    protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
+    protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
     {
         if((actorState.FindSubState(ExecutionQueueState.class).Statements().Head() instanceof SendStatement) == false)
             return false;
         
         SendStatement sendStatement = (SendStatement)actorState.FindSubState(ExecutionQueueState.class).Statements().Head();
-        ActorRunTimeState receiverState = globalState.FindActorState(sendStatement.GetReceiver());
+        SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(sendStatement.GetReceiver());
         
         MessageQueueState queueState = receiverState.FindSubState(MessageQueueState.class);
         
@@ -35,11 +35,11 @@ public class MessageDropRule extends ActorLevelRule
     }
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
+    protected void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
                
-        ActorRunTimeState senderState = newGlobalState.FindActorState(actorState.GetActor());
+        SoftwareActorState senderState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
         
         senderState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         

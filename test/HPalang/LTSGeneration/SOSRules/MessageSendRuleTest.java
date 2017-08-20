@@ -53,19 +53,19 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
                 .WithActor(actor2)
                 .EnqueueStatement(new SendStatement(actor1, messageTo1));
         
-        globalState.AddActorRunTimeState(actor1State.Build());
-        globalState.AddActorRunTimeState(actor2State.Build());
+        globalState.DiscreteState().AddSoftwareActorState(actor1State.Build());
+        globalState.DiscreteState().AddSoftwareActorState(actor2State.Build());
                 
                   
         generatedLTS = ltsGenerator.Generate(globalState);
         
         GlobalRunTimeState stateAfterMessageTo2Sent = globalState.DeepCopy();
-        stateAfterMessageTo2Sent.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
-        stateAfterMessageTo2Sent.FindActorState(actor2).FindSubState(MessageQueueState.class).Messages().Enqueue(messageTo2);
+        stateAfterMessageTo2Sent.DiscreteState().FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        stateAfterMessageTo2Sent.DiscreteState().FindActorState(actor2).FindSubState(MessageQueueState.class).Messages().Enqueue(messageTo2);
         
         GlobalRunTimeState sateAfterMessageTo1Sent = globalState.DeepCopy();
-        sateAfterMessageTo1Sent.FindActorState(actor2).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
-        sateAfterMessageTo1Sent.FindActorState(actor1).FindSubState(MessageQueueState.class).Messages().Enqueue(messageTo1);
+        sateAfterMessageTo1Sent.DiscreteState().FindActorState(actor2).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        sateAfterMessageTo1Sent.DiscreteState().FindActorState(actor1).FindSubState(MessageQueueState.class).Messages().Enqueue(messageTo1);
         
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), stateAfterMessageTo2Sent));
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), stateAfterMessageTo2Sent));
@@ -82,7 +82,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
                 .EnqueueStatement(new SendStatement(actor, new EmptyMessage("Message2")));
         
         globalState
-                .AddActorRunTimeState(fullCapacityActorState.Build());
+                .DiscreteState().AddSoftwareActorState(fullCapacityActorState.Build());
                 
                   
         generatedLTS = ltsGenerator.Generate(globalState);

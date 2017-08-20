@@ -47,14 +47,14 @@ public class DiscreteAssignmentTest extends SOSRuleTestFixture
                 .WithActor(actor1)
                 .EnqueueStatement(new DiscreteAssignmentStatement(dVar, new ConstantDiscreteExpression(5)));
         
-        globalState.AddActorRunTimeState(actor1State.Build());
+        globalState.DiscreteState().AddSoftwareActorState(actor1State.Build());
                 
                  
         generatedLTS = ltsGenerator.Generate(globalState);
         
         GlobalRunTimeState expectedState = globalState.DeepCopy();
-        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
-        expectedState.FindActorState(actor1).FindSubState(ValuationState.class).Valuation().Set(dVar, 5);
+        expectedState.DiscreteState().FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        expectedState.DiscreteState().FindActorState(actor1).FindSubState(ValuationState.class).Valuation().Set(dVar, 5);
        
 
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), expectedState));

@@ -8,12 +8,13 @@ package HPalang.LTSGeneration.SOSRules;
 import HPalang.Core.PhysicalActor;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.State;
+import static TestUtilities.Utilities.CreateGlobalState;
 
 /**
  *
@@ -23,9 +24,9 @@ public class SOSRuleTestFixture
 {
     protected LTSGenerator ltsGenerator = new LTSGenerator();
     protected LabeledTransitionSystem generatedLTS;
-    protected GlobalRunTimeState globalState = new GlobalRunTimeState();
+    protected GlobalRunTimeState globalState = CreateGlobalState();
     
-    protected void DequeueOneStatemenet(ActorRunTimeState actorState)
+    protected void DequeueOneStatemenet(SoftwareActorState actorState)
     {
         actorState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
     }

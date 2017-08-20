@@ -51,17 +51,17 @@ public class MessageDropRuleTest extends SOSRuleTestFixture
                 .EnqueueStatement(new SendStatement(actor1, messageTo1))
                 .EnqueueLowPriorityMessage(new EmptyMessage());
         
-        globalState.AddActorRunTimeState(actor1State.Build());
-        globalState.AddActorRunTimeState(actor2State.Build());
+        globalState.DiscreteState().AddSoftwareActorState(actor1State.Build());
+        globalState.DiscreteState().AddSoftwareActorState(actor2State.Build());
                 
                   
         generatedLTS = ltsGenerator.Generate(globalState);
         
         GlobalRunTimeState stateAfterMessageTo2Sent = globalState.DeepCopy();
-        stateAfterMessageTo2Sent.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        stateAfterMessageTo2Sent.DiscreteState().FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         
         GlobalRunTimeState sateAfterMessageTo1Sent = globalState.DeepCopy();
-        sateAfterMessageTo1Sent.FindActorState(actor2).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        sateAfterMessageTo1Sent.DiscreteState().FindActorState(actor2).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), stateAfterMessageTo2Sent));
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), stateAfterMessageTo2Sent));

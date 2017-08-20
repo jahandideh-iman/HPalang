@@ -7,13 +7,15 @@ package HPalang.LTSGeneration;
 
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.Core.SoftwareActor;
 import Mocks.SOSRuleMock;
 import Mocks.SOSRuleMonitor;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static TestUtilities.Utilities.CreateGlobalState;
+import static TestUtilities.Utilities.CreateSoftwareActorState;
 
 /**
  *
@@ -26,7 +28,7 @@ public class LTSGeneratorTest
     @Test
     public void InitialGlobalStateIsGivenToSOSRules()
     {
-        GlobalRunTimeState initialState = new GlobalRunTimeState();
+        GlobalRunTimeState initialState = CreateGlobalState();
         
         SOSRuleMonitor rule1 = new SOSRuleMonitor();        
         SOSRuleMonitor rule2 = new SOSRuleMonitor();
@@ -43,10 +45,10 @@ public class LTSGeneratorTest
     @Test
     public void TransitionCanBeAddedDuringGeneration()
     {
-        GlobalRunTimeState initialState = new GlobalRunTimeState();
+        GlobalRunTimeState initialState = CreateGlobalState();
         
-        GlobalRunTimeState transitionState = new GlobalRunTimeState();
-        transitionState.AddActorRunTimeState(new ActorRunTimeState(new SoftwareActor("actor",0)));
+        GlobalRunTimeState transitionState = CreateGlobalState();
+        transitionState.DiscreteState().AddSoftwareActorState(new SoftwareActorState(new SoftwareActor("actor",0)));
         
         SOSRuleMock rule = new SOSRuleMock(new SoftwareLabel(),transitionState);        
         

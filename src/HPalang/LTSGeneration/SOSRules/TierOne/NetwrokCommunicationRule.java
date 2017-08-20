@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.SOSRules.TierOne;
 
 import HPalang.Core.NetworkPacket;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
@@ -34,7 +34,7 @@ public class NetwrokCommunicationRule implements SOSRule
         
         NetworkPacket packet = FindHighestPriority(networkState.Buffer());
         
-        ActorRunTimeState receiverState = newGlobalState.FindActorState(packet.Receiver());
+        SoftwareActorState receiverState = newGlobalState.DiscreteState().FindActorState(packet.Receiver());
         MessageQueueState messageQueueState = receiverState.FindSubState(MessageQueueState.class);
         messageQueueState.Messages().Enqueue(packet.Message());
         networkState.Debuffer(packet);

@@ -8,8 +8,9 @@ package HPalang.LTSGeneration;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ModelDefinition;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
 
 /**
  *
@@ -19,14 +20,20 @@ public class LTSUtility
 {
     static public GlobalRunTimeState FromProgramDefinition(ModelDefinition program)
     {
-        GlobalRunTimeState state = new GlobalRunTimeState();
+        GlobalRunTimeState globalState = new GlobalRunTimeState();
+        
+        DiscreteState discreteState =  new DiscreteState();
+        globalState.AddSubstate(discreteState);
+        
         
         for(SoftwareActor actor : program.GetActors())
-            state.AddActorRunTimeState(new ActorRunTimeState(actor));
+            discreteState.AddSoftwareActorState(new SoftwareActorState(actor));
         
         for(SendStatement send : program.GetInitialSends())
-            state.AddSendStatement(send);
+            globalState.AddSendStatement(send);
         
-        return state;
+        
+        
+        return globalState;
     }
 }

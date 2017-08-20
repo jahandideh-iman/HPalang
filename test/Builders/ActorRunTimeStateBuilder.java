@@ -7,7 +7,7 @@ package Builders;
 
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehaviorContianer;
@@ -56,9 +56,9 @@ public class ActorRunTimeStateBuilder
         return this;
     }
 
-    public ActorRunTimeState Build()
+    public SoftwareActorState Build()
     {
-        ActorRunTimeState actorState = new ActorRunTimeState(actor);
+        SoftwareActorState actorState = new SoftwareActorState(actor);
         MessageQueueState messageQueueState = new MessageQueueState();
         ExecutionQueueState executionQueueState = new ExecutionQueueState();
         ValuationState valuationState = new ValuationState(actor.GetDiscreteVariables());

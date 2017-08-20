@@ -14,6 +14,8 @@ import TestUtilities.Utilities;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static TestUtilities.Utilities.CreateGlobalState;
+import static TestUtilities.Utilities.CreateSoftwareActorState;
 
 /**
  *
@@ -28,11 +30,9 @@ public class HybridAutomatonGeneratorTest
         
         LabeledTransitionSystem lts = new LabeledTransitionSystem();
           
-        GlobalRunTimeState state1 = new GlobalRunTimeState();
-        state1.AddActorRunTimeState(Utilities.CreateActorState("1"));
+        GlobalRunTimeState state1 = CreateGlobalState(CreateSoftwareActorState("1"));
 
-        GlobalRunTimeState state2 = new GlobalRunTimeState();
-        state1.AddActorRunTimeState(Utilities.CreateActorState("2"));
+        GlobalRunTimeState state2 = CreateGlobalState(CreateSoftwareActorState("2"));
 
         lts.AddState(state1);
         lts.AddState(state2);
@@ -49,5 +49,5 @@ public class HybridAutomatonGeneratorTest
         
         assertThat(rule.appliedTransitions,hasItem(new Transition(state1, new SoftwareLabel(), state2)));
     }
-    
+  
 }

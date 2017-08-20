@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules;
 import HPalang.Core.Message;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TransitionCollector;
 
@@ -20,7 +20,7 @@ public class FIFOMessageTakeRule extends ActorLevelRule
 {
 
     @Override
-    protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
+    protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
     {
         return  actorState.ExecutionQueueState().Statements().IsEmpty() &&
                 !actorState.MessageQueueState().Messages().IsEmpty() &&
@@ -28,11 +28,11 @@ public class FIFOMessageTakeRule extends ActorLevelRule
     }
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
+    protected void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         
-        ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
+        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
         
         Message message = newActorState.MessageQueueState().Messages().Dequeue();
         newActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());

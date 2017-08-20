@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules.TierOne;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;
@@ -42,16 +42,16 @@ public class TierTwoLTSGeneratorHanlder
         {
             GlobalRunTimeState lastState = trace.GetLastState();
             boolean valid = true;
-            for (ActorRunTimeState actorState : lastState.GetActorStates()) 
+            for (SoftwareActorState actorState : lastState.DiscreteState().ActorStates()) 
             {
-                if (actorState.GetActor() == executedActor) 
+                if (actorState.Actor() == executedActor) 
                 {
                     if (actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false)
                         valid = false;    
                 } 
                 else 
                 {
-                    ActorRunTimeState rootActorState = rootGlobalState.FindActorState(actorState.GetActor());
+                    SoftwareActorState rootActorState = rootGlobalState.DiscreteState().FindActorState(actorState.Actor());
                     if (actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false || 
                             rootActorState.FindSubState(ValuationState.class)
                                     .equals(actorState.FindSubState(ValuationState.class)) == false)

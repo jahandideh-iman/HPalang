@@ -12,7 +12,7 @@ import HPalang.Core.Message;
 import HPalang.Core.NetworkPacket;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
@@ -49,7 +49,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
        ActorRunTimeStateBuilder receiverState = new ActorRunTimeStateBuilder()
                .WithActor(receiver);
        
-       globalState.AddActorRunTimeState(receiverState.Build());
+       globalState.DiscreteState().AddSoftwareActorState(receiverState.Build());
        globalState.AddSubstate(networkState);
        
        
@@ -64,7 +64,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
        generatedLTS = ltsGenerator.Generate(globalState);
         
        GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
-       ActorRunTimeState nextActorState = nextGlobalState.FindActorState(receiver);
+       SoftwareActorState nextActorState = nextGlobalState.DiscreteState().FindActorState(receiver);
        nextActorState.FindSubState(MessageQueueState.class).Messages().Enqueue(m2);
        NetworkState nextNetworkState = nextGlobalState.FindSubState(NetworkState.class);
        nextNetworkState.Debuffer(new NetworkPacket(sender, m2, receiver));

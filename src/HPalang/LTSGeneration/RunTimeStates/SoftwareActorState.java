@@ -12,13 +12,13 @@ import HPalang.LTSGeneration.CompositeStateT;
  *
  * @author Iman Jahandideh
  */
-public class ActorRunTimeState extends CompositeStateT<ActorRunTimeState>
+public class SoftwareActorState extends CompositeStateT<SoftwareActorState>
 {
     private final SoftwareActor actor;
     
     private boolean isSuspended = false;
    
-    public ActorRunTimeState(SoftwareActor actor)
+    public SoftwareActorState(SoftwareActor actor)
     {
         this.actor = actor;     
     }
@@ -38,7 +38,7 @@ public class ActorRunTimeState extends CompositeStateT<ActorRunTimeState>
         return actor.GetCapacity();
     }
     
-    public SoftwareActor GetActor()
+    public SoftwareActor Actor()
     {
        return actor;
     }
@@ -54,19 +54,19 @@ public class ActorRunTimeState extends CompositeStateT<ActorRunTimeState>
     }
     
     @Override
-    protected ActorRunTimeState NewInstance()
+    protected SoftwareActorState NewInstance()
     {
-        return new ActorRunTimeState(actor);
+        return new SoftwareActorState(actor);
     }
 
     @Override
-    protected void CloneData(ActorRunTimeState copy)
+    protected void CloneData(SoftwareActorState copy)
     {
         copy.isSuspended = isSuspended;
     }
 
     @Override
-    protected boolean DataEquals(ActorRunTimeState other)
+    protected boolean DataEquals(SoftwareActorState other)
     {
         return this.actor == other.actor && 
                 isSuspended == other.isSuspended;

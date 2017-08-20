@@ -5,7 +5,7 @@
  */
 package Mocks;
 
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.SOSRules.StatementRule;
 
 /**
@@ -22,7 +22,7 @@ public class EmptyStatementRule extends StatementRule<EmptyStatement>
     }
 
     @Override
-    protected void ApplyStatement(ActorRunTimeState actorState, EmptyStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, EmptyStatement statement)
     {
         
     }

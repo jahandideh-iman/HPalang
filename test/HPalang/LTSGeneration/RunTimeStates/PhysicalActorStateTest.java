@@ -21,7 +21,7 @@ import static org.junit.Assert.*;
 public class PhysicalActorStateTest
 {
     @Test
-    public void PhysicalActorsWithEqualDataAreEqual()
+    public void PhysicalActorStatesWithEqualDataAreEqual()
     {
         PhysicalActor actor = new PhysicalActor("actor");
         Mode mode = new ModeBuilder().Build();
@@ -36,7 +36,7 @@ public class PhysicalActorStateTest
     }
     
     @Test
-    public void PhysicalActorsWithDifferentActorsAreNotEqual()
+    public void PhysicalActorStatesWithDifferentActorsAreNotEqual()
     {
         PhysicalActor actor1 = new PhysicalActor("actor1");        
         PhysicalActor actor2 = new PhysicalActor("actor2");
@@ -48,7 +48,7 @@ public class PhysicalActorStateTest
     }
     
     @Test
-    public void PhysicalActorsWithDifferentModeAreNotEqual()
+    public void PhysicalActorStatesWithDifferentModeAreNotEqual()
     {
         PhysicalActor actor = new PhysicalActor("actor");
         

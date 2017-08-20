@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Statements.IfStatement;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;
 
@@ -24,7 +24,7 @@ public class IfStatementRule extends StatementRule<IfStatement>
     }
 
     @Override
-    protected void ApplyStatement(ActorRunTimeState actorState, IfStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, IfStatement statement)
     {
         if(statement.Expression().Evaluate(actorState.FindSubState(ValuationState.class).Valuation()) > 0)
             actorState.FindSubState(ExecutionQueueState.class).Statements().Push(statement.TrueStatements());

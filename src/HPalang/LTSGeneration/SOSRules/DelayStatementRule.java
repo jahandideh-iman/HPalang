@@ -9,7 +9,7 @@ import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.DelayStatement;
@@ -30,10 +30,10 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
     }
 
     @Override
-    protected void ApplyStatement(ActorRunTimeState actorState, DelayStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, DelayStatement statement)
     {
-//        ContinuousVariable delayVar = actorState.GetActor().GetDelayVariable();
-//        ContinuousBehavior behavior = CreateDelayBehavior(actorState.GetActor(), statement.GetDelay(), delayVar);
+//        ContinuousVariable delayVar = actorState.Actor().GetDelayVariable();
+//        ContinuousBehavior behavior = CreateDelayBehavior(actorState.Actor(), statement.GetDelay(), delayVar);
 ////        actorState.SuspendedStatements().Enqueue(actorState.StatementQueue());
 ////        actorState.StatementQueue().Clear();
 //        actorState.SetSuspended(true);
@@ -41,9 +41,9 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
     }
     
     @Override
-    protected SoftwareLabel CreateTransitionLabel(ActorRunTimeState actorState, DelayStatement statement)
+    protected SoftwareLabel CreateTransitionLabel(SoftwareActorState actorState, DelayStatement statement)
     {
-        return new SoftwareLabel(Reset.ResetsFrom(new Reset(actorState.GetActor().GetDelayVariable(), new ConstantContinuousExpression(0f))));
+        return new SoftwareLabel(Reset.ResetsFrom(new Reset(actorState.Actor().GetDelayVariable(), new ConstantContinuousExpression(0f))));
     }
     
     private ContinuousBehavior CreateDelayBehavior(SoftwareActor actor,float delay, ContinuousVariable delayVar)

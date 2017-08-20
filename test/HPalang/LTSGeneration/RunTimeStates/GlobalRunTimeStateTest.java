@@ -21,9 +21,9 @@ public class GlobalRunTimeStateTest
     @Test
     public void DeepCopyIsCorrect()
     {
-        GlobalRunTimeState orignal = Utilities.NewGlobalState(
-                Utilities.CreateActorState("actor1"),
-                Utilities.CreateActorState("actor2"));
+        GlobalRunTimeState orignal = Utilities.CreateGlobalState(
+                Utilities.CreateSoftwareActorState("actor1"),
+                Utilities.CreateSoftwareActorState("actor2"));
         
         GlobalRunTimeState copy = (GlobalRunTimeState) orignal.DeepCopy();
         
@@ -35,20 +35,20 @@ public class GlobalRunTimeStateTest
     @Test
     public void CloneCreateNewActorState()
     {
-        GlobalRunTimeState orignal = Utilities.NewGlobalState(
-                Utilities.CreateActorState("actor1"),
-                Utilities.CreateActorState("actor2"));
+        GlobalRunTimeState orignal = Utilities.CreateGlobalState(
+                Utilities.CreateSoftwareActorState("actor1"),
+                Utilities.CreateSoftwareActorState("actor2"));
         
         GlobalRunTimeState copy = (GlobalRunTimeState)orignal.DeepCopy();
         
-        SoftwareActor actor1 = orignal.GetActorStates().get(0).GetActor();
-        SoftwareActor actor2 = orignal.GetActorStates().get(1).GetActor();
+        SoftwareActor actor1 = orignal.DiscreteState().ActorStates().iterator().next().Actor();
+        SoftwareActor actor2 = orignal.DiscreteState().ActorStates().iterator().next().Actor();
         
-        assertThat(copy.FindActorState(actor1),not(sameInstance(orignal.FindActorState(actor1))));
-        assertThat(copy.FindActorState(actor1),equalTo(orignal.FindActorState(actor1)));
+        assertThat(copy.DiscreteState().FindActorState(actor1),not(sameInstance(orignal.DiscreteState().FindActorState(actor1))));
+        assertThat(copy.DiscreteState().FindActorState(actor1),equalTo(orignal.DiscreteState().FindActorState(actor1)));
         
-        assertThat(copy.FindActorState(actor2),not(sameInstance(orignal.FindActorState(actor2))));
-        assertThat(copy.FindActorState(actor2),equalTo(orignal.FindActorState(actor2)));
+        assertThat(copy.DiscreteState().FindActorState(actor2),not(sameInstance(orignal.DiscreteState().FindActorState(actor2))));
+        assertThat(copy.DiscreteState().FindActorState(actor2),equalTo(orignal.DiscreteState().FindActorState(actor2)));
     }
     
 }

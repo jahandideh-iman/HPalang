@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.SOSRules;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Message;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
@@ -36,11 +36,11 @@ public abstract class MessageTakeRule extends ActorLevelRule
         this.tierTwoHanlder = new TierTwoLTSGeneratorHanlder(tierTwoGenerator);
     }
     
-    protected abstract boolean InternalIsRuleSatisfied(ActorRunTimeState actorState);
-    protected abstract Message DequeuMessage(ActorRunTimeState actorState);
+    protected abstract boolean InternalIsRuleSatisfied(SoftwareActorState actorState);
+    protected abstract Message DequeuMessage(SoftwareActorState actorState);
     
     @Override
-    protected boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState)
+    protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
     {
         return InternalIsRuleSatisfied(actorState) == true 
                 && actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == true
@@ -49,22 +49,22 @@ public abstract class MessageTakeRule extends ActorLevelRule
     
     private boolean AllActorsHaveNoPendingStatement(GlobalRunTimeState globalState)
     {
-        for(ActorRunTimeState actorState : globalState.GetActorStates())
-            if(actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false)
+        for(SoftwareActorState actorState : globalState.DiscreteState().ActorStates())
+            if(actorState.ExecutionQueueState().Statements().IsEmpty() == false)
                 return false;
         return true;
     }
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
+    protected void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         
-        ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
+        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
         
         newActorState.ExecutionQueueState().Statements().Enqueue(DequeuMessage(newActorState).GetMessageBody());
         
-        List<Trace> traces = tierTwoHanlder.FindTracesWhereExecutedActorStatementsAreExecuted(actorState.GetActor(), newGlobalState);
+        List<Trace> traces = tierTwoHanlder.FindTracesWhereExecutedActorStatementsAreExecuted(actorState.Actor(), newGlobalState);
 
         for(Trace trace : traces)
         {

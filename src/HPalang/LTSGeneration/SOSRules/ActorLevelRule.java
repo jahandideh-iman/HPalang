@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
@@ -24,15 +24,15 @@ public abstract class ActorLevelRule implements SOSRule
     @Override
     public void TryApply(StateInfo stateInfo, TransitionCollector collector)
     {
-        for(ActorRunTimeState actorState : stateInfo.State().GetActorStates())
+        for(SoftwareActorState actorState : stateInfo.State().DiscreteState().ActorStates())
         {
             if(IsRuleSatisfied(actorState, stateInfo.State()))
                 ApplyToActorState(actorState, stateInfo.State(), collector);
         }
     }
     
-    protected abstract boolean IsRuleSatisfied(ActorRunTimeState actorState, GlobalRunTimeState globalState);
+    protected abstract boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState);
 
-    protected abstract void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, TransitionCollector collector);
+    protected abstract void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector);
     
 }

@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.Core.Message;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
@@ -26,7 +26,7 @@ public class ContinuousBehaviorStatementRule extends StatementRule<ContinuousBeh
     }
 
     @Override
-    protected void ApplyStatement(ActorRunTimeState actorState, ContinuousBehaviorStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, ContinuousBehaviorStatement statement)
     {           
         //actorState.ContinuousBehaviors().Add(statement.GetBehavior());
     }

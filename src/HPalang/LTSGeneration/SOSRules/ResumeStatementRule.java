@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Statements.ResumeStatement;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 
 /**
  *
@@ -21,7 +21,7 @@ public class ResumeStatementRule extends StatementRule<ResumeStatement>
     }
 
     @Override
-    protected void ApplyStatement(ActorRunTimeState actorState, ResumeStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, ResumeStatement statement)
     {
         actorState.SetSuspended(false);
         //actorState.FindSubState(ExecutionQueueState.class).Statements().Enqueue(actorState.SuspendedStatements());

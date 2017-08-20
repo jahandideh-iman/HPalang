@@ -45,15 +45,15 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
                 .WithActor(actor1)
                 .EnqueueStatement(ifStatement);
         
-        globalState
-                .AddActorRunTimeState(actor1State.Build());
+        globalState.DiscreteState()
+                .AddSoftwareActorState(actor1State.Build());
                 
                  
         generatedLTS = ltsGenerator.Generate(globalState);
         
         GlobalRunTimeState expectedState = globalState.DeepCopy();
-        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
-        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Push(ifStatement.TrueStatements());
+        expectedState.DiscreteState().FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        expectedState.DiscreteState().FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Push(ifStatement.TrueStatements());
        
 
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), expectedState));
@@ -73,14 +73,14 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
                 .EnqueueStatement(ifStatement);
         
         globalState
-                .AddActorRunTimeState(actor1State.Build());
+                .DiscreteState().AddSoftwareActorState(actor1State.Build());
                 
                  
         generatedLTS = ltsGenerator.Generate(globalState);
         
         GlobalRunTimeState expectedState = globalState.DeepCopy();
-        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
-        expectedState.FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Push(ifStatement.FalseStatements());
+        expectedState.DiscreteState().FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        expectedState.DiscreteState().FindActorState(actor1).FindSubState(ExecutionQueueState.class).Statements().Push(ifStatement.FalseStatements());
        
 
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), expectedState));

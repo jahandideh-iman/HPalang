@@ -8,7 +8,7 @@ package HPalang.Convertors;
 import HPalang.Core.DiscreteVariable;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.Core.Message;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Transition;
@@ -67,9 +67,9 @@ public class LTSToXMLConvertor
     private String StateToString(GlobalRunTimeState state)
     {
         String stateStr = "";
-        for(ActorRunTimeState actorState : state.GetActorStates())
+        for(SoftwareActorState actorState : state.DiscreteState().ActorStates())
         {
-            String actorStr = actorState.GetActor().GetName()+ "[";
+            String actorStr = actorState.Actor().GetName()+ "[";
 
             actorStr += "(";
             actorStr += "V:{";

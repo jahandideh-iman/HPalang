@@ -11,7 +11,7 @@ import static HPalang.Core.Statement.StatementsFrom;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import TestUtilities.Utilities;
 import Mocks.EmptyStatement;
 import static org.hamcrest.CoreMatchers.is;
@@ -37,17 +37,17 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
     {
         Message message = new MessageWithBody(StatementsFrom(new EmptyStatement("s1"), new EmptyStatement("s2")));
         
-        ActorRunTimeState actorState =  Utilities.CreateActorState("actor");
+        SoftwareActorState actorState =  Utilities.CreateSoftwareActorState("actor");
         actorState.SetSuspended(false);
         actorState.ExecutionQueueState().Statements().Clear();
         actorState.MessageQueueState().Messages().Enqueue(message);
                 
-        globalState.AddActorRunTimeState(actorState);
+        globalState.DiscreteState().AddSoftwareActorState(actorState);
         
         generatedLTS = ltsGenerator.Generate(globalState);
         
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
-        ActorRunTimeState nextActorState = nextGlobalState.FindActorState(actorState.GetActor());
+        SoftwareActorState nextActorState = nextGlobalState.DiscreteState().FindActorState(actorState.Actor());
         nextActorState.MessageQueueState().Messages().Clear();
         nextActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
         

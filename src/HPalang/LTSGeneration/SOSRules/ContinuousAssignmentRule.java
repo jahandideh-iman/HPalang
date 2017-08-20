@@ -7,7 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.LTSGeneration.Labels.Reset;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 

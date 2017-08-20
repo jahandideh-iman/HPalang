@@ -6,12 +6,14 @@
 package TestUtilities;
 
 import Builders.ActorRunTimeStateBuilder;
+import Builders.GlobalRunTimeStateBuilder;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.DifferentialEquation;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
+import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import Mocks.EmptyMessage;
 import Mocks.EmptyStatement;
@@ -31,12 +33,17 @@ public class Utilities
         return new ContinuousBehavior("", DifferentialEquation.Empty(""), "", Statement.StatementsFrom(new EmptyStatement()));
     }
     
-    static public ActorRunTimeState CreateActorState(String actorName)
+    static public SoftwareActorState CreateSoftwareActorState(String actorName)
     {
         ActorRunTimeStateBuilder builder = new ActorRunTimeStateBuilder().
                 WithActor(new SoftwareActor(actorName, 0));
         
         return builder.Build();
+    }
+    
+    static public SoftwareActor CreateSofwareActor(String actorName)
+    {
+        return new SoftwareActor(actorName, null);
     }
     
     public static void assertEqualButNotSame(Object obj1,Object obj2)
@@ -45,14 +52,14 @@ public class Utilities
         assertThat(obj1, not(sameInstance(obj2)));
     }
     
-    public static GlobalRunTimeState NewGlobalState(ActorRunTimeState ... actorStates)
+    public static GlobalRunTimeState CreateGlobalState(SoftwareActorState ... actorStates)
     {
-        GlobalRunTimeState state = new GlobalRunTimeState();
+        GlobalRunTimeStateBuilder builder = new GlobalRunTimeStateBuilder();
         
-        for(ActorRunTimeState actorState : actorStates)
-           state.AddActorRunTimeState(actorState);
-        
-        return state;
+        for(SoftwareActorState actorState : actorStates)
+            builder.AddSoftwareActorState(actorState);
+   
+        return builder.Build();
     }
     
     public static SoftwareActor NewActor(String actorName)
