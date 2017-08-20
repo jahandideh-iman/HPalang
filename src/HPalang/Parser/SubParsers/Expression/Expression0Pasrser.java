@@ -14,7 +14,7 @@ import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserEqualOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserOperator;
 import HPalang.Core.DiscreteExpressions.ComparisonExpression;
 import HPalang.Core.Expression;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.antlr.HPalangParser;
 import java.util.LinkedList;
 import java.util.List;
@@ -26,7 +26,7 @@ import java.util.List;
 public class Expression0Pasrser extends BinaryExpressionParser<HPalangParser.Expr0Context>
 {   
    
-    public Expression0Pasrser(ProgramDefinition model, HPalangParser.Expr0Context ctx, ExpressionHolder holder, SoftwareActor actor)
+    public Expression0Pasrser(ModelDefinition model, HPalangParser.Expr0Context ctx, ExpressionHolder holder, SoftwareActor actor)
     {
         super(model, ctx, holder, actor);
     }

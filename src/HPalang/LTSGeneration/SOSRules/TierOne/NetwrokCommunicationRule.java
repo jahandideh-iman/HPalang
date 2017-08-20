@@ -5,10 +5,7 @@
  */
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
-import HPalang.Core.SoftwareActor;
-import HPalang.Core.Message;
 import HPalang.Core.NetworkPacket;
-import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -16,6 +13,7 @@ import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.TransitionCollector;
 import java.util.Collection;
 
 /**
@@ -26,7 +24,7 @@ public class NetwrokCommunicationRule implements SOSRule
 {
 
     @Override
-    public void TryApply(StateInfo stateInfo, LTSGenerator generator)
+    public void TryApply(StateInfo stateInfo, TransitionCollector generator)
     {
         GlobalRunTimeState newGlobalState = stateInfo.State().DeepCopy();
         NetworkState networkState = newGlobalState.FindSubState(NetworkState.class);

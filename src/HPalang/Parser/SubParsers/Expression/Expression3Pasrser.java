@@ -11,7 +11,7 @@ import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.FalseConst;
 import HPalang.Core.DiscreteExpressions.TrueConst;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.antlr.HPalangParser;
 
 /**
@@ -21,7 +21,7 @@ import HPalang.Parser.antlr.HPalangParser;
 public class Expression3Pasrser extends ExpressionParserT<HPalangParser.Expr3Context>
 {
 
-    public Expression3Pasrser(ProgramDefinition model, HPalangParser.Expr3Context ctx, ExpressionHolder holder, SoftwareActor actor)
+    public Expression3Pasrser(ModelDefinition model, HPalangParser.Expr3Context ctx, ExpressionHolder holder, SoftwareActor actor)
     {
         super(model, ctx, holder, actor);
     }

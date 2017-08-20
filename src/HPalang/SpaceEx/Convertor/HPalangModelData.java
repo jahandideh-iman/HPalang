@@ -7,7 +7,7 @@ package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessageHandler;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.SendStatement;
@@ -31,7 +31,7 @@ public class HPalangModelData
     private Map<CommunicationLabel, CommunicationLabel> receiveToSendMap = new HashMap<>();
     
     
-    public HPalangModelData(ProgramDefinition hpalangModel)
+    public HPalangModelData(ModelDefinition hpalangModel)
     {
         for(SoftwareActor actor : hpalangModel.GetActors())
         {

@@ -9,7 +9,7 @@ import HPalang.Core.SoftwareActor;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalOrOperator;
 import HPalang.Core.Expression;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.antlr.HPalangParser;
 
 /**
@@ -19,7 +19,7 @@ import HPalang.Parser.antlr.HPalangParser;
 public class ExpressionParser extends BinaryExpressionParser<HPalangParser.ExprContext>
 {
 
-    public ExpressionParser(ProgramDefinition model, HPalangParser.ExprContext ctx, ExpressionHolder holder, SoftwareActor actor)
+    public ExpressionParser(ModelDefinition model, HPalangParser.ExprContext ctx, ExpressionHolder holder, SoftwareActor actor)
     {
         super(model, ctx, holder, actor);
     }

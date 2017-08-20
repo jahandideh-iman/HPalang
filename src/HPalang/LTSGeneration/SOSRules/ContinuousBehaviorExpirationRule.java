@@ -6,15 +6,16 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Mode;
-import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
+import static HPalang.LTSGeneration.SOSRules.Utilities.NoNetworkActions;
+import static HPalang.LTSGeneration.SOSRules.Utilities.NoSoftwareActions;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
+import HPalang.LTSGeneration.TransitionCollector;
 import java.util.Collection;
 
 /**
@@ -33,24 +34,8 @@ public class ContinuousBehaviorExpirationRule extends PhysicalActorLevelRule
                 NoNetworkActions(globalStateInfo.Outs());
     }
 
-    private boolean NoSoftwareActions(Collection<Transition> transitions)
-    {
-        for(Transition tr : transitions)
-            if(tr.GetLabel() instanceof SoftwareLabel)
-                return false;
-        return true;
-    }
-
-    private boolean NoNetworkActions(Collection<Transition> transitions)
-    {
-        for(Transition tr : transitions)
-            if(tr.GetLabel() instanceof NetworkLabel)
-                return false;
-        return true;
-    }
-    
     @Override
-    protected void ApplyToActorState(PhysicalActorState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
+    protected void ApplyToActorState(PhysicalActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         PhysicalActorState newActorState = newGlobalState.ContinuousState().FindActorState(actorState.Actor());
@@ -59,6 +44,6 @@ public class ContinuousBehaviorExpirationRule extends PhysicalActorLevelRule
         
         newActorState.ExecutionQueueState().Statements().Enqueue(mode.Actions());
         
-        generator.AddTransition(new ContinuousLabel(mode.Guard()), newGlobalState);
+        collector.AddTransition(new ContinuousLabel(mode.Guard()), newGlobalState);
     }   
 }

@@ -7,7 +7,7 @@ package HPalang.LTSGeneration;
 
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.Core.Statements.SendStatement;
 
@@ -17,7 +17,7 @@ import HPalang.Core.Statements.SendStatement;
  */
 public class LTSUtility
 {
-    static public GlobalRunTimeState FromProgramDefinition(ProgramDefinition program)
+    static public GlobalRunTimeState FromProgramDefinition(ModelDefinition program)
     {
         GlobalRunTimeState state = new GlobalRunTimeState();
         

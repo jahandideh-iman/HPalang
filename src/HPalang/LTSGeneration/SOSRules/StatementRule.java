@@ -11,6 +11,7 @@ import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import HPalang.LTSGeneration.TransitionCollector;
 
 /**
  *
@@ -30,7 +31,7 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
     protected abstract Class<T> StatementType();
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
+    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         ActorRunTimeState newActorState = newGlobalState.FindActorState(actorState.GetActor());
@@ -41,7 +42,7 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
         
         SoftwareLabel label = CreateTransitionLabel(actorState, statement);
         
-        generator.AddTransition(label, newGlobalState);
+        collector.AddTransition(label, newGlobalState);
     }
     
     protected abstract void ApplyStatement(ActorRunTimeState actorState, T statement);

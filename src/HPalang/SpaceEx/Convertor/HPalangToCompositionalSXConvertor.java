@@ -6,7 +6,7 @@
 package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
@@ -33,7 +33,7 @@ public class HPalangToCompositionalSXConvertor
     private List<NetworkComponent> actorComponents = new LinkedList<>();
 
     
-    public void Convert(ProgramDefinition def)
+    public void Convert(ModelDefinition def)
     {
         hpalangModelData = new HPalangModelData(def);
         

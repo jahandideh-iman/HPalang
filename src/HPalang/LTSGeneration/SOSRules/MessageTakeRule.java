@@ -16,6 +16,7 @@ import HPalang.LTSGeneration.SOSRules.TierOne.TierTwoLTSGeneratorHanlder;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Trace;
 import HPalang.LTSGeneration.Transition;
+import HPalang.LTSGeneration.TransitionCollector;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.List;
@@ -55,7 +56,7 @@ public abstract class MessageTakeRule extends ActorLevelRule
     }
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
+    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         
@@ -68,7 +69,7 @@ public abstract class MessageTakeRule extends ActorLevelRule
         for(Trace trace : traces)
         {
             SoftwareLabel label = GetLabelFor(trace);
-            generator.AddTransition(label, trace.GetLastState());
+            collector.AddTransition(label, trace.GetLastState());
         }
     }
     

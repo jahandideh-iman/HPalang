@@ -5,7 +5,7 @@
  */
 package HPalang.Parser;
 
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.antlr.HPalangBaseListener;
 import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.tree.ParseTreeWalker;
@@ -17,11 +17,11 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
  */
 public abstract class SubParser<CTX extends RuleContext> extends HPalangBaseListener
 {
-    protected ProgramDefinition model;
+    protected ModelDefinition model;
     
     protected CTX ctx; 
     
-    public SubParser(ProgramDefinition model, CTX ctx)
+    public SubParser(ModelDefinition model, CTX ctx)
     {
         this.model = model;
         this.ctx = ctx;

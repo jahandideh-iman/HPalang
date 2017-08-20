@@ -6,7 +6,7 @@
 package HPalang.Parser;
 
 import HPalang.Core.MessageHandler;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Core.Statement;
 import java.io.ByteArrayInputStream;
 import org.junit.Before;
@@ -20,7 +20,7 @@ public class ParserTestBase
     Parser parser;
     ByteArrayInputStream input;
     
-    ProgramDefinition model;
+    ModelDefinition model;
     
     
     @Before

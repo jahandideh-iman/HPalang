@@ -5,7 +5,7 @@
  */
 package HPalang;
 
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.SpaceEx.Convertor.HPalangToCompositionalSXConvertor;
 import HPalang.SpaceEx.Convertor.SpaceExToXMLConvertor;
 import HPalang.SpaceEx.Core.SpaceExModel;
@@ -19,7 +19,7 @@ public class CompositioanlConvertionMain
     public static void main(String[] args) 
     {
         
-        ProgramDefinition definition = new SimpleModel().Create();
+        ModelDefinition definition = new SimpleModel().Create();
         
         HPalangToCompositionalSXConvertor spaceExConvertor = new HPalangToCompositionalSXConvertor();
         SpaceExToXMLConvertor xmlConvertor = new SpaceExToXMLConvertor();

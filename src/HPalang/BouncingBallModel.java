@@ -11,7 +11,7 @@ import HPalang.Core.DifferentialEquation;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.SendStatement;
@@ -23,9 +23,9 @@ import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
  */
 public class BouncingBallModel
 {
-    public ProgramDefinition Create()
+    public ModelDefinition Create()
     {
-        ProgramDefinition definition = new ProgramDefinition();
+        ModelDefinition definition = new ModelDefinition();
         
         SoftwareActor ball = new SoftwareActor("Ball",1);
         ContinuousVariable ball_y = new ContinuousVariable("y");

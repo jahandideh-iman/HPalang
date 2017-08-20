@@ -7,7 +7,7 @@ package HPalang.Parser.SubParsers;
 
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.MainBlock;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.SubParser;
 import HPalang.Parser.antlr.HPalangBaseListener;
 import HPalang.Parser.antlr.HPalangParser;
@@ -19,7 +19,7 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
  */
 public class ModelSkeletonParser extends SubParser<HPalangParser.ModelContext>
 {
-    public ModelSkeletonParser(ProgramDefinition model, HPalangParser.ModelContext ctx)
+    public ModelSkeletonParser(ModelDefinition model, HPalangParser.ModelContext ctx)
     {
         super(model, ctx);
     }

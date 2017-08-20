@@ -7,7 +7,7 @@ package HPalang.Parser.SubParsers.Expression;
 
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Expression;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.SingleLevelParseTreeWalker;
 import HPalang.Parser.SubParser;
 import java.util.List;
@@ -25,7 +25,7 @@ public abstract class ExpressionParserT<T extends RuleContext> extends SubParser
     protected final SoftwareActor actor;
     protected Expression parsedExpression;
     
-    public ExpressionParserT(ProgramDefinition model, T ctx, ExpressionHolder holder, SoftwareActor actor)
+    public ExpressionParserT(ModelDefinition model, T ctx, ExpressionHolder holder, SoftwareActor actor)
     {
         super(model, ctx);
         this.holder = holder;

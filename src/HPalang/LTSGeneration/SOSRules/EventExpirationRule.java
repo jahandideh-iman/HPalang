@@ -13,7 +13,11 @@ import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.EventsState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRule;
+import static HPalang.LTSGeneration.SOSRules.Utilities.HasNetworkActions;
+import static HPalang.LTSGeneration.SOSRules.Utilities.HasSoftwareActions;
+import static HPalang.LTSGeneration.SOSRules.Utilities.NoSoftwareActions;
 import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.TransitionCollector;
 import java.util.Collection;
 
 /**
@@ -24,9 +28,11 @@ public class EventExpirationRule implements SOSRule
 {
 
     @Override
-    public void TryApply(StateInfo globalStateInfo, LTSGenerator generator)
+    public void TryApply(StateInfo globalStateInfo, TransitionCollector generator)
     {
-
+        if(HasSoftwareActions(globalStateInfo.Outs()) || HasNetworkActions(globalStateInfo.Outs()))
+            return;
+        
         Collection<Event> events = globalStateInfo.State().EventsState().Events();
         
         for(Event event : events)

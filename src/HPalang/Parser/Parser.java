@@ -5,7 +5,7 @@
  */
 package HPalang.Parser;
 
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.antlr.HPalangLexer;
 import HPalang.Parser.SubParsers.ModelSkeletonParser;
 import HPalang.Parser.antlr.HPalangParser;
@@ -22,12 +22,12 @@ import org.antlr.v4.runtime.CommonTokenStream;
  */
 public class Parser
 {
-    public ProgramDefinition ParseModel(InputStream inputStream) throws IOException  
+    public ModelDefinition ParseModel(InputStream inputStream) throws IOException  
     {
         HPalangParser parser = CreateAndSetupParser(inputStream); 
         HPalangParser.ModelContext tree = parser.model();
         
-        ProgramDefinition model = new ProgramDefinition();
+        ModelDefinition model = new ModelDefinition();
         
         ProcessPhaseOne(tree, model);
         ProcessPhaseTwo(tree, model);
@@ -42,12 +42,12 @@ public class Parser
     }
     
 
-    private void ProcessPhaseOne(HPalangParser.ModelContext tree, ProgramDefinition model)
+    private void ProcessPhaseOne(HPalangParser.ModelContext tree, ModelDefinition model)
     {
         new ModelSkeletonParser(model,tree).Parse();
     }
 
-    private void ProcessPhaseTwo(HPalangParser.ModelContext tree, ProgramDefinition model)
+    private void ProcessPhaseTwo(HPalangParser.ModelContext tree, ModelDefinition model)
     {
         new ModelFleshParser(model,tree).Parse(); 
     }

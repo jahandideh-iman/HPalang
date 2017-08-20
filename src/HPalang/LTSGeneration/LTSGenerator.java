@@ -15,7 +15,7 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class LTSGenerator
+public class LTSGenerator implements TransitionCollector
 {
     private LabeledTransitionSystem transitionSystem;
         
@@ -54,7 +54,7 @@ public class LTSGenerator
         return transitionSystem;
     }
     
-      
+    @Override
     public void AddTransition(Label label,GlobalRunTimeState destination)
     {
         if(transitionSystem.HasState(destination) == false)

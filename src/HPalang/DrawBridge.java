@@ -16,7 +16,7 @@ import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.DelayStatement;
@@ -31,9 +31,9 @@ import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
  */
 public class DrawBridge
 {
-    public ProgramDefinition Create()
+    public ModelDefinition Create()
     {
-        ProgramDefinition definition = new ProgramDefinition();
+        ModelDefinition definition = new ModelDefinition();
         
         DiscreteVariable Bridge_cars = new DiscreteVariable("cars");
         DiscreteVariable Bridge_bridgeStatus =  new DiscreteVariable("bridgeStatus");

@@ -8,7 +8,7 @@ package HPalang.Parser.SubParsers;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessageHandler;
 import HPalang.Parser.SubParser;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.antlr.HPalangParser;
 
 /**
@@ -18,7 +18,7 @@ import HPalang.Parser.antlr.HPalangParser;
 public class ActorFleshParser extends SubParser<HPalangParser.ActorContext>
 { 
     private final SoftwareActor actor;
-    public ActorFleshParser(ProgramDefinition model, HPalangParser.ActorContext ctx)
+    public ActorFleshParser(ModelDefinition model, HPalangParser.ActorContext ctx)
     {
         super(model, ctx);
         

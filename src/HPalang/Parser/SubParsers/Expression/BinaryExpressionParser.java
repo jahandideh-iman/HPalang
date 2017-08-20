@@ -10,7 +10,7 @@ import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperator;
 import HPalang.Core.Expression;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import java.util.LinkedList;
 import java.util.List;
 import org.antlr.v4.runtime.RuleContext;
@@ -24,7 +24,7 @@ public class BinaryExpressionParser<T extends RuleContext> extends ExpressionPar
     List<ExpressionHolder> expressionHolders = new LinkedList<>();
     List<BinaryOperator> operators = new LinkedList<>();
 
-    public BinaryExpressionParser(ProgramDefinition model, T ctx, ExpressionHolder holder, SoftwareActor actor)
+    public BinaryExpressionParser(ModelDefinition model, T ctx, ExpressionHolder holder, SoftwareActor actor)
     {
         super(model, ctx, holder, actor);
     }

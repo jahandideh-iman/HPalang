@@ -12,6 +12,7 @@ import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
+import HPalang.LTSGeneration.TransitionCollector;
 
 /**
  *
@@ -34,7 +35,7 @@ public class MessageDropRule extends ActorLevelRule
     }
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
+    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
                
@@ -42,6 +43,6 @@ public class MessageDropRule extends ActorLevelRule
         
         senderState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         
-        generator.AddTransition(new SoftwareLabel(), newGlobalState);
+        collector.AddTransition(new SoftwareLabel(), newGlobalState);
     }
 }

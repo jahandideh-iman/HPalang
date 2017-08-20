@@ -11,6 +11,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.TransitionCollector;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -23,7 +24,7 @@ public class SOSRuleMonitor implements SOSRule
     public List<GlobalRunTimeState> appliedStates = new LinkedList<>();
 
     @Override
-    public void TryApply(StateInfo stateInfo, LTSGenerator generator)
+    public void TryApply(StateInfo stateInfo, TransitionCollector generator)
     {
         appliedStates.add(stateInfo.State().DeepCopy());
     }

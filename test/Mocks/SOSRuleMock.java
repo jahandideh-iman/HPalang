@@ -12,6 +12,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.TransitionCollector;
 
 /**
  *
@@ -29,7 +30,7 @@ public class SOSRuleMock implements SOSRule
     }
 
     @Override
-    public void TryApply(StateInfo stateInfo, LTSGenerator generator)
+    public void TryApply(StateInfo stateInfo, TransitionCollector generator)
     {
         generator.AddTransition(transitonLabel, transitionState);
     }

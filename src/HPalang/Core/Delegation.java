@@ -9,14 +9,20 @@ package HPalang.Core;
  *
  * @author Iman Jahandideh
  */
-public class Actor
+public class Delegation extends Equalitable<Delegation>
 {
-    public void BindInstance(InstanceParameter parameter, Actor instance)
+    public Delegation(Actor actor, MessageHandler messageHandler)
+    {
+    }
+
+    @Override
+    protected boolean InternalEquals(Delegation other)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void BindDelegation(DelegationParameter parameter, Delegation delegation)
+    @Override
+    protected int InternalHashCode()
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

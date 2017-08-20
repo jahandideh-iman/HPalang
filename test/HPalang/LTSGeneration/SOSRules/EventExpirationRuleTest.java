@@ -5,18 +5,27 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import Builders.StateInfoBuilder;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.ContinuousVariablePool;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
+import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.Labels.Reset;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.Event.Action;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.EventsState;
 
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.VariablePoolState;
+import HPalang.LTSGeneration.SOSRule;
+import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.Transition;
 import Mocks.ActionMonitor;
+import Mocks.TransitionCollectorMock;
+import java.util.Collections;
+import java.util.List;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -27,35 +36,72 @@ import org.junit.Before;
  */
 public class EventExpirationRuleTest extends SOSRuleTestFixture
 {
-        @Before
+    SOSRule rule;
+    TransitionCollectorMock transitionCollectorChecker;
+    @Before
     public void Setup()
     {
         ltsGenerator.AddSOSRule(new EventExpirationRule());
+        rule = new EventExpirationRule();
+        transitionCollectorChecker = new TransitionCollectorMock();
+        
+        globalState = new GlobalRunTimeState();
     }
     
     @Test
     public void IfThereIsNoSoftwareAndNetworkTransitionExpiratesEvents()
     {
-        ActionMonitor actionMonitor = new ActionMonitor();
-        Event event = CreateEvent(actionMonitor);
-
-        VariablePoolState poolState = new VariablePoolState(new ContinuousVariablePool(0));
-        EventsState eventsState = new EventsState();
-        eventsState.AddEvent(event);
-        eventsState.SetPool(poolState);
-        
-        globalState = new GlobalRunTimeState();
+        Event event = CreateEvent(new ActionMonitor());
+        EventsState eventsState = CreateEventStateWith(event);
         globalState.AddSubstate(eventsState);
         
-        generatedLTS = ltsGenerator.Generate(globalState);
-        
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
-        EventsState nextEventsState = nextGlobalState.EventsState();
-        nextEventsState.PoolState().Pool().Release(event.Timer());
-        nextEventsState.RemoveEvent(event);
-
-        assertTrue(generatedLTS.HasTransition(globalState, EventTransitionLabel(event), nextGlobalState));
+        nextGlobalState.EventsState().PoolState().Pool().Release(event.Timer());
+        nextGlobalState.EventsState().RemoveEvent(event);
+        
+        transitionCollectorChecker.Expect(EventTransitionLabel(event), nextGlobalState);
+        
+        rule.TryApply(SingleStateInfo(globalState), transitionCollectorChecker);
+        
         assertTrue(((ActionMonitor)event.Action()).isExecuted);
+    }
+    
+    @Test
+    public void DoesNotExpiresEventsIfThereIsSoftwareAction()
+    {
+        Event event = CreateEvent(new ActionMonitor());
+        EventsState eventsState = CreateEventStateWith(event);
+        globalState.AddSubstate(eventsState);
+        
+        StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
+                WithState(globalState).
+                AddOutTransition(new Transition(globalState, new SoftwareLabel(), globalState)).
+                Build();
+           
+        transitionCollectorChecker.ExpectNothing();
+        
+        rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
+        
+        assertFalse(((ActionMonitor)event.Action()).isExecuted);
+    }
+    
+    @Test
+    public void DoesNotExpiresEventsIfThereIsNetworkAction()
+    {
+        Event event = CreateEvent(new ActionMonitor());
+        EventsState eventsState = CreateEventStateWith(event);
+        globalState.AddSubstate(eventsState);
+        
+        StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
+                WithState(globalState).
+                AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
+                Build();
+           
+        transitionCollectorChecker.ExpectNothing();
+        
+        rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
+        
+        assertFalse(((ActionMonitor)event.Action()).isExecuted);
     }
     
     private ContinuousLabel EventTransitionLabel(Event event)
@@ -70,4 +116,16 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         return new Event(5, new ContinuousVariable("timer"), action);
     }
     
+    public EventsState CreateEventStateWith(Event event)
+    {
+        VariablePoolState poolState = new VariablePoolState(new ContinuousVariablePool(0));
+        EventsState eventsState = new EventsState();
+        eventsState.AddEvent(event);
+        eventsState.SetPool(poolState);
+        return eventsState;
+    }
+    public StateInfo SingleStateInfo(GlobalRunTimeState globalState)
+    {
+        return new StateInfo(globalState, Collections.EMPTY_LIST , Collections.EMPTY_LIST);
+    }
 }

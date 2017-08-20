@@ -14,7 +14,7 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class ProgramDefinition
+public class ModelDefinition
 {
     private List<SoftwareActor> actors = new ArrayList<>();
     private MainBlock mainBlock;
@@ -45,6 +45,16 @@ public class ProgramDefinition
             if(actor.GetName().equals(name))
                 return actor;
         return null;
+    }
+
+    public void AddType(ActorType wheelType)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    public void AddActor(PhysicalActor brake)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -9,7 +9,7 @@ import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.SubParser;
 import HPalang.Parser.antlr.HPalangBaseListener;
 import HPalang.Parser.antlr.HPalangParser;
@@ -22,7 +22,7 @@ public class ActorSkeletonParser extends SubParser<HPalangParser.ActorContext>
 {
     private final SoftwareActor actor;
 
-    public ActorSkeletonParser(ProgramDefinition model, HPalangParser.ActorContext ctx)
+    public ActorSkeletonParser(ModelDefinition model, HPalangParser.ActorContext ctx)
     {
         super(model, ctx);
         actor = new SoftwareActor(ctx.ID().getText(), 5);

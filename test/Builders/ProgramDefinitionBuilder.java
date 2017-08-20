@@ -6,8 +6,7 @@
 package Builders;
 
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.MainBlock;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,9 +23,9 @@ public class ProgramDefinitionBuilder
         return this;
     }
     
-    public ProgramDefinition Build()
+    public ModelDefinition Build()
     {
-        ProgramDefinition def = new ProgramDefinition();
+        ModelDefinition def = new ModelDefinition();
         
         for(SoftwareActor actor : actors)
             def.AddActor(actor);

@@ -17,14 +17,26 @@ import java.util.Set;
 public class ActorType
 {
     private final Map<String,InstanceParameter> instanceParameters = new HashMap<>();
+    private final Map<String,DelegationParameter> delegationParameters = new HashMap<>();
     
     public void AddInstanceParameter(InstanceParameter parameter)
     {
         instanceParameters.put(parameter.Name(),parameter);
     }
     
-    public InstanceParameter FindInstanceParameter(String controller)
+    public InstanceParameter FindInstanceParameter(String instanceName)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return instanceParameters.get(instanceName);
     }
+    
+    public void AddDelegationParameter(DelegationParameter delegationParameter)
+    {
+        delegationParameters.put(delegationParameter.Name(), delegationParameter);
+    }
+    
+    public DelegationParameter FindDelegationParameter(String delegationName)
+    {
+        return delegationParameters.get(delegationName);
+    }
+
 }

@@ -15,7 +15,7 @@ import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.Core.Statements.ContinuousBehaviorStatement;
@@ -36,7 +36,7 @@ public class MethodDefinitionParser extends SubParser<HPalangParser.Method_defCo
     private final SoftwareActor actor;
     
     public MethodDefinitionParser(
-            ProgramDefinition model,
+            ModelDefinition model,
             HPalangParser.Method_defContext ctx,
             SoftwareActor actor,
             MessageHandler handler)

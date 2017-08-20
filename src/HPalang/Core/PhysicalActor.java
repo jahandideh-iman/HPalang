@@ -17,10 +17,18 @@ public class PhysicalActor extends Actor
     private final String name;
     private final Set<Mode> modes = new HashSet<>();
     private final Set<ContinuousVariable> variables = new HashSet<>();
+    private final PhysicalActorType type;
 
     public PhysicalActor(String name)
     {
         this.name = name;
+        this.type = null;
+    }
+    
+    public PhysicalActor(String name, PhysicalActorType type)
+    {
+        this.name = name;
+        this.type = type;
     }
     
     public void AddVariable(ContinuousVariable variable)
@@ -30,5 +38,10 @@ public class PhysicalActor extends Actor
     public void AddMode(Mode mode)
     {
         modes.add(mode);
+    }
+
+    public PhysicalActorType Type()
+    {
+        return type;
     }
 }

@@ -11,7 +11,7 @@ import HPalang.Convertors.LTSToXMLConvertor;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.HybridAutomataGeneration.HybridAutomaton;
@@ -67,7 +67,7 @@ public class Main {
      */
     public static void main(String[] args) throws FileNotFoundException, IOException 
     {
-        ProgramDefinition definition;
+        ModelDefinition definition;
         if(args.length ==0 )
             definition = new DrawBridge().Create();
         else
@@ -226,9 +226,9 @@ public class Main {
 //        
     }
     
-    static ProgramDefinition CreateProgramWithSimpleMessageing1()
+    static ModelDefinition CreateProgramWithSimpleMessageing1()
     {
-        ProgramDefinition definition = new ProgramDefinition();
+        ModelDefinition definition = new ModelDefinition();
         
         SoftwareActor actorA = new SoftwareActor("A",2);        
         SoftwareActor actorB = new SoftwareActor("B",2);
@@ -256,9 +256,9 @@ public class Main {
         return definition;
     }
     
-    static ProgramDefinition CreateProgramWithSimpleMessageing2()
+    static ModelDefinition CreateProgramWithSimpleMessageing2()
     {
-        ProgramDefinition definition = new ProgramDefinition();
+        ModelDefinition definition = new ModelDefinition();
         
         SoftwareActor actorA = new SoftwareActor("A",1);        
         SoftwareActor actorB = new SoftwareActor("B",1);
@@ -287,9 +287,9 @@ public class Main {
         return definition;
     }
     
-    static ProgramDefinition CreateThermostatPorgram()
+    static ModelDefinition CreateThermostatPorgram()
     {
-        ProgramDefinition definition = new ProgramDefinition();
+        ModelDefinition definition = new ModelDefinition();
         
         SoftwareActor actorThermostat = new SoftwareActor("Thermostat",1);   
         
@@ -323,9 +323,9 @@ public class Main {
         return definition;
     }
    
-    static ProgramDefinition CreateProgramWithComplexMessageing()
+    static ModelDefinition CreateProgramWithComplexMessageing()
     {
-        ProgramDefinition definition = new ProgramDefinition();
+        ModelDefinition definition = new ModelDefinition();
         
         SoftwareActor actorA = new SoftwareActor("A",1);        
         SoftwareActor actorB = new SoftwareActor("B",1);

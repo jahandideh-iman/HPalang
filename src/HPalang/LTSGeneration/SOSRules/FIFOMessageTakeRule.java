@@ -10,6 +10,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.TransitionCollector;
 
 /**
  *
@@ -27,7 +28,7 @@ public class FIFOMessageTakeRule extends ActorLevelRule
     }
 
     @Override
-    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
+    protected void ApplyToActorState(ActorRunTimeState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         
@@ -36,6 +37,6 @@ public class FIFOMessageTakeRule extends ActorLevelRule
         Message message = newActorState.MessageQueueState().Messages().Dequeue();
         newActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
         
-        generator.AddTransition(new SoftwareLabel(), newGlobalState);
+        collector.AddTransition(new SoftwareLabel(), newGlobalState);
     }
 }

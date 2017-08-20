@@ -6,7 +6,7 @@
 package HPalang.Parser.SubParsers;
 
 import HPalang.Parser.antlr.HPalangBaseListener;
-import HPalang.Core.ProgramDefinition;
+import HPalang.Core.ModelDefinition;
 import HPalang.Parser.SubParser;
 import HPalang.Parser.antlr.HPalangParser;
 
@@ -17,7 +17,7 @@ import HPalang.Parser.antlr.HPalangParser;
 public class ModelFleshParser extends SubParser<HPalangParser.ModelContext>
 {
 
-    public ModelFleshParser(ProgramDefinition model, HPalangParser.ModelContext ctx)
+    public ModelFleshParser(ModelDefinition model, HPalangParser.ModelContext ctx)
     {
         super(model, ctx);
     }

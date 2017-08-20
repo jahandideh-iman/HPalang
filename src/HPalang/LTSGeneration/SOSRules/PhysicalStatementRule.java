@@ -13,6 +13,7 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.TransitionCollector;
 
 /**
  *
@@ -32,7 +33,7 @@ public abstract class PhysicalStatementRule<T extends Statement> extends Physica
     protected abstract Class<T> StatementType();
 
     @Override
-    protected void ApplyToActorState(PhysicalActorState actorState, GlobalRunTimeState globalState, LTSGenerator generator)
+    protected void ApplyToActorState(PhysicalActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         PhysicalActorState newActorState = newGlobalState.ContinuousState().FindActorState(actorState.Actor());
@@ -42,7 +43,7 @@ public abstract class PhysicalStatementRule<T extends Statement> extends Physica
         ApplyStatement(newActorState, statement);
         SoftwareLabel label = CreateTransitionLabel(actorState, statement);
         
-        generator.AddTransition(label, newGlobalState);
+        collector.AddTransition(label, newGlobalState);
     }
     
     protected abstract void ApplyStatement(PhysicalActorState actorState, T statement);

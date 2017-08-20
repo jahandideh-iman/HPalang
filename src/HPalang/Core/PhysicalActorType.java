@@ -50,6 +50,4 @@ public class PhysicalActorType extends ActorType
     {
         return variables.get(variableName);
     }
-
-
 }

@@ -43,6 +43,11 @@ public class SoftwareActor extends Actor
         delayVariable = new ContinuousVariable(name+"_delay");
     }
     
+    public SoftwareActor(String name, SoftwareActorType type)
+    {
+        this(name, type, 5);
+    }
+    
     public void AddMessageHandler(String id,MessageHandler handler)
     {
         handler.SetID(id);
