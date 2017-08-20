@@ -7,6 +7,7 @@ package Builders;
 
 import HPalang.Core.Mode;
 import HPalang.Core.PhysicalActor;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.State;
 import java.util.LinkedList;
@@ -28,6 +29,8 @@ public class PhysicalActorStateBuilder
         
         state.SetMode(mode);
         
+        state.AddSubstate(new ExecutionQueueState());
+        
         substates.forEach(s -> state.AddSubstate(s));
         
         return state;
@@ -38,13 +41,7 @@ public class PhysicalActorStateBuilder
         this.actor = actor;
         return this;
     }
-    
-    public PhysicalActorStateBuilder With(State substate)
-    {
-        substates.add(substate);
-        return this;
-    }
-    
+       
     public PhysicalActorStateBuilder With(Mode mode)
     {
         this.mode = mode;

@@ -10,6 +10,9 @@ import Builders.GlobalRunTimeStateBuilder;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.DifferentialEquation;
+import HPalang.Core.Mode;
+import HPalang.Core.PhysicalActor;
+import HPalang.Core.PhysicalActorType;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
@@ -46,19 +49,27 @@ public class Utilities
         return new SoftwareActor(actorName, null);
     }
     
+    static public PhysicalActor CreatePhysicalActor(String actorName, Mode ... modes )
+    {
+        PhysicalActorType type = new PhysicalActorType(actorName + "Type");
+        PhysicalActor actor = new PhysicalActor(actorName, type);
+        
+        for(Mode mode : modes)
+            type.AddMode(mode);
+        
+        return actor;
+    }
+    
     public static void assertEqualButNotSame(Object obj1,Object obj2)
     {
         assertThat(obj1, equalTo(obj2));
         assertThat(obj1, not(sameInstance(obj2)));
     }
     
-    public static GlobalRunTimeState CreateGlobalState(SoftwareActorState ... actorStates)
+    public static GlobalRunTimeState CreateGlobalState()
     {
         GlobalRunTimeStateBuilder builder = new GlobalRunTimeStateBuilder();
         
-        for(SoftwareActorState actorState : actorStates)
-            builder.AddSoftwareActorState(actorState);
-   
         return builder.Build();
     }
     

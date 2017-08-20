@@ -7,15 +7,23 @@ package HPalang.LTSGeneration.SOSRules;
 
 import Builders.ModeBuilder;
 import Builders.PhysicalActorStateBuilder;
-import HPalang.Core.DifferentialEquation;
+import Builders.StateInfoBuilder;
 import HPalang.Core.Mode;
 import HPalang.Core.PhysicalActor;
-import static HPalang.Core.Statement.StatementsFrom;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
+import HPalang.LTSGeneration.Labels.NetworkLabel;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import HPalang.LTSGeneration.RunTimeStates.Event.Event;
+import HPalang.LTSGeneration.RunTimeStates.EventsState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
-import Mocks.EmptyStatement;
+import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.Transition;
+import Mocks.ActionMonitor;
+import static TestUtilities.Utilities.CreateGlobalState;
+import static TestUtilities.Utilities.CreatePhysicalActor;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import org.junit.Test;
 import org.junit.Before;
@@ -30,30 +38,75 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
     public void Setup()
     {
         ltsGenerator.AddSOSRule(new ContinuousBehaviorExpirationRule());
+        rule = new ContinuousBehaviorExpirationRule();
     }
+    
     
     @Test
     public void IfThereIsNoSoftwareAndNetworkTransitionExpiratesTheActivePhysicalActors()
     {
-        PhysicalActor pActor = new PhysicalActor("pActor");
         Mode mode = new ModeBuilder().Build();
-        pActor.AddMode(mode);
+        PhysicalActor pActor = CreatePhysicalActor("pActor",mode);
         
         PhysicalActorState physicalActorState = new PhysicalActorStateBuilder().
                 With(pActor).
-                With(new ExecutionQueueState()).
                 With(mode).
                 Build();
 
-        globalState = new GlobalRunTimeState();
-        globalState.AddSubstate(CreateContinuousState(physicalActorState));
-        
-        generatedLTS = ltsGenerator.Generate(globalState);
+        globalState = CreateGlobalState();
+        globalState.ContinuousState().AddPhysicalActorState(physicalActorState);
         
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         PhysicalActorState nextActorState = nextGlobalState.ContinuousState().FindActorState(pActor);
         nextActorState.ExecutionQueueState().Statements().Enqueue(mode.Actions());
-
-        assertTrue(generatedLTS.HasTransition(globalState, new ContinuousLabel(mode.Guard()), nextGlobalState));
+        
+        transitionCollectorChecker.ExpectTransition(new ContinuousLabel(mode.Guard()),nextGlobalState);
+        
+        rule.TryApply(SingleStateInfo(globalState), transitionCollectorChecker);  
+    }
+    
+    @Test
+    public void DoesNotExpiresActivePhysicalActorsIfThereIsSoftwareAction()
+    {
+        SetupGlobalStateWithOneActivePhyiscalActor();
+        
+        StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
+                WithState(globalState).
+                AddOutTransition(new Transition(globalState, new SoftwareLabel(), globalState)).
+                Build();
+           
+        transitionCollectorChecker.ExpectNoTransition();
+        
+        rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
+    }
+    
+    @Test
+    public void DoesNotExpiresEventsIfThereIsNetworkAction()
+    {
+        SetupGlobalStateWithOneActivePhyiscalActor();
+        
+        StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
+                WithState(globalState).
+                AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
+                Build();
+           
+        transitionCollectorChecker.ExpectNoTransition();
+        
+        rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
+        
+    }
+    
+    private void SetupGlobalStateWithOneActivePhyiscalActor()
+    {
+        Mode mode = new ModeBuilder().Build();
+        PhysicalActor pActor = CreatePhysicalActor("pActor",mode);
+        
+        PhysicalActorState physicalActorState = new PhysicalActorStateBuilder().
+                With(pActor).
+                With(mode).
+                Build();
+        
+        globalState = CreateGlobalState();
+        globalState.ContinuousState().AddPhysicalActorState(physicalActorState);
     }
 }

@@ -6,7 +6,6 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.SoftwareActor;
-import TestUtilities.Utilities;
 import static TestUtilities.Utilities.CreateSofwareActor;
 import org.junit.Test;
 import static org.junit.Assert.*;

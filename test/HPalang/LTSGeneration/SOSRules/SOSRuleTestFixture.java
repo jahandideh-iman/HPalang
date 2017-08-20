@@ -13,8 +13,12 @@ import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
+import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.State;
+import HPalang.LTSGeneration.StateInfo;
+import Mocks.TransitionCollectorMock;
 import static TestUtilities.Utilities.CreateGlobalState;
+import java.util.Collections;
 
 /**
  *
@@ -25,6 +29,9 @@ public class SOSRuleTestFixture
     protected LTSGenerator ltsGenerator = new LTSGenerator();
     protected LabeledTransitionSystem generatedLTS;
     protected GlobalRunTimeState globalState = CreateGlobalState();
+    
+    SOSRule rule;
+    TransitionCollectorMock transitionCollectorChecker = new TransitionCollectorMock();
     
     protected void DequeueOneStatemenet(SoftwareActorState actorState)
     {
@@ -49,11 +56,16 @@ public class SOSRuleTestFixture
         return state;
     }
     
-        public PhysicalActorState CreatePhysicalState(String actorName)
+    public PhysicalActorState CreatePhysicalState(String actorName)
     {
         PhysicalActorState state =  new PhysicalActorState(new PhysicalActor(actorName));
 
         return state;
+    }
+        
+    public StateInfo SingleStateInfo(GlobalRunTimeState globalState)
+    {
+        return new StateInfo(globalState, Collections.EMPTY_LIST , Collections.EMPTY_LIST);
     }
    
 }

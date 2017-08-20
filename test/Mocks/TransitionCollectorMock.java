@@ -23,7 +23,7 @@ public class TransitionCollectorMock implements TransitionCollector
     private GlobalRunTimeState expectedDestintaiton;
     private boolean expectNothing = false;
     
-    public void Expect(Label label, GlobalRunTimeState destination)
+    public void ExpectTransition(Label label, GlobalRunTimeState destination)
     {
         this.expectedLabel = label;
         this.expectedDestintaiton = destination;
@@ -37,7 +37,7 @@ public class TransitionCollectorMock implements TransitionCollector
         assertThat(destination, is(equalTo(expectedDestintaiton)));
     }
 
-    public void ExpectNothing()
+    public void ExpectNoTransition()
     {
         expectNothing = true;
     }

@@ -30,9 +30,11 @@ public class HybridAutomatonGeneratorTest
         
         LabeledTransitionSystem lts = new LabeledTransitionSystem();
           
-        GlobalRunTimeState state1 = CreateGlobalState(CreateSoftwareActorState("1"));
-
-        GlobalRunTimeState state2 = CreateGlobalState(CreateSoftwareActorState("2"));
+        GlobalRunTimeState state1 = Utilities.CreateGlobalState();
+        state1.DiscreteState().AddSoftwareActorState(CreateSoftwareActorState("1"));
+        
+        GlobalRunTimeState state2 = Utilities.CreateGlobalState();
+        state2.DiscreteState().AddSoftwareActorState(CreateSoftwareActorState("1"));
 
         lts.AddState(state1);
         lts.AddState(state2);

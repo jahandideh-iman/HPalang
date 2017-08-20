@@ -19,21 +19,13 @@ import java.util.List;
 public class GlobalRunTimeStateBuilder
 {
     private final List<SoftwareActorState> softwareActorStates = new LinkedList<>();
-    //private final List<State> substates = new LinkedList<>();
-
-    
+ 
     public GlobalRunTimeStateBuilder AddSoftwareActorState(SoftwareActorState SoftwareActorState)
     {
         softwareActorStates.add(SoftwareActorState);
         return this;
     }
     
-//    public GlobalRunTimeStateBuilder AddSubstate(State substate)
-//    {
-//        substates.add(substate);
-//        return this;
-//    }
-
     public GlobalRunTimeState Build()
     {
         GlobalRunTimeState globalState = new GlobalRunTimeState();
@@ -42,7 +34,7 @@ public class GlobalRunTimeStateBuilder
         ContinuousState continuosState = new ContinuousState();
         
         globalState.AddSubstate(discreteState);
-        globalState.AddSubstate(discreteState);
+        globalState.AddSubstate(continuosState);
         
         for(SoftwareActorState state : softwareActorStates)
             discreteState.AddSoftwareActorState(state);

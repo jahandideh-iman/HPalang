@@ -7,6 +7,7 @@ package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.SoftwareActor;
 import TestUtilities.Utilities;
+import static TestUtilities.Utilities.CreateSoftwareActorState;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static org.hamcrest.CoreMatchers.*;
@@ -21,9 +22,9 @@ public class GlobalRunTimeStateTest
     @Test
     public void DeepCopyIsCorrect()
     {
-        GlobalRunTimeState orignal = Utilities.CreateGlobalState(
-                Utilities.CreateSoftwareActorState("actor1"),
-                Utilities.CreateSoftwareActorState("actor2"));
+        GlobalRunTimeState orignal = Utilities.CreateGlobalState();
+        orignal.DiscreteState().AddSoftwareActorState(CreateSoftwareActorState("actor1"));
+        orignal.DiscreteState().AddSoftwareActorState(CreateSoftwareActorState("actor2"));
         
         GlobalRunTimeState copy = (GlobalRunTimeState) orignal.DeepCopy();
         
@@ -35,9 +36,9 @@ public class GlobalRunTimeStateTest
     @Test
     public void CloneCreateNewActorState()
     {
-        GlobalRunTimeState orignal = Utilities.CreateGlobalState(
-                Utilities.CreateSoftwareActorState("actor1"),
-                Utilities.CreateSoftwareActorState("actor2"));
+        GlobalRunTimeState orignal = Utilities.CreateGlobalState();
+        orignal.DiscreteState().AddSoftwareActorState(CreateSoftwareActorState("actor1"));
+        orignal.DiscreteState().AddSoftwareActorState(CreateSoftwareActorState("actor2"));
         
         GlobalRunTimeState copy = (GlobalRunTimeState)orignal.DeepCopy();
         

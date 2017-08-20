@@ -17,15 +17,6 @@ import java.util.List;
  */
 public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
 {
-    // TODO: Change it to map
-    //private final List<SoftwareActorState> actorStates = new LinkedList<>();   
-    
-
-//    public void AddSoftwareActorState(SoftwareActorState actorRunTimeState)
-//    {
-//        actorStates.add(actorRunTimeState);
-//    }
-    
     public ContinuousState ContinuousState()
     {
         return FindSubState(ContinuousState.class);
@@ -40,55 +31,20 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
     {
         return FindSubState(EventsState.class);
     }
+    
+    public NetworkState NetworkState()
+    {
+        return FindSubState(NetworkState.class);
+    }
 
     public void AddSendStatement(SendStatement sendStatement)
     {
         DiscreteState().FindActorState(sendStatement.GetReceiver()).FindSubState(MessageQueueState.class).Messages().Enqueue(sendStatement.GetMessage());
     }
     
-//    public SoftwareActorState FindActorState(SoftwareActor actor)
-//    {
-//        for(SoftwareActorState state : actorStates)
-//            if(state.Actor() == actor)
-//                return state;
-//        return null;
-//    }
-
-//    public List<SoftwareActorState> ActorStates()
-//    {
-//        return actorStates;
-//    }
-//    @Override
-//    protected boolean InternalEquals(GlobalRunTimeState other)
-//    {
-//        if(other.actorStates.size() != this.actorStates.size())
-//            return false;
-//               
-//        for(SoftwareActorState actorState : this.actorStates)
-//            if(other.actorStates.contains(actorState) == false)
-//                return false;
-//        
-//        return true;
-//    }
-
-//    @Override
-//    protected int InternalHashCode()
-//    {
-//        int hash = 7;
-//        hash = 83 * hash + Objects.hashCode(this.actorStates);
-//        return hash;
-//    }
-
     @Override
     protected boolean DataEquals(GlobalRunTimeState other)
     {
-//        if(other.actorStates.size() != this.actorStates.size())
-//            return false;
-//        
-//        for(SoftwareActorState actorState : this.actorStates)
-//            if(other.actorStates.contains(actorState) == false)
-//                return false;
-        
         return true;
     }
 
@@ -101,9 +57,6 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
     @Override
     protected void CloneData(GlobalRunTimeState copy)
     {
-//        for(SoftwareActorState state : actorStates)
-//            copy.AddSoftwareActorState((SoftwareActorState) state.DeepCopy());
-
     }
 
 }

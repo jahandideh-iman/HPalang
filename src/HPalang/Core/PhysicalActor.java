@@ -15,8 +15,6 @@ import java.util.Set;
 public class PhysicalActor extends Actor
 {
     private final String name;
-    private final Set<Mode> modes = new HashSet<>();
-    private final Set<ContinuousVariable> variables = new HashSet<>();
     private final PhysicalActorType type;
 
     public PhysicalActor(String name)
@@ -29,15 +27,6 @@ public class PhysicalActor extends Actor
     {
         this.name = name;
         this.type = type;
-    }
-    
-    public void AddVariable(ContinuousVariable variable)
-    {
-        variables.add(variable);
-    }
-    public void AddMode(Mode mode)
-    {
-        modes.add(mode);
     }
 
     public PhysicalActorType Type()

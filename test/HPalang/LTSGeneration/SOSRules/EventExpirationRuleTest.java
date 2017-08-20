@@ -36,16 +36,10 @@ import org.junit.Before;
  */
 public class EventExpirationRuleTest extends SOSRuleTestFixture
 {
-    SOSRule rule;
-    TransitionCollectorMock transitionCollectorChecker;
     @Before
     public void Setup()
     {
-        ltsGenerator.AddSOSRule(new EventExpirationRule());
         rule = new EventExpirationRule();
-        transitionCollectorChecker = new TransitionCollectorMock();
-        
-        globalState = new GlobalRunTimeState();
     }
     
     @Test
@@ -59,7 +53,7 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         nextGlobalState.EventsState().PoolState().Pool().Release(event.Timer());
         nextGlobalState.EventsState().RemoveEvent(event);
         
-        transitionCollectorChecker.Expect(EventTransitionLabel(event), nextGlobalState);
+        transitionCollectorChecker.ExpectTransition(EventTransitionLabel(event), nextGlobalState);
         
         rule.TryApply(SingleStateInfo(globalState), transitionCollectorChecker);
         
@@ -78,7 +72,7 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
                 AddOutTransition(new Transition(globalState, new SoftwareLabel(), globalState)).
                 Build();
            
-        transitionCollectorChecker.ExpectNothing();
+        transitionCollectorChecker.ExpectNoTransition();
         
         rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
         
@@ -97,7 +91,7 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
                 AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
                 Build();
            
-        transitionCollectorChecker.ExpectNothing();
+        transitionCollectorChecker.ExpectNoTransition();
         
         rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
         
@@ -123,9 +117,5 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         eventsState.AddEvent(event);
         eventsState.SetPool(poolState);
         return eventsState;
-    }
-    public StateInfo SingleStateInfo(GlobalRunTimeState globalState)
-    {
-        return new StateInfo(globalState, Collections.EMPTY_LIST , Collections.EMPTY_LIST);
     }
 }
