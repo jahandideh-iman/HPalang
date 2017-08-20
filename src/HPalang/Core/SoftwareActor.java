@@ -16,23 +16,15 @@ import java.util.Map;
 public class SoftwareActor extends Actor
 {
     private final String name;
-    private final int capacity;
-    private final Map<String,MessageHandler> messageHandlers = new HashMap<>();
-    
-    private final Map<DiscreteVariable, Integer> discreteVariables = new HashMap<>();
-    private final Map<ContinuousVariable, Float> continuousVariables = new HashMap<>();
-    
-    private ContinuousVariable delayVariable;
-    
     private final SoftwareActorType type;
+        
+    private final int capacity;
     
-    
+    private final Map<DiscreteVariable, Integer> initialValues = new HashMap<>();
+ 
     public SoftwareActor(String name, int capacity)
     {
-        this.name = name;
-        this.capacity = capacity;
-        delayVariable = new ContinuousVariable(name+"_delay");
-        this.type = null;
+        this(name, null, capacity);
     }
 
     public SoftwareActor(String name, SoftwareActorType type , int capacity)
@@ -40,99 +32,28 @@ public class SoftwareActor extends Actor
         this.name = name;
         this.type = type;
         this.capacity = capacity;
-        delayVariable = new ContinuousVariable(name+"_delay");
     }
     
     public SoftwareActor(String name, SoftwareActorType type)
     {
         this(name, type, 5);
     }
-    
-    public void AddMessageHandler(String id,MessageHandler handler)
+  
+    public Map<DiscreteVariable, Integer> InitialValues()
     {
-        handler.SetID(id);
-        messageHandlers.put(id,handler);
+        return initialValues;
     }
-     
-    public void AddDiscreteVariable(DiscreteVariable var, int initialValue)
-    {
-        discreteVariables.put(var, initialValue);
-    }
-    
-    public void AddContinuousVariable(ContinuousVariable var, float initialValue)
-    {
-        continuousVariables.put(var, initialValue);
-    }
-    
-    public Map<DiscreteVariable, Integer> GetDiscreteVariables()
-    {
-        return discreteVariables;
-    }
-    
-    public Collection<ContinuousVariable> GetContinuousVariables()
-    {
-        return continuousVariables.keySet();
-    }
-    
-    public MessageHandler GetMessageHandler(String id)
-    {
-        return messageHandlers.get(id);
-    }
-    
-    public Collection<MessageHandler> GetMessageHandlers()
-    {
-        return messageHandlers.values();
-    }
-    
-    public int GetCapacity()
+      
+    public int Capacity()
     {
         return capacity;
     }
     
-    public String GetName()
+    public String Name()
     {
         return name;
     }
     
-    public ContinuousVariable GetDelayVariable()
-    {
-        return delayVariable;
-    }
-
-    public DiscreteVariable FindDiscreteVariable(String name)
-    {
-        for(DiscreteVariable var : discreteVariables.keySet())
-            if(var.Name().equals(name))
-                return var;
-        return null;
-    }
-    
-    public ContinuousVariable FindContinuousVariable(String name)
-    {
-        for(ContinuousVariable var : continuousVariables.keySet())
-            if(var.Name().equals(name))
-                return var;
-        return null;
-    }
-    
-    public Variable FindVariable(String name)
-    {
-        Variable var = FindDiscreteVariable(name);
-        if(var == null)
-            var = FindContinuousVariable(name);
-        return var;
-    }
-    
-    public boolean HasDiscreteVariable(String name)
-    {
-        return FindDiscreteVariable(name) != null;
-    }
-    
-    public boolean HasContinuousVariable(String name)
-    {
-        return FindContinuousVariable(name) != null;
-    }
-
     public SoftwareActorType Type()
     {
         return type;

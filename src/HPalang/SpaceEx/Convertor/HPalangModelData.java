@@ -39,9 +39,9 @@ public class HPalangModelData
             actorsData.put(actor,actorData);
         }
         
-        for(SoftwareActor actor : hpalangModel.GetActors())
-            for(MessageHandler handler : actor.GetMessageHandlers())
-                ProcessStatements(handler.GetBody(), actor, null);
+//        for(SoftwareActor actor : hpalangModel.GetActors())
+//            for(MessageHandler handler : actor.GetMessageHandlers())
+//                ProcessStatements(handler.GetBody(), actor, null);
                 
         
     }

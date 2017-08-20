@@ -229,30 +229,30 @@ public class Main {
     static ModelDefinition CreateProgramWithSimpleMessageing1()
     {
         ModelDefinition definition = new ModelDefinition();
-        
-        SoftwareActor actorA = new SoftwareActor("A",2);        
-        SoftwareActor actorB = new SoftwareActor("B",2);
-        
-        MessageHandler hanlder_a1 = new MessageHandler();        
-        MessageHandler hanlder_b1 = new MessageHandler();
-
-        
-        actorA.AddMessageHandler("a1",hanlder_a1);
-        actorB.AddMessageHandler("b1",hanlder_b1);
-        
-        hanlder_a1.AddStatement(new DelayStatement(1.0f));
-        hanlder_a1.AddStatement(new SendStatement(actorB,new NormalMessage(hanlder_b1)));
-
-        hanlder_b1.AddStatement(new DelayStatement(1.0f));
-        hanlder_b1.AddStatement(new SendStatement(actorA,new NormalMessage(hanlder_a1)));
-        
-        MainBlock mainBlock = new MainBlock();     
-        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage(hanlder_b1)));
-               
-        definition.AddActor(actorA);
-        definition.AddActor(actorB);
-        definition.SetMainBlock(mainBlock);
-        
+//        
+//        SoftwareActor actorA = new SoftwareActor("A",2);        
+//        SoftwareActor actorB = new SoftwareActor("B",2);
+//        
+//        MessageHandler hanlder_a1 = new MessageHandler();        
+//        MessageHandler hanlder_b1 = new MessageHandler();
+//
+//        
+//        actorA.AddMessageHandler("a1",hanlder_a1);
+//        actorB.AddMessageHandler("b1",hanlder_b1);
+//        
+//        hanlder_a1.AddStatement(new DelayStatement(1.0f));
+//        hanlder_a1.AddStatement(new SendStatement(actorB,new NormalMessage(hanlder_b1)));
+//
+//        hanlder_b1.AddStatement(new DelayStatement(1.0f));
+//        hanlder_b1.AddStatement(new SendStatement(actorA,new NormalMessage(hanlder_a1)));
+//        
+//        MainBlock mainBlock = new MainBlock();     
+//        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage(hanlder_b1)));
+//               
+//        definition.AddActor(actorA);
+//        definition.AddActor(actorB);
+//        definition.SetMainBlock(mainBlock);
+//        
         return definition;
     }
     
@@ -260,29 +260,29 @@ public class Main {
     {
         ModelDefinition definition = new ModelDefinition();
         
-        SoftwareActor actorA = new SoftwareActor("A",1);        
-        SoftwareActor actorB = new SoftwareActor("B",1);
-        
-        MessageHandler hanlder_a1 = new MessageHandler();        
-        MessageHandler hanlder_b1 = new MessageHandler();
-
-        
-        actorA.AddMessageHandler("a1",hanlder_a1);
-        actorB.AddMessageHandler("b1",hanlder_b1);
-        
-        hanlder_a1.AddStatement(new DelayStatement(1.0f));
-        hanlder_a1.AddStatement(new SendStatement(actorB,new NormalMessage(hanlder_b1)));
-
-        hanlder_b1.AddStatement(new DelayStatement(1.0f));
-        hanlder_b1.AddStatement(new SendStatement(actorA,new NormalMessage(hanlder_a1)));
-        
-        MainBlock mainBlock = new MainBlock();     
-        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage(hanlder_b1)));
-        mainBlock.AddSendStatement(new SendStatement(actorA, new NormalMessage(hanlder_a1)));
-               
-        definition.AddActor(actorA);
-        definition.AddActor(actorB);
-        definition.SetMainBlock(mainBlock);
+//        SoftwareActor actorA = new SoftwareActor("A",1);        
+//        SoftwareActor actorB = new SoftwareActor("B",1);
+//        
+//        MessageHandler hanlder_a1 = new MessageHandler();        
+//        MessageHandler hanlder_b1 = new MessageHandler();
+//
+//        
+//        actorA.AddMessageHandler("a1",hanlder_a1);
+//        actorB.AddMessageHandler("b1",hanlder_b1);
+//        
+//        hanlder_a1.AddStatement(new DelayStatement(1.0f));
+//        hanlder_a1.AddStatement(new SendStatement(actorB,new NormalMessage(hanlder_b1)));
+//
+//        hanlder_b1.AddStatement(new DelayStatement(1.0f));
+//        hanlder_b1.AddStatement(new SendStatement(actorA,new NormalMessage(hanlder_a1)));
+//        
+//        MainBlock mainBlock = new MainBlock();     
+//        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage(hanlder_b1)));
+//        mainBlock.AddSendStatement(new SendStatement(actorA, new NormalMessage(hanlder_a1)));
+//               
+//        definition.AddActor(actorA);
+//        definition.AddActor(actorB);
+//        definition.SetMainBlock(mainBlock);
         
         return definition;
     }
@@ -291,34 +291,34 @@ public class Main {
     {
         ModelDefinition definition = new ModelDefinition();
         
-        SoftwareActor actorThermostat = new SoftwareActor("Thermostat",1);   
-        
-        ContinuousVariable x = new ContinuousVariable("x");
-        
-        MessageHandler hanlder_On = new MessageHandler();        
-        MessageHandler hanlder_Off = new MessageHandler();
-
-        
-        actorThermostat.AddMessageHandler("TurnOn",hanlder_On);
-        actorThermostat.AddMessageHandler("TurnOff",hanlder_Off);
-        
-        hanlder_On.AddStatement(new ContinuousBehaviorStatement
-        (new ContinuousBehavior("x <= 100"
-                , new DifferentialEquation(x, "-x + 100")
-                , "x >= 18"
-                , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_Off))))));
-
-        hanlder_Off.AddStatement(new ContinuousBehaviorStatement
-        (new ContinuousBehavior("x>=50"
-                ,  new DifferentialEquation(x, "-x + 50")
-                , "x <= 2"
-                , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_On))))));
-        
-        MainBlock mainBlock = new MainBlock();     
-        mainBlock.AddSendStatement(new SendStatement(actorThermostat, new NormalMessage(hanlder_On)));
-               
-        definition.AddActor(actorThermostat);
-        definition.SetMainBlock(mainBlock);
+//        SoftwareActor actorThermostat = new SoftwareActor("Thermostat",1);   
+//        
+//        ContinuousVariable x = new ContinuousVariable("x");
+//        
+//        MessageHandler hanlder_On = new MessageHandler();        
+//        MessageHandler hanlder_Off = new MessageHandler();
+//
+//        
+//        actorThermostat.AddMessageHandler("TurnOn",hanlder_On);
+//        actorThermostat.AddMessageHandler("TurnOff",hanlder_Off);
+//        
+//        hanlder_On.AddStatement(new ContinuousBehaviorStatement
+//        (new ContinuousBehavior("x <= 100"
+//                , new DifferentialEquation(x, "-x + 100")
+//                , "x >= 18"
+//                , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_Off))))));
+//
+//        hanlder_Off.AddStatement(new ContinuousBehaviorStatement
+//        (new ContinuousBehavior("x>=50"
+//                ,  new DifferentialEquation(x, "-x + 50")
+//                , "x <= 2"
+//                , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_On))))));
+//        
+//        MainBlock mainBlock = new MainBlock();     
+//        mainBlock.AddSendStatement(new SendStatement(actorThermostat, new NormalMessage(hanlder_On)));
+//               
+//        definition.AddActor(actorThermostat);
+//        definition.SetMainBlock(mainBlock);
         
         return definition;
     }
@@ -327,35 +327,35 @@ public class Main {
     {
         ModelDefinition definition = new ModelDefinition();
         
-        SoftwareActor actorA = new SoftwareActor("A",1);        
-        SoftwareActor actorB = new SoftwareActor("B",1);
-        
-        MessageHandler handler_a1 = new MessageHandler();        
-        MessageHandler handler_b1 = new MessageHandler();
-        MessageHandler handler_b2 = new MessageHandler();
-
-        
-        actorA.AddMessageHandler("a1",handler_a1);
-        actorB.AddMessageHandler("b1",handler_b1);
-        actorB.AddMessageHandler("b2",handler_b2);
-        
-        handler_a1.AddStatement(new DelayStatement(1.0f));
-        handler_a1.AddStatement(new SendStatement(actorB,new NormalMessage(handler_b1)));
-        handler_a1.AddStatement(new SendStatement(actorB,new NormalMessage(handler_b2)));
-
-        handler_b1.AddStatement(new DelayStatement(1.0f));
-        handler_b1.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1)));
-        
-        handler_b2.AddStatement(new DelayStatement(0.5f));
-        handler_b2.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1)));
-       
-        MainBlock mainBlock = new MainBlock();     
-        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage(handler_b1)));
-        
-                
-        definition.AddActor(actorA);
-        definition.AddActor(actorB);
-        definition.SetMainBlock(mainBlock);
+//        SoftwareActor actorA = new SoftwareActor("A",1);        
+//        SoftwareActor actorB = new SoftwareActor("B",1);
+//        
+//        MessageHandler handler_a1 = new MessageHandler();        
+//        MessageHandler handler_b1 = new MessageHandler();
+//        MessageHandler handler_b2 = new MessageHandler();
+//
+//        
+//        actorA.AddMessageHandler("a1",handler_a1);
+//        actorB.AddMessageHandler("b1",handler_b1);
+//        actorB.AddMessageHandler("b2",handler_b2);
+//        
+//        handler_a1.AddStatement(new DelayStatement(1.0f));
+//        handler_a1.AddStatement(new SendStatement(actorB,new NormalMessage(handler_b1)));
+//        handler_a1.AddStatement(new SendStatement(actorB,new NormalMessage(handler_b2)));
+//
+//        handler_b1.AddStatement(new DelayStatement(1.0f));
+//        handler_b1.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1)));
+//        
+//        handler_b2.AddStatement(new DelayStatement(0.5f));
+//        handler_b2.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1)));
+//       
+//        MainBlock mainBlock = new MainBlock();     
+//        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage(handler_b1)));
+//        
+//                
+//        definition.AddActor(actorA);
+//        definition.AddActor(actorB);
+//        definition.SetMainBlock(mainBlock);
         
         return definition;
     }

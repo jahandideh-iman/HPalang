@@ -28,8 +28,8 @@ public class ActorFleshParser extends SubParser<HPalangParser.ActorContext>
     @Override
     public void enterMethod_def(HPalangParser.Method_defContext ctx)
     {
-        MessageHandler handler = actor.GetMessageHandler(ctx.ID().getText());
-        
-        new MethodDefinitionParser(model,ctx,actor,handler).Parse();
+//        MessageHandler handler = actor.GetMessageHandler(ctx.ID().getText());
+//        
+//        new MethodDefinitionParser(model,ctx,actor,handler).Parse();
     }  
 }

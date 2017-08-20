@@ -67,8 +67,8 @@ public class Expression3Pasrser extends ExpressionParserT<HPalangParser.Expr3Con
     @Override
     public void enterVar_name(HPalangParser.Var_nameContext ctx)
     {
-        String varName = ctx.ID().getText();
-        parsedExpression = new VariableExpression(actor.FindDiscreteVariable(varName));
+//        String varName = ctx.ID().getText();
+//        parsedExpression = new VariableExpression(actor.FindDiscreteVariable(varName));
     }
 
     @Override

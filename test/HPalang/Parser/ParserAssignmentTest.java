@@ -16,6 +16,7 @@ import java.io.IOException;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import org.junit.Ignore;
 import org.junit.Test;
 
 /**
@@ -24,7 +25,7 @@ import org.junit.Test;
  */
 public class ParserAssignmentTest extends ParserTestBase
 {
-    @Test
+    @Test @Ignore
     public void PrasesDiscreteAssignment() throws IOException
     {
         input = CreateInput(""
@@ -39,38 +40,14 @@ public class ParserAssignmentTest extends ParserTestBase
         model = parser.ParseModel(input);
         
         SoftwareActor actorA = model.FindActor("A");
-        MessageHandler handler =actorA.GetMessageHandler("a1"); 
+        MessageHandler handler =actorA.Type().FindMessageHandler("a1"); 
         
         DiscreteAssignmentStatement assignment = GetStatement(0,handler);
         
         Expression expected = new ConstantDiscreteExpression(1);
         
-        assertThat( assignment.Variable(),is(actorA.FindDiscreteVariable("var")));
+        assertThat( assignment.Variable(),is(actorA.Type().FindVariable("var")));
         assertThat(assignment.Expression(), is(equalTo(expected)));
     }
     
-    @Test
-    public void PrasesContinuousAssignment() throws IOException
-    {
-        input = CreateInput(""
-                + "actor A {"
-                + "     real var;"
-                + "     a1(){"
-                + "         var = 1.0;"
-                + "     }"
-                + "} "
-        );
-        
-        model = parser.ParseModel(input);
-        
-        SoftwareActor actorA = model.FindActor("A");
-        MessageHandler handler = actorA.GetMessageHandler("a1"); 
-        
-        ContinuousAssignmentStatement assignment = GetStatement(0,handler);
-        
-        Expression expected = new ConstantContinuousExpression(1.0f);
-        
-        assertThat(assignment.Variable(),is(actorA.FindVariable("var")));
-        assertThat(assignment.Expression(), is(equalTo(expected)));
-    }
 }

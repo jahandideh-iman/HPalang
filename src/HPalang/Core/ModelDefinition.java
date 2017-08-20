@@ -42,7 +42,7 @@ public class ModelDefinition
     public SoftwareActor FindActor(String name)
     {
         for(SoftwareActor actor : actors)
-            if(actor.GetName().equals(name))
+            if(actor.Name().equals(name))
                 return actor;
         return null;
     }

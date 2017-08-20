@@ -27,25 +27,25 @@ public class BouncingBallModel
     {
         ModelDefinition definition = new ModelDefinition();
         
-        SoftwareActor ball = new SoftwareActor("Ball",1);
-        ContinuousVariable ball_y = new ContinuousVariable("y");
-        
-        ball.AddContinuousVariable(ball_y, 0);
-        
-        MessageHandler handler_Fall = new MessageHandler();
-        
-        ball.AddMessageHandler("Fall",handler_Fall);
-        
-        handler_Fall.AddStatement(new ContinuousBehaviorStatement( 
-                new ContinuousBehavior("y>=0",new DifferentialEquation(ball_y, "9.8"), "y<=0",Statement.StatementsFrom(new SendStatement(ball, new NormalMessage(handler_Fall))))));
-      
-       
-        MainBlock mainBlock = new MainBlock();     
-        mainBlock.AddSendStatement(new SendStatement(ball, new NormalMessage(handler_Fall)));
-        
-                
-        definition.AddActor(ball);
-        definition.SetMainBlock(mainBlock);
+//        SoftwareActor ball = new SoftwareActor("Ball",1);
+//        ContinuousVariable ball_y = new ContinuousVariable("y");
+//        
+//        //ball.AddContinuousVariable(ball_y, 0);
+//        
+//        MessageHandler handler_Fall = new MessageHandler();
+//        
+//        ball.AddMessageHandler("Fall",handler_Fall);
+//        
+//        handler_Fall.AddStatement(new ContinuousBehaviorStatement( 
+//                new ContinuousBehavior("y>=0",new DifferentialEquation(ball_y, "9.8"), "y<=0",Statement.StatementsFrom(new SendStatement(ball, new NormalMessage(handler_Fall))))));
+//      
+//       
+//        MainBlock mainBlock = new MainBlock();     
+//        mainBlock.AddSendStatement(new SendStatement(ball, new NormalMessage(handler_Fall)));
+//        
+//                
+//        definition.AddActor(ball);
+//        definition.SetMainBlock(mainBlock);
         
         return definition;
     }

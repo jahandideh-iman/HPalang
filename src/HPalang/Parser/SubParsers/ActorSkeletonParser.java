@@ -31,20 +31,18 @@ public class ActorSkeletonParser extends SubParser<HPalangParser.ActorContext>
     @Override
     public void enterVar_def(HPalangParser.Var_defContext ctx)
     {
-        String type = ctx.type().getText();
-        String varName = ctx.var_name().ID().getText();
-        
-        if(type.equals("real"))
-            actor.AddContinuousVariable(new ContinuousVariable(varName),0);
-        else if(type.equals("int"))
-            actor.AddDiscreteVariable(new DiscreteVariable(varName), 0);
+//        String type = ctx.type().getText();
+//        String varName = ctx.var_name().ID().getText();
+//        
+//        if(type.equals("int"))
+//            actor.AddDiscreteVariable(new DiscreteVariable(varName), 0);
         
     }
 
     @Override
     public void enterMethod_def(HPalangParser.Method_defContext ctx)
     {
-        actor.AddMessageHandler(ctx.ID().getText(), new MessageHandler());
+//        actor.AddMessageHandler(ctx.ID().getText(), new MessageHandler());
     }  
 
     @Override

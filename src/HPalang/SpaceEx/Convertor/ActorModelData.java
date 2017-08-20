@@ -9,13 +9,10 @@ import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
-import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
-import HPalang.SpaceEx.Core.BaseComponent;
-import HPalang.SpaceEx.Core.Location;
-import java.sql.Struct;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -50,13 +47,13 @@ public class ActorModelData
     public ActorModelData(SoftwareActor actor)
     {
         this.actor = actor;
-        for (MessageHandler handler : actor.GetMessageHandlers()) 
-        {
-            handlersName.add(handler.GetID());
-            handlerTakeLabels.add(CreateTakeLabel(handler.GetID()));
-            handlersReceiveLabelMap.put(handler.GetID(), new LinkedList<>());
-               
-        }
+//        for (MessageHandler handler : actor.GetMessageHandlers()) 
+//        {
+//            handlersName.add(handler.GetID());
+//            handlerTakeLabels.add(CreateTakeLabel(handler.GetID()));
+//            handlersReceiveLabelMap.put(handler.GetID(), new LinkedList<>());
+//               
+//        }
     }
     
     public SoftwareActor GetActor()
@@ -132,7 +129,8 @@ public class ActorModelData
 
     public Collection<ContinuousVariable> GetContinuousVariables()
     {
-        return actor.GetContinuousVariables();
+        //return actor.GetContinuousVariables();
+        return Collections.EMPTY_LIST;
     }
 
     public String GetUrgentInvarient()
@@ -217,17 +215,18 @@ public class ActorModelData
 
     String GetName()
     {
-        return actor.GetName();
+        return actor.Name();
     }
     
     public String GetDelayVar()
     {
-        return actor.GetDelayVariable().Name();
+        //return actor.GetDelayVariable().Name();
+        return "";
     }
 
     Collection<DiscreteVariable> GetDiscreteVaraible()
     {
-        return actor.GetDiscreteVariables().keySet();
+        return actor.Type().Variables();
     }
 
     CommunicationLabel GetSelfSendLabelFor(CommunicationLabel selfReceive)
@@ -244,7 +243,7 @@ public class ActorModelData
         String actorName;
         boolean isSelf = false;
         
-        actorName = receiver.GetName();
+        actorName = receiver.Name();
         
         if(receiver == actor)
         {
@@ -262,7 +261,7 @@ public class ActorModelData
         String actorName;
         boolean isSelf = false;
         
-        actorName = sender.GetName();
+        actorName = sender.Name();
         
         if(sender == actor)
         {

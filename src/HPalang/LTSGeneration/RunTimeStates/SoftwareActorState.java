@@ -35,7 +35,7 @@ public class SoftwareActorState extends CompositeStateT<SoftwareActorState>
     
     public int GetMessageQueueCapacity()
     {
-        return actor.GetCapacity();
+        return actor.Capacity();
     }
     
     public SoftwareActor Actor()

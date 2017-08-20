@@ -65,6 +65,6 @@ public class SendStatement extends AbstractStatement<SendStatement>
     @Override
     public String toString()
     {
-        return "(" + receiver.GetName() + "!" + message.toString() + ")";
+        return "(" + receiver.Name() + "!" + message.toString() + ")";
     }
 }

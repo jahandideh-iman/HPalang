@@ -8,7 +8,7 @@ package Builders;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
-import java.security.KeyPair;
+import HPalang.Core.SoftwareActorType;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -21,14 +21,14 @@ import java.util.Map;
 public class ActorBuilder
 {
     
-    private String id;
+    private String name;
     private int capacity;
     private Map<String,MessageHandler> messageHandlers = new HashMap<>();
     private List<DiscreteVariable> discreteVariables = new LinkedList<>();
     
     public ActorBuilder WithID(String id)
     {
-        this.id = id;
+        this.name = id;
         return this;
     }
     
@@ -52,9 +52,10 @@ public class ActorBuilder
     
     public SoftwareActor Build()
     {
-        SoftwareActor actor = new SoftwareActor(id, capacity);
+        SoftwareActorType type = new SoftwareActorType(name + "Type");
+        SoftwareActor actor = new SoftwareActor(name,type,capacity);
         for(Map.Entry<String,MessageHandler> entry :messageHandlers.entrySet())
-            actor.AddMessageHandler(entry.getKey(), entry.getValue());
+            type.AddMessageHandler(entry.getKey(), entry.getValue());
         
         return actor;
     }

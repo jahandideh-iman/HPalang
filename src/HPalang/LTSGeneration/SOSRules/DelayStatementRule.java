@@ -43,7 +43,8 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
     @Override
     protected SoftwareLabel CreateTransitionLabel(SoftwareActorState actorState, DelayStatement statement)
     {
-        return new SoftwareLabel(Reset.ResetsFrom(new Reset(actorState.Actor().GetDelayVariable(), new ConstantContinuousExpression(0f))));
+        //return new SoftwareLabel(Reset.ResetsFrom(new Reset(actorState.Actor().GetDelayVariable(), new ConstantContinuousExpression(0f))));
+        return  null;
     }
     
     private ContinuousBehavior CreateDelayBehavior(SoftwareActor actor,float delay, ContinuousVariable delayVar)

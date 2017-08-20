@@ -49,47 +49,43 @@ public class MethodDefinitionParser extends SubParser<HPalangParser.Method_defCo
     @Override
     public void enterSend(HPalangParser.SendContext ctx)
     {
-        SoftwareActor destination = model.FindActor(ctx.destination().getText()); 
-        MessageHandler message = destination.GetMessageHandler(ctx.message().getText());
-        
-        SendStatement send = new SendStatement(destination, new NormalMessage(message));
-        
-        handler.AddStatement(send);
+//        SoftwareActor destination = model.FindActor(ctx.destination().getText()); 
+//        MessageHandler message = destination.GetMessageHandler(ctx.message().getText());
+//        
+//        SendStatement send = new SendStatement(destination, new NormalMessage(message));
+//        
+//        handler.AddStatement(send);
     }
 
     @Override
     public void enterAssignment(HPalangParser.AssignmentContext ctx)
     {
-        ExpressionHolder container = new ExpressionHolder();
-        
-        new ExpressionParser(model, ctx.expr(), container, actor).Parse();
-        
-        String varName = ctx.var_name().getText();
-        Statement statement = null;
-        Variable var = actor.FindVariable(varName);
-        if(actor.HasDiscreteVariable(varName))
-            statement = new DiscreteAssignmentStatement(
-                    (DiscreteVariable)var, 
-                    (DiscreteExpression) container.Expression());
-        
-        else if(actor.HasContinuousVariable(varName))
-            statement = new ContinuousAssignmentStatement(
-                    (ContinuousVariable)var, 
-                    (ContinuousExpression) container.Expression());
-
-        handler.AddStatement(statement);
+//        ExpressionHolder container = new ExpressionHolder();
+//        
+//        new ExpressionParser(model, ctx.expr(), container, actor).Parse();
+//        
+//        String varName = ctx.var_name().getText();
+//        Statement statement = null;
+//        Variable var = actor.FindDiscreteVariable(varName);
+//        if(actor.HasDiscreteVariable(varName))
+//            statement = new DiscreteAssignmentStatement(
+//                    (DiscreteVariable)var, 
+//                    (DiscreteExpression) container.Expression());
+//       
+//
+//        handler.AddStatement(statement);
     }
 
     @Override
     public void enterC_behavior(HPalangParser.C_behaviorContext ctx)
     { 
-        ContinuousVariable var = actor.FindContinuousVariable(ctx.def_equ().first_driv().var_name().ID().getText());
-        String rightSide = ctx.def_equ().expr().getText();
-        DifferentialEquation equ = new DifferentialEquation(var, rightSide);
-        ContinuousBehavior behavior = new ContinuousBehavior(ctx.inv_expr().getText(), equ,ctx.guard_expr().getText(), Statement.EmptyStatements());
-        
-        ContinuousBehaviorStatement statement = new ContinuousBehaviorStatement(behavior);
-
-        handler.AddStatement(statement);
+//        ContinuousVariable var = actor.FindContinuousVariable(ctx.def_equ().first_driv().var_name().ID().getText());
+//        String rightSide = ctx.def_equ().expr().getText();
+//        DifferentialEquation equ = new DifferentialEquation(var, rightSide);
+//        ContinuousBehavior behavior = new ContinuousBehavior(ctx.inv_expr().getText(), equ,ctx.guard_expr().getText(), Statement.EmptyStatements());
+//        
+//        ContinuousBehaviorStatement statement = new ContinuousBehaviorStatement(behavior);
+//
+//        handler.AddStatement(statement);
     }
 }

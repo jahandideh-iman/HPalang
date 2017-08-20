@@ -5,6 +5,7 @@
  */
 package HPalang.Core;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -45,5 +46,15 @@ public class SoftwareActorType extends ActorType
     public DiscreteVariable FindVariable(String variableName)
     {
         return variables.get(variableName);
+    }
+    
+    public boolean HasVariable(String name)
+    {
+        return FindVariable(name) != null;
+    }
+
+    public Collection<DiscreteVariable> Variables()
+    {
+        return variables.values();
     }
 }

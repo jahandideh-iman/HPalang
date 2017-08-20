@@ -38,8 +38,8 @@ public class MessageDropRuleTest extends SOSRuleTestFixture
         SoftwareActor actor1 = new ActorBuilder().WithID("actor1").WithCapacity(1).WithHandler("a", new MessageHandler()).Build();
         SoftwareActor actor2 = new ActorBuilder().WithID("actor2").WithCapacity(1).WithHandler("b", new MessageHandler()).Build();
         
-        Message messageTo2 = new NormalMessage(actor2.GetMessageHandler("b"));
-        Message messageTo1 = new NormalMessage(actor1.GetMessageHandler("a"));
+        Message messageTo2 = new NormalMessage(actor2.Type().FindMessageHandler("b"));
+        Message messageTo1 = new NormalMessage(actor1.Type().FindMessageHandler("a"));
 
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)

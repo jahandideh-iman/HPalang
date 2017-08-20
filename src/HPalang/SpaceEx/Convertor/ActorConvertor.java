@@ -152,7 +152,7 @@ public class ActorConvertor
     }
     private Component CreateContinuousVariableLockTemplate()
     {
-        BaseComponent comp = new BaseComponent(actorData.GetActor().GetName()+ "_VarLockTemplate");
+        BaseComponent comp = new BaseComponent(actorData.GetActor().Name()+ "_VarLockTemplate");
         
         comp.AddParameter(new RealParameter("var", false));
         
@@ -174,7 +174,7 @@ public class ActorConvertor
     
     private BaseComponent CreateContinuousBehavior(ContinuousBehavior cb)
     {
-        BaseComponent comp = new BaseComponent(actorData.GetActor().GetName() +"_CB_" + actorData.GetIDFor(cb));
+        BaseComponent comp = new BaseComponent(actorData.GetActor().Name() +"_CB_" + actorData.GetIDFor(cb));
         
         String acquireLabel = "Acquire_" + cb.GetEquation().GetVariable().Name();
         String releaseLabel = "Release_" + cb.GetEquation().GetVariable().Name();
@@ -258,8 +258,8 @@ public class ActorConvertor
         for(CommunicationLabel send : actorData.GetHandlersSendLables())
             comp.AddParameter(new LabelParameter(send.GetLabel(), false));
         
-        for(MessageHandler handler : actorData.GetActor().GetMessageHandlers())
-            CreateHandler(handler,comp, idleLoc);
+//        for(MessageHandler handler : actorData.GetActor().GetMessageHandlers())
+//            CreateHandler(handler,comp, idleLoc);
         
         return comp;
     }
