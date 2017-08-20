@@ -9,7 +9,6 @@ import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.ModelDefinition;
 import HPalang.Core.Statement;
-import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import java.util.Collection;
@@ -63,11 +62,11 @@ public class HPalangModelData
                 }
 
             }
-            else if (stat instanceof ContinuousBehaviorStatement) {
-                ContinuousBehaviorStatement cbStat = (ContinuousBehaviorStatement) stat;
-                GetActorData(actor).AddContinuousBehavior(cbStat.GetBehavior());
-                ProcessStatements(cbStat.GetBehavior().GetActions(), actor, cbStat.GetBehavior());
-            }
+//            else if (stat instanceof ContinuousBehaviorStatement) {
+//                ContinuousBehaviorStatement cbStat = (ContinuousBehaviorStatement) stat;
+//                GetActorData(actor).AddContinuousBehavior(cbStat.GetBehavior());
+//                ProcessStatements(cbStat.GetBehavior().GetActions(), actor, cbStat.GetBehavior());
+//            }
         }
     }
     

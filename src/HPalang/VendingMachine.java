@@ -18,7 +18,6 @@ import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.ModelDefinition;
 import HPalang.Core.Statement;
-import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
 import HPalang.Core.Statements.IfStatement;

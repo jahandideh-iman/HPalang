@@ -10,7 +10,6 @@ import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
-import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.SendStatement;
 import java.io.IOException;
 import static org.hamcrest.CoreMatchers.*;

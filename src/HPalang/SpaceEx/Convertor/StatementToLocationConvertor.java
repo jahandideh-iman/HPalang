@@ -7,7 +7,6 @@ package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
-import HPalang.Core.Statements.ContinuousBehaviorStatement;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.SpaceEx.Core.BaseComponent;
@@ -173,27 +172,27 @@ public class StatementToLocationConvertor
         }
     }
     
-    private class CBehaviorLocation extends UrgentLocation
-    {
-        private ContinuousBehaviorStatement statement;
-
-        private String behaviorLabel;
-        
-        public CBehaviorLocation(ContinuousBehaviorStatement statement, String name, ActorModelData actorData)
-        {
-            super(name, actorData);
-            this.statement = statement;
-            this.behaviorLabel = actorData.GetStartLabelFor(statement.GetBehavior());        
-        }
-
-        @Override
-        public void ProcessOutLabel(HybridLabel label)
-        {
-           super.ProcessOutLabel(label);
-           label.SetSyncLabel(behaviorLabel);
-        }    
-    }
-    
+//    private class CBehaviorLocation extends UrgentLocation
+//    {
+//        private ContinuousBehaviorStatement statement;
+//
+//        private String behaviorLabel;
+//        
+//        public CBehaviorLocation(ContinuousBehaviorStatement statement, String name, ActorModelData actorData)
+//        {
+//            super(name, actorData);
+//            this.statement = statement;
+//            this.behaviorLabel = actorData.GetStartLabelFor(statement.GetBehavior());        
+//        }
+//
+//        @Override
+//        public void ProcessOutLabel(HybridLabel label)
+//        {
+//           super.ProcessOutLabel(label);
+//           label.SetSyncLabel(behaviorLabel);
+//        }    
+//    }
+//    
     private class SendLocation extends UrgentLocation
     {
         private SendStatement statement;
@@ -329,8 +328,8 @@ public class StatementToLocationConvertor
             loc = new DelayLocation((DelayStatement) stat, locName, actorData);
         else if(stat instanceof ContinuousAssignmentStatement)
             loc = new CAssignmentLocation((ContinuousAssignmentStatement) stat,locName, actorData);
-        else if(stat instanceof ContinuousBehaviorStatement)
-            loc = new CBehaviorLocation((ContinuousBehaviorStatement) stat, locName, actorData);
+//        else if(stat instanceof ContinuousBehaviorStatement)
+//            loc = new CBehaviorLocation((ContinuousBehaviorStatement) stat, locName, actorData);
         else if(stat instanceof SendStatement)
             loc = new SendLocation((SendStatement) stat, locName, actorData);
 
