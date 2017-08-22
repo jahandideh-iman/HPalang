@@ -5,11 +5,25 @@
  */
 package HPalang.Core.Statements;
 
+import HPalang.Core.ActorLocator;
+import HPalang.Core.Message;
+import HPalang.Core.MessageArguments;
+import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.SoftwareActor;
+import HPalang.Core.Statements.SendStatement.ArgumentsDoesNotMatchException;
+import HPalang.Core.Variable;
+import HPalang.Core.VariableArgument;
+import HPalang.Core.VariableParameter;
+import HPalang.Core.Variables.FloatVariable;
+import HPalang.Core.Variables.IntegerVariable;
 import Mocks.DirectActorLocator;
+import Mocks.FakeMessage;
 import Mocks.EmptyMessage;
+import Mocks.NullExpression;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.not;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -19,16 +33,34 @@ import static org.junit.Assert.*;
  */
 public class SendStatementTest
 {
+    SoftwareActor actor = new SoftwareActor("Actor", 0);
     
     @Test
-    public void  StatementsWithSameRecieverAndEqualMessagesAreEqual()
+    public void  StatementsWithEqualDataAreEqual()
     {
-        SoftwareActor actor = new SoftwareActor("Actor", 0);
+        Message message = new EmptyMessage();
+        ActorLocator actorLocator = new DirectActorLocator(actor);
+        MessageArguments arguemnts = new MessageArguments();
         
-        SendStatement statement1 = new SendStatement(new DirectActorLocator(actor), new EmptyMessage());
-        SendStatement statement2 = new SendStatement(new DirectActorLocator(actor), new EmptyMessage());
+        SendStatement statement1 = new SendStatement(actorLocator, message, arguemnts);
+        SendStatement statement2 = new SendStatement(actorLocator, message, arguemnts);
 
         assertThat(statement2, equalTo(statement1));        
     }
     
+    @Test(expected = ArgumentsDoesNotMatchException.class)
+    public void  RaisesExceptionWhenTheArgumentsDoesNotMatchTheMessageParameters()
+    {
+        VariableParameter param = new VariableParameter( new IntegerVariable("var"));
+        VariableParameter anotherParam = new VariableParameter( new IntegerVariable("anotherVar"));
+        assertThat(param, is(not(equalTo(anotherParam))));
+
+        FakeMessage message = new FakeMessage();
+        message.AddParameter(param);
+        
+        MessageArguments arguments = new MessageArguments();
+        arguments.Add(new VariableArgument(anotherParam, new NullExpression()));
+        
+        SendStatement statement = new SendStatement(new DirectActorLocator(actor), message, arguments);       
+    }   
 }

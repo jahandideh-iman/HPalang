@@ -15,6 +15,7 @@ import java.util.Queue;
 public interface Message
 {
     public Queue<Statement> GetMessageBody();
+    public MessageParameters Parameters();
     public void SetPriority(int priority);
     public int Priority();
 }

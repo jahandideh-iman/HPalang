@@ -19,12 +19,8 @@ public class MessageHandler
     private final Queue<Statement> statements = new LinkedList<>();
     private SoftwareActor owner;
     private String id;
-    private final Map<String, VariableParameter> parameters = new HashMap<>();
-    
-    public MessageHandler()
-    {
-    }
-    
+    private final MessageParameters parameters = new MessageParameters();
+      
     public void SetOwner(SoftwareActor owner)
     {
         this.owner = owner;
@@ -50,13 +46,20 @@ public class MessageHandler
        return id;
     }
 
+    @Deprecated // Use Parameters().Add
     public void AddParameter(VariableParameter variableParameter)
     {
-        parameters.put(variableParameter.Name(),variableParameter);
+        parameters.Add(variableParameter);
     }
 
+    @Deprecated // Use Parameters().Find
     public VariableParameter FindVariableParameter(String parameterName)
     {
-        return parameters.get(parameterName);
+        return parameters.Find(parameterName);
+    }
+    
+    public  MessageParameters Parameters()
+    {
+        return parameters;
     }
 }

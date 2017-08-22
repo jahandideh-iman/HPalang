@@ -6,8 +6,10 @@
 package HPalang.Core.Statements;
 
 import HPalang.Core.ActorLocator;
+import HPalang.Core.MessageArguments;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
+import java.io.UncheckedIOException;
 
 /**
  *
@@ -15,21 +17,28 @@ import HPalang.Core.Message;
  */
 public class SendStatement extends AbstractStatement<SendStatement>
 {
+    public class ArgumentsDoesNotMatchException extends RuntimeException
+    {
+    }
+    
     private final Message message;
     private final ActorLocator receiverLocator;
+    private final MessageArguments arguments;
+    
+    public SendStatement(ActorLocator receiverLocator, Message message, MessageArguments arguments)
+    {
+        if(arguments.Match(message.Parameters()) == false)
+            throw new ArgumentsDoesNotMatchException();
+        this.receiverLocator = receiverLocator;
+        this.message = message;
+        this.arguments = arguments;
+    }
     
     public SendStatement(ActorLocator receiverLocator, Message message)
     {
-        this.receiverLocator = receiverLocator;
-        this.message = message;
-    }   
-//    
-//    public SendStatement(SoftwareActor receiver, Message message)
-//    {
-//        this.receiver = receiver;
-//        this.message = message;
-//        this.receiverLocator = null;
-//    }
+        this(receiverLocator, message, new MessageArguments());
+    }
+
     
     public SoftwareActor GetReceiver()
     {
@@ -44,8 +53,9 @@ public class SendStatement extends AbstractStatement<SendStatement>
     @Override
     protected boolean InternalEquals(SendStatement other)
     {
-        return this.receiverLocator.equals(other.receiverLocator)
-                && this.message.equals(other.message);
+        return this.receiverLocator.equals(other.receiverLocator) &&
+                this.message.equals(other.message) &&
+                this.arguments.equals(other.arguments);
     }
 
     @Override

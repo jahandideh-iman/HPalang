@@ -10,6 +10,7 @@ import HPalang.Core.Statement;
 import java.util.LinkedList;
 import java.util.Queue;
 import HPalang.Core.Equalitable;
+import HPalang.Core.MessageParameters;
 
 /**
  *
@@ -58,6 +59,12 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     public int Priority()
     {
         return priority;
+    }
+
+    @Override
+    public MessageParameters Parameters()
+    {
+        return new MessageParameters();
     }
     
 }

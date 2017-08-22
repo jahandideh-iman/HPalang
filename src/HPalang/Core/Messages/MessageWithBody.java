@@ -8,6 +8,7 @@ package HPalang.Core.Messages;
 import HPalang.Core.Equalitable;
 import HPalang.Core.Statement;
 import HPalang.Core.Message;
+import HPalang.Core.MessageParameters;
 import java.util.Queue;
 
 /**
@@ -60,6 +61,12 @@ public class MessageWithBody extends Equalitable<MessageWithBody> implements Mes
 
     @Override
     public int Priority()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public MessageParameters Parameters()
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

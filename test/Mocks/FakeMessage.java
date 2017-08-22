@@ -3,57 +3,46 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core.Messages;
+package Mocks;
 
+import HPalang.Core.MessageArguments;
 import HPalang.Core.Equalitable;
+import HPalang.Core.Expression;
 import HPalang.Core.Message;
-import HPalang.Core.MessageHandler;
 import HPalang.Core.MessageParameters;
+import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.Statement;
+import HPalang.Core.VariableParameter;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class NormalMessage extends Equalitable<NormalMessage> implements Message
+public class FakeMessage extends Equalitable<FakeMessage> implements Message
 {
-    private final MessageHandler messageHandler;
-
-    public NormalMessage(MessageHandler messageHandler)
+    private Queue<Statement> statements = new LinkedList<>();
+    private MessageParameters parameters =  new MessageParameters();
+    
+    public void AddParameter(VariableParameter parameter)
     {
-        this.messageHandler = messageHandler;
+        parameters.Add(parameter);
     }
-   
+
     @Override
     public Queue<Statement> GetMessageBody()
     {
-        return messageHandler.GetBody();
+        return statements;
+    }
+     
+    @Override
+    protected boolean InternalEquals(FakeMessage other)
+    {
+        return other.statements.equals(this.statements);
     }
     
-    @Override
-    protected boolean InternalEquals(NormalMessage other)
-    {
-        return other.messageHandler.equals(this.messageHandler);
-    }
-
-    @Override
-    protected int InternalHashCode()
-    {
-        return messageHandler.hashCode();
-    }
-    
-    @Override
-    public String toString()
-    {
-        return messageHandler.GetID();
-    }
-    
-    public MessageHandler GetMessageHandler()
-    {
-        return messageHandler;
-    }
-
     @Override
     public void SetPriority(int priority)
     {
@@ -67,8 +56,15 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
     }
 
     @Override
+    protected int InternalHashCode()
+    {
+        return 0;
+    }
+
+    @Override
     public MessageParameters Parameters()
     {
-        return messageHandler.Parameters();
+        return parameters;
     }
+    
 }
