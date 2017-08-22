@@ -5,8 +5,10 @@
  */
 package HPalang.Core.DiscreteExpressions;
 
-import HPalang.Core.DiscreteVariable;
+import HPalang.Core.Expression;
 import HPalang.Core.ValuationContainer;
+import HPalang.Core.Variable;
+import HPalang.Core.Variables.IntegerVariable;
 
 /**
  *
@@ -14,17 +16,25 @@ import HPalang.Core.ValuationContainer;
  */
 public class VariableExpression extends DiscreteExpressionT<VariableExpression>
 {
-    private final DiscreteVariable variable;
+    private final Variable variable;
     
-    public VariableExpression(DiscreteVariable variable)
+    public VariableExpression(Variable variable)
     {
         this.variable = variable;
     }
-    
+
     @Override
     public int Evaluate(ValuationContainer valuations)
     {
-        return valuations.Get(variable);
+        assert (IsComputable(valuations));
+        return valuations.Get((IntegerVariable)variable);
+    }
+    
+    @Override
+    public Expression PartiallyEvaluate(ValuationContainer valuations)
+    {
+        assert (! IsComputable(valuations));
+        return this;
     }
     
     @Override
@@ -38,5 +48,10 @@ public class VariableExpression extends DiscreteExpressionT<VariableExpression>
     {
         return variable.hashCode();
     }
-    
+
+    @Override
+    public boolean IsComputable(ValuationContainer valuations)
+    {
+        return valuations.Has((IntegerVariable)variable);
+    }    
 }

@@ -6,56 +6,69 @@
 package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.DiscreteExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalOrOperator;
+import HPalang.Core.Expression;
 import HPalang.Core.ValuationContainer;
 
 /**
  *
  * @author Iman Jahandideh
  */
+@Deprecated // Use BinaryExpression instead
 public class LogicalExpression extends DiscreteExpressionT<LogicalExpression>
 {
+
+
     public enum Operator
     {
         Invalid, AND,OR
     };
     
-    private final DiscreteExpression operand1;
-    private final Operator operator;
-    private final DiscreteExpression operand2;
+    private final BinaryExpression expression;
         
     public LogicalExpression(DiscreteExpression operand1, Operator operator, DiscreteExpression operand2)
     {
-        this.operand1 = operand1;
-        this.operator = operator;
-        this.operand2 = operand2;
-    }
-
-    @Override
-    public int Evaluate(ValuationContainer valuations)
-    {
-        switch (operator) 
-        {
+        switch (operator) {
             case AND:
-                return ( (operand1.Evaluate(valuations)>0) && (operand2.Evaluate(valuations)>0))? 1:0;
+                expression = new BinaryExpression(operand1, new LogicalAndOperator(), operand2);
+                break;
             case OR:
-                return ( (operand1.Evaluate(valuations)>0) || (operand2.Evaluate(valuations)>0))? 1:0;
+                expression = new BinaryExpression(operand1, new LogicalOrOperator(), operand2);
+                break;
             default:
-               throw new RuntimeException("Unsupported Arithmetic Operator.");
+               expression = null;
 
         }
     }
     
     @Override
+    public int Evaluate(ValuationContainer valuations)
+    {
+        return expression.Evaluate(valuations);
+    }
+
+    @Override
     protected boolean InternalEquals(LogicalExpression other)
     {
-        return this.operand1.equals(other.operand1)
-                && this.operator.equals(other.operator)
-                && this.operand2.equals(other.operand2);
+        return this.expression.equals(other.expression);
     }
 
     @Override
     protected int InternalHashCode()
     {
-        return operand1.hashCode() + operator.hashCode()+ operand2.hashCode();
+        return 0;
+    }
+    
+    @Override
+    public boolean IsComputable(ValuationContainer valuations)
+    {
+        return expression.IsComputable(valuations);
+    }
+
+    @Override
+    public Expression PartiallyEvaluate(ValuationContainer valuations)
+    {
+        return expression.PartiallyEvaluate(valuations);
     }
 }

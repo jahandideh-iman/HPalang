@@ -12,7 +12,6 @@ import HPalang.Core.ContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpression;
-import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.ModelDefinition;

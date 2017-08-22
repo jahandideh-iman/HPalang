@@ -17,6 +17,7 @@ import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.Transition;
+import Mocks.DirectActorLocator;
 import Mocks.EmptyMessage;
 import java.util.List;
 import org.junit.Test;
@@ -47,11 +48,11 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
 
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)
-                .EnqueueStatement(new SendStatement(actor2, messageTo2));
+                .EnqueueStatement(new SendStatement(new DirectActorLocator(actor2), messageTo2));
         
         ActorRunTimeStateBuilder actor2State = new ActorRunTimeStateBuilder()
                 .WithActor(actor2)
-                .EnqueueStatement(new SendStatement(actor1, messageTo1));
+                .EnqueueStatement(new SendStatement(new DirectActorLocator(actor1), messageTo1));
         
         globalState.DiscreteState().AddSoftwareActorState(actor1State.Build());
         globalState.DiscreteState().AddSoftwareActorState(actor2State.Build());
@@ -79,7 +80,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         ActorRunTimeStateBuilder fullCapacityActorState = new ActorRunTimeStateBuilder()
                 .WithActor(actor)
                 .EnqueueLowPriorityMessage(new EmptyMessage("Message1"))
-                .EnqueueStatement(new SendStatement(actor, new EmptyMessage("Message2")));
+                .EnqueueStatement(new SendStatement(new DirectActorLocator(actor), new EmptyMessage("Message2")));
         
         globalState
                 .DiscreteState().AddSoftwareActorState(fullCapacityActorState.Build());

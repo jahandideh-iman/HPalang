@@ -5,16 +5,18 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.Variables.RealVariable;
+
 /**
  *
  * @author Iman Jahandideh
  */
 public class DifferentialEquation extends Equalitable<DifferentialEquation>
 {
-    private final ContinuousVariable variable;
+    private final RealVariable variable;
     private final String equation;
     
-    public DifferentialEquation(ContinuousVariable variable, String equation)
+    public DifferentialEquation(RealVariable variable, String equation)
     {
         this.variable = variable;
         this.equation = equation;
@@ -38,18 +40,18 @@ public class DifferentialEquation extends Equalitable<DifferentialEquation>
         return equation;
     }
 
-    public ContinuousVariable GetVariable()
+    public RealVariable GetVariable()
     {
         return variable;
     }
     
     static public DifferentialEquation Empty(String eq)
     {
-        return new DifferentialEquation(new ContinuousVariable("empty"), eq);
+        return new DifferentialEquation(new RealVariable("empty"), eq);
     }
     
     static public DifferentialEquation Empty()
     {
-        return new DifferentialEquation(new ContinuousVariable("empty"), "empty");
+        return new DifferentialEquation(new RealVariable("empty"), "empty");
     }
 }

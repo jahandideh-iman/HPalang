@@ -12,11 +12,13 @@ import HPalang.Core.ValuationContainer;
  *
  * @author Iman Jahandideh
  */
-public class LogicalOrOperator extends BinaryOperatorT<LogicalOrOperator>
+public class AddOperator extends BinaryOperatorT<AddOperator>
 {
+
     @Override
     public int Evaluate(DiscreteExpression operand1, DiscreteExpression operand2, ValuationContainer valuations)
     {
-        return ((operand1.Evaluate(valuations)>0) || (operand2.Evaluate(valuations)>0))? 1:0;
-    } 
+        return operand1.Evaluate(valuations) + operand2.Evaluate(valuations);
+    }
+    
 }

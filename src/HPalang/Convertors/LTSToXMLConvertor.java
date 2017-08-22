@@ -5,14 +5,13 @@
  */
 package HPalang.Convertors;
 
-import HPalang.Core.DiscreteVariable;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.Core.Message;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Statement;
+import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;
@@ -73,7 +72,7 @@ public class LTSToXMLConvertor
 
             actorStr += "(";
             actorStr += "V:{";
-            for(Entry<DiscreteVariable, Integer> m : actorState.FindSubState(ValuationState.class).Valuation())
+            for(Entry<IntegerVariable, Integer> m : actorState.FindSubState(ValuationState.class).Valuation())
                 actorStr += "{" + m.getKey().Name() +":" + m.getValue().toString() +"}"+ ",";
             actorStr += "},";
             

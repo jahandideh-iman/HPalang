@@ -5,7 +5,8 @@
  */
 package HPalang.Core.ContinuousExpressions;
 
-import HPalang.Core.ContinuousExpression;
+import HPalang.Core.Expression;
+import HPalang.Core.ValuationContainer;
 
 /**
  *
@@ -41,6 +42,24 @@ public class ConstantContinuousExpression extends ContinuousExpressionT<Constant
     protected int InternalHashCode()
     {
         return Float.hashCode(constant);
+    }
+
+    @Override
+    public boolean IsComputable(ValuationContainer valuations)
+    {
+        return false;
+    }
+
+    @Override
+    public int Evaluate(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Expression PartiallyEvaluate(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

@@ -5,9 +5,8 @@
  */
 package HPalang.Core.Statements;
 
-import HPalang.Core.Statement;
+import HPalang.Core.ActorLocator;
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.MessageHandler;
 import HPalang.Core.Message;
 
 /**
@@ -16,32 +15,25 @@ import HPalang.Core.Message;
  */
 public class SendStatement extends AbstractStatement<SendStatement>
 {
-    private final SoftwareActor receiver;
     private final Message message;
-    private final ReceiverLocator receiverLocator;
+    private final ActorLocator receiverLocator;
     
-    public interface ReceiverLocator
-    {
-        SoftwareActor GetActor();
-    }
-    
-    public SendStatement(ReceiverLocator receiverLocator, Message message)
+    public SendStatement(ActorLocator receiverLocator, Message message)
     {
         this.receiverLocator = receiverLocator;
         this.message = message;
-        this.receiver = null;
     }   
-    
-    public SendStatement(SoftwareActor receiver, Message message)
-    {
-        this.receiver = receiver;
-        this.message = message;
-        this.receiverLocator = null;
-    }
+//    
+//    public SendStatement(SoftwareActor receiver, Message message)
+//    {
+//        this.receiver = receiver;
+//        this.message = message;
+//        this.receiverLocator = null;
+//    }
     
     public SoftwareActor GetReceiver()
     {
-        return receiver;
+        return (SoftwareActor) receiverLocator.GetActor();
     }
     
     public Message GetMessage()
@@ -52,7 +44,7 @@ public class SendStatement extends AbstractStatement<SendStatement>
     @Override
     protected boolean InternalEquals(SendStatement other)
     {
-        return this.receiver.equals(other.receiver)
+        return this.receiverLocator.equals(other.receiverLocator)
                 && this.message.equals(other.message);
     }
 
@@ -65,6 +57,6 @@ public class SendStatement extends AbstractStatement<SendStatement>
     @Override
     public String toString()
     {
-        return "(" + receiver.Name() + "!" + message.toString() + ")";
+        return "(" + receiverLocator.GetActor().Name() + "!" + message.toString() + ")";
     }
 }

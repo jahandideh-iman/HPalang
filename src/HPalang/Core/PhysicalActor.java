@@ -14,18 +14,16 @@ import java.util.Set;
  */
 public class PhysicalActor extends Actor
 {
-    private final String name;
     private final PhysicalActorType type;
 
     public PhysicalActor(String name)
     {
-        this.name = name;
-        this.type = null;
+        this(name,null);
     }
     
     public PhysicalActor(String name, PhysicalActorType type)
     {
-        this.name = name;
+        super(name);
         this.type = type;
     }
 

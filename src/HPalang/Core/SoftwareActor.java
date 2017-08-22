@@ -5,6 +5,7 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.Variables.IntegerVariable;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
@@ -15,12 +16,11 @@ import java.util.Map;
  */
 public class SoftwareActor extends Actor
 {
-    private final String name;
     private final SoftwareActorType type;
         
     private final int capacity;
     
-    private final Map<DiscreteVariable, Integer> initialValues = new HashMap<>();
+    private final Map<IntegerVariable, Integer> initialValues = new HashMap<>();
  
     public SoftwareActor(String name, int capacity)
     {
@@ -29,7 +29,7 @@ public class SoftwareActor extends Actor
 
     public SoftwareActor(String name, SoftwareActorType type , int capacity)
     {
-        this.name = name;
+        super(name);
         this.type = type;
         this.capacity = capacity;
     }
@@ -39,7 +39,7 @@ public class SoftwareActor extends Actor
         this(name, type, 5);
     }
   
-    public Map<DiscreteVariable, Integer> InitialValues()
+    public Map<IntegerVariable, Integer> InitialValues()
     {
         return initialValues;
     }
@@ -47,11 +47,6 @@ public class SoftwareActor extends Actor
     public int Capacity()
     {
         return capacity;
-    }
-    
-    public String Name()
-    {
-        return name;
     }
     
     public SoftwareActorType Type()

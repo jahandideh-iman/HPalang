@@ -31,6 +31,7 @@ import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Statement;
+import HPalang.Core.Variable;
 import HPalang.LTSGeneration.SOSRules.DiscreteAssignmentRule;
 import HPalang.LTSGeneration.SOSRules.IfStatementRule;
 import HPalang.LTSGeneration.SOSRules.FIFOMessageTakeRule;
@@ -428,7 +429,7 @@ public class Main {
     
     static public Label CreateLabelFor(Label firstLabel, Label secondLabel)
     {
-        Map<ContinuousVariable, Reset> resets = new HashMap<>();
+        Map<Variable, Reset> resets = new HashMap<>();
         
         for(Reset re : (Set<Reset>)firstLabel.GetResets())
                 resets.put(re.Variable(), re);

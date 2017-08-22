@@ -6,61 +6,81 @@
 package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.DiscreteExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterEqualOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserEqualOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserOperator;
+import HPalang.Core.Expression;
 import HPalang.Core.ValuationContainer;
 
 /**
  *
  * @author Iman Jahandideh
  */
+@Deprecated // Use BinaryExpression instead
 public class ComparisonExpression extends DiscreteExpressionT<ComparisonExpression>
 {
+
+
     public enum Operator
     {
         Invalid, Greater,GreaterEqual, Equal, Lesser, LesserEqual
     };
     
-    private final DiscreteExpression operand1;
-    private final Operator operator;
-    private final DiscreteExpression operand2;
+    private final BinaryExpression expression;
         
     public ComparisonExpression(DiscreteExpression operand1, Operator operator, DiscreteExpression operand2)
     {
-        this.operand1 = operand1;
-        this.operator = operator;
-        this.operand2 = operand2;
+        switch (operator) {
+            case Greater:
+                expression = new BinaryExpression(operand1, new GreaterOperator(), operand2);
+                break;
+            case GreaterEqual:
+                expression = new BinaryExpression(operand1, new GreaterEqualOperator(), operand2);
+                break;
+            case Equal:
+                expression = new BinaryExpression(operand1, new EqualityOperator(), operand2);
+                break;
+            case Lesser:
+                expression = new BinaryExpression(operand1, new LesserOperator(), operand2);
+                break;
+            case LesserEqual:
+                expression = new BinaryExpression(operand1, new LesserEqualOperator(), operand2);
+                break;
+            default:
+               expression = null;
+
+        }
     }
 
     @Override
     public int Evaluate(ValuationContainer valuations)
     {
-        switch (operator) {
-            case Greater:
-                return (operand1.Evaluate(valuations) > operand2.Evaluate(valuations)) ? 1 : 0;
-            case GreaterEqual:
-                return (operand1.Evaluate(valuations) >= operand2.Evaluate(valuations)) ? 1 : 0;
-            case Equal:
-                return (operand1.Evaluate(valuations) == operand2.Evaluate(valuations)) ? 1 : 0;
-            case Lesser:
-                return (operand1.Evaluate(valuations) < operand2.Evaluate(valuations)) ? 1 : 0;
-            case LesserEqual:
-                return (operand1.Evaluate(valuations) <= operand2.Evaluate(valuations)) ? 1 : 0;
-            default:
-               throw new RuntimeException("Unsupported Arithmetic Operator.");
-
-        }
+        return expression.Evaluate(valuations);
     }
     
     @Override
     protected boolean InternalEquals(ComparisonExpression other)
     {
-        return this.operand1.equals(other.operand1)
-                && this.operator.equals(other.operator)
-                && this.operand2.equals(other.operand2);
+        return this.expression.equals(other.expression);
     }
 
     @Override
     protected int InternalHashCode()
     {
-        return operand1.hashCode() + operator.hashCode()+ operand2.hashCode();
+        return 0;
+    }
+    
+    @Override
+    public boolean IsComputable(ValuationContainer valuations)
+    {
+        return expression.IsComputable(valuations);
+    }
+
+    @Override
+    public Expression PartiallyEvaluate(ValuationContainer valuations)
+    {
+        return expression.PartiallyEvaluate(valuations);
     }
 }

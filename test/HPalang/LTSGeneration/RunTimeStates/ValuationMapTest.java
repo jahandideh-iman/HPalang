@@ -6,8 +6,8 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.ValuationContainer;
-import HPalang.Core.DiscreteVariable;
 import HPalang.Core.Statement;
+import HPalang.Core.Variables.IntegerVariable;
 import org.hamcrest.core.Is;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,7 +25,7 @@ public class ValuationMapTest
     {
         ValuationContainer valuation = new ValuationContainer();
         
-        DiscreteVariable var = new DiscreteVariable("Var");
+        IntegerVariable var = new IntegerVariable("Var");
         
         valuation.Add(var);
         
@@ -37,7 +37,7 @@ public class ValuationMapTest
     {
         ValuationContainer valuation = new ValuationContainer();
         
-        DiscreteVariable var = new DiscreteVariable("Var");
+        IntegerVariable var = new IntegerVariable("Var");
         
         valuation.Add(var);
         valuation.Set(var, 5);
@@ -51,8 +51,8 @@ public class ValuationMapTest
         ValuationContainer valuation1 = new ValuationContainer();
         ValuationContainer valuation2 = new ValuationContainer();
 
-        valuation1.Set(new DiscreteVariable("var"), 5);
-        valuation2.Set(new DiscreteVariable("var"), 5);
+        valuation1.Set(new IntegerVariable("var"), 5);
+        valuation2.Set(new IntegerVariable("var"), 5);
         
         assertThat(valuation1, equalTo(valuation2));
     }

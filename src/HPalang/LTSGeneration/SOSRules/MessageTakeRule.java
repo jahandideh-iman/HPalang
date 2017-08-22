@@ -7,6 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Message;
+import HPalang.Core.Variable;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -75,7 +76,7 @@ public abstract class MessageTakeRule extends ActorLevelRule
     
     private SoftwareLabel GetLabelFor(Trace trace)
     {
-        Map<ContinuousVariable, Reset> resets = new HashMap<>();
+        Map<Variable, Reset> resets = new HashMap<>();
         
         for(Transition tr : trace.GetTransitions())
         {

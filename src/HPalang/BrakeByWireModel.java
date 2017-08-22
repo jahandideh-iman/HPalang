@@ -15,24 +15,28 @@ import HPalang.Core.DiscreteExpressions.ComparisonExpression;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.LogicalExpression;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
-import HPalang.Core.DiscreteVariable;
 import HPalang.Core.InstanceParameter;
 import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Mode;
 import HPalang.Core.ParametricActorLocator;
-import HPalang.Core.ParametricReceiverLocator;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
 import HPalang.Core.ModelDefinition;
 import HPalang.Core.SoftwareActorType;
 import HPalang.Core.Statement;
+import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
 import HPalang.Core.Statements.IfStatement;
 import HPalang.Core.Statements.ModeChangeStatement;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.Core.Variable;
+import HPalang.Core.Variable.Type;
 import HPalang.Core.VariableParameter;
+import HPalang.Core.Variables.FloatVariable;
+import HPalang.Core.Variables.IntegerVariable;
+import HPalang.Core.Variables.RealVariable;
 
 /**
  *
@@ -151,9 +155,9 @@ public class BrakeByWireModel
         
         DelegationParameter wheel_rpm_delegation = wheelType.FindDelegationParameter(Wheel__rpm_delegation);
         
-        ContinuousVariable timer = wheelType.FindVariable("timer"); 
-        ContinuousVariable rpm = wheelType.FindVariable("rpm");
-        ContinuousVariable torque = wheelType.FindVariable("torque");
+        RealVariable timer = (RealVariable) wheelType.FindVariable("timer"); 
+        RealVariable rpm = (RealVariable) wheelType.FindVariable("rpm");
+        RealVariable torque = (RealVariable) wheelType.FindVariable("torque");
 
         
         Mode noBrakeMode = wheelType.FindMode("NoBrake");
@@ -164,10 +168,10 @@ public class BrakeByWireModel
         noBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         noBrakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, "?!!!"));
         noBrakeMode.AddAction(new SendStatement(
-                                new ParametricReceiverLocator(controllerInstance),
+                                new ParametricActorLocator(controllerInstance),
                                 new NormalMessage(wheel_rpm_port))); // Add parameter
         noBrakeMode.AddAction(new SendStatement(
-                                new ParametricReceiverLocator(wheel_rpm_delegation.InstanceParameter()),
+                                new ParametricActorLocator(wheel_rpm_delegation.InstanceParameter()),
                                 new NormalMessage(wheel_rpm_delegation.MessageHandler()))); // Add parameter
         
         brakeMode.SetInvarient("timer <= 0.01");
@@ -175,10 +179,10 @@ public class BrakeByWireModel
         brakeMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         brakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, "?!!!"));
         brakeMode.AddAction(new SendStatement(
-                                new ParametricReceiverLocator(controllerInstance),
+                                new ParametricActorLocator(controllerInstance),
                                 new NormalMessage(wheel_rpm_port))); // Add parameter
         noBrakeMode.AddAction(new SendStatement(
-                                new ParametricReceiverLocator(wheel_rpm_delegation.InstanceParameter()),
+                                new ParametricActorLocator(wheel_rpm_delegation.InstanceParameter()),
                                 new NormalMessage(wheel_rpm_delegation.MessageHandler()))); // Add parameter
     }
     
@@ -186,16 +190,16 @@ public class BrakeByWireModel
     {       
         wheelControllerType.AddInstanceParameter(new InstanceParameter(Wheel_Controller__wheel_instance, wheelType));
 
-        wheelControllerType.AddVariable(new DiscreteVariable("wheel_rpm"));
-        wheelControllerType.AddVariable(new DiscreteVariable("slip_rate"));
+        wheelControllerType.AddVariable(new FloatVariable("wheel_rpm"));
+        wheelControllerType.AddVariable(new FloatVariable("slip_rate"));
         
         MessageHandler applyTorque = new MessageHandler();
-        applyTorque.AddParameter(new VariableParameter(new DiscreteVariable("requested_torque")));
-        applyTorque.AddParameter(new VariableParameter(new DiscreteVariable("vehicle_speed")));
+        applyTorque.AddParameter(new VariableParameter(new IntegerVariable("requested_torque")));
+        applyTorque.AddParameter(new VariableParameter(new IntegerVariable("vehicle_speed")));
         wheelControllerType.AddMessageHandler("applyTorque", applyTorque);
         
         MessageHandler wheel_rpm_port = new MessageHandler();
-        wheel_rpm_port.AddParameter(new VariableParameter(new DiscreteVariable("port_wheel_rpm")));
+        wheel_rpm_port.AddParameter(new VariableParameter(new IntegerVariable("port_wheel_rpm")));
         wheelControllerType.AddMessageHandler("wheel_rpm_port",wheel_rpm_port);
         
     }
@@ -203,14 +207,14 @@ public class BrakeByWireModel
     private void FillFleshForWheelControllerType(SoftwareActorType wheelControllerType, Mode brakeMode, Mode noBrakeMode)
     {
         InstanceParameter wheel = wheelControllerType.FindInstanceParameter(Wheel_Controller__wheel_instance);
-        DiscreteVariable wheel_rpm = wheelControllerType.FindVariable("wheel_rpm");
-        DiscreteVariable slip_rate = wheelControllerType.FindVariable("slip_rate");
+        FloatVariable wheel_rpm = (FloatVariable) wheelControllerType.FindVariable("wheel_rpm");
+        FloatVariable slip_rate = (FloatVariable) wheelControllerType.FindVariable("slip_rate");
         
         MessageHandler applyTorque = wheelControllerType.FindMessageHandler("applyTorque");
-        DiscreteVariable requested_torque = (DiscreteVariable) applyTorque.FindVariableParameter("requested_torque").Variable();
-        DiscreteVariable vehicle_speed = (DiscreteVariable) applyTorque.FindVariableParameter("vehicle_speed").Variable();
+        IntegerVariable requested_torque = (IntegerVariable) applyTorque.FindVariableParameter("requested_torque").Variable();
+        IntegerVariable vehicle_speed = (IntegerVariable) applyTorque.FindVariableParameter("vehicle_speed").Variable();
         
-        applyTorque.AddStatement(new DiscreteAssignmentStatement(slip_rate, new VariableExpression(vehicle_speed)));
+        applyTorque.AddStatement(new AssignmentStatement(slip_rate, new VariableExpression(vehicle_speed)));
         applyTorque.AddStatement(new IfStatement(
                  new LogicalExpression(
                         new ComparisonExpression(
@@ -227,8 +231,8 @@ public class BrakeByWireModel
         ));
         
         MessageHandler wheel_rpm_port = wheelControllerType.FindMessageHandler("wheel_rpm_port");
-        DiscreteVariable port_wheel_rpm = (DiscreteVariable) applyTorque.FindVariableParameter("port_wheel_rpm").Variable();
-        wheel_rpm_port.AddStatement(new DiscreteAssignmentStatement(wheel_rpm, new VariableExpression(port_wheel_rpm)));
+        IntegerVariable port_wheel_rpm = (IntegerVariable) applyTorque.FindVariableParameter("port_wheel_rpm").Variable();
+        wheel_rpm_port.AddStatement(new AssignmentStatement(wheel_rpm, new VariableExpression(port_wheel_rpm)));
     }
 
     private void FillSkeletonForBrakeType(PhysicalActorType brakeType, SoftwareActorType globalBrakeControllerType)
@@ -246,8 +250,8 @@ public class BrakeByWireModel
     {
         InstanceParameter controller = brakeType.FindInstanceParameter(Brake__controller_instance);
         
-        ContinuousVariable brake_percent = brakeType.FindVariable("brake_percent");
-        ContinuousVariable timer = brakeType.FindVariable("timer");
+        RealVariable brake_percent = (RealVariable) brakeType.FindVariable("brake_percent");
+        RealVariable timer = (RealVariable) brakeType.FindVariable("timer");
         
         Mode brakingMode = brakeType.FindMode("Braking");
         brakingMode.SetGuard("timer <= 0.01");
@@ -256,7 +260,7 @@ public class BrakeByWireModel
         brakingMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         brakingMode.AddDifferentialEquation(new DifferentialEquation(brake_percent, "?!!!"));
         brakingMode.AddAction(new SendStatement(
-                                new ParametricReceiverLocator(controller),
+                                new ParametricActorLocator(controller),
                                 new NormalMessage(brakePercentPort))); // AddParameter
     }
 
@@ -267,12 +271,12 @@ public class BrakeByWireModel
         globalBrakeControllerType.AddInstanceParameter(new InstanceParameter(Global_Brake_Controller__wheel_controller_RR_Instance, wheelControllerType));
         globalBrakeControllerType.AddInstanceParameter(new InstanceParameter(Global_Brake_Controller__wheel_controller_RL_Instance, wheelControllerType));
         
-        globalBrakeControllerType.AddVariable(new DiscreteVariable("wheel_rpm_FR"));
-        globalBrakeControllerType.AddVariable(new DiscreteVariable("wheel_rpm_FL"));
-        globalBrakeControllerType.AddVariable(new DiscreteVariable("wheel_rpm_RR"));
-        globalBrakeControllerType.AddVariable(new DiscreteVariable("wheel_rpm_RL"));
-        globalBrakeControllerType.AddVariable(new DiscreteVariable("brake_percent"));
-        globalBrakeControllerType.AddVariable(new DiscreteVariable("estimated_speed"));
+        globalBrakeControllerType.AddVariable(new IntegerVariable("wheel_rpm_FR"));
+        globalBrakeControllerType.AddVariable(new IntegerVariable("wheel_rpm_FL"));
+        globalBrakeControllerType.AddVariable(new IntegerVariable("wheel_rpm_RR"));
+        globalBrakeControllerType.AddVariable(new IntegerVariable("wheel_rpm_RL"));
+        globalBrakeControllerType.AddVariable(new IntegerVariable("brake_percent"));
+        globalBrakeControllerType.AddVariable(new IntegerVariable("estimated_speed"));
         
         CreatePort(globalBrakeControllerType, Global_Brake_Controller__wheel_rpm_FR_port, globalBrakeControllerType.FindVariable("wheel_rpm_FR"));
         CreatePort(globalBrakeControllerType, Global_Brake_Controller__wheel_rpm_FL_port, globalBrakeControllerType.FindVariable("wheel_rpm_FL"));
@@ -290,32 +294,32 @@ public class BrakeByWireModel
         InstanceParameter wheel_controller_RR = globalBrakeControllerType.FindInstanceParameter(Global_Brake_Controller__wheel_controller_RR_Instance);
         InstanceParameter wheel_controller_RL = globalBrakeControllerType.FindInstanceParameter(Global_Brake_Controller__wheel_controller_RL_Instance);
         
-        DiscreteVariable global_torque = new DiscreteVariable("global_torque");
-        DiscreteVariable wheel_rpm_FR = new DiscreteVariable("wheel_rpm_FR");
-        DiscreteVariable wheel_rpm_FL = new DiscreteVariable("wheel_rpm_FL");
-        DiscreteVariable wheel_rpm_RR = new DiscreteVariable("wheel_rpm_RR");
-        DiscreteVariable wheel_rpm_RL = new DiscreteVariable("wheel_rpm_RL");
-        DiscreteVariable brake_percent = new DiscreteVariable("brake_percent");
-        DiscreteVariable estimated_speed = new DiscreteVariable("estimated_speed");
+        IntegerVariable global_torque = new IntegerVariable("global_torque");
+        IntegerVariable wheel_rpm_FR = new IntegerVariable("wheel_rpm_FR");
+        IntegerVariable wheel_rpm_FL = new IntegerVariable("wheel_rpm_FL");
+        IntegerVariable wheel_rpm_RR = new IntegerVariable("wheel_rpm_RR");
+        IntegerVariable wheel_rpm_RL = new IntegerVariable("wheel_rpm_RL");
+        IntegerVariable brake_percent = new IntegerVariable("brake_percent");
+        IntegerVariable estimated_speed = new IntegerVariable("estimated_speed");
         
         MessageHandler control = globalBrakeControllerType.FindMessageHandler("Control");
         
         control.AddStatement(new DiscreteAssignmentStatement(estimated_speed, new VariableExpression(estimated_speed))); //?!!
         control.AddStatement(new DiscreteAssignmentStatement(global_torque, new VariableExpression(brake_percent))); //?!!
         
-        control.AddStatement(new SendStatement(new ParametricReceiverLocator(wheel_controller_FR), new NormalMessage(wheelControllerApply ))); // Put Parameters 
-        control.AddStatement(new SendStatement(new ParametricReceiverLocator(wheel_controller_FL), new NormalMessage(wheelControllerApply ))); // Put Parameters 
-        control.AddStatement(new SendStatement(new ParametricReceiverLocator(wheel_controller_RR), new NormalMessage(wheelControllerApply ))); // Put Parameters 
-        control.AddStatement(new SendStatement(new ParametricReceiverLocator(wheel_controller_RL), new NormalMessage(wheelControllerApply ))); // Put Parameters 
+        control.AddStatement(new SendStatement(new ParametricActorLocator(wheel_controller_FR), new NormalMessage(wheelControllerApply ))); // Put Parameters 
+        control.AddStatement(new SendStatement(new ParametricActorLocator(wheel_controller_FL), new NormalMessage(wheelControllerApply ))); // Put Parameters 
+        control.AddStatement(new SendStatement(new ParametricActorLocator(wheel_controller_RR), new NormalMessage(wheelControllerApply ))); // Put Parameters 
+        control.AddStatement(new SendStatement(new ParametricActorLocator(wheel_controller_RL), new NormalMessage(wheelControllerApply ))); // Put Parameters 
         
     }
     
-    private void CreatePort(SoftwareActorType actorType, String portName, DiscreteVariable globalVariable)
+    private void CreatePort(SoftwareActorType actorType, String portName, Variable globalVariable)
     {
         MessageHandler port = new MessageHandler();
-        DiscreteVariable localVariable =new DiscreteVariable("local_" + portName); 
+        IntegerVariable localVariable =new IntegerVariable("local_" + portName); 
         port.AddParameter(new VariableParameter(localVariable));
-        port.AddStatement(new DiscreteAssignmentStatement(globalVariable, new VariableExpression(localVariable)));
+        port.AddStatement(new AssignmentStatement(globalVariable, new VariableExpression(localVariable)));
         
         actorType.AddMessageHandler(portName,port);
     }

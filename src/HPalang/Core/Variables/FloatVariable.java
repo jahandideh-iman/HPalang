@@ -3,19 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.Core.Variables;
+
+import HPalang.Core.Variable;
 
 /**
  *
  * @author Iman Jahandideh
  */
-@Deprecated // Use variable instead
-public class ContinuousVariable extends Variable
+public final class FloatVariable extends Variable
 {
     
-    public ContinuousVariable(String name)
+    public FloatVariable(String name)
     {
-        super(name, Type.real);
+        super(name, Type.floatingPoint);
     }
     
 }

@@ -9,7 +9,6 @@ import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
-import HPalang.Core.DiscreteVariable;
 import HPalang.Core.DiscreteExpressions.ArithmeticExpression;
 import HPalang.Core.DiscreteExpressions.ComparisonExpression;
 import HPalang.Core.DiscreteExpressions.VariableExpression;

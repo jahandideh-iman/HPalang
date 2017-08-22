@@ -6,9 +6,9 @@
 package Builders;
 
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.SoftwareActorType;
+import HPalang.Core.Variables.IntegerVariable;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -24,7 +24,7 @@ public class ActorBuilder
     private String name;
     private int capacity;
     private Map<String,MessageHandler> messageHandlers = new HashMap<>();
-    private List<DiscreteVariable> discreteVariables = new LinkedList<>();
+    private List<IntegerVariable> discreteVariables = new LinkedList<>();
     
     public ActorBuilder WithID(String id)
     {
@@ -32,7 +32,7 @@ public class ActorBuilder
         return this;
     }
     
-    public ActorBuilder WithDiscreteVariable(DiscreteVariable dVariable)
+    public ActorBuilder WithDiscreteVariable(IntegerVariable dVariable)
     {
         discreteVariables.add(dVariable);
         return this;

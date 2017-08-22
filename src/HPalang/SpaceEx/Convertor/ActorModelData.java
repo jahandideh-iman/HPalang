@@ -7,9 +7,9 @@ package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import java.util.Collection;
 import java.util.Collections;
@@ -224,9 +224,10 @@ public class ActorModelData
         return "";
     }
 
-    Collection<DiscreteVariable> GetDiscreteVaraible()
+    Collection<IntegerVariable> GetDiscreteVaraible()
     {
-        return actor.Type().Variables();
+        //return actor.Type().Variables();
+        return Collections.EMPTY_LIST;
     }
 
     CommunicationLabel GetSelfSendLabelFor(CommunicationLabel selfReceive)

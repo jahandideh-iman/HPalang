@@ -6,8 +6,8 @@
 package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
+import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Component;
@@ -305,7 +305,7 @@ public class ActorConvertor
         location.AddFlow(new Flow(actorData.GetLockVar() + "' == 0"));        
        
         
-        for (DiscreteVariable var : actorData.GetDiscreteVaraible()) 
+        for (IntegerVariable var : actorData.GetDiscreteVaraible()) 
         {
             comp.AddParameter(new RealParameter(var.Name(), false));
             location.AddFlow(new Flow(var.Name() + "' == 0"));

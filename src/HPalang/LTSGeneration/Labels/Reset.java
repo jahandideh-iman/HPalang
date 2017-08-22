@@ -8,7 +8,9 @@ package HPalang.LTSGeneration.Labels;
 import HPalang.Core.ContinuousExpression;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Equalitable;
+import HPalang.Core.Expression;
 import HPalang.Core.Statement;
+import HPalang.Core.Variable;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -22,10 +24,10 @@ import java.util.Set;
  */
 public class Reset extends Equalitable<Reset>
 {
-    private final ContinuousVariable variable;
-    private final ContinuousExpression expression;
+    private final Variable variable;
+    private final Expression expression;
     
-    public Reset(ContinuousVariable variable, ContinuousExpression expression)
+    public Reset(Variable variable, Expression expression)
     {
         this.variable = variable;
         this.expression = expression;
@@ -43,7 +45,7 @@ public class Reset extends Equalitable<Reset>
         return variable.hashCode()+ expression.hashCode();
     }
     
-    public ContinuousVariable Variable()
+    public Variable Variable()
     {
         return variable;
     }

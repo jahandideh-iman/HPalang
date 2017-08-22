@@ -7,49 +7,17 @@ package HPalang.Core.Statements;
 
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.DiscreteExpressionT;
-import HPalang.Core.DiscreteVariable;
+import HPalang.Core.Variables.IntegerVariable;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class DiscreteAssignmentStatement extends AbstractStatement<DiscreteAssignmentStatement>
+@Deprecated //Use AssignmentStatement
+public class DiscreteAssignmentStatement extends AssignmentStatement
 {
-    private final DiscreteVariable dVar;
-    private final DiscreteExpression dExpr;
-
-    public  DiscreteAssignmentStatement(DiscreteVariable dVar, DiscreteExpression dExpr)
+    public  DiscreteAssignmentStatement(IntegerVariable dVar, DiscreteExpression dExpr)
     {
-        this.dVar = dVar;
-        this.dExpr = dExpr;
+        super(dVar, dExpr);
     }
-    
-    public DiscreteVariable Variable()
-    {
-        return dVar;
-    }
-    
-    public DiscreteExpression Expression()
-    {
-        return dExpr;
-    }
-    
-    @Override
-    protected boolean InternalEquals(DiscreteAssignmentStatement other)
-    {
-        return dVar.equals(other.dVar)
-                && dExpr.equals(other.dExpr);
-    }
-
-    @Override
-    protected int InternalHashCode()
-    {
-        return 1;
-    }
-    
-    @Override
-    public String toString()
-    {
-        return "Assign " + dVar.toString();
-    } 
 }

@@ -5,9 +5,12 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.Variable.Type;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
 import java.util.Map;
 import java.util.Set;
 
@@ -17,14 +20,11 @@ import java.util.Set;
  */
 public class SoftwareActorType extends ActorType
 {
-    private final String name;
-    
-    private final Map<String,DiscreteVariable> variables = new HashMap<>();
     private final Map<String,MessageHandler> messageHandlers = new HashMap<>();
     
     public SoftwareActorType(String name)
     {
-        this.name = name;
+        super(name, Arrays.asList(Type.integer,Type.integer));
     }
     
     public void AddMessageHandler(String id, MessageHandler handler)
@@ -33,28 +33,11 @@ public class SoftwareActorType extends ActorType
         messageHandlers.put(id,handler);
     }
      
-    public void AddVariable(DiscreteVariable var)
-    {
-        variables.put(var.Name(),var);
-    }
+
 
     public MessageHandler FindMessageHandler(String messageHandlerName)
     {
         return messageHandlers.get(messageHandlerName);
     }
 
-    public DiscreteVariable FindVariable(String variableName)
-    {
-        return variables.get(variableName);
-    }
-    
-    public boolean HasVariable(String name)
-    {
-        return FindVariable(name) != null;
-    }
-
-    public Collection<DiscreteVariable> Variables()
-    {
-        return variables.values();
-    }
 }

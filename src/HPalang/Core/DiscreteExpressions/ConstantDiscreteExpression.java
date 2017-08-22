@@ -5,6 +5,7 @@
  */
 package HPalang.Core.DiscreteExpressions;
 
+import HPalang.Core.Expression;
 import HPalang.Core.ValuationContainer;
 
 /**
@@ -41,5 +42,17 @@ public class ConstantDiscreteExpression extends DiscreteExpressionT<ConstantDisc
     protected int InternalHashCode()
     {
         return Integer.hashCode(constant);
+    }
+
+    @Override
+    public boolean IsComputable(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Expression PartiallyEvaluate(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

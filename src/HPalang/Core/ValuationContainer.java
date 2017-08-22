@@ -5,6 +5,7 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.Variables.IntegerVariable;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -14,16 +15,16 @@ import java.util.Map.Entry;
  *
  * @author Iman Jahandideh
  */
-public class ValuationContainer extends EqualitableAndClonable<ValuationContainer> implements Iterable<Entry<DiscreteVariable,Integer>>
+public class ValuationContainer extends EqualitableAndClonable<ValuationContainer> implements Iterable<Entry<IntegerVariable,Integer>>
 {
-    private final Map<DiscreteVariable,Integer> values = new HashMap<>();
+    private final Map<IntegerVariable,Integer> values = new HashMap<>();
     
-    public void Set(DiscreteVariable var, int value)
+    public void Set(IntegerVariable var, int value)
     {
         values.put(var, value);
     }
     
-    public void Add(DiscreteVariable var)
+    public void Add(IntegerVariable var)
     {
         values.put(var, 0);
     }
@@ -33,17 +34,17 @@ public class ValuationContainer extends EqualitableAndClonable<ValuationContaine
         values.putAll(valuation.values);
     }
     
-    public void Add(Map<DiscreteVariable,Integer> values)
+    public void Add(Map<IntegerVariable,Integer> values)
     {
         values.putAll(values);
     }
     
-    public boolean Has(DiscreteVariable var)
+    public boolean Has(IntegerVariable var)
     {
         return values.containsKey(var);
     }
     
-    public int Get(DiscreteVariable var)
+    public int Get(IntegerVariable var)
     {
         return values.get(var);
     }
@@ -71,7 +72,7 @@ public class ValuationContainer extends EqualitableAndClonable<ValuationContaine
     }
 
     @Override
-    public Iterator<Entry<DiscreteVariable, Integer>> iterator()
+    public Iterator<Entry<IntegerVariable, Integer>> iterator()
     {
         return values.entrySet().iterator();
     }

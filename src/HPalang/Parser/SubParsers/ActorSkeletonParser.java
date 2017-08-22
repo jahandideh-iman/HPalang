@@ -7,7 +7,6 @@ package HPalang.Parser.SubParsers;
 
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DiscreteVariable;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.ModelDefinition;
 import HPalang.Parser.SubParser;

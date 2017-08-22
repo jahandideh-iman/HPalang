@@ -15,6 +15,7 @@ import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import Mocks.DirectActorLocator;
 import Mocks.EmptyMessage;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -43,12 +44,12 @@ public class MessageDropRuleTest extends SOSRuleTestFixture
 
         ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
                 .WithActor(actor1)
-                .EnqueueStatement(new SendStatement(actor2, messageTo2))
+                .EnqueueStatement(new SendStatement( new DirectActorLocator(actor2), messageTo2))
                 .EnqueueLowPriorityMessage(new EmptyMessage());
         
         ActorRunTimeStateBuilder actor2State = new ActorRunTimeStateBuilder()
                 .WithActor(actor2)
-                .EnqueueStatement(new SendStatement(actor1, messageTo1))
+                .EnqueueStatement(new SendStatement(new DirectActorLocator(actor1), messageTo1))
                 .EnqueueLowPriorityMessage(new EmptyMessage());
         
         globalState.DiscreteState().AddSoftwareActorState(actor1State.Build());

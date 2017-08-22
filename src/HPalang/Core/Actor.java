@@ -11,6 +11,18 @@ package HPalang.Core;
  */
 public class Actor
 {
+    private final String name;
+    
+    public Actor(String name)
+    {
+        this.name = name;
+    }
+    
+    public String Name()
+    {
+        return name;
+    }
+    
     public void BindInstance(InstanceParameter parameter, Actor instance)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.

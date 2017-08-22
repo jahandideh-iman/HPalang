@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Statements;
+package HPalang.Core.Statements;
 
 import HPalang.Core.Statements.DelayStatement;
 import static org.hamcrest.CoreMatchers.equalTo;

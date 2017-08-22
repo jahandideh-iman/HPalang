@@ -5,8 +5,11 @@
  */
 package HPalang.Core;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -14,10 +17,20 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
-public class ActorType
+public abstract class ActorType
 {
+    private final String name;
     private final Map<String,InstanceParameter> instanceParameters = new HashMap<>();
     private final Map<String,DelegationParameter> delegationParameters = new HashMap<>();
+    private final Map<String,Variable> variables = new HashMap<>();
+    
+    private final List<Variable.Type> validTypes = new LinkedList<>();
+    
+    protected ActorType(String name, List<Variable.Type> validTypes)
+    {
+        this.name = name;
+        this.validTypes.addAll(validTypes);
+    }
     
     public void AddInstanceParameter(InstanceParameter parameter)
     {
@@ -37,6 +50,32 @@ public class ActorType
     public DelegationParameter FindDelegationParameter(String delegationName)
     {
         return delegationParameters.get(delegationName);
+    }
+
+    public void AddVariable(Variable var)
+    {
+        AssertValid(var);
+        variables.put(var.Name(), var);
+    }
+
+    private void AssertValid(Variable var)
+    {
+        assert (validTypes.contains(var.type()));
+    }
+    
+    public Variable FindVariable(String variableName)
+    {
+        return variables.get(variableName);
+    }
+
+    public boolean HasVariable(String name)
+    {
+        return FindVariable(name) != null;
+    }
+
+    public Collection<Variable> Variables()
+    {
+        return variables.values();
     }
 
 }

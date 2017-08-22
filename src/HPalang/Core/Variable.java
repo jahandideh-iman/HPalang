@@ -11,13 +11,28 @@ import java.util.Objects;
  *
  * @author Iman Jahandideh
  */
-public class Variable extends Equalitable<Variable> 
+public abstract class Variable extends Equalitable<Variable> 
 {
-    private final String name;
+    public enum Type { real, integer, floatingPoint};
     
+    private final String name;
+    private final Type type;
+    
+    @Deprecated
     public Variable(String name)
     {
+        this(name, Type.integer);
+    }
+
+    public Variable(String name, Type type)
+    {
         this.name = name;
+        this.type = type;
+    }
+    
+    public Type type()
+    {
+        return type;
     }
     
     public String Name()
@@ -28,20 +43,19 @@ public class Variable extends Equalitable<Variable>
     @Override
     protected boolean InternalEquals(Variable other)
     {
-        return this.name.equals(other.name);
+        return this.name.equals(other.name) &&
+                this.type.equals(other.type);
     }
 
     @Override
     protected int InternalHashCode()
     {
-        int hash = 7;
-        hash = 29 * hash + Objects.hashCode(this.name);
-        return hash;
+        return 0;
     }
     
-    @Override
-    public String toString()
-    {
-        return name;
-    }
+//    @Override
+//    public String toString()
+//    {
+//        return name;
+//    }
 }

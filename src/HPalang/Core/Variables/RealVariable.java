@@ -3,16 +3,20 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.Core.Variables;
+
+import HPalang.Core.Variable;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class DiscreteVariable extends Variable
+public final class RealVariable extends Variable
 {
-    public DiscreteVariable(String name)
+    
+    public RealVariable(String name)
     {
-        super(name);
+        super(name, Type.real);
     }
+    
 }

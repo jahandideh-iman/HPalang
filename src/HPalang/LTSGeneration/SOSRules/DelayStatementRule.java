@@ -15,6 +15,7 @@ import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.ResumeStatement;
 import HPalang.Core.Statement;
+import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.Labels.Reset;
 
 /**
@@ -47,7 +48,7 @@ public class DelayStatementRule extends StatementRule<DelayStatement>
         return  null;
     }
     
-    private ContinuousBehavior CreateDelayBehavior(SoftwareActor actor,float delay, ContinuousVariable delayVar)
+    private ContinuousBehavior CreateDelayBehavior(SoftwareActor actor,float delay, RealVariable delayVar)
     {
         DifferentialEquation equation = new DifferentialEquation(delayVar, "1");
         return new ContinuousBehavior(delayVar+"<="+delay,equation,delayVar+"=="+delay,Statement.StatementsFrom(new ResumeStatement()));
