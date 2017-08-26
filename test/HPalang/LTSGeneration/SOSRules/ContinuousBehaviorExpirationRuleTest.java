@@ -62,7 +62,7 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         
         transitionCollectorChecker.ExpectTransition(new ContinuousLabel(mode.Guard()),nextGlobalState);
         
-        rule.TryApply(SingleStateInfo(globalState), transitionCollectorChecker);  
+        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);  
     }
     
     @Test

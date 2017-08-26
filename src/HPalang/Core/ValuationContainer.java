@@ -24,9 +24,10 @@ public class ValuationContainer extends EqualitableAndClonable<ValuationContaine
         values.put(var, value);
     }
     
-    public void Add(IntegerVariable var)
+    public void Add(Variable var)
     {
-        values.put(var, 0);
+        if(var instanceof IntegerVariable)
+            values.put((IntegerVariable)var, 0);
     }
     
     public void Add(ValuationContainer valuation)

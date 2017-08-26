@@ -25,6 +25,11 @@ public class VariableArgument  extends Equalitable<VariableArgument>
         return parameter;
     }
     
+    public Expression Value()
+    {
+        return value;
+    }
+    
     @Override
     protected boolean InternalEquals(VariableArgument other)
     {

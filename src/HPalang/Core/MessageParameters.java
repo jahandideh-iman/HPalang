@@ -22,6 +22,12 @@ public class MessageParameters
     {
         parameters.put(variableParameter.Name(),variableParameter);
     }
+    
+    public void AddAll(MessageParameters other)
+    {
+        for(VariableParameter param : other.ParametersSet())
+            this.Add(param);
+    }
 
     public VariableParameter Find(String parameterName)
     {
@@ -31,5 +37,15 @@ public class MessageParameters
     public Set<VariableParameter> ParametersSet()
     {
         return new HashSet<>(parameters.values());
+    }
+    
+    public static MessageParameters From(VariableParameter ... params)
+    {
+        MessageParameters parameters = new MessageParameters();
+        
+        for(VariableParameter param : params)
+            parameters.Add(param);
+        
+        return parameters;
     }
 }

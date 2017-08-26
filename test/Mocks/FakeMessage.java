@@ -12,10 +12,14 @@ import HPalang.Core.Message;
 import HPalang.Core.MessageParameters;
 import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.Statement;
+import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 import java.util.Queue;
+import jdk.nashorn.internal.runtime.regexp.joni.constants.Arguments;
 
 /**
  *
@@ -23,12 +27,36 @@ import java.util.Queue;
  */
 public class FakeMessage extends Equalitable<FakeMessage> implements Message
 {
-    private Queue<Statement> statements = new LinkedList<>();
-    private MessageParameters parameters =  new MessageParameters();
+    private final Queue<Statement> statements = new LinkedList<>();
+    private final MessageParameters parameters =  new MessageParameters();
+    
+    private final MessageArguments arguments = new MessageArguments();
+    
+    public FakeMessage()
+    {
+    }
+        
+    public FakeMessage(Queue<Statement> statements, MessageParameters parameters)
+    {
+        this.statements.addAll(statements);
+        this.parameters.AddAll(parameters);
+    }
     
     public void AddParameter(VariableParameter parameter)
     {
         parameters.Add(parameter);
+    }
+    
+    @Override
+    public void AddArgument(VariableArgument argument)
+    {
+        arguments.Add(argument);
+    }
+    
+    @Override
+    public MessageArguments Arguments()
+    {
+        return arguments;
     }
 
     @Override
@@ -66,5 +94,6 @@ public class FakeMessage extends Equalitable<FakeMessage> implements Message
     {
         return parameters;
     }
-    
+
+
 }

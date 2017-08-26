@@ -6,10 +6,14 @@
 package HPalang.Core.Messages;
 
 import HPalang.Core.Equalitable;
+import HPalang.Core.Expression;
 import HPalang.Core.Message;
+import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.MessageParameters;
 import HPalang.Core.Statement;
+import HPalang.Core.VariableArgument;
+import HPalang.Core.VariableParameter;
 import java.util.Queue;
 
 /**
@@ -31,6 +35,24 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
         return messageHandler.GetBody();
     }
     
+    
+    public MessageHandler GetMessageHandler()
+    {
+        return messageHandler;
+    }
+
+    @Override
+    public void SetPriority(int priority)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int Priority()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
     @Override
     protected boolean InternalEquals(NormalMessage other)
     {
@@ -49,26 +71,21 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
         return messageHandler.GetID();
     }
     
-    public MessageHandler GetMessageHandler()
-    {
-        return messageHandler;
-    }
-
-    @Override
-    public void SetPriority(int priority)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public int Priority()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
     @Override
     public MessageParameters Parameters()
     {
         return messageHandler.Parameters();
+    }
+
+    @Override
+    public MessageArguments Arguments()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void AddArgument(VariableArgument argument)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

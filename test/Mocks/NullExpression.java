@@ -15,7 +15,17 @@ import HPalang.Core.ValuationContainer;
  */
 public class NullExpression extends Equalitable<NullExpression> implements Expression
 {
-
+    private final String expression;
+    public NullExpression()
+    {
+        this.expression = "null";
+    }
+    
+    public NullExpression(String expression)
+    {
+        this.expression = expression;
+    }
+    
     @Override
     public boolean IsComputable(ValuationContainer valuations)
     {
@@ -37,7 +47,7 @@ public class NullExpression extends Equalitable<NullExpression> implements Expre
     @Override
     protected boolean InternalEquals(NullExpression other)
     {
-        return true;
+        return this.expression.equals(other.expression);
     }
 
     @Override

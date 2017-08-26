@@ -10,7 +10,9 @@ import HPalang.Core.Statement;
 import java.util.LinkedList;
 import java.util.Queue;
 import HPalang.Core.Equalitable;
+import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageParameters;
+import HPalang.Core.VariableArgument;
 
 /**
  *
@@ -36,7 +38,8 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     {
         return new LinkedList<>();
     }
-
+    
+    
     @Override
     protected boolean InternalEquals(EmptyMessage other)
     {
@@ -65,6 +68,17 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     public MessageParameters Parameters()
     {
         return new MessageParameters();
+    } 
+
+    @Override
+    public MessageArguments Arguments()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
+    @Override
+    public void AddArgument(VariableArgument argument)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
 }

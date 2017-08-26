@@ -71,6 +71,7 @@ public class Main {
             definition = new DrawBridge().Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
+        
         LTSGenerator tierOneLTSGenerator = CreateTierOneLTSGenrator(CreateTierTwoLTSGenrator());
         
         HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();

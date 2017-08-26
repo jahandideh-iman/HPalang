@@ -33,6 +33,11 @@ public class SoftwareActorState extends CompositeStateT<SoftwareActorState>
         return FindSubState(MessageQueueState.class);
     }
     
+    public ValuationState ValuationState()
+    {
+        return FindSubState(ValuationState.class);
+    }
+    
     public int GetMessageQueueCapacity()
     {
         return actor.Capacity();

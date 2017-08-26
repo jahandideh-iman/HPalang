@@ -63,7 +63,7 @@ public class SOSRuleTestFixture
         return state;
     }
         
-    public StateInfo SingleStateInfo(GlobalRunTimeState globalState)
+    public StateInfo SimpleStateInfo(GlobalRunTimeState globalState)
     {
         return new StateInfo(globalState, Collections.EMPTY_LIST , Collections.EMPTY_LIST);
     }

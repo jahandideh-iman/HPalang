@@ -55,7 +55,7 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         
         transitionCollectorChecker.ExpectTransition(EventTransitionLabel(event), nextGlobalState);
         
-        rule.TryApply(SingleStateInfo(globalState), transitionCollectorChecker);
+        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         assertTrue(((ActionMonitor)event.Action()).isExecuted);
     }

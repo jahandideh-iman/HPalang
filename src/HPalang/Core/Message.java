@@ -5,7 +5,6 @@
  */
 package HPalang.Core;
 
-import HPalang.Core.Statement;
 import java.util.Queue;
 
 /**
@@ -15,7 +14,11 @@ import java.util.Queue;
 public interface Message
 {
     public Queue<Statement> GetMessageBody();
+    
     public MessageParameters Parameters();
+    public MessageArguments Arguments();
+    public void AddArgument(VariableArgument argument);
+    
     public void SetPriority(int priority);
     public int Priority();
 }
