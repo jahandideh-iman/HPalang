@@ -26,7 +26,7 @@ public class MessageArguments extends Equalitable<MessageArguments>
         Set<VariableParameter> params = new HashSet<>();
         arguments.forEach(a -> params.add(a.Parameter()));
         
-        return params.equals(parameters.ParametersSet());
+        return params.equals(parameters.AsSet());
     }
 
     @Override
@@ -41,7 +41,7 @@ public class MessageArguments extends Equalitable<MessageArguments>
         return 0;
     }
     
-    public Set<VariableArgument> ArgumentsSet()
+    public Set<VariableArgument> AsSet()
     {
         return new HashSet<>(arguments);
     }

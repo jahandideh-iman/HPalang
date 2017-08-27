@@ -5,6 +5,7 @@
         <group>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/BouncingBallModel.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/VariableParameter.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/Core/Messages/NormalMessageTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/FIFOMessageTakeRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Statements/DiscreteAssignmentStatement.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/SoftwareActor.java</file>
@@ -80,6 +81,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryOperator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DifferentialEquation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Expression.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Statements/MessageTeardownStatement.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Main.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryOperators/AddOperator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ActorLocator.java</file>
@@ -97,6 +99,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Statements/ContinuousAssignmentStatement.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/RunTimeStates/PhysicalActorState.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/StatementRule.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/Labels/SoftwareLabel.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/RunTimeStates/GlobalRunTimeState.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/DrawBridge.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/PhysicalActorType.java</file>
@@ -119,6 +122,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/PhysicalStatementRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/Parser/ParserExpressionTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/ComparisonExpression.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/Core/Statements/MessageTeardownStatementTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SimpleModel.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/LTSGenerator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/RunTimeStates/SoftwareActorStateTest.java</file>
@@ -128,6 +132,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/HPalangModelData.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/ContinuousAssignmentRuleTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/RunTimeStates/DiscreteState.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/Core/Statements/ResumeStatementTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/DiscreteAssignmentTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/RunTimeStates/ContinuousState.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/DelayStatementRule.java</file>

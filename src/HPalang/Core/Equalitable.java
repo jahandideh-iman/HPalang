@@ -22,6 +22,11 @@ public abstract class Equalitable<T>
             return false;
             
         return InternalEquals((T) other);
+        
+//        boolean temp = InternalEquals((T) other);
+//        if(temp == false)
+//            temp = false;
+//        return temp;
     }
     
     @Override

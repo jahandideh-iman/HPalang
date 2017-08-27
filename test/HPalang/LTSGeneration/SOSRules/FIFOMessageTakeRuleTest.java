@@ -5,12 +5,12 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.Message;
 import HPalang.Core.MessageParameters;
 import HPalang.Core.Messages.MessageWithBody;
 import static HPalang.Core.Statement.StatementsFrom;
 import HPalang.Core.Statements.AssignmentStatement;
+import HPalang.Core.Statements.MessageTeardownStatement;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.IntegerVariable;
@@ -21,18 +21,15 @@ import TestUtilities.Utilities;
 import Mocks.EmptyStatement;
 import Mocks.FakeMessage;
 import Mocks.NullExpression;
-import java.security.Policy;
-import jdk.nashorn.internal.runtime.regexp.joni.constants.Arguments;
-import static org.hamcrest.CoreMatchers.is;
-import org.hamcrest.core.IsEqual;
 import org.junit.Test;
-import static org.junit.Assert.*;
 import org.junit.Before;
 
 /**
  *
  * @author Iman Jahandideh
  */
+
+// TODO: Find a better way for testing the expected outcome of the tests
 public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
 {
     @Before
@@ -51,10 +48,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         
         generatedLTS = ltsGenerator.Generate(globalState);
         
-        GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
-        SoftwareActorState nextActorState = expectedGlobalState.DiscreteState().FindActorState(actorState.Actor());
-        nextActorState.MessageQueueState().Messages().Clear();
-        nextActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
+        GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, actorState, message);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
         
@@ -82,14 +76,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         
         globalState.DiscreteState().AddSoftwareActorState(actorState);
 
-        GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
-        SoftwareActorState nextActorState = expectedGlobalState.DiscreteState().FindActorState(actorState.Actor());
-        nextActorState.MessageQueueState().Messages().Clear();
-        nextActorState.ExecutionQueueState().Statements().Enqueue(new AssignmentStatement(param1.Variable(), arg1.Value()));
-        nextActorState.ExecutionQueueState().Statements().Enqueue(new AssignmentStatement(param2.Variable(), arg2.Value()));
-        nextActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
-        nextActorState.ValuationState().Valuation().Add(param1.Variable());
-        nextActorState.ValuationState().Valuation().Add(param2.Variable());
+        GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, actorState, message);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
         
@@ -99,7 +86,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
     
     // TODO: Refactor the assertion
     @Test
-    public void AddsMessageArgumentsToActosValuation()
+    public void AddsMessageArgumentsToActorsValuation()
     {
         VariableParameter param1 = new VariableParameter(new IntegerVariable("param1"));
         VariableParameter param2 = new VariableParameter(new IntegerVariable("param2"));
@@ -118,20 +105,55 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         
         globalState.DiscreteState().AddSoftwareActorState(actorState);
 
-        GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
-        SoftwareActorState nextActorState = expectedGlobalState.DiscreteState().FindActorState(actorState.Actor());
-        nextActorState.MessageQueueState().Messages().Clear();
-        nextActorState.ExecutionQueueState().Statements().Enqueue(new AssignmentStatement(param1.Variable(), arg1.Value()));
-        nextActorState.ExecutionQueueState().Statements().Enqueue(new AssignmentStatement(param2.Variable(), arg2.Value()));
-        nextActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
-        nextActorState.ValuationState().Valuation().Add(param1.Variable());
-        nextActorState.ValuationState().Valuation().Add(param2.Variable());
+        GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, actorState, message);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
         
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
     }
 
+    @Test
+    public void AddsATearDownStatementAfterMessageBodyToRemoveMessageParametersFromValuation()
+    {
+        VariableParameter param = new VariableParameter(new IntegerVariable("param"));
+        VariableArgument arg = new VariableArgument(param, new NullExpression("e2"));
+        
+        Message message = new FakeMessage(
+                StatementsFrom(new EmptyStatement("s1")),
+                MessageParameters.From(param));
+        message.AddArgument(arg);
+        
+        SoftwareActorState actorState =  CreateBlankActorStateWith(message);
+        globalState.DiscreteState().AddSoftwareActorState(actorState);
+
+        GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, actorState, message);
+        
+        transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        
+        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+    }
+    
+    private GlobalRunTimeState ExpectedGlobalStateWhenMessageIsTaken(GlobalRunTimeState originalState, SoftwareActorState senderState , Message message)
+    {
+        GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
+        SoftwareActorState expectedActorState = expectedGlobalState.DiscreteState().FindActorState(senderState.Actor());
+        expectedActorState.MessageQueueState().Messages().Dequeue();
+        
+        for(VariableArgument argument : message.Arguments().AsSet())
+            expectedActorState.ExecutionQueueState().Statements().Enqueue(
+                    new AssignmentStatement(argument.Parameter().Variable(), argument.Value()));
+        
+        expectedActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
+        
+        for (VariableParameter parameter : message.Parameters().AsSet()) {
+            expectedActorState.ValuationState().Valuation().Add(parameter.Variable());
+        }
+        expectedActorState.ExecutionQueueState().Statements().Enqueue(
+                new MessageTeardownStatement(message.Parameters()));
+        
+        return expectedGlobalState;
+    }
+    
     private SoftwareActorState CreateBlankActorStateWith(Message message)
     {
         SoftwareActorState actorState =  Utilities.CreateSoftwareActorState("actor");
