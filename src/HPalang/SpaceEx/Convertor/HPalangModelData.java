@@ -50,12 +50,12 @@ public class HPalangModelData
         for (Statement stat :statements) {
             if (stat instanceof SendStatement) {
                 SendStatement sendStat = (SendStatement) stat;
-                String handlerId = sendStat.GetMessage().toString();
-                GetActorData(sendStat.GetReceiver()).AddReceiveHandler(handlerId, actor, ownerCB);
-                GetActorData(actor).AddSendLabel(sendStat, handlerId, sendStat.GetReceiver(), ownerCB);
+                String handlerId = sendStat.Message().toString();
+                GetActorData(sendStat.Receiver()).AddReceiveHandler(handlerId, actor, ownerCB);
+                GetActorData(actor).AddSendLabel(sendStat, handlerId, sendStat.Receiver(), ownerCB);
 
-                CommunicationLabel sendLabel = GetActorData(actor).CreateSendLabel(handlerId, sendStat.GetReceiver(), ownerCB);
-                CommunicationLabel receiveLabel = GetActorData(sendStat.GetReceiver()).CreateReceiveLabel(handlerId, actor, ownerCB);
+                CommunicationLabel sendLabel = GetActorData(actor).CreateSendLabel(handlerId, sendStat.Receiver(), ownerCB);
+                CommunicationLabel receiveLabel = GetActorData(sendStat.Receiver()).CreateReceiveLabel(handlerId, actor, ownerCB);
                 if (sendLabel.IsSelf() == false) {
                     globalSendLabels.add(sendLabel);
                     receiveToSendMap.put(receiveLabel, sendLabel);

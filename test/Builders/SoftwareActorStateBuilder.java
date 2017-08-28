@@ -19,7 +19,7 @@ import HPalang.Utilities.Queue;
  *
  * @author Iman Jahandideh
  */
-public class ActorRunTimeStateBuilder
+public class SoftwareActorStateBuilder
 {
     private SoftwareActor actor;
     
@@ -30,25 +30,25 @@ public class ActorRunTimeStateBuilder
     
     private final Queue<Statement> statements = new Queue<>();
 
-    public ActorRunTimeStateBuilder WithActor(SoftwareActor actor)
+    public SoftwareActorStateBuilder WithActor(SoftwareActor actor)
     {
         this.actor = actor;
         return this;
     }
     
-    public ActorRunTimeStateBuilder EnqueueLowPriorityMessage(Message message)
+    private SoftwareActorStateBuilder EnqueueLowPriorityMessage(Message message)
     {
         lowPriorityMessages.Enqueue(message);
         return this;
     }
        
-    public ActorRunTimeStateBuilder SetSuspended(boolean suspended)
+    public SoftwareActorStateBuilder SetSuspended(boolean suspended)
     {
         isSuspended = suspended;
         return this;
     }
         
-    public ActorRunTimeStateBuilder EnqueueStatement(Statement statement)
+    public SoftwareActorStateBuilder EnqueueStatement(Statement statement)
     {
         statements.Enqueue(statement);
         return this;
@@ -66,7 +66,7 @@ public class ActorRunTimeStateBuilder
         actorState.AddSubstate(valuationState);
         
         
-        messageQueueState.Messages().Enqueue(lowPriorityMessages);
+        //messageQueueState.Messages().Enqueue(lowPriorityMessages);
         executionQueueState.Statements().Enqueue(statements);
         
         actorState.SetSuspended(isSuspended);

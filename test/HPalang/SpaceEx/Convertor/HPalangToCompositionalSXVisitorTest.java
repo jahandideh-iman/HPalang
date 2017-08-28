@@ -5,7 +5,7 @@
  */
 package HPalang.SpaceEx.Convertor;
 
-import Builders.ActorBuilder;
+import Builders.SoftwareActorBuilder;
 import Builders.ProgramDefinitionBuilder;
 import Builders.SpaceExModelBuilder;
 import HPalang.Core.SoftwareActor;
@@ -45,7 +45,7 @@ public class HPalangToCompositionalSXVisitorTest
 //    @Test
 //    public void ConvertsEmptyActorCorrectly()
 //    {
-//        SoftwareActor actor = new ActorBuilder().WithID("actor").Build();
+//        SoftwareActor actor = new SoftwareActorBuilder().WithID("actor").Build();
 //        ModelDefinition hpalangModel = new ProgramDefinitionBuilder()
 //                .With(actor)
 //                .Build();

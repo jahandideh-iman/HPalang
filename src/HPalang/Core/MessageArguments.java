@@ -28,6 +28,14 @@ public class MessageArguments extends Equalitable<MessageArguments>
         
         return params.equals(parameters.AsSet());
     }
+    
+    public VariableArgument ArgumentFor(VariableParameter parameter)
+    {
+       for(VariableArgument arg : arguments)
+           if(arg.Parameter().equals(parameter))
+               return arg;
+       return null;
+    }
 
     @Override
     protected boolean InternalEquals(MessageArguments other)
@@ -44,5 +52,15 @@ public class MessageArguments extends Equalitable<MessageArguments>
     public Set<VariableArgument> AsSet()
     {
         return new HashSet<>(arguments);
+    }
+    
+    public static MessageArguments From(VariableArgument ... args)
+    {
+        MessageArguments arguments = new MessageArguments();
+        
+        for(VariableArgument arg : args)
+            arguments.Add(arg);
+        
+        return arguments;
     }
 }

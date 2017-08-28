@@ -39,7 +39,7 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
 
     public void AddSendStatement(SendStatement sendStatement)
     {
-        DiscreteState().FindActorState(sendStatement.GetReceiver()).FindSubState(MessageQueueState.class).Messages().Enqueue(sendStatement.GetMessage());
+        //DiscreteState().FindActorState(sendStatement.GetReceiver()).MessageQueueState().Messages().Enqueue(sendStatement.GetMessage());
     }
     
     @Override

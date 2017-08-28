@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
-import HPalang.Core.NetworkPacket;
+import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -32,20 +32,20 @@ public class NetwrokCommunicationRule implements SOSRule
         if(networkState.Buffer().isEmpty())
             return;
         
-        NetworkPacket packet = FindHighestPriority(networkState.Buffer());
+        MessagePacket packet = FindHighestPriority(networkState.Buffer());
         
         SoftwareActorState receiverState = newGlobalState.DiscreteState().FindActorState(packet.Receiver());
         MessageQueueState messageQueueState = receiverState.FindSubState(MessageQueueState.class);
-        messageQueueState.Messages().Enqueue(packet.Message());
+        messageQueueState.Messages().Enqueue(packet);
         networkState.Debuffer(packet);
         
         generator.AddTransition(new NetworkLabel(), newGlobalState); 
     }
 
-    private NetworkPacket FindHighestPriority(Collection<NetworkPacket> buffer)
+    private MessagePacket FindHighestPriority(Collection<MessagePacket> buffer)
     {
-        NetworkPacket maxPacket = buffer.iterator().next();
-        for( NetworkPacket packet : buffer)
+        MessagePacket maxPacket = buffer.iterator().next();
+        for( MessagePacket packet : buffer)
         {
             if(packet.Message().Priority() > maxPacket.Message().Priority())
                 maxPacket = packet;

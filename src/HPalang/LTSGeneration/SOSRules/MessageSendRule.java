@@ -5,13 +5,18 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import HPalang.Core.Statements.DelayStatement;
-import HPalang.LTSGeneration.LTSGenerator;
+import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
+import HPalang.Core.Expression;
+import HPalang.Core.Message;
+import HPalang.Core.MessageArguments;
+import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
-import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
+import HPalang.Core.ValuationContainer;
+import HPalang.Core.VariableArgument;
+import HPalang.Core.VariableParameter;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.TransitionCollector;
 
@@ -24,13 +29,13 @@ public class MessageSendRule extends ActorLevelRule
     @Override
     protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
     {
-        if((actorState.FindSubState(ExecutionQueueState.class).Statements().Head() instanceof SendStatement) == false)
+        if((actorState.ExecutionQueueState().Statements().Head() instanceof SendStatement) == false)
             return false;
         
-        SendStatement sendStatement = (SendStatement)actorState.FindSubState(ExecutionQueueState.class).Statements().Head();
-        SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(sendStatement.GetReceiver());
+        SendStatement sendStatement = (SendStatement)actorState.ExecutionQueueState().Statements().Head();
+        SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(sendStatement.Receiver());
         
-        MessageQueueState queueState = receiverState.FindSubState(MessageQueueState.class);
+        MessageQueueState queueState = receiverState.MessageQueueState();
         return  queueState.Messages().Size() < receiverState.GetMessageQueueCapacity();
     }
 
@@ -39,15 +44,41 @@ public class MessageSendRule extends ActorLevelRule
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
 
-        SendStatement sendStatement = (SendStatement)actorState.FindSubState(ExecutionQueueState.class).Statements().Head();
-        
         SoftwareActorState senderState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
-        SoftwareActorState receiverState = newGlobalState.DiscreteState().FindActorState(sendStatement.GetReceiver());
-        MessageQueueState reciverMessageQueueState = receiverState.FindSubState(MessageQueueState.class);
-        senderState.ExecutionQueueState().Statements().Dequeue();
+        SendStatement sendStatement = (SendStatement)senderState.ExecutionQueueState().Statements().Dequeue();
         
-        reciverMessageQueueState.Messages().Enqueue(sendStatement.GetMessage());
+        SoftwareActorState receiverState = newGlobalState.DiscreteState().FindActorState(sendStatement.Receiver());
+        MessageQueueState reciverMessageQueueState = receiverState.MessageQueueState();
+        
+        ValuationContainer valuations = senderState.ValuationState().Valuation();
+        
+        MessageArguments arguments = CreateMaximalEvaluatedArguments(sendStatement.Message(), sendStatement.Arguments(),valuations);
+        
+        MessagePacket packet = new MessagePacket(
+                senderState.Actor(), 
+                receiverState.Actor(), 
+                sendStatement.Message(), 
+                arguments
+        );
+        
+        reciverMessageQueueState.Messages().Enqueue(packet);
         
         collector.AddTransition(new SoftwareLabel(), newGlobalState);
+    }
+    
+    private MessageArguments CreateMaximalEvaluatedArguments(Message message, MessageArguments unEvaluatedArguments, ValuationContainer valuations)
+    {
+        MessageArguments maximalEvaluatedarguments = new MessageArguments();
+        
+        for(VariableParameter param : message.Parameters().AsSet())
+        {
+            Expression unEvalutedValue = unEvaluatedArguments.ArgumentFor(param).Value();
+            VariableArgument argument = new VariableArgument(
+                    param, 
+                    new ConstantDiscreteExpression(unEvalutedValue.Evaluate(valuations)));
+            maximalEvaluatedarguments.Add(argument);
+        }
+        
+        return maximalEvaluatedarguments;
     }
 }

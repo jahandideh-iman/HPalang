@@ -6,8 +6,11 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Message;
+import HPalang.Core.MessageArguments;
+import HPalang.Core.MessagePacket;
 import HPalang.Core.MessageParameters;
 import HPalang.Core.Messages.MessageWithBody;
+import HPalang.Core.SoftwareActor;
 import static HPalang.Core.Statement.StatementsFrom;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.MessageTeardownStatement;
@@ -21,6 +24,7 @@ import TestUtilities.Utilities;
 import Mocks.EmptyStatement;
 import Mocks.FakeMessage;
 import Mocks.NullExpression;
+import static TestUtilities.Utilities.SimpleStateInfo;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -159,7 +163,14 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         SoftwareActorState actorState =  Utilities.CreateSoftwareActorState("actor");
         actorState.SetSuspended(false);
         actorState.ExecutionQueueState().Statements().Clear();
-        actorState.MessageQueueState().Messages().Enqueue(message);
+        
+        MessagePacket packet = new MessagePacket(
+                Utilities.CreateSofwareActor("null"),
+                Utilities.CreateSofwareActor("null"),
+                message, 
+                new MessageArguments());
+        
+        actorState.MessageQueueState().Messages().Enqueue(packet);
         return actorState;
     }
 }

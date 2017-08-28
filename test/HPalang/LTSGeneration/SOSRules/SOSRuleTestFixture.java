@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.PhysicalActor;
+import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
@@ -16,7 +17,7 @@ import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.State;
 import HPalang.LTSGeneration.StateInfo;
-import Mocks.TransitionCollectorMock;
+import Mocks.TransitionCollectorChecker;
 import static TestUtilities.Utilities.CreateGlobalState;
 import java.util.Collections;
 
@@ -31,41 +32,16 @@ public class SOSRuleTestFixture
     protected GlobalRunTimeState globalState = CreateGlobalState();
     
     SOSRule rule;
-    TransitionCollectorMock transitionCollectorChecker = new TransitionCollectorMock();
+    TransitionCollectorChecker transitionCollectorChecker = new TransitionCollectorChecker();
+    
+    public void ClearStatementsFor(SoftwareActor actor, GlobalRunTimeState globalState)
+    {
+        globalState.DiscreteState().FindActorState(actor).ExecutionQueueState().Statements().Clear();
+    }
     
     protected void DequeueOneStatemenet(SoftwareActorState actorState)
     {
         actorState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
     }
-    
-    public ContinuousState CreateContinuousState(PhysicalActorState actorState)
-    {
-        ContinuousState continuousState = new ContinuousState();
-        
-        continuousState.AddPhysicalActorState(actorState);
-        
-        return continuousState;
-    }
-    
-    public PhysicalActorState CreatePhysicalState(String actorName, State substate)
-    {
-        PhysicalActorState state =  new PhysicalActorState(new PhysicalActor(actorName));
-        
-        state.AddSubstate(substate);
-        
-        return state;
-    }
-    
-    public PhysicalActorState CreatePhysicalState(String actorName)
-    {
-        PhysicalActorState state =  new PhysicalActorState(new PhysicalActor(actorName));
 
-        return state;
-    }
-        
-    public StateInfo SimpleStateInfo(GlobalRunTimeState globalState)
-    {
-        return new StateInfo(globalState, Collections.EMPTY_LIST , Collections.EMPTY_LIST);
-    }
-   
 }

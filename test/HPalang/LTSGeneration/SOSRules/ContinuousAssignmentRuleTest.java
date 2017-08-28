@@ -17,11 +17,13 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.State;
+import static TestUtilities.Utilities.CreateContinuousState;
 import static org.hamcrest.CoreMatchers.*;
 import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import static TestUtilities.Utilities.CreatePhysicalState;
 
 /**
  *

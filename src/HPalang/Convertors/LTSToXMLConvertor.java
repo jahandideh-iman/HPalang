@@ -7,6 +7,7 @@ package HPalang.Convertors;
 
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.Core.Message;
+import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Transition;
@@ -77,8 +78,8 @@ public class LTSToXMLConvertor
             actorStr += "},";
             
             actorStr += "LQ:{";
-            for(Message m : actorState.FindSubState(MessageQueueState.class).Messages())
-                actorStr += m.toString() + ",";
+            for(MessagePacket p : actorState.MessageQueueState().Messages())
+                actorStr += p.toString() + ",";
             actorStr += "},";
             
             actorStr += "S:{";

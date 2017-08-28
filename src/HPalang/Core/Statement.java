@@ -28,4 +28,5 @@ public interface Statement
             queue.add(s);
         return queue;
     }
+    
 }

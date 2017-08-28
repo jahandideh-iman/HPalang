@@ -21,23 +21,29 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
 {
 
     @Override
-    protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
+    protected final boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
     {
         
-        return actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false
-                && actorState.FindSubState(ExecutionQueueState.class).Statements().Head().Is(StatementType());
+        return actorState.ExecutionQueueState().Statements().IsEmpty() == false &&
+                actorState.ExecutionQueueState().Statements().Head().Is(StatementType()) &&
+                InternalIsRuleSatisfied(actorState);
+    }
+    
+    protected boolean InternalIsRuleSatisfied(SoftwareActorState actorState)
+    {
+        return true;
     }
     
     protected abstract Class<T> StatementType();
 
     @Override
-    protected void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
+    protected final void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
         
-        T statement = (T)newActorState.FindSubState(ExecutionQueueState.class).Statements().Head();
-        newActorState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
+        T statement = (T)newActorState.ExecutionQueueState().Statements().Head();
+        newActorState.ExecutionQueueState().Statements().Dequeue();
         ApplyStatement(newActorState, statement);
         
         SoftwareLabel label = CreateTransitionLabel(actorState, statement);

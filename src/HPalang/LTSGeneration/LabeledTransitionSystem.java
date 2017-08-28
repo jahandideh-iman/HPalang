@@ -55,7 +55,8 @@ public class LabeledTransitionSystem
         Transition transtion = new Transition(origin,label,destination);
         if(transitions.contains(transtion))
             return;
-        AddState(origin);
+        assert(HasState(origin));
+        //AddState(origin);
         transitions.add(transtion);
         AddState(destination);
     }

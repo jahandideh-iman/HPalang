@@ -5,8 +5,7 @@
  */
 package HPalang.Core;
 
-import HPalang.Core.Variables.IntegerVariable;
-import Mocks.NullExpression;
+import static TestUtilities.NetworkingUtility.*;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -83,15 +82,5 @@ public class MessageArgumentsTest
         arguments.Add(ArgumentFor(anotherParam));
     
         assertThat(arguments.Match(parameters),is(false)); 
-    }
-    
-    private VariableArgument ArgumentFor(VariableParameter parameter)
-    {
-        return new VariableArgument(parameter, new NullExpression());
-    }
-    
-    private VariableParameter ParameterFor(String param)
-    {
-        return new VariableParameter(new IntegerVariable(param));
     }
 }

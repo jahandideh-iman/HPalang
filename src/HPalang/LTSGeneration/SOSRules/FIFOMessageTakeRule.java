@@ -37,7 +37,7 @@ public class FIFOMessageTakeRule extends ActorLevelRule
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
         
-        Message message = newActorState.MessageQueueState().Messages().Dequeue();
+        Message message = newActorState.MessageQueueState().Messages().Dequeue().Message();
         for(VariableArgument argument : message.Arguments().AsSet())
             newActorState.ExecutionQueueState().Statements().Enqueue(
                     new AssignmentStatement(

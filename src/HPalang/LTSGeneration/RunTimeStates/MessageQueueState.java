@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.Message;
-import HPalang.LTSGeneration.CompositeStateT;
+import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.SimpleState;
 import HPalang.Utilities.Queue;
 
@@ -16,9 +16,9 @@ import HPalang.Utilities.Queue;
  */
 public class MessageQueueState extends SimpleState<MessageQueueState>
 {
-    private final Queue<Message> messages = new Queue<>();
+    private final Queue<MessagePacket> messages = new Queue<>();
     
-    public Queue<Message> Messages()
+    public Queue<MessagePacket> Messages()
     {
         return messages;
     }

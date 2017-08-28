@@ -18,33 +18,33 @@ import java.util.Map;
  *
  * @author Iman Jahandideh
  */
-public class ActorBuilder
+public class SoftwareActorBuilder
 {
     
     private String name;
-    private int capacity;
+    private int capacity = 1;
     private Map<String,MessageHandler> messageHandlers = new HashMap<>();
     private List<IntegerVariable> discreteVariables = new LinkedList<>();
     
-    public ActorBuilder WithID(String id)
+    public SoftwareActorBuilder WithID(String id)
     {
         this.name = id;
         return this;
     }
     
-    public ActorBuilder WithDiscreteVariable(IntegerVariable dVariable)
+    public SoftwareActorBuilder WithDiscreteVariable(IntegerVariable dVariable)
     {
         discreteVariables.add(dVariable);
         return this;
     }
     
-    public ActorBuilder WithCapacity(int capacity)
+    public SoftwareActorBuilder WithCapacity(int capacity)
     {
         this.capacity = capacity;
         return this;
     }
     
-    public ActorBuilder WithHandler(String handlerId, MessageHandler handler)
+    public SoftwareActorBuilder WithHandler(String handlerId, MessageHandler handler)
     {
         messageHandlers.put(handlerId, handler);
         return this;

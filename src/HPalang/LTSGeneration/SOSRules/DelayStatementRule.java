@@ -6,8 +6,6 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
-import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
@@ -16,7 +14,6 @@ import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.ResumeStatement;
 import HPalang.Core.Statement;
 import HPalang.Core.Variables.RealVariable;
-import HPalang.LTSGeneration.Labels.Reset;
 
 /**
  *

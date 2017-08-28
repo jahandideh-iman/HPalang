@@ -39,16 +39,6 @@ public class MessageParameters extends Equalitable<MessageParameters>
         return new HashSet<>(parameters.values());
     }
     
-    public static MessageParameters From(VariableParameter ... params)
-    {
-        MessageParameters parameters = new MessageParameters();
-        
-        for(VariableParameter param : params)
-            parameters.Add(param);
-        
-        return parameters;
-    }
-
     @Override
     protected boolean InternalEquals(MessageParameters other)
     {
@@ -59,5 +49,15 @@ public class MessageParameters extends Equalitable<MessageParameters>
     protected int InternalHashCode()
     {
         return 0;
+    }
+    
+    public static MessageParameters From(VariableParameter ... params)
+    {
+        MessageParameters parameters = new MessageParameters();
+        
+        for(VariableParameter param : params)
+            parameters.Add(param);
+        
+        return parameters;
     }
 }

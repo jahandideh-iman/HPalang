@@ -16,18 +16,21 @@ import static org.hamcrest.CoreMatchers.*;
  *
  * @author Iman Jahandideh
  */
-public class NetworkPacketTest
+public class MessagePacketTest
 {
     @Test
     public void PacketsWithEqualDataAreEqual()
     {
-        SoftwareActor sender = Utilities.NewActor("sender");
+        SoftwareActor sender = Utilities.CreateSofwareActor("sender");
+        SoftwareActor receiver = Utilities.CreateSofwareActor("receiver");
         Message message = new EmptyMessage("Message");
-        SoftwareActor receiver = Utilities.NewActor("receiver");
+        MessageArguments arguments = new MessageArguments();
+
         
-        NetworkPacket packet = new NetworkPacket(sender, message, receiver);
+        MessagePacket packet1 = new MessagePacket(sender, receiver, message, arguments);
+        MessagePacket packet2 = new MessagePacket(sender, receiver, message, arguments);
         
-        assertThat(packet, is(equalTo(new NetworkPacket(sender, message, receiver))));
+        assertThat(packet1, equalTo(packet2));
     }
     
 }

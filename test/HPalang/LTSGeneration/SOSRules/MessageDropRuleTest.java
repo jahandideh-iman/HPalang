@@ -5,8 +5,8 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import Builders.ActorBuilder;
-import Builders.ActorRunTimeStateBuilder;
+import Builders.SoftwareActorBuilder;
+import Builders.SoftwareActorStateBuilder;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
@@ -15,6 +15,7 @@ import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import Mocks.DirectActorLocator;
 import Mocks.EmptyMessage;
 import org.junit.Test;
@@ -36,24 +37,23 @@ public class MessageDropRuleTest extends SOSRuleTestFixture
     @Test
     public void ForEachActorStateIfThereIsSendStatementAndRecieverCapacityIsFullThenDropsTheMessage()
     {
-        SoftwareActor actor1 = new ActorBuilder().WithID("actor1").WithCapacity(1).WithHandler("a", new MessageHandler()).Build();
-        SoftwareActor actor2 = new ActorBuilder().WithID("actor2").WithCapacity(1).WithHandler("b", new MessageHandler()).Build();
+        SoftwareActor actor1 = new SoftwareActorBuilder().WithID("actor1").WithCapacity(0).WithHandler("a", new MessageHandler()).Build();
+        SoftwareActor actor2 = new SoftwareActorBuilder().WithID("actor2").WithCapacity(0).WithHandler("b", new MessageHandler()).Build();
         
         Message messageTo2 = new NormalMessage(actor2.Type().FindMessageHandler("b"));
         Message messageTo1 = new NormalMessage(actor1.Type().FindMessageHandler("a"));
 
-        ActorRunTimeStateBuilder actor1State = new ActorRunTimeStateBuilder()
+        SoftwareActorState actor1State = new SoftwareActorStateBuilder()
                 .WithActor(actor1)
-                .EnqueueStatement(new SendStatement( new DirectActorLocator(actor2), messageTo2))
-                .EnqueueLowPriorityMessage(new EmptyMessage());
+                .EnqueueStatement(new SendStatement( new DirectActorLocator(actor2), messageTo2)).Build();
+
         
-        ActorRunTimeStateBuilder actor2State = new ActorRunTimeStateBuilder()
+        SoftwareActorState actor2State = new SoftwareActorStateBuilder()
                 .WithActor(actor2)
-                .EnqueueStatement(new SendStatement(new DirectActorLocator(actor1), messageTo1))
-                .EnqueueLowPriorityMessage(new EmptyMessage());
+                .EnqueueStatement(new SendStatement(new DirectActorLocator(actor1), messageTo1)).Build();
         
-        globalState.DiscreteState().AddSoftwareActorState(actor1State.Build());
-        globalState.DiscreteState().AddSoftwareActorState(actor2State.Build());
+        globalState.DiscreteState().AddSoftwareActorState(actor1State);
+        globalState.DiscreteState().AddSoftwareActorState(actor2State);
                 
                   
         generatedLTS = ltsGenerator.Generate(globalState);

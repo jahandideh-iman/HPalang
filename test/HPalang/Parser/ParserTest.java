@@ -95,9 +95,9 @@ public class ParserTest extends ParserTestBase
         SoftwareActor actorB = model.FindActor("B");
         
         SendStatement sendStat = GetFirstStatement(actorA.Type().FindMessageHandler("a1"));
-        NormalMessage message = (NormalMessage)sendStat.GetMessage();
+        NormalMessage message = (NormalMessage)sendStat.Message();
         
-        assertThat(sendStat.GetReceiver(),is(actorB));  
+        assertThat(sendStat.Receiver(),is(actorB));  
         assertThat(message.GetMessageHandler(),is(actorB.Type().FindMessageHandler("b1"))); 
     }
     

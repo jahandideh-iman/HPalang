@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.NetworkPacket;
+import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.CompositeStateT;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -17,7 +17,7 @@ import java.util.List;
  */
 public class NetworkState extends CompositeStateT<NetworkState>
 {
-    private final List<NetworkPacket> buffer = new LinkedList<>();
+    private final List<MessagePacket> buffer = new LinkedList<>();
     
     @Override
     protected NetworkState NewInstance()
@@ -37,17 +37,17 @@ public class NetworkState extends CompositeStateT<NetworkState>
         return buffer.equals(other.buffer);
     }
 
-    public void Buffer(NetworkPacket packet)
+    public void Buffer(MessagePacket packet)
     {
         buffer.add(packet);
     }
     
-    public void Debuffer(NetworkPacket networkPacket)
+    public void Debuffer(MessagePacket networkPacket)
     {
         buffer.remove(networkPacket);
     } 
     
-    public Collection<NetworkPacket> Buffer()
+    public Collection<MessagePacket> Buffer()
     {
         return buffer;
     }

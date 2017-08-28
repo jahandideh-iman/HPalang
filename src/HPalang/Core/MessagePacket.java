@@ -9,17 +9,19 @@ package HPalang.Core;
  *
  * @author Iman Jahandideh
  */
-public class NetworkPacket extends Equalitable<NetworkPacket>
+public class MessagePacket extends Equalitable<MessagePacket>
 {
-    private final SoftwareActor sender;
-    private final Message message;
+    private final Actor sender;
     private final SoftwareActor receiver;
-    
-    public NetworkPacket(SoftwareActor sender, Message message, SoftwareActor receiver)
+    private final Message message;
+    private final MessageArguments arguments;
+
+    public MessagePacket(Actor sender, SoftwareActor receiver, Message message, MessageArguments arguments)
     {
         this.sender = sender;
-        this.message = message;
         this.receiver = receiver;
+        this.message = message;
+        this.arguments = arguments;
     }
     
     public SoftwareActor Receiver()
@@ -32,18 +34,25 @@ public class NetworkPacket extends Equalitable<NetworkPacket>
         return message;
     }
     
-    @Override
-    protected boolean InternalEquals(NetworkPacket other)
+    public MessageArguments Arguments()
     {
-        return sender.equals(other.sender) && 
+        return arguments;
+    }
+    
+    @Override
+    protected boolean InternalEquals(MessagePacket other)
+    {
+        return sender.equals(other.sender) &&
+                receiver.equals(other.receiver) &&
                 message.equals(other.message) &&
-                receiver.equals(other.receiver);
+                arguments.equals(other.arguments);
                 
     }
 
     @Override
     protected int InternalHashCode()
     {
-        return sender.hashCode() + message.hashCode() + receiver.hashCode();
+        return 0;
     }   
+   
 }

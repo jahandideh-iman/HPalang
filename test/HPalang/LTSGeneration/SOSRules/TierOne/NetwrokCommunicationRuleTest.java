@@ -5,11 +5,12 @@
  */
 package HPalang.LTSGeneration.SOSRules.TierOne;
 
-import Builders.ActorBuilder;
-import Builders.ActorRunTimeStateBuilder;
+import Builders.SoftwareActorBuilder;
+import Builders.SoftwareActorStateBuilder;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
-import HPalang.Core.NetworkPacket;
+import HPalang.Core.MessageArguments;
+import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
@@ -43,10 +44,11 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
    public void SendsHighestPriorityMessageWhenIsNotIdleAndThereIsNoSoftwareTransition()
    {
        NetworkState networkState = new NetworkState();
-       SoftwareActor receiver = Utilities.NewActor("receiver");
-       SoftwareActor sender = Utilities.NewActor("sender");
+       SoftwareActor receiver = Utilities.CreateSofwareActor("receiver");
+       SoftwareActor sender = Utilities.CreateSofwareActor("sender");
+       MessageArguments emptyArguments = new MessageArguments();
        
-       ActorRunTimeStateBuilder receiverState = new ActorRunTimeStateBuilder()
+       SoftwareActorStateBuilder receiverState = new SoftwareActorStateBuilder()
                .WithActor(receiver);
        
        globalState.DiscreteState().AddSoftwareActorState(receiverState.Build());
@@ -58,16 +60,19 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
        m1.SetPriority(1);
        m2.SetPriority(2);
        
-       networkState.Buffer(new NetworkPacket(sender, m1, receiver));
-       networkState.Buffer(new NetworkPacket(sender, m2, receiver));
+       MessagePacket lowPrioirityPacket = new MessagePacket(sender, receiver, m1, emptyArguments);
+       MessagePacket highPrioirityPacket = new MessagePacket(sender, receiver, m2, emptyArguments);
+       
+       networkState.Buffer(lowPrioirityPacket);
+       networkState.Buffer(highPrioirityPacket);
        
        generatedLTS = ltsGenerator.Generate(globalState);
         
        GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
        SoftwareActorState nextActorState = nextGlobalState.DiscreteState().FindActorState(receiver);
-       nextActorState.FindSubState(MessageQueueState.class).Messages().Enqueue(m2);
-       NetworkState nextNetworkState = nextGlobalState.FindSubState(NetworkState.class);
-       nextNetworkState.Debuffer(new NetworkPacket(sender, m2, receiver));
+       nextActorState.MessageQueueState().Messages().Enqueue(highPrioirityPacket);
+       nextGlobalState.NetworkState().Debuffer(highPrioirityPacket);
+
        
        assertTrue(generatedLTS.HasTransition(globalState, new NetworkLabel(), nextGlobalState));       
    }

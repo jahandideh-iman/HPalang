@@ -6,14 +6,12 @@
 package HPalang.Core.Messages;
 
 import HPalang.Core.Equalitable;
-import HPalang.Core.Expression;
 import HPalang.Core.Message;
 import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.MessageParameters;
 import HPalang.Core.Statement;
 import HPalang.Core.VariableArgument;
-import HPalang.Core.VariableParameter;
 import java.util.Queue;
 
 /**

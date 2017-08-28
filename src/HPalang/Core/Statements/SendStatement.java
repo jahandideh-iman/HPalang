@@ -40,14 +40,19 @@ public class SendStatement extends AbstractStatement<SendStatement>
     }
 
     
-    public SoftwareActor GetReceiver()
+    public SoftwareActor Receiver()
     {
         return (SoftwareActor) receiverLocator.GetActor();
     }
     
-    public Message GetMessage()
+    public Message Message()
     {
         return message;
+    }
+    
+    public MessageArguments Arguments()
+    {
+        return arguments;
     }
     
     @Override
