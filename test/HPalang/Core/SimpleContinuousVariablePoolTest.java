@@ -5,6 +5,7 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.Variables.RealVariable;
 import static org.hamcrest.CoreMatchers.*;
 import org.hamcrest.core.IsNull;
 import org.junit.Test;
@@ -14,13 +15,13 @@ import static org.junit.Assert.*;
  *
  * @author Iman Jahandideh
  */
-public class ContinuousVariablePoolTest
+public class SimpleContinuousVariablePoolTest
 {
     @Test
     public void PoolsWithEqualDataAreEqual()
     {
-        ContinuousVariablePool pool1 = new ContinuousVariablePool(5);      
-        ContinuousVariablePool pool2 = new ContinuousVariablePool(5);
+        SimpleContinuousVariablePool pool1 = new SimpleContinuousVariablePool(5);      
+        SimpleContinuousVariablePool pool2 = new SimpleContinuousVariablePool(5);
         
         assertThat(pool1,is(equalTo(pool2)));
     }
@@ -28,8 +29,8 @@ public class ContinuousVariablePoolTest
     @Test
     public void PoolsWithNotEqualDataAreEqual()
     {
-        ContinuousVariablePool pool1 = new ContinuousVariablePool(5);      
-        ContinuousVariablePool pool2 = new ContinuousVariablePool(13);
+        SimpleContinuousVariablePool pool1 = new SimpleContinuousVariablePool(5);      
+        SimpleContinuousVariablePool pool2 = new SimpleContinuousVariablePool(13);
         
         assertThat(pool1,is(not(equalTo(pool2))));
     }
@@ -38,9 +39,9 @@ public class ContinuousVariablePoolTest
     @Test
     public void IfPoolIsEmptyWhenAcquiredThenReturnNull()
     {
-        ContinuousVariablePool pool = new ContinuousVariablePool(0);      
+        SimpleContinuousVariablePool pool = new SimpleContinuousVariablePool(0);      
 
-        ContinuousVariable var = pool.Acquire();
+        RealVariable var = pool.Acquire();
         
         assertThat(var,is(nullValue()));
     }
@@ -48,9 +49,9 @@ public class ContinuousVariablePoolTest
     @Test
     public void IfPoolIsNotEmptyWhenAcquiredThenReturnAndRemovesAVariable()
     {
-        ContinuousVariablePool pool = new ContinuousVariablePool(5);      
+        SimpleContinuousVariablePool pool = new SimpleContinuousVariablePool(5);      
 
-        ContinuousVariable var = pool.Acquire();
+        RealVariable var = pool.Acquire();
         
         assertThat(var,is(not(nullValue())));        
         assertThat(pool.Has(var),is(equalTo(false)));
@@ -60,8 +61,8 @@ public class ContinuousVariablePoolTest
     @Test
     public void WhenAVariableIsReleasedThenAddsItTooThePool()
     {
-        ContinuousVariablePool pool = new ContinuousVariablePool(5);
-        ContinuousVariable var = pool.Acquire();
+        SimpleContinuousVariablePool pool = new SimpleContinuousVariablePool(5);
+        RealVariable var = pool.Acquire();
         
         pool.Release(var);
               

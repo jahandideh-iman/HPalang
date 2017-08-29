@@ -51,5 +51,4 @@ public class NetworkState extends CompositeStateT<NetworkState>
     {
         return buffer;
     }
-
 }

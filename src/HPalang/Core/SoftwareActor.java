@@ -6,6 +6,7 @@
 package HPalang.Core;
 
 import HPalang.Core.Variables.IntegerVariable;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;

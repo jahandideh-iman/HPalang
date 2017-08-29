@@ -5,7 +5,7 @@
  */
 package HPalang.Core;
 
-import TestUtilities.Utilities;
+import TestUtilities.CoreUtility;
 import Mocks.EmptyMessage;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -21,8 +21,8 @@ public class MessagePacketTest
     @Test
     public void PacketsWithEqualDataAreEqual()
     {
-        SoftwareActor sender = Utilities.CreateSofwareActor("sender");
-        SoftwareActor receiver = Utilities.CreateSofwareActor("receiver");
+        SoftwareActor sender = CoreUtility.CreateSofwareActor("sender");
+        SoftwareActor receiver = CoreUtility.CreateSofwareActor("receiver");
         Message message = new EmptyMessage("Message");
         MessageArguments arguments = new MessageArguments();
 

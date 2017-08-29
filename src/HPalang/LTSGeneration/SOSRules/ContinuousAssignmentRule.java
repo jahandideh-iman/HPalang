@@ -32,7 +32,7 @@ public class ContinuousAssignmentRule extends PhysicalStatementRule<ContinuousAs
     @Override
     protected SoftwareLabel CreateTransitionLabel(PhysicalActorState actorState, ContinuousAssignmentStatement statement)
     {
-        return new SoftwareLabel(Reset.ResetsFrom(new Reset(statement.Variable(), statement.Expression())));
+        return new SoftwareLabel(Reset.From(new Reset(statement.Variable(), statement.Expression())));
     }
     
 }

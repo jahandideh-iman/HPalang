@@ -52,6 +52,6 @@ public class EventExpirationRule implements SOSRule
     {
         String guard = event.Timer().Name()+"=="+event.Delay();
         Reset reset = new Reset(event.Timer(), new ConstantContinuousExpression(0));
-        return new ContinuousLabel(guard, Reset.ResetsFrom(reset));
+        return new ContinuousLabel(guard, Reset.From(reset));
     }
 }

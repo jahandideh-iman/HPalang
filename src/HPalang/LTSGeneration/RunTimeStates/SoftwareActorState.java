@@ -13,7 +13,7 @@ import HPalang.LTSGeneration.CompositeStateT;
  * @author Iman Jahandideh
  */
 public class SoftwareActorState extends CompositeStateT<SoftwareActorState>
-{
+{    
     private final SoftwareActor actor;
     
     private boolean isSuspended = false;

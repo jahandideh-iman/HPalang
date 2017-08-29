@@ -5,7 +5,8 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.ContinuousVariablePool;
+import HPalang.Core.NullRealVariablePool;
+import HPalang.Core.RealVariablePool;
 import HPalang.LTSGeneration.SimpleState;
 
 /**
@@ -14,22 +15,34 @@ import HPalang.LTSGeneration.SimpleState;
  */
 public class VariablePoolState extends SimpleState<VariablePoolState>
 {
-    private ContinuousVariablePool pool;
+    private RealVariablePool pool;
 
-    public VariablePoolState(ContinuousVariablePool pool)
+    public VariablePoolState()
+    {
+        pool = new NullRealVariablePool();
+    }
+        
+    public VariablePoolState(RealVariablePool pool)
     {
         this.pool = pool;
     }
 
-    public ContinuousVariablePool Pool()
+    public RealVariablePool Pool()
     {
         return pool;
+    }
+    
+    // WARNING: This is for testing only.
+    // TODO: Remove this method.
+    public void SetPool(RealVariablePool pool)
+    {
+        this.pool = pool;
     }
 
     @Override
     protected VariablePoolState NewInstance()
     {
-        return new VariablePoolState(new ContinuousVariablePool(pool));
+        return new VariablePoolState();
     }
 
     @Override
@@ -41,6 +54,7 @@ public class VariablePoolState extends SimpleState<VariablePoolState>
     @Override
     protected void CloneData(VariablePoolState copy)
     {
+        copy.pool = pool.DeepCopy();
     }
 
     @Override

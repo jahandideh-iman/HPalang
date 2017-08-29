@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.RunTimeStates;
 import HPalang.Core.PhysicalActor;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static TestUtilities.Utilities.assertEqualButNotSame;
+import static TestUtilities.CoreUtility.assertEqualButNotSame;
 
 
 /**

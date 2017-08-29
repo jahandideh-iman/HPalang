@@ -8,7 +8,8 @@ package HPalang.LTSGeneration.SOSRules;
 import Builders.StateInfoBuilder;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.ContinuousVariablePool;
+import HPalang.Core.SimpleContinuousVariablePool;
+import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.Labels.Reset;
@@ -24,7 +25,7 @@ import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
 import Mocks.ActionMonitor;
 import Mocks.TransitionCollectorChecker;
-import static TestUtilities.Utilities.SimpleStateInfo;
+import static TestUtilities.CoreUtility.SimpleStateInfo;
 import java.util.Collections;
 import java.util.List;
 import org.junit.Test;
@@ -54,10 +55,9 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         nextGlobalState.EventsState().PoolState().Pool().Release(event.Timer());
         nextGlobalState.EventsState().RemoveEvent(event);
         
-        transitionCollectorChecker.ExpectTransition(EventTransitionLabel(event), nextGlobalState);
-        
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
+        transitionCollectorChecker.ExpectTransition(EventTransitionLabel(event), nextGlobalState);
         assertTrue(((ActionMonitor)event.Action()).isExecuted);
     }
     
@@ -73,10 +73,11 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
                 AddOutTransition(new Transition(globalState, new SoftwareLabel(), globalState)).
                 Build();
            
-        transitionCollectorChecker.ExpectNoTransition();
+
         
         rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
         
+        transitionCollectorChecker.ExpectNoTransition();
         assertFalse(((ActionMonitor)event.Action()).isExecuted);
     }
     
@@ -92,10 +93,11 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
                 AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
                 Build();
            
-        transitionCollectorChecker.ExpectNoTransition();
+        
         
         rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
         
+        transitionCollectorChecker.ExpectNoTransition();
         assertFalse(((ActionMonitor)event.Action()).isExecuted);
     }
     
@@ -103,17 +105,17 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
     {
         String guard = event.Timer().Name()+"=="+event.Delay();
         Reset reset = new Reset(event.Timer(), new ConstantContinuousExpression(0));
-        return new ContinuousLabel(guard, Reset.ResetsFrom(reset));
+        return new ContinuousLabel(guard, Reset.From(reset));
     }
     
     private Event CreateEvent(Action action)
     {
-        return new Event(5, new ContinuousVariable("timer"), action);
+        return new Event(5, new RealVariable("timer"), action);
     }
     
     public EventsState CreateEventStateWith(Event event)
     {
-        VariablePoolState poolState = new VariablePoolState(new ContinuousVariablePool(0));
+        VariablePoolState poolState = new VariablePoolState(new SimpleContinuousVariablePool(0));
         EventsState eventsState = new EventsState();
         eventsState.AddEvent(event);
         eventsState.SetPool(poolState);

@@ -10,12 +10,12 @@ import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Transition;
-import TestUtilities.Utilities;
+import TestUtilities.CoreUtility;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static TestUtilities.Utilities.CreateGlobalState;
-import static TestUtilities.Utilities.CreateSoftwareActorState;
+import static TestUtilities.CoreUtility.CreateGlobalState;
+import static TestUtilities.CoreUtility.CreateSoftwareActorState;
 
 /**
  *
@@ -30,10 +30,10 @@ public class HybridAutomatonGeneratorTest
         
         LabeledTransitionSystem lts = new LabeledTransitionSystem();
           
-        GlobalRunTimeState state1 = Utilities.CreateGlobalState();
+        GlobalRunTimeState state1 = CoreUtility.CreateGlobalState();
         state1.DiscreteState().AddSoftwareActorState(CreateSoftwareActorState("1"));
         
-        GlobalRunTimeState state2 = Utilities.CreateGlobalState();
+        GlobalRunTimeState state2 = CoreUtility.CreateGlobalState();
         state2.DiscreteState().AddSoftwareActorState(CreateSoftwareActorState("1"));
 
         lts.AddState(state1);

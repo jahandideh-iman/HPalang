@@ -14,8 +14,8 @@ import Mocks.SOSRuleMonitor;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static TestUtilities.Utilities.CreateGlobalState;
-import static TestUtilities.Utilities.CreateSoftwareActorState;
+import static TestUtilities.CoreUtility.CreateGlobalState;
+import static TestUtilities.CoreUtility.CreateSoftwareActorState;
 
 /**
  *

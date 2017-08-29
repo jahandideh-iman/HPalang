@@ -36,6 +36,11 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
     {
         return FindSubState(NetworkState.class);
     }
+    
+    public VariablePoolState VariablePoolState()
+    {
+        return FindSubState(VariablePoolState.class);
+    }
 
     public void AddSendStatement(SendStatement sendStatement)
     {

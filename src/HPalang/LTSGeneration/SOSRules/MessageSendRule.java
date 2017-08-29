@@ -5,11 +5,14 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.CommunicationType;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
+import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.Expression;
 import HPalang.Core.Message;
 import HPalang.Core.MessageArguments;
 import HPalang.Core.MessagePacket;
+import HPalang.Core.RealVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
@@ -17,8 +20,13 @@ import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
+import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.TransitionCollector;
+import java.util.HashSet;
+import java.util.Set;
+import org.antlr.v4.runtime.misc.Pair;
 
 /**
  *
@@ -51,34 +59,74 @@ public class MessageSendRule extends ActorLevelRule
         MessageQueueState reciverMessageQueueState = receiverState.MessageQueueState();
         
         ValuationContainer valuations = senderState.ValuationState().Valuation();
+        RealVariablePool pool = globalState.VariablePoolState().Pool();
         
-        MessageArguments arguments = CreateMaximalEvaluatedArguments(sendStatement.Message(), sendStatement.Arguments(),valuations);
+        Pair<MessageArguments, Set<Reset>> maximalEvaluatoionReslut = 
+                CreateMaximalEvaluatedArguments(
+                        sendStatement.Message(), 
+                        sendStatement.Arguments(),
+                        valuations,
+                        pool
+                );
+        
         
         MessagePacket packet = new MessagePacket(
                 senderState.Actor(), 
                 receiverState.Actor(), 
                 sendStatement.Message(), 
-                arguments
+                maximalEvaluatoionReslut.a
         );
         
-        reciverMessageQueueState.Messages().Enqueue(packet);
+        CommunicationType communicationType = senderState.Actor().CommunicationTypeFor(receiverState.Actor());
         
-        collector.AddTransition(new SoftwareLabel(), newGlobalState);
+        switch (communicationType) {
+            case CAN:
+                newGlobalState.NetworkState().Buffer(packet);
+                break;
+            case Wired:
+                reciverMessageQueueState.Messages().Enqueue(packet);
+                break;
+            default:
+                throw new RuntimeException("Invalid Communication Type.");
+        }
+        
+        collector.AddTransition(new SoftwareLabel(maximalEvaluatoionReslut.b), newGlobalState);
     }
     
-    private MessageArguments CreateMaximalEvaluatedArguments(Message message, MessageArguments unEvaluatedArguments, ValuationContainer valuations)
+    // TODO: Refactor this crap.
+    private Pair<MessageArguments, Set<Reset>>  CreateMaximalEvaluatedArguments(Message message, MessageArguments unEvaluatedArguments, ValuationContainer valuations, RealVariablePool pool)
     {
         MessageArguments maximalEvaluatedarguments = new MessageArguments();
+        Set<Reset> resets = new HashSet<>();
         
         for(VariableParameter param : message.Parameters().AsSet())
         {
             Expression unEvalutedValue = unEvaluatedArguments.ArgumentFor(param).Value();
-            VariableArgument argument = new VariableArgument(
-                    param, 
-                    new ConstantDiscreteExpression(unEvalutedValue.Evaluate(valuations)));
+            VariableArgument argument;
+            if(unEvalutedValue.IsComputable(valuations))
+            {
+                argument = new VariableArgument(
+                        param, 
+                        new ConstantDiscreteExpression(unEvalutedValue.Evaluate(valuations)));
+            }
+            
+            else
+            {
+                RealVariable pooledVariable = pool.Acquire();
+                
+                argument = new VariableArgument(
+                        param, 
+                        new VariableExpression(pooledVariable));
+                
+                resets.add(new Reset(
+                        pool.Acquire(), 
+                        unEvalutedValue.PartiallyEvaluate(valuations)));
+            }
+            
             maximalEvaluatedarguments.Add(argument);
         }
         
-        return maximalEvaluatedarguments;
+        return new Pair(maximalEvaluatedarguments,resets);
     }
+
 }

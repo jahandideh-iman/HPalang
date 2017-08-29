@@ -7,8 +7,6 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.PhysicalActor;
-import HPalang.Core.Statement;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
@@ -16,14 +14,13 @@ import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
-import HPalang.LTSGeneration.State;
-import static TestUtilities.Utilities.CreateContinuousState;
+import static TestUtilities.CoreUtility.CreateContinuousState;
 import static org.hamcrest.CoreMatchers.*;
 import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
-import static TestUtilities.Utilities.CreatePhysicalState;
+import static TestUtilities.CoreUtility.CreatePhysicalState;
 
 /**
  *
@@ -58,7 +55,7 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
         PhysicalActorState expectedPhysicalState = expectedState.ContinuousState().FindActorState(pActorState.Actor());
         expectedPhysicalState.ExecutionQueueState().Statements().Clear();
 
-        SoftwareLabel label = new SoftwareLabel(Reset.ResetsFrom(new Reset(assignment.Variable(), assignment.Expression())));
+        SoftwareLabel label = new SoftwareLabel(Reset.From(new Reset(assignment.Variable(), assignment.Expression())));
         
         assertTrue(generatedLTS.HasTransition(globalState, label , expectedState));
         assertThat(generatedLTS.GetStates().size(), is(IsEqual.equalTo(2)));

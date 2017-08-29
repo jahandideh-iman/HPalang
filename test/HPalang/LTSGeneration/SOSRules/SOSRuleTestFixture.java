@@ -7,6 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.SoftwareActor;
+import HPalang.Core.Statement;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
@@ -18,7 +19,7 @@ import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.State;
 import HPalang.LTSGeneration.StateInfo;
 import Mocks.TransitionCollectorChecker;
-import static TestUtilities.Utilities.CreateGlobalState;
+import static TestUtilities.CoreUtility.CreateGlobalState;
 import java.util.Collections;
 
 /**
@@ -34,14 +35,6 @@ public class SOSRuleTestFixture
     SOSRule rule;
     TransitionCollectorChecker transitionCollectorChecker = new TransitionCollectorChecker();
     
-    public void ClearStatementsFor(SoftwareActor actor, GlobalRunTimeState globalState)
-    {
-        globalState.DiscreteState().FindActorState(actor).ExecutionQueueState().Statements().Clear();
-    }
-    
-    protected void DequeueOneStatemenet(SoftwareActorState actorState)
-    {
-        actorState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
-    }
+
 
 }

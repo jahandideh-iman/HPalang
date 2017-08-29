@@ -19,27 +19,28 @@ import static org.junit.Assert.*;
 public class TransitionCollectorChecker implements TransitionCollector
 {
 
-    private Label expectedLabel;
-    private GlobalRunTimeState expectedDestintaiton;
-    private boolean expectNothing = false;
+    
+    public Label collectedLabel;
+    public GlobalRunTimeState collectedGlobalState;
     
     public void ExpectTransition(Label label, GlobalRunTimeState destination)
     {
-        this.expectedLabel = label;
-        this.expectedDestintaiton = destination;
+        assertThat(collectedLabel, is(equalTo(label)));
+        assertThat(collectedGlobalState, is(equalTo(destination)));
     }
     
     @Override
     public void AddTransition(Label label, GlobalRunTimeState destination)
     {
-        assertThat("Expected no Trantions but a trantion is added",expectNothing, is(false));
-        assertThat(label, is(equalTo(expectedLabel)));
-        assertThat(destination, is(equalTo(expectedDestintaiton)));
+        assertTrue("More than one transition is added", collectedLabel == null && collectedGlobalState == null);
+        collectedLabel = label;
+        collectedGlobalState = destination;
     }
 
     public void ExpectNoTransition()
     {
-        expectNothing = true;
+        assertTrue("A tranistion was collected.", collectedLabel == null && collectedGlobalState == null);
     }
+    
     
 }

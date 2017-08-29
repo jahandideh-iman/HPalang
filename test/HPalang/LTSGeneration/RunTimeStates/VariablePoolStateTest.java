@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.ContinuousVariablePool;
+import HPalang.Core.SimpleContinuousVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import Mocks.EmptyAction;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -24,7 +24,7 @@ public class VariablePoolStateTest
     @Test
     public void EventsStateWithEqualDataAreEqual()
     {
-        ContinuousVariablePool pool = new ContinuousVariablePool(5);
+        SimpleContinuousVariablePool pool = new SimpleContinuousVariablePool(5);
 
         VariablePoolState state1 = new VariablePoolState(pool);      
         VariablePoolState state2= new VariablePoolState(pool);

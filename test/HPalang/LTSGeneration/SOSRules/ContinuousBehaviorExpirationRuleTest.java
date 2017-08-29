@@ -17,9 +17,9 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
-import static TestUtilities.Utilities.CreateGlobalState;
-import static TestUtilities.Utilities.CreatePhysicalActor;
-import static TestUtilities.Utilities.SimpleStateInfo;
+import static TestUtilities.CoreUtility.CreateGlobalState;
+import static TestUtilities.CoreUtility.CreatePhysicalActor;
+import static TestUtilities.CoreUtility.SimpleStateInfo;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -55,9 +55,9 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         PhysicalActorState nextActorState = nextGlobalState.ContinuousState().FindActorState(pActor);
         nextActorState.ExecutionQueueState().Statements().Enqueue(mode.Actions());
         
-        transitionCollectorChecker.ExpectTransition(new ContinuousLabel(mode.Guard()),nextGlobalState);
-        
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);  
+        
+        transitionCollectorChecker.ExpectTransition(new ContinuousLabel(mode.Guard()),nextGlobalState);
     }
     
     @Test
@@ -69,10 +69,10 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
                 WithState(globalState).
                 AddOutTransition(new Transition(globalState, new SoftwareLabel(), globalState)).
                 Build();
-           
-        transitionCollectorChecker.ExpectNoTransition();
         
         rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
+        
+        transitionCollectorChecker.ExpectNoTransition();
     }
     
     @Test
@@ -84,11 +84,10 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
                 WithState(globalState).
                 AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
                 Build();
-           
-        transitionCollectorChecker.ExpectNoTransition();
         
         rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
         
+        transitionCollectorChecker.ExpectNoTransition();
     }
     
     private void SetupGlobalStateWithOneActivePhyiscalActor()

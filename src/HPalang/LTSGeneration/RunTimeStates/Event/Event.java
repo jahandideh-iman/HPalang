@@ -7,6 +7,7 @@ package HPalang.LTSGeneration.RunTimeStates.Event;
 
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Equalitable;
+import HPalang.Core.Variables.RealVariable;
 
 /**
  *
@@ -16,10 +17,10 @@ public class Event extends Equalitable<Event>
 {
 
     private final float delay;
-    private final ContinuousVariable timer;
+    private final RealVariable timer;
     private final Action action;
 
-    public Event(float delay, ContinuousVariable timer, Action action)
+    public Event(float delay, RealVariable timer, Action action)
     {
         this.delay = delay;
         this.timer = timer;
@@ -31,7 +32,7 @@ public class Event extends Equalitable<Event>
         return delay;
     }
     
-    public ContinuousVariable Timer()
+    public RealVariable Timer()
     {
         return timer;
     }

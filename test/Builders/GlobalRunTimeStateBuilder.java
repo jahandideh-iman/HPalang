@@ -8,7 +8,9 @@ package Builders;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
 import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
+import HPalang.LTSGeneration.RunTimeStates.VariablePoolState;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -35,6 +37,8 @@ public class GlobalRunTimeStateBuilder
         
         globalState.AddSubstate(discreteState);
         globalState.AddSubstate(continuosState);
+        globalState.AddSubstate(new VariablePoolState());
+        globalState.AddSubstate(new NetworkState());
         
         for(SoftwareActorState state : softwareActorStates)
             discreteState.AddSoftwareActorState(state);

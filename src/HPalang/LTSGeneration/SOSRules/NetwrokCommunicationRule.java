@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration.SOSRules.TierOne;
+package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.Labels.NetworkLabel;

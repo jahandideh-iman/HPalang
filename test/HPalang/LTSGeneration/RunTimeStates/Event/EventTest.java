@@ -6,8 +6,7 @@
 package HPalang.LTSGeneration.RunTimeStates.Event;
 
 import HPalang.Core.ContinuousVariable;
-import HPalang.LTSGeneration.RunTimeStates.Event.Action;
-import HPalang.LTSGeneration.RunTimeStates.Event.Event;
+import HPalang.Core.Variables.RealVariable;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import Mocks.EmptyAction;
@@ -25,7 +24,7 @@ public class EventTest
     public void EventsWithEqualDataAreEqual()
     {
         float delay = 5f;
-        ContinuousVariable timer = new ContinuousVariable("timer");
+        RealVariable timer = new RealVariable("timer");
         Action action = new EmptyAction();
         
         Event event1 = new Event(delay, timer, action);      

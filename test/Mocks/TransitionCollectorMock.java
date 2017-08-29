@@ -17,11 +17,13 @@ public class TransitionCollectorMock implements TransitionCollector
 {
     
     public GlobalRunTimeState collectedState;
+    public Label collectedLabel;
     
     @Override
     public void AddTransition(Label label, GlobalRunTimeState destination)
     {
         collectedState = destination;
+        collectedLabel = label;
     }
     
 }

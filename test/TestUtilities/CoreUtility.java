@@ -31,7 +31,7 @@ import static org.junit.Assert.assertThat;
  *
  * @author Iman Jahandideh
  */
-public class Utilities
+public class CoreUtility
 {
     static public ContinuousBehavior EmptyBehavior()
     {
@@ -104,5 +104,24 @@ public class Utilities
     {
         return new StateInfo(globalState, Collections.EMPTY_LIST , Collections.EMPTY_LIST);
     }
+    
+    static public SoftwareActorState FindActorState(SoftwareActor actor, GlobalRunTimeState globalState )
+    {
+        return globalState.DiscreteState().FindActorState(actor);
+    }
    
+    static public  void ClearStatementsFor(SoftwareActorState actorState)
+    {
+        actorState.ExecutionQueueState().Statements().Clear();
+    }
+
+    static public  void DequeueOneStatemenet(SoftwareActorState actorState)
+    {
+        actorState.ExecutionQueueState().Statements().Dequeue();
+    }
+
+    static public  void EnqueueStatement(SoftwareActorState actorState, Statement statement)
+    {
+        actorState.ExecutionQueueState().Statements().Enqueue(statement);
+    }
 }

@@ -50,7 +50,7 @@ public class Reset extends Equalitable<Reset>
         return variable;
     }
     
-    static public Set<Reset> ResetsFrom(Reset ...resets)
+    static public Set<Reset> From(Reset ...resets)
     {
         return new LinkedHashSet<>(Arrays.asList(resets));
     }

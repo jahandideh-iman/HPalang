@@ -5,13 +5,20 @@
  */
 package HPalang.Core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Iman Jahandideh
  */
+
+
 public class Actor
-{
+{ 
     private final String name;
+    
+    private final Map<Actor, CommunicationType> communicationTypes = new HashMap<>();
     
     public Actor(String name)
     {
@@ -31,5 +38,18 @@ public class Actor
     public void BindDelegation(DelegationParameter parameter, Delegation delegation)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+    
+    
+    public void SetCommunicationType(Actor actor, CommunicationType communicationType)
+    {
+        communicationTypes.put(actor, communicationType);
+    }
+    
+    public CommunicationType CommunicationTypeFor(Actor actor)
+    {
+        if(communicationTypes.containsKey(actor))
+            return communicationTypes.get(actor);
+        return CommunicationType.Invalid;
     }
 }

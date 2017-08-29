@@ -28,6 +28,12 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
         id = "";
     }
     
+    public EmptyMessage(String id, int priority)
+    {
+        this.id = id;
+        this.priority = priority;
+    }
+    
     public EmptyMessage(String id)
     {
         this.id = id;
@@ -73,7 +79,7 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     @Override
     public MessageArguments Arguments()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new MessageArguments();
     }
 
     @Override

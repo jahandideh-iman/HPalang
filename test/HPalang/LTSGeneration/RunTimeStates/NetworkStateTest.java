@@ -8,7 +8,7 @@ package HPalang.LTSGeneration.RunTimeStates;
 import HPalang.Core.MessageArguments;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessagePacket;
-import TestUtilities.Utilities;
+import TestUtilities.CoreUtility;
 import Mocks.EmptyMessage;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,8 +25,8 @@ public class NetworkStateTest
     public void HasTheBufferedPackets()
     {
         NetworkState networkState = new NetworkState();
-        SoftwareActor actor1 = Utilities.CreateSofwareActor("actor1");
-        SoftwareActor actor2 = Utilities.CreateSofwareActor("actor2");
+        SoftwareActor actor1 = CoreUtility.CreateSofwareActor("actor1");
+        SoftwareActor actor2 = CoreUtility.CreateSofwareActor("actor2");
         MessageArguments emptyArguments = new MessageArguments();
         
         MessagePacket packet1 = new MessagePacket(actor1, actor2,  new EmptyMessage("1to2"), emptyArguments);
