@@ -38,8 +38,10 @@ public class PriorityBasedMessageTakeRule extends ActorLevelRule
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
         
-        Message message = FindAndRemoveHighestPriorityMessage(newActorState.MessageQueueState().Messages());
-        for(VariableArgument argument : message.Arguments().AsSet())
+        MessagePacket packet = FindAndRemoveHighestPriorityMessage(newActorState.MessageQueueState().Messages());
+        Message message = packet.Message();
+        
+        for(VariableArgument argument : packet.Arguments().AsSet())
             newActorState.ExecutionQueueState().Statements().Enqueue(
                     new AssignmentStatement(
                             argument.Parameter().Variable(), 
@@ -54,7 +56,7 @@ public class PriorityBasedMessageTakeRule extends ActorLevelRule
         collector.AddTransition(new SoftwareLabel(), newGlobalState);
     }
     
-    private Message FindAndRemoveHighestPriorityMessage(Queue<MessagePacket> packets)
+    private MessagePacket FindAndRemoveHighestPriorityMessage(Queue<MessagePacket> packets)
     {
         MessagePacket highetPriortyPacket = packets.Head();
         
@@ -63,7 +65,7 @@ public class PriorityBasedMessageTakeRule extends ActorLevelRule
                 highetPriortyPacket = packet;
         
         packets.Remove(highetPriortyPacket);
-        return highetPriortyPacket.Message();
+        return highetPriortyPacket;
     }
     
 }

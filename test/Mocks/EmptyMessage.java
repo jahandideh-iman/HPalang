@@ -75,16 +75,4 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     {
         return new MessageParameters();
     } 
-
-    @Override
-    public MessageArguments Arguments()
-    {
-        return new MessageArguments();
-    }
-
-    @Override
-    public void AddArgument(VariableArgument argument)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

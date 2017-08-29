@@ -74,16 +74,4 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
     {
         return messageHandler.Parameters();
     }
-
-    @Override
-    public MessageArguments Arguments()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public void AddArgument(VariableArgument argument)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

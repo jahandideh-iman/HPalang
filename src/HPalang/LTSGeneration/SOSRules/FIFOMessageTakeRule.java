@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Message;
+import HPalang.Core.MessagePacket;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.MessageTeardownStatement;
 import HPalang.Core.VariableArgument;
@@ -37,8 +38,9 @@ public class FIFOMessageTakeRule extends ActorLevelRule
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
         
-        Message message = newActorState.MessageQueueState().Messages().Dequeue().Message();
-        for(VariableArgument argument : message.Arguments().AsSet())
+        MessagePacket packet = newActorState.MessageQueueState().Messages().Dequeue();
+        Message message = packet.Message();
+        for(VariableArgument argument : packet.Arguments().AsSet())
             newActorState.ExecutionQueueState().Statements().Enqueue(
                     new AssignmentStatement(
                             argument.Parameter().Variable(), 

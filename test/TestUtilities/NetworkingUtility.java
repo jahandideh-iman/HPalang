@@ -36,10 +36,7 @@ public class NetworkingUtility
         return new VariableParameter(new IntegerVariable(param));
     }
     
-    static public MessagePacket EmptySelfPacketFor(SoftwareActor actor)
-    {
-        return new MessagePacket(actor, actor, new EmptyMessage(), MessageArguments.From());
-    }
+
     
     static public SendStatement CreateSendStatement(SoftwareActor actor, Message message)
     {
@@ -61,15 +58,30 @@ public class NetworkingUtility
         expectedGlobalState.NetworkState().Buffer(expectedPacket);
     }
     
-    static public MessagePacket MessagePacketFor(Actor sender,SendStatement sendStatement)
+    static public MessagePacket EmptySelfPacketFor(SoftwareActor actor)
+    {
+        return new MessagePacket(actor, actor, new EmptyMessage(), MessageArguments.From());
+    }
+    
+    static public MessagePacket MessagePacketFor(Actor sender, SoftwareActor receiver , Message message, MessageArguments arguments)
     {
         MessagePacket packet = new MessagePacket(
                 sender,
-                sendStatement.Receiver(),
-                sendStatement.Message(), 
-                new MessageArguments());
+                receiver,
+                message, 
+                arguments);
         
         return packet;
+    }
+    
+    static public MessagePacket MessagePacketFor(Actor sender,SendStatement sendStatement)
+    {
+        return MessagePacketFor(
+                sender, 
+                sendStatement.Receiver(), 
+                sendStatement.Message(), 
+                sendStatement.Arguments());
+
     }
     
     static public MessagePacket FindLastPacket(SoftwareActor actor, GlobalRunTimeState globalState)

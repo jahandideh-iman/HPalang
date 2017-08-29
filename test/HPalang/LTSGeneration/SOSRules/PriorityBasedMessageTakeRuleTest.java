@@ -14,10 +14,15 @@ import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.Utilities.Queue;
+import static TestUtilities.NetworkingUtility.*;
+import static TestUtilities.CoreUtility.*;
 import Mocks.EmptyMessage;
 import static TestUtilities.CoreUtility.SimpleStateInfo;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.*;
 import org.junit.Test;
 import org.junit.Before;
 
@@ -49,6 +54,7 @@ public class PriorityBasedMessageTakeRuleTest extends SOSRuleTestFixture
         
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
+
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
     }
     
@@ -59,7 +65,7 @@ public class PriorityBasedMessageTakeRuleTest extends SOSRuleTestFixture
         MessagePacket relatedPacket =  FindFirstPacketForMessage(expectedActorState.MessageQueueState().Messages(),message);
         expectedActorState.MessageQueueState().Messages().Remove(relatedPacket);
         
-        for(VariableArgument argument : message.Arguments().AsSet())
+        for(VariableArgument argument : relatedPacket.Arguments().AsSet())
             expectedActorState.ExecutionQueueState().Statements().Enqueue(
                     new AssignmentStatement(argument.Parameter().Variable(), argument.Value()));
         
@@ -83,8 +89,8 @@ public class PriorityBasedMessageTakeRuleTest extends SOSRuleTestFixture
         for(Message message : messages)
         {
         MessagePacket packet = new MessagePacket(
-                TestUtilities.CoreUtility.CreateSofwareActor("null"),
-                TestUtilities.CoreUtility.CreateSofwareActor("null"),
+                actorState.Actor(),
+                actorState.Actor(),
                 message, 
                 new MessageArguments());
         

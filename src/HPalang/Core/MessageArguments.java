@@ -14,6 +14,7 @@ import java.util.Set;
  */
 public class MessageArguments extends Equalitable<MessageArguments>
 {
+
     private final Set<VariableArgument> arguments = new HashSet<>();
     
     public void Add(VariableArgument argument)
@@ -62,5 +63,11 @@ public class MessageArguments extends Equalitable<MessageArguments>
             arguments.Add(arg);
         
         return arguments;
+    }
+    
+    
+    public static MessageArguments Empty()
+    {
+        return MessageArguments.From();
     }
 }

@@ -30,8 +30,6 @@ public class FakeMessage extends Equalitable<FakeMessage> implements Message
     private final Queue<Statement> statements = new LinkedList<>();
     private final MessageParameters parameters =  new MessageParameters();
     
-    private final MessageArguments arguments = new MessageArguments();
-    
     public FakeMessage()
     {
     }
@@ -47,18 +45,6 @@ public class FakeMessage extends Equalitable<FakeMessage> implements Message
         parameters.Add(parameter);
     }
     
-    @Override
-    public void AddArgument(VariableArgument argument)
-    {
-        arguments.Add(argument);
-    }
-    
-    @Override
-    public MessageArguments Arguments()
-    {
-        return arguments;
-    }
-
     @Override
     public Queue<Statement> GetMessageBody()
     {
