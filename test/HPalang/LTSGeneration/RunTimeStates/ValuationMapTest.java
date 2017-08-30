@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.ValuationContainer;
+import HPalang.Core.SimpleValuationContainer;
 import HPalang.Core.Statement;
 import HPalang.Core.Variables.IntegerVariable;
 import org.hamcrest.core.Is;
@@ -23,7 +23,7 @@ public class ValuationMapTest
     @Test
     public void HasTheAddedVariables()
     {
-        ValuationContainer valuation = new ValuationContainer();
+        SimpleValuationContainer valuation = new SimpleValuationContainer();
         
         IntegerVariable var = new IntegerVariable("Var");
         
@@ -35,7 +35,7 @@ public class ValuationMapTest
     @Test
     public void SetsVariableValue()
     {
-        ValuationContainer valuation = new ValuationContainer();
+        SimpleValuationContainer valuation = new SimpleValuationContainer();
         
         IntegerVariable var = new IntegerVariable("Var");
         
@@ -48,8 +48,8 @@ public class ValuationMapTest
     @Test
     public void MapsWithEqualValuationsAreEqual()
     {
-        ValuationContainer valuation1 = new ValuationContainer();
-        ValuationContainer valuation2 = new ValuationContainer();
+        SimpleValuationContainer valuation1 = new SimpleValuationContainer();
+        SimpleValuationContainer valuation2 = new SimpleValuationContainer();
 
         valuation1.Set(new IntegerVariable("var"), 5);
         valuation2.Set(new IntegerVariable("var"), 5);

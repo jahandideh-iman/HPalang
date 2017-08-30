@@ -6,6 +6,7 @@
 package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.DiscreteExpression;
+import HPalang.Core.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
 /**
@@ -14,5 +15,5 @@ import HPalang.Core.ValuationContainer;
  */
 public interface BinaryOperator
 {
-    int Evaluate(DiscreteExpression operand1,DiscreteExpression operand2 ,ValuationContainer valuations);
+    int Evaluate(DiscreteExpression operand1, DiscreteExpression operand2, ValuationContainer valuations);
 }

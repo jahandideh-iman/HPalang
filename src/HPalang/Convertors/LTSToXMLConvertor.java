@@ -6,7 +6,6 @@
 package HPalang.Convertors;
 
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.Core.Message;
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -14,7 +13,6 @@ import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Statement;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
-import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;
 import java.util.Map.Entry;
 

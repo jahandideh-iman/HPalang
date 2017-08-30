@@ -17,6 +17,7 @@ import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.Core.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;

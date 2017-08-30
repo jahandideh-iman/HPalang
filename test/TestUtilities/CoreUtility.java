@@ -124,7 +124,7 @@ public class CoreUtility
         actorState.ExecutionQueueState().Statements().Dequeue();
     }
 
-    static public  void EnqueueStatement(SoftwareActorState actorState, Statement statement)
+    static public void EnqueueStatement(Statement statement, SoftwareActorState actorState)
     {
         actorState.ExecutionQueueState().Statements().Enqueue(statement);
     }
@@ -147,5 +147,10 @@ public class CoreUtility
     static public void RegisterEvent(float delay, Action action, GlobalRunTimeState globalState)
     {
         globalState.EventsState().RegisterEvent(delay, action);
+    }
+    
+    static public void AddActorState(SoftwareActorState actorState, GlobalRunTimeState globalState)
+    {
+        globalState.DiscreteState().AddSoftwareActorState(actorState);
     }
 }

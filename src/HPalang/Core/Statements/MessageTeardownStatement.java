@@ -32,5 +32,10 @@ public class MessageTeardownStatement extends AbstractStatement<MessageTeardownS
     {
         return 0;
     }
+
+    public MessageParameters ParametersToRemove()
+    {
+        return parametersToRemove;
+    }
     
 }

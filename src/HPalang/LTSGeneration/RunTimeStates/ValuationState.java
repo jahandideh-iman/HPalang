@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.Variable;
 import HPalang.Core.Variables.IntegerVariable;
@@ -17,15 +18,22 @@ import java.util.Map;
  */
 public class ValuationState extends SimpleState<ValuationState>
 {
-    private final ValuationContainer valuation = new ValuationContainer();
+    private ValuationContainer valuation = new SimpleValuationContainer();
     
     public ValuationState()
     {
+        
     }
-    
+        
     public ValuationState(Map<IntegerVariable, Integer> initialValuations)
     {
         valuation.Add(initialValuations);
+    }
+    
+    // NOTE: For testing only.
+    public void SetValuation(ValuationContainer newValuation)
+    {
+        this.valuation = newValuation;
     }
     
     public ValuationContainer Valuation()
@@ -48,13 +56,13 @@ public class ValuationState extends SimpleState<ValuationState>
     @Override
     protected void CloneData(ValuationState copy)
     {
-        copy.valuation.Add(valuation);
+        copy.valuation = this.valuation.DeepCopy();
     }
 
     @Override
     protected int InternalHashCode()
     {
-        return valuation.hashCode();
+        return 0;
     }
     
 }

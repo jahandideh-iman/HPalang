@@ -72,7 +72,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
         
         senderState.Actor().SetCommunicationType(receiver, Wired); 
-        EnqueueStatement(senderState, sendStatement);
+        EnqueueStatement(sendStatement, senderState);
         
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
 
@@ -91,7 +91,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
         
         senderState.Actor().SetCommunicationType(receiver, CAN); 
-        EnqueueStatement(senderState, sendStatement);
+        EnqueueStatement(sendStatement, senderState);
         
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
 
@@ -109,7 +109,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
         
         senderState.Actor().SetCommunicationType(receiver, CAN); 
-        EnqueueStatement(senderState, sendStatement);
+        EnqueueStatement(sendStatement, senderState);
         FillActorsQeueue(receiverState);
         
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);

@@ -9,6 +9,7 @@ import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalOrOperator;
 import HPalang.Core.Expression;
+import HPalang.Core.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
 /**
