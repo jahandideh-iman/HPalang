@@ -13,13 +13,17 @@ import HPalang.Core.DifferentialEquation;
 import HPalang.Core.Mode;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
+import HPalang.Core.SimpleContinuousVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
+import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
+import HPalang.LTSGeneration.RunTimeStates.Event.Action;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.State;
 import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.Transition;
 import Mocks.EmptyStatement;
 import java.util.Collections;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -123,5 +127,25 @@ public class CoreUtility
     static public  void EnqueueStatement(SoftwareActorState actorState, Statement statement)
     {
         actorState.ExecutionQueueState().Statements().Enqueue(statement);
+    }
+    
+    static public void ResetEventStatePool(GlobalRunTimeState globalState, int capacity)
+    {
+        globalState.EventsState().PoolState().SetPool(new SimpleContinuousVariablePool(capacity));
+    }
+
+    static public void ResetEventStatePool(GlobalRunTimeState globalState)
+    {
+        ResetEventStatePool(globalState, 1);
+    }
+    
+    static public Transition SelfTransition(GlobalRunTimeState globalState, Label label)
+    {
+        return new Transition(globalState, label, globalState);
+    }
+    
+    static public void RegisterEvent(float delay, Action action, GlobalRunTimeState globalState)
+    {
+        globalState.EventsState().RegisterEvent(delay, action);
     }
 }

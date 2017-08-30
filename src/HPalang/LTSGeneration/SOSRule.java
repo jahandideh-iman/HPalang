@@ -5,9 +5,6 @@
  */
 package HPalang.LTSGeneration;
 
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import java.util.Collection;
-
 /**
  *
  * @author Iman Jahandideh

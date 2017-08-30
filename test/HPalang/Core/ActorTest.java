@@ -5,6 +5,7 @@
  */
 package HPalang.Core;
 
+import Mocks.EmptyMessage;
 import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -25,6 +26,19 @@ public class ActorTest
         actor1.SetCommunicationType(actor2, CommunicationType.CAN);
         
         assertThat(actor1.CommunicationTypeFor(actor2), equalTo(CommunicationType.CAN));
+    }
+    
+    @Test
+    public void HasTheAddedNetworkDelay()
+    {
+        Actor sender = new Actor("sender");
+        Actor receiver = new Actor("receiver");
+        
+        Message message = new EmptyMessage();
+        
+        sender.SetNetworkDelay(receiver, message, 2f);
+        
+        assertThat(sender.NetworkDelayFor(receiver, message), equalTo(2f));
     }
     
 }

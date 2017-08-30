@@ -7,27 +7,13 @@ package HPalang.LTSGeneration.SOSRules;
 
 import Builders.StateInfoBuilder;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
-import HPalang.Core.ContinuousVariable;
-import HPalang.Core.SimpleContinuousVariablePool;
-import HPalang.Core.Variables.RealVariable;
-import HPalang.LTSGeneration.Labels.ContinuousLabel;
-import HPalang.LTSGeneration.Labels.NetworkLabel;
-import HPalang.LTSGeneration.Labels.Reset;
-import HPalang.LTSGeneration.Labels.SoftwareLabel;
-import HPalang.LTSGeneration.RunTimeStates.Event.Action;
+import HPalang.LTSGeneration.Labels.*;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
-import HPalang.LTSGeneration.RunTimeStates.EventsState;
-
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.VariablePoolState;
-import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
 import Mocks.ActionMonitor;
-import Mocks.TransitionCollectorChecker;
-import static TestUtilities.CoreUtility.SimpleStateInfo;
-import java.util.Collections;
-import java.util.List;
+import static TestUtilities.CoreUtility.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
@@ -38,6 +24,7 @@ import org.junit.Before;
  */
 public class EventExpirationRuleTest extends SOSRuleTestFixture
 {
+    float arbiraryDelay = 1f;
     @Before
     public void Setup()
     {
@@ -47,13 +34,11 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
     @Test
     public void IfThereIsNoSoftwareAndNetworkTransitionExpiratesEvents()
     {
-        Event event = CreateEvent(new ActionMonitor());
-        EventsState eventsState = CreateEventStateWith(event);
-        globalState.AddSubstate(eventsState);
+        ResetEventStatePool(globalState);
+        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, new ActionMonitor());
         
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
-        nextGlobalState.EventsState().PoolState().Pool().Release(event.Timer());
-        nextGlobalState.EventsState().RemoveEvent(event);
+        nextGlobalState.EventsState().UnregisterEvent(event);
         
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
@@ -64,9 +49,8 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
     @Test
     public void DoesNotExpiresEventsIfThereIsSoftwareAction()
     {
-        Event event = CreateEvent(new ActionMonitor());
-        EventsState eventsState = CreateEventStateWith(event);
-        globalState.AddSubstate(eventsState);
+        ResetEventStatePool(globalState);
+        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, new ActionMonitor());
         
         StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
                 WithState(globalState).
@@ -84,16 +68,13 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
     @Test
     public void DoesNotExpiresEventsIfThereIsNetworkAction()
     {
-        Event event = CreateEvent(new ActionMonitor());
-        EventsState eventsState = CreateEventStateWith(event);
-        globalState.AddSubstate(eventsState);
+        ResetEventStatePool(globalState);
+        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, new ActionMonitor());
         
         StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
                 WithState(globalState).
                 AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
                 Build();
-           
-        
         
         rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
         
@@ -106,19 +87,5 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         String guard = event.Timer().Name()+"=="+event.Delay();
         Reset reset = new Reset(event.Timer(), new ConstantContinuousExpression(0));
         return new ContinuousLabel(guard, Reset.From(reset));
-    }
-    
-    private Event CreateEvent(Action action)
-    {
-        return new Event(5, new RealVariable("timer"), action);
-    }
-    
-    public EventsState CreateEventStateWith(Event event)
-    {
-        VariablePoolState poolState = new VariablePoolState(new SimpleContinuousVariablePool(0));
-        EventsState eventsState = new EventsState();
-        eventsState.AddEvent(event);
-        eventsState.SetPool(poolState);
-        return eventsState;
     }
 }

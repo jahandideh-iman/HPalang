@@ -53,14 +53,28 @@ public class NetworkingUtility
         actorState.MessageQueueState().Messages().Enqueue(packet);
     }
 
-    static public void PutMessagePacketNetworkState(MessagePacket expectedPacket, GlobalRunTimeState expectedGlobalState)
+    static public void PutMessagePacketInNetworkState(MessagePacket packet, GlobalRunTimeState globalState)
     {
-        expectedGlobalState.NetworkState().Buffer(expectedPacket);
+        globalState.NetworkState().Buffer(packet);
     }
     
-    static public MessagePacket EmptySelfPacketFor(SoftwareActor actor)
+    static public void DebufferFromNetworkState(MessagePacket packet, GlobalRunTimeState globalState)
     {
-        return new MessagePacket(actor, actor, new EmptyMessage(), MessageArguments.From());
+        globalState.NetworkState().Debuffer(packet);
+    }
+    
+    static public void SetNetworkStateIdle(boolean idle, GlobalRunTimeState globalState)
+    {
+        globalState.NetworkState().SetIdle(idle);
+    } 
+    static public MessagePacket EmptySelfMessagePacketFor(SoftwareActor actor)
+    {
+        return MessagePacketFor(actor, actor, new EmptyMessage(), MessageArguments.Empty());
+    }
+    
+    static public MessagePacket EmptySelfMessagePacket(SoftwareActor actor, int priority)
+    {
+        return MessagePacketFor(actor, actor, new EmptyMessage(priority), MessageArguments.Empty());
     }
     
     static public MessagePacket MessagePacketFor(Actor sender, SoftwareActor receiver , Message message, MessageArguments arguments)
@@ -93,7 +107,7 @@ public class NetworkingUtility
     {
         for(int i = 0 ; i < receiverState.Actor().Capacity(); i++)
         {
-            MessagePacket packet = EmptySelfPacketFor(receiverState.Actor());
+            MessagePacket packet = EmptySelfMessagePacketFor(receiverState.Actor());
             PutMessagePacketInActor(receiverState,packet);
         }
     }

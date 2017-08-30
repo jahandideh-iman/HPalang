@@ -25,7 +25,12 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     
     public EmptyMessage()
     {
-        id = "";
+        this(0);
+    }
+    
+    public EmptyMessage(int priority)
+    {
+        this("empty", 0);
     }
     
     public EmptyMessage(String id, int priority)
@@ -56,12 +61,6 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
     protected int InternalHashCode()
     {
        return 1;
-    }
-
-    @Override
-    public void SetPriority(int priority)
-    {
-        this.priority = priority;
     }
 
     @Override

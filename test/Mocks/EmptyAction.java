@@ -5,6 +5,7 @@
  */
 package Mocks;
 
+import HPalang.Core.Equalitable;
 import HPalang.LTSGeneration.RunTimeStates.Event.Action;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 
@@ -12,13 +13,25 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
  *
  * @author Iman Jahandideh
  */
-public class EmptyAction implements Action
+public class EmptyAction extends Equalitable<EmptyAction> implements Action 
 {
 
     @Override
     public void Execute(GlobalRunTimeState globalState)
     {
         
+    }
+
+    @Override
+    protected boolean InternalEquals(EmptyAction other)
+    {
+        return true;
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return 0;
     }
     
 }

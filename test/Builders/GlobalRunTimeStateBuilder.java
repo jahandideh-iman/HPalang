@@ -7,6 +7,7 @@ package Builders;
 
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
 import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
+import HPalang.LTSGeneration.RunTimeStates.EventsState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
@@ -34,11 +35,14 @@ public class GlobalRunTimeStateBuilder
 
         DiscreteState discreteState = new DiscreteState();
         ContinuousState continuosState = new ContinuousState();
+        EventsState eventState = new EventsState();
+        eventState.AddSubstate(new VariablePoolState());
         
         globalState.AddSubstate(discreteState);
         globalState.AddSubstate(continuosState);
         globalState.AddSubstate(new VariablePoolState());
         globalState.AddSubstate(new NetworkState());
+        globalState.AddSubstate(eventState);
         
         for(SoftwareActorState state : softwareActorStates)
             discreteState.AddSoftwareActorState(state);

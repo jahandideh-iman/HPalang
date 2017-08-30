@@ -37,4 +37,8 @@ public class SOSRuleTestFixture
     
 
 
+    public GlobalRunTimeState CollectedGlobalState()
+    {
+        return transitionCollectorChecker.collectedGlobalState;
+    }
 }

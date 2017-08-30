@@ -5,16 +5,22 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import Builders.SoftwareActorStateBuilder;
+import Builders.StateInfoBuilder;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
 import HPalang.Core.MessageArguments;
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
-import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import HPalang.LTSGeneration.RunTimeStates.Event.Action;
+import HPalang.LTSGeneration.RunTimeStates.Event.Event;
+import HPalang.LTSGeneration.RunTimeStates.Event.SendPacketAndResetNetworkAction;
+import HPalang.LTSGeneration.RunTimeStates.EventsState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
+import HPalang.LTSGeneration.StateInfo;
 import static TestUtilities.CoreUtility.*;
+import static TestUtilities.NetworkingUtility.*;
 import Mocks.EmptyMessage;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
@@ -27,43 +33,101 @@ import org.junit.Test;
  */
 public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
 {
+    SoftwareActor receiver = CreateSofwareActor("receiver");
+    SoftwareActor sender = CreateSofwareActor("sender");
+    
+    Message lowPriorityMessage;
+    Message highPriorityMessage;
+    
+    MessagePacket lowPriorityPacket;
+    MessagePacket highPriorityPacket;
+    
+    int lowPriority = 0;
+    int highPriority = 1;
+    
+    float lowPriorityDelay = 1f;
+    float highPriorityDelay = 2f;
+    
     @Before
     public void Setup()
     {
         rule = new NetwrokCommunicationRule();
+        
+        lowPriorityMessage = new EmptyMessage("lowPriority", lowPriority);
+        highPriorityMessage = new EmptyMessage("highPriority", highPriority);
+        
+        lowPriorityPacket = MessagePacketFor(sender, receiver, lowPriorityMessage, MessageArguments.Empty());
+        highPriorityPacket = MessagePacketFor(sender, receiver, highPriorityMessage, MessageArguments.Empty());
+
+        sender.SetNetworkDelay(receiver,lowPriorityMessage, lowPriorityDelay);
+        sender.SetNetworkDelay(receiver,highPriorityMessage, highPriorityDelay);
+        
+        PutMessagePacketInNetworkState(lowPriorityPacket, globalState);
+        PutMessagePacketInNetworkState(highPriorityPacket, globalState);
+        ResetEventStatePool(globalState);
+        SetNetworkStateIdle(true, globalState);
     }
     
-   @Test
-   public void SendsHighestPriorityMessageWhenIsNotIdleAndThereIsNoSoftwareTransition()
-   {
-       SoftwareActor receiver = CreateSofwareActor("receiver");
-       SoftwareActor sender = CreateSofwareActor("sender");
-       MessageArguments emptyArguments = new MessageArguments();
-       
-       SoftwareActorStateBuilder receiverState = new SoftwareActorStateBuilder()
-               .WithActor(receiver);
-       
-       globalState.DiscreteState().AddSoftwareActorState(receiverState.Build());
-       
-       
-       Message m1 = new EmptyMessage();
-       Message m2 = new EmptyMessage();
-       m1.SetPriority(1);
-       m2.SetPriority(2);
-       
-       MessagePacket lowPrioirityPacket = new MessagePacket(sender, receiver, m1, emptyArguments);
-       MessagePacket highPrioirityPacket = new MessagePacket(sender, receiver, m2, emptyArguments);
-       
-       globalState.NetworkState().Buffer(lowPrioirityPacket);
-       globalState.NetworkState().Buffer(highPrioirityPacket);
-       
-       rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+    @Test
+    public void IsNotAppliedWhenNetworkStateIsNotIdle()
+    {
+        SetNetworkStateIdle(false, globalState);
         
-       GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
-       SoftwareActorState nextActorState = nextGlobalState.DiscreteState().FindActorState(receiver);
-       nextActorState.MessageQueueState().Messages().Enqueue(highPrioirityPacket);
-       nextGlobalState.NetworkState().Debuffer(highPrioirityPacket);
-       
-       transitionCollectorChecker.ExpectTransition(new NetworkLabel(), nextGlobalState);     
-   }
+        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        
+        transitionCollectorChecker.ExpectNoTransition();
+    }
+    
+        @Test
+    public void IsNotAppliedWhenThereIsSoftwareAction()
+    {
+        StateInfo stateInfoWithSoftwareAction = new StateInfoBuilder().
+                WithState(globalState).
+                AddOutTransition(SelfTransition(globalState, new SoftwareLabel())).
+                Build();
+        
+        rule.TryApply(stateInfoWithSoftwareAction, transitionCollectorChecker);
+        
+        transitionCollectorChecker.ExpectNoTransition();
+    }
+    
+    @Test
+    public void RegistersTheHighestPriorityMessageInTheEventsState()
+    {
+        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        
+        EventsState generatedEventState = CollectedGlobalState().EventsState();
+        
+        Event expectedEvent = CreateEventFor(highPriorityDelay, highPriorityPacket, globalState);
+        
+        assertThat(generatedEventState.Events(), hasItem(expectedEvent));
+    }
+    
+    @Test
+    public void MakeNetworkStateNotIdleWhenApplied()
+    {
+        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        
+        NetworkState generatedNetworkState =  CollectedGlobalState().NetworkState();
+        
+        assertThat(generatedNetworkState.IsIdle(), is(false));
+    }
+    
+    @Test
+    public void Inegration()
+    {
+        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+
+        GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
+        DebufferFromNetworkState(highPriorityPacket, nextGlobalState);
+        SetNetworkStateIdle(false, nextGlobalState);
+        RegisterEvent(highPriorityDelay, new SendPacketAndResetNetworkAction(highPriorityPacket), nextGlobalState);
+
+        transitionCollectorChecker.ExpectTransition(new NetworkLabel(), nextGlobalState);
+    }
+    
+    private Event CreateEventFor(float delay, MessagePacket packet, GlobalRunTimeState globalState)
+    {
+        return globalState.DeepCopy().EventsState().RegisterEvent(delay, new SendPacketAndResetNetworkAction(packet));
+    }
 }

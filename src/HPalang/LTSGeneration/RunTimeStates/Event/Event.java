@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration.RunTimeStates.Event;
 
-import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Equalitable;
 import HPalang.Core.Variables.RealVariable;
 

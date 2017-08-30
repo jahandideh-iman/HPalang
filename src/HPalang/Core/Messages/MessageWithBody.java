@@ -57,11 +57,6 @@ public class MessageWithBody extends Equalitable<MessageWithBody> implements Mes
         return out + "}";
     }
 
-    @Override
-    public void SetPriority(int priority)
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     public int Priority()

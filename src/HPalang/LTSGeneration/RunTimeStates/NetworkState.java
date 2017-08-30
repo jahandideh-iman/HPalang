@@ -18,6 +18,7 @@ import java.util.List;
 public class NetworkState extends CompositeStateT<NetworkState>
 {
     private final List<MessagePacket> buffer = new LinkedList<>();
+    private boolean isIdle;
     
     @Override
     protected NetworkState NewInstance()
@@ -29,14 +30,26 @@ public class NetworkState extends CompositeStateT<NetworkState>
     protected void CloneData(NetworkState copy)
     {
         copy.buffer.addAll(buffer);
+        copy.SetIdle(isIdle);
     }
 
     @Override
     protected boolean DataEquals(NetworkState other)
     {
-        return buffer.equals(other.buffer);
+        return buffer.equals(other.buffer) &&
+                this.isIdle == other.isIdle;
     }
 
+    public void SetIdle(boolean idle)
+    {
+        this.isIdle = idle;
+    }
+    
+    public boolean IsIdle()
+    {
+        return isIdle;
+    }
+    
     public void Buffer(MessagePacket packet)
     {
         buffer.add(packet);
@@ -51,4 +64,5 @@ public class NetworkState extends CompositeStateT<NetworkState>
     {
         return buffer;
     }
+
 }

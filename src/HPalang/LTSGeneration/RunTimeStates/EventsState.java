@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.LTSGeneration.CompositeStateT;
+import HPalang.LTSGeneration.RunTimeStates.Event.Action;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import java.util.Collection;
 import java.util.LinkedList;
@@ -19,35 +20,40 @@ public class EventsState extends CompositeStateT<EventsState>
 {
     private final List<Event> events = new LinkedList<>();
 
+    public EventsState()
+    {
+    }
+    
     @Override
     protected EventsState NewInstance()
     {
         return new EventsState();
     }
-
-    @Override
-    protected void CloneData(EventsState copy)
+    
+    public Event RegisterEvent(float delay, Action action)
     {
-        copy.events.addAll(events);
+        Event event = new Event(delay, PoolState().Pool().Acquire(), action);
+        AddEvent(event);
+        return event;
     }
 
-    @Override
-    protected boolean DataEquals(EventsState other)
+    public void UnregisterEvent(Event event)
     {
-        return events.equals(other.events);
+        PoolState().Pool().Release(event.Timer());
+        RemoveEvent(event);
     }
- 
-    public void AddEvent(Event event)
+    
+    private void AddEvent(Event event)
     {
         events.add(event);
     }
     
-    public void RemoveEvent(Event event)
+    private void RemoveEvent(Event event)
     {
        events.remove(event);
     }
 
-    public void SetPool(VariablePoolState poolState)
+    private void SetPool(VariablePoolState poolState)
     {
         assert(FindSubState(VariablePoolState.class) == null);
         AddSubstate(poolState);
@@ -61,6 +67,18 @@ public class EventsState extends CompositeStateT<EventsState>
     public Collection<Event> Events()
     {
         return events;
+    }
+    
+    @Override
+    protected void CloneData(EventsState copy)
+    {
+        copy.events.addAll(events);
+    }
+
+    @Override
+    protected boolean DataEquals(EventsState other)
+    {
+        return events.equals(other.events);
     }
 
 }

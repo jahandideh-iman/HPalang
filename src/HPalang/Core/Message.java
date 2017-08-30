@@ -17,6 +17,6 @@ public interface Message
     
     public MessageParameters Parameters();
 
-    public void SetPriority(int priority);
+    //public void SetPriority(int priority);
     public int Priority();
 }

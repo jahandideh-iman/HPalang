@@ -40,8 +40,7 @@ public class EventExpirationRule implements SOSRule
             GlobalRunTimeState newGlobalState = globalStateInfo.State().DeepCopy();
             EventsState newEventsState = newGlobalState.EventsState();
             
-            newEventsState.RemoveEvent(event);
-            newEventsState.PoolState().Pool().Release(event.Timer());
+            newEventsState.UnregisterEvent(event);
             event.Action().Execute(newGlobalState);
             
             generator.AddTransition(CreateEventTransitionLabel(event), newGlobalState); 

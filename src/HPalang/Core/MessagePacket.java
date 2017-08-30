@@ -28,6 +28,11 @@ public class MessagePacket extends Equalitable<MessagePacket>
     {
         return receiver;
     }
+    
+    public Actor Sender()
+    {
+        return sender;
+    }
 
     public Message Message()
     {
