@@ -6,13 +6,9 @@
 package HPalang.Core.Messages;
 
 import HPalang.Core.Equalitable;
-import HPalang.Core.Expression;
 import HPalang.Core.Statement;
 import HPalang.Core.Message;
-import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageParameters;
-import HPalang.Core.VariableArgument;
-import HPalang.Core.VariableParameter;
 import java.util.Queue;
 
 /**
@@ -68,5 +64,11 @@ public class MessageWithBody extends Equalitable<MessageWithBody> implements Mes
     public MessageParameters Parameters()
     {
         return new MessageParameters();
+    }
+
+    @Override
+    public MessageType MessageType()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

@@ -25,6 +25,11 @@ public class FakeMessage extends Equalitable<FakeMessage> implements Message
     public FakeMessage()
     {
     }
+    
+    public FakeMessage(Queue<Statement> statements)
+    {
+        this(statements, MessageParameters.From());
+    }
         
     public FakeMessage(Queue<Statement> statements, MessageParameters parameters)
     {
@@ -65,6 +70,12 @@ public class FakeMessage extends Equalitable<FakeMessage> implements Message
     public MessageParameters Parameters()
     {
         return parameters;
+    }
+
+    @Override
+    public MessageType MessageType()
+    {
+        return MessageType.Control;
     }
 
 

@@ -56,8 +56,8 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
         lowPriorityMessage = new EmptyMessage("lowPriority", lowPriority);
         highPriorityMessage = new EmptyMessage("highPriority", highPriority);
         
-        lowPriorityPacket = MessagePacketFor(sender, receiver, lowPriorityMessage, MessageArguments.Empty());
-        highPriorityPacket = MessagePacketFor(sender, receiver, highPriorityMessage, MessageArguments.Empty());
+        lowPriorityPacket = MessagePacket(sender, receiver, lowPriorityMessage, MessageArguments.Empty());
+        highPriorityPacket = MessagePacket(sender, receiver, highPriorityMessage, MessageArguments.Empty());
 
         sender.SetNetworkDelay(receiver,lowPriorityMessage, lowPriorityDelay);
         sender.SetNetworkDelay(receiver,highPriorityMessage, highPriorityDelay);

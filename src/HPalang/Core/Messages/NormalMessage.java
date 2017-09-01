@@ -7,11 +7,9 @@ package HPalang.Core.Messages;
 
 import HPalang.Core.Equalitable;
 import HPalang.Core.Message;
-import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.MessageParameters;
 import HPalang.Core.Statement;
-import HPalang.Core.VariableArgument;
 import java.util.Queue;
 
 /**
@@ -67,5 +65,11 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
     public MessageParameters Parameters()
     {
         return messageHandler.Parameters();
+    }
+
+    @Override
+    public MessageType MessageType()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

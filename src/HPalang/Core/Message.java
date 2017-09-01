@@ -13,10 +13,10 @@ import java.util.Queue;
  */
 public interface Message
 {
-    public Queue<Statement> GetMessageBody();
+    public enum MessageType { Invalid, Data, Control};
     
+    public Queue<Statement> GetMessageBody();
     public MessageParameters Parameters();
-
-    //public void SetPriority(int priority);
+    public MessageType MessageType();
     public int Priority();
 }

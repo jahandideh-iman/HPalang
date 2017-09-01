@@ -6,16 +6,17 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Message;
+import HPalang.Core.Message.MessageType;
 import HPalang.Core.MessagePacket;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.MessageTeardownStatement;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
-import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TransitionCollector;
+import HPalang.Utilities.Queue;
 
 /**
  *
@@ -38,7 +39,8 @@ public class FIFOMessageTakeRule extends ActorLevelRule
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
         
-        MessagePacket packet = newActorState.MessageQueueState().Messages().Dequeue();
+        MessagePacket packet = FindAndRemoveAppropriateMessagePacket(newActorState.MessageQueueState().Messages());
+        
         Message message = packet.Message();
         for(VariableArgument argument : packet.Arguments().AsSet())
             newActorState.ExecutionQueueState().Statements().Enqueue(
@@ -54,4 +56,30 @@ public class FIFOMessageTakeRule extends ActorLevelRule
         
         collector.AddTransition(new SoftwareLabel(), newGlobalState);
     }
+    
+    private MessagePacket FindAndRemoveAppropriateMessagePacket(Queue<MessagePacket> packets)
+    {
+        MessagePacket packet = null;
+        packet = FindFirstDataMessagePacket(packets);
+        if(packet == null)
+            packet = FindFirstMessage(packets);
+        
+        packets.Remove(packet);
+        return packet;
+    }
+    
+    private MessagePacket FindFirstDataMessagePacket(Queue<MessagePacket> packets)
+    {
+        for(MessagePacket packet : packets)
+            if(packet.Message().MessageType() == MessageType.Data)
+                return packet;
+        
+        return null;
+    }
+
+    private MessagePacket FindFirstMessage(Queue<MessagePacket> packets)
+    {
+        return packets.Head();
+    }
+    
 }
