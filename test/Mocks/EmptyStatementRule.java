@@ -6,13 +6,13 @@
 package Mocks;
 
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import HPalang.LTSGeneration.SOSRules.StatementRule;
+import HPalang.LTSGeneration.SOSRules.SoftwareStatementRule;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class EmptyStatementRule extends StatementRule<EmptyStatement>
+public class EmptyStatementRule extends SoftwareStatementRule<EmptyStatement>
 {
 
     @Override

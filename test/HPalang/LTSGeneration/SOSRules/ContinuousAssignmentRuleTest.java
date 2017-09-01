@@ -52,7 +52,7 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
         generatedLTS = ltsGenerator.Generate(globalState);
         
         GlobalRunTimeState expectedState = globalState.DeepCopy();
-        PhysicalActorState expectedPhysicalState = expectedState.ContinuousState().FindActorState(pActorState.Actor());
+        PhysicalActorState expectedPhysicalState = expectedState.ContinuousState().FindActorState(pActorState.PActor());
         expectedPhysicalState.ExecutionQueueState().Statements().Clear();
 
         SoftwareLabel label = new SoftwareLabel(Reset.From(new Reset(assignment.Variable(), assignment.Expression())));

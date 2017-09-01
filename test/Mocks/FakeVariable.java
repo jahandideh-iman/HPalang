@@ -11,10 +11,10 @@ import HPalang.Core.Variable;
  *
  * @author Iman Jahandideh
  */
-public class EmptyVariable extends Variable
+public class FakeVariable extends Variable
 {
     
-    public EmptyVariable(String name)
+    public FakeVariable(String name)
     {
         super(name);
     }

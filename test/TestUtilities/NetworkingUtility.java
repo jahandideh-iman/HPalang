@@ -114,9 +114,9 @@ public class NetworkingUtility
     
     static public void FillActorsQeueue(SoftwareActorState receiverState)
     {
-        for(int i = 0 ; i < receiverState.Actor().Capacity(); i++)
+        for(int i = 0 ; i < receiverState.SActor().Capacity(); i++)
         {
-            MessagePacket packet = EmptySelfMessagePacketFor(receiverState.Actor());
+            MessagePacket packet = EmptySelfMessagePacketFor(receiverState.SActor());
             PutMessagePacketInActor(packet, receiverState);
         }
     }

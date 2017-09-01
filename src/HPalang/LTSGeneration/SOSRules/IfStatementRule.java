@@ -14,7 +14,7 @@ import HPalang.LTSGeneration.RunTimeStates.ValuationState;
  *
  * @author Iman Jahandideh
  */
-public class IfStatementRule extends StatementRule<IfStatement>
+public class IfStatementRule extends SoftwareStatementRule<IfStatement>
 {
 
     @Override

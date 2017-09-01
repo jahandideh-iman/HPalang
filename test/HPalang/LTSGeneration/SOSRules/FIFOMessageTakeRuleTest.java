@@ -52,7 +52,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
     {
         rule = new FIFOMessageTakeRule();
         
-        receiver = receiverState.Actor();
+        receiver = receiverState.SActor();
         
         AddActorState(receiverState, globalState);
     }
@@ -172,9 +172,9 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         Message dataMessage = new EmptyMessage("dataMessage", MessageType.Data);
         Message controlMessage2 =  new EmptyMessage("controlMessag2", MessageType.Control);
         
-        MessagePacket controlMessagePacket1 = MessagePacket(arbitrarySender, actorState.Actor(), controlMessage1);
-        MessagePacket dataMessagePacket = MessagePacket(arbitrarySender, actorState.Actor(), dataMessage);
-        MessagePacket controlMessagePacket2 = MessagePacket(arbitrarySender, actorState.Actor(), controlMessage2);
+        MessagePacket controlMessagePacket1 = MessagePacket(arbitrarySender, actorState.SActor(), controlMessage1);
+        MessagePacket dataMessagePacket = MessagePacket(arbitrarySender, actorState.SActor(), dataMessage);
+        MessagePacket controlMessagePacket2 = MessagePacket(arbitrarySender, actorState.SActor(), controlMessage2);
 
 
         PutMessagePacketInActor(controlMessagePacket1, actorState);
@@ -185,17 +185,17 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
-        MessageQueueState expectedMessageQueue = FindActorState(actorState.Actor() , globalState.DeepCopy()).MessageQueueState();
+        MessageQueueState expectedMessageQueue = FindActorState(actorState.SActor() , globalState.DeepCopy()).MessageQueueState();
         RemoveMessagePacket(dataMessagePacket, expectedMessageQueue);
         
-        MessageQueueState actualMessageQueue = FindActorState(actorState.Actor(), CollectedGlobalState()).MessageQueueState();
+        MessageQueueState actualMessageQueue = FindActorState(actorState.SActor(), CollectedGlobalState()).MessageQueueState();
         
         assertThat(actualMessageQueue, equalTo(expectedMessageQueue));
     }
     private GlobalRunTimeState ExpectedGlobalStateWhenMessageIsTaken(GlobalRunTimeState originalState, SoftwareActorState senderState , Message message)
     {
         GlobalRunTimeState expectedGlobalState = originalState.DeepCopy();
-        SoftwareActorState expectedActorState = expectedGlobalState.DiscreteState().FindActorState(senderState.Actor());
+        SoftwareActorState expectedActorState = expectedGlobalState.DiscreteState().FindActorState(senderState.SActor());
         MessagePacket packet =  expectedActorState.MessageQueueState().Messages().Dequeue();
         
         for(VariableArgument argument : packet.Arguments().AsSet())

@@ -33,7 +33,7 @@ import org.antlr.v4.runtime.misc.Pair;
  *
  * @author Iman Jahandideh
  */
-public class MessageSendRule extends ActorLevelRule
+public class MessageSendRule extends SoftwareActorLevelRule
 {
     @Override
     protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
@@ -53,7 +53,7 @@ public class MessageSendRule extends ActorLevelRule
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
 
-        SoftwareActorState senderState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
+        SoftwareActorState senderState = newGlobalState.DiscreteState().FindActorState(actorState.SActor());
         SendStatement sendStatement = (SendStatement)senderState.ExecutionQueueState().Statements().Dequeue();
         
         SoftwareActorState receiverState = newGlobalState.DiscreteState().FindActorState(sendStatement.Receiver());
@@ -72,13 +72,13 @@ public class MessageSendRule extends ActorLevelRule
         
         
         MessagePacket packet = new MessagePacket(
-                senderState.Actor(), 
-                receiverState.Actor(), 
+                senderState.SActor(), 
+                receiverState.SActor(), 
                 sendStatement.Message(), 
                 maximalEvaluatoionReslut.a
         );
         
-        CommunicationType communicationType = senderState.Actor().CommunicationTypeFor(receiverState.Actor());
+        CommunicationType communicationType = senderState.SActor().CommunicationTypeFor(receiverState.SActor());
         
         switch (communicationType) {
             case CAN:

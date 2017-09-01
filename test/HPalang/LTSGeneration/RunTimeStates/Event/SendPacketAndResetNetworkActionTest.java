@@ -32,7 +32,7 @@ public class SendPacketAndResetNetworkActionTest
     @Before
     public void Setup()
     {
-        packet = EmptySelfMessagePacketFor(receiverState.Actor());
+        packet = EmptySelfMessagePacketFor(receiverState.SActor());
         
         globalState.DiscreteState().AddSoftwareActorState(receiverState);
         
@@ -54,7 +54,7 @@ public class SendPacketAndResetNetworkActionTest
     {
         action.Execute(globalState);
         
-        SoftwareActorState expectedState = FindActorState(receiverState.Actor(), globalState);
+        SoftwareActorState expectedState = FindActorState(receiverState.SActor(), globalState);
         
         assertThat(expectedState.MessageQueueState().Messages(), hasItem(packet));
     }

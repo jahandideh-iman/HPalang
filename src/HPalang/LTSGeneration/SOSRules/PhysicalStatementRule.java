@@ -36,7 +36,7 @@ public abstract class PhysicalStatementRule<T extends Statement> extends Physica
     protected void ApplyToActorState(PhysicalActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
-        PhysicalActorState newActorState = newGlobalState.ContinuousState().FindActorState(actorState.Actor());
+        PhysicalActorState newActorState = newGlobalState.ContinuousState().FindActorState(actorState.PActor());
         
         T statement = (T)newActorState.ExecutionQueueState().Statements().Dequeue();
         

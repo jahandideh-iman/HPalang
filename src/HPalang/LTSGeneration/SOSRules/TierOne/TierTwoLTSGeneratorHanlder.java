@@ -44,14 +44,14 @@ public class TierTwoLTSGeneratorHanlder
             boolean valid = true;
             for (SoftwareActorState actorState : lastState.DiscreteState().ActorStates()) 
             {
-                if (actorState.Actor() == executedActor) 
+                if (actorState.SActor() == executedActor) 
                 {
                     if (actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false)
                         valid = false;    
                 } 
                 else 
                 {
-                    SoftwareActorState rootActorState = rootGlobalState.DiscreteState().FindActorState(actorState.Actor());
+                    SoftwareActorState rootActorState = rootGlobalState.DiscreteState().FindActorState(actorState.SActor());
                     if (actorState.FindSubState(ExecutionQueueState.class).Statements().IsEmpty() == false || 
                             rootActorState.FindSubState(ValuationState.class)
                                     .equals(actorState.FindSubState(ValuationState.class)) == false)

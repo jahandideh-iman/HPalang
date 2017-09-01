@@ -31,8 +31,8 @@ public class ContinuousStateTest
         ContinuousState copy = original.DeepCopy();
 
         assertEqualButNotSame(original,copy);
-        assertEqualButNotSame(actorState1, copy.FindActorState(actorState1.Actor())); 
-        assertEqualButNotSame(actorState2, copy.FindActorState(actorState2.Actor()));
+        assertEqualButNotSame(actorState1, copy.FindActorState(actorState1.PActor())); 
+        assertEqualButNotSame(actorState2, copy.FindActorState(actorState2.PActor()));
     }
     
 }

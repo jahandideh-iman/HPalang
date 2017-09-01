@@ -57,7 +57,7 @@ public class ContinuousState extends CompositeStateT<ContinuousState>
     public PhysicalActorState FindActorState(PhysicalActor actor)
     {
         for(PhysicalActorState state : physicalActorStatesCache)
-            if(state.Actor() == actor)
+            if(state.PActor() == actor)
                 return state;
         return null;
     }    

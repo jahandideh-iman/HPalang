@@ -8,6 +8,7 @@ package Mocks;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.Variable;
 import HPalang.Core.Variables.IntegerVariable;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,6 +22,9 @@ public class ValuationContainerMock implements ValuationContainer
 {
 
     public  Set<Variable> removedVariables = new HashSet<>();
+    
+    private final Map<Variable, Integer> values = new HashMap<>();
+    
     @Override
     public void Add(Variable var)
     {
@@ -40,15 +44,15 @@ public class ValuationContainerMock implements ValuationContainer
     }
 
     @Override
-    public void Set(IntegerVariable var, int value)
+    public void Set(Variable var, int value)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        values.put(var, value);
     }
 
     @Override
-    public int Get(IntegerVariable var)
+    public int ValueFor(Variable var)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return values.get(var);
     }
 
     @Override

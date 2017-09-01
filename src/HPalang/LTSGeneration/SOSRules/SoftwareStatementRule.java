@@ -6,20 +6,22 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Statement;
-import HPalang.LTSGeneration.Labels.SoftwareLabel;
-import HPalang.LTSGeneration.RunTimeStates.ActorState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
+import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.TransitionCollector;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public abstract class StatementRule<T extends Statement> extends ActorLevelRule
+public abstract class SoftwareStatementRule<T extends Statement> extends SoftwareActorLevelRule
 {
+
     @Override
-    protected final boolean IsRuleSatisfied(ActorState actorState, GlobalRunTimeState globalState)
+    protected final boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
     {
         
         return actorState.ExecutionQueueState().Statements().IsEmpty() == false &&
@@ -27,7 +29,7 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
                 InternalIsRuleSatisfied(actorState);
     }
     
-    protected boolean InternalIsRuleSatisfied(ActorState actorState)
+    protected boolean InternalIsRuleSatisfied(SoftwareActorState actorState)
     {
         return true;
     }
@@ -35,11 +37,10 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
     protected abstract Class<T> StatementType();
 
     @Override
-    protected final void ApplyToActorState(ActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
+    protected final void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
-        
-        ActorState newActorState = newGlobalState.FindActorState(actorState.Actor());
+        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.SActor());
         
         T statement = (T)newActorState.ExecutionQueueState().Statements().Head();
         newActorState.ExecutionQueueState().Statements().Dequeue();
@@ -50,8 +51,8 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
         collector.AddTransition(label, newGlobalState);
     }
     
-    protected abstract void ApplyStatement(ActorState actorState, T statement);
-    protected SoftwareLabel CreateTransitionLabel(ActorState actorState, T statement)
+    protected abstract void ApplyStatement(SoftwareActorState actorState, T statement);
+    protected SoftwareLabel CreateTransitionLabel(SoftwareActorState actorState, T statement)
     {
         return new SoftwareLabel();
     }

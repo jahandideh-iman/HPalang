@@ -67,7 +67,7 @@ public class LTSToXMLConvertor
         String stateStr = "";
         for(SoftwareActorState actorState : state.DiscreteState().ActorStates())
         {
-            String actorStr = actorState.Actor().Name()+ "[";
+            String actorStr = actorState.SActor().Name()+ "[";
 
             actorStr += "(";
             actorStr += "V:{";

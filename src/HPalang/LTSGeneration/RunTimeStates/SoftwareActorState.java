@@ -12,22 +12,15 @@ import HPalang.LTSGeneration.CompositeStateT;
  *
  * @author Iman Jahandideh
  */
-public class SoftwareActorState extends CompositeStateT<SoftwareActorState>
+public class SoftwareActorState extends ActorState<SoftwareActorState>
 {    
-    private final SoftwareActor actor;
-    
     private boolean isSuspended = false;
    
     public SoftwareActorState(SoftwareActor actor)
     {
-        this.actor = actor;     
+        super(actor);
     }
     
-    public ExecutionQueueState ExecutionQueueState()
-    {
-        return FindSubState(ExecutionQueueState.class);
-    }
-
     public MessageQueueState MessageQueueState()
     {
         return FindSubState(MessageQueueState.class);
@@ -40,12 +33,12 @@ public class SoftwareActorState extends CompositeStateT<SoftwareActorState>
     
     public int GetMessageQueueCapacity()
     {
-        return actor.Capacity();
+        return SActor().Capacity();
     }
     
-    public SoftwareActor Actor()
+    public SoftwareActor SActor()
     {
-       return actor;
+       return (SoftwareActor)Actor();
     }
        
     public void SetSuspended(boolean suspended)
@@ -61,7 +54,7 @@ public class SoftwareActorState extends CompositeStateT<SoftwareActorState>
     @Override
     protected SoftwareActorState NewInstance()
     {
-        return new SoftwareActorState(actor);
+        return new SoftwareActorState(SActor());
     }
 
     @Override
@@ -73,7 +66,7 @@ public class SoftwareActorState extends CompositeStateT<SoftwareActorState>
     @Override
     protected boolean DataEquals(SoftwareActorState other)
     {
-        return this.actor == other.actor && 
+        return super.DataEquals(other) && 
                 isSuspended == other.isSuspended;
     }
 

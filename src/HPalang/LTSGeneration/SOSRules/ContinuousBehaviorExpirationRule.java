@@ -38,7 +38,7 @@ public class ContinuousBehaviorExpirationRule extends PhysicalActorLevelRule
     protected void ApplyToActorState(PhysicalActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
-        PhysicalActorState newActorState = newGlobalState.ContinuousState().FindActorState(actorState.Actor());
+        PhysicalActorState newActorState = newGlobalState.ContinuousState().FindActorState(actorState.PActor());
         
         Mode mode = newActorState.Mode();
         

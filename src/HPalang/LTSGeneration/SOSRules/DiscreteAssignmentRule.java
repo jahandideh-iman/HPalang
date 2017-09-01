@@ -15,7 +15,7 @@ import HPalang.LTSGeneration.RunTimeStates.ValuationState;
  *
  * @author Iman Jahandideh
  */
-public class DiscreteAssignmentRule extends StatementRule<DiscreteAssignmentStatement>
+public class DiscreteAssignmentRule extends SoftwareStatementRule<DiscreteAssignmentStatement>
 {
 
     @Override

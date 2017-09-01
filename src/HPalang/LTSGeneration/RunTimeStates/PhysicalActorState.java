@@ -13,25 +13,25 @@ import HPalang.Core.PhysicalActor;
  *
  * @author Iman Jahandideh
  */
-public class PhysicalActorState extends  CompositeStateT<PhysicalActorState>
+public class PhysicalActorState extends ActorState<PhysicalActorState>
 {
-    private final PhysicalActor actor;
+    
     private Mode mode = Mode.None();
     
     public PhysicalActorState(PhysicalActor actor)
     {
-        this.actor = actor;
+       super(actor);
     }
     
     @Override
     protected PhysicalActorState NewInstance()
     {
-        return new PhysicalActorState(actor);
+        return new PhysicalActorState(PActor());
     }
 
-    public PhysicalActor Actor()
+    public PhysicalActor PActor()
     {
-        return actor;
+        return (PhysicalActor) Actor();
     }
     
     public void SetMode(Mode mode)
@@ -54,14 +54,8 @@ public class PhysicalActorState extends  CompositeStateT<PhysicalActorState>
     @Override
     protected boolean DataEquals(PhysicalActorState other)
     {
-        return this.actor.equals(other.actor) &&
+        return  super.DataEquals(other) &&
                 this.mode.equals(other.mode);
     }
-
-    public ExecutionQueueState ExecutionQueueState()
-    {
-        return FindSubState(ExecutionQueueState.class);
-    }   
-
 
 }

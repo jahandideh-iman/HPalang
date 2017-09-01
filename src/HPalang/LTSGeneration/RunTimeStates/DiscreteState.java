@@ -58,7 +58,7 @@ public class DiscreteState extends CompositeStateT<DiscreteState>
     public SoftwareActorState FindActorState(SoftwareActor actor)
     {
         for(SoftwareActorState state : softwareActorStatesCache)
-            if(state.Actor() == actor)
+            if(state.SActor() == actor)
                 return state;
         return null;
     }    

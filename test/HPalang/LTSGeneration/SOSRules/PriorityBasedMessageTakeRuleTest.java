@@ -61,7 +61,7 @@ public class PriorityBasedMessageTakeRuleTest extends SOSRuleTestFixture
     private GlobalRunTimeState ExpectedGlobalStateWhenMessageIsTaken(GlobalRunTimeState originalState, SoftwareActorState senderState , Message message)
     {
         GlobalRunTimeState expectedGlobalState = originalState.DeepCopy();
-        SoftwareActorState expectedActorState = expectedGlobalState.DiscreteState().FindActorState(senderState.Actor());
+        SoftwareActorState expectedActorState = expectedGlobalState.DiscreteState().FindActorState(senderState.SActor());
         MessagePacket relatedPacket =  FindFirstPacketForMessage(expectedActorState.MessageQueueState().Messages(),message);
         expectedActorState.MessageQueueState().Messages().Remove(relatedPacket);
         
@@ -89,8 +89,8 @@ public class PriorityBasedMessageTakeRuleTest extends SOSRuleTestFixture
         for(Message message : messages)
         {
         MessagePacket packet = new MessagePacket(
-                actorState.Actor(),
-                actorState.Actor(),
+                actorState.SActor(),
+                actorState.SActor(),
                 message, 
                 new MessageArguments());
         

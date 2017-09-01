@@ -18,7 +18,7 @@ import HPalang.LTSGeneration.TransitionCollector;
  *
  * @author Iman Jahandideh
  */
-public class MessageDropRule extends ActorLevelRule
+public class MessageDropRule extends SoftwareActorLevelRule
 {
      @Override
     protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
@@ -39,7 +39,7 @@ public class MessageDropRule extends ActorLevelRule
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
                
-        SoftwareActorState senderState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
+        SoftwareActorState senderState = newGlobalState.DiscreteState().FindActorState(actorState.SActor());
         
         senderState.FindSubState(ExecutionQueueState.class).Statements().Dequeue();
         

@@ -28,7 +28,7 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
-public abstract class MessageTakeRule extends ActorLevelRule
+public abstract class MessageTakeRule extends SoftwareActorLevelRule
 {
     protected final TierTwoLTSGeneratorHanlder tierTwoHanlder;
     
@@ -61,11 +61,11 @@ public abstract class MessageTakeRule extends ActorLevelRule
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
         
-        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
+        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.SActor());
         
         newActorState.ExecutionQueueState().Statements().Enqueue(DequeuMessage(newActorState).GetMessageBody());
         
-        List<Trace> traces = tierTwoHanlder.FindTracesWhereExecutedActorStatementsAreExecuted(actorState.Actor(), newGlobalState);
+        List<Trace> traces = tierTwoHanlder.FindTracesWhereExecutedActorStatementsAreExecuted(actorState.SActor(), newGlobalState);
 
         for(Trace trace : traces)
         {

@@ -42,7 +42,7 @@ public class ValuationMapTest
         valuation.Add(var);
         valuation.Set(var, 5);
         
-        assertThat(valuation.Get(var), equalTo(5));
+        assertThat(valuation.ValueFor(var), equalTo(5));
     }
     
     @Test

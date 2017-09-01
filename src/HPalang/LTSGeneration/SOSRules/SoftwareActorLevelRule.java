@@ -5,18 +5,20 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import HPalang.LTSGeneration.RunTimeStates.ActorState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.SOSRule;
+import HPalang.LTSGeneration.LTSGenerator;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.Transition;
 import HPalang.LTSGeneration.TransitionCollector;
+import java.util.Collection;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public abstract class ActorLevelRule  implements SOSRule
+public abstract class SoftwareActorLevelRule implements SOSRule
 {
 
     @Override
@@ -29,8 +31,8 @@ public abstract class ActorLevelRule  implements SOSRule
         }
     }
     
-    protected abstract boolean IsRuleSatisfied(ActorState actorState, GlobalRunTimeState globalState);
+    protected abstract boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState);
 
-    protected abstract void ApplyToActorState(ActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector);
+    protected abstract void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector);
     
 }

@@ -19,7 +19,7 @@ import HPalang.Core.Variables.RealVariable;
  *
  * @author Iman Jahandideh
  */
-public class DelayStatementRule extends StatementRule<DelayStatement>
+public class DelayStatementRule extends SoftwareStatementRule<DelayStatement>
 {
     @Override
     protected Class<DelayStatement> StatementType()

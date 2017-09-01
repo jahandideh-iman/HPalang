@@ -21,7 +21,7 @@ import HPalang.Utilities.Queue;
  *
  * @author Iman Jahandideh
  */
-public class PriorityBasedMessageTakeRule extends ActorLevelRule
+public class PriorityBasedMessageTakeRule extends SoftwareActorLevelRule
 {
 
     @Override
@@ -36,7 +36,7 @@ public class PriorityBasedMessageTakeRule extends ActorLevelRule
     protected void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
-        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
+        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.SActor());
         
         MessagePacket packet = FindAndRemoveHighestPriorityMessage(newActorState.MessageQueueState().Messages());
         Message message = packet.Message();

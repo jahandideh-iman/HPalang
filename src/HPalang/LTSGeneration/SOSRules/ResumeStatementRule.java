@@ -12,7 +12,7 @@ import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
  *
  * @author Iman Jahandideh
  */
-public class ResumeStatementRule extends StatementRule<ResumeStatement>
+public class ResumeStatementRule extends SoftwareStatementRule<ResumeStatement>
 {
     @Override
     protected Class<ResumeStatement> StatementType()

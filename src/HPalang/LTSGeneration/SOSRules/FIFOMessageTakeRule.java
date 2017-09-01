@@ -22,7 +22,7 @@ import HPalang.Utilities.Queue;
  *
  * @author Iman Jahandideh
  */
-public class FIFOMessageTakeRule extends ActorLevelRule
+public class FIFOMessageTakeRule extends SoftwareActorLevelRule
 {
 
     @Override
@@ -37,7 +37,7 @@ public class FIFOMessageTakeRule extends ActorLevelRule
     protected void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
-        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.Actor());
+        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.SActor());
         
         MessagePacket packet = FindAndRemoveAppropriateMessagePacket(newActorState.MessageQueueState().Messages());
         

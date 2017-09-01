@@ -42,8 +42,8 @@ public class GlobalRunTimeStateTest
         
         GlobalRunTimeState copy = (GlobalRunTimeState)orignal.DeepCopy();
         
-        SoftwareActor actor1 = orignal.DiscreteState().ActorStates().iterator().next().Actor();
-        SoftwareActor actor2 = orignal.DiscreteState().ActorStates().iterator().next().Actor();
+        SoftwareActor actor1 = orignal.DiscreteState().ActorStates().iterator().next().SActor();
+        SoftwareActor actor2 = orignal.DiscreteState().ActorStates().iterator().next().SActor();
         
         assertThat(copy.DiscreteState().FindActorState(actor1),not(sameInstance(orignal.DiscreteState().FindActorState(actor1))));
         assertThat(copy.DiscreteState().FindActorState(actor1),equalTo(orignal.DiscreteState().FindActorState(actor1)));

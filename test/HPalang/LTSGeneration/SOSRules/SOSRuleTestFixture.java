@@ -9,6 +9,7 @@ import HPalang.Core.PhysicalActor;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Statement;
 import HPalang.LTSGeneration.LTSGenerator;
+import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
@@ -40,5 +41,10 @@ public class SOSRuleTestFixture
     public GlobalRunTimeState CollectedGlobalState()
     {
         return transitionCollectorChecker.collectedGlobalState;
+    }
+    
+    public Label CollectedLabel()
+    {
+        return transitionCollectorChecker.collectedLabel;
     }
 }

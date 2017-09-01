@@ -20,9 +20,9 @@ public class SimpleValuationContainer extends Equalitable<SimpleValuationContain
 {
     private final Map<IntegerVariable,Integer> values = new HashMap<>();
     
-    public void Set(IntegerVariable var, int value)
+    public void Set(Variable var, int value)
     {
-        values.put(var, value);
+        values.put((IntegerVariable)var, value);
     }
     
     @Override
@@ -48,7 +48,7 @@ public class SimpleValuationContainer extends Equalitable<SimpleValuationContain
         return values.containsKey(var);
     }
     
-    public int Get(IntegerVariable var)
+    public int ValueFor(Variable var)
     {
         return values.get(var);
     }

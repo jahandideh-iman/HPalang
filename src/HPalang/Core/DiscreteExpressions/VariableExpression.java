@@ -28,7 +28,7 @@ public class VariableExpression extends DiscreteExpressionT<VariableExpression>
     public int Evaluate(ValuationContainer valuations)
     {
         assert (IsComputable(valuations));
-        return valuations.Get((IntegerVariable)variable);
+        return valuations.ValueFor((IntegerVariable)variable);
     }
     
     @Override

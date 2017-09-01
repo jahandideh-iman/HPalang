@@ -17,8 +17,8 @@ public interface ValuationContainer extends DeepClonable<ValuationContainer>, It
     public void Add(Variable var);
     public void Add(Map<IntegerVariable,Integer> values);
     public void Add(ValuationContainer other);
-    public void Set(IntegerVariable var, int value);
-    public int Get(IntegerVariable var);
+    public void Set(Variable var, int value);
+    public int ValueFor(Variable var);
     public boolean Has(Variable var);
     public void Remove(Variable var);
 }

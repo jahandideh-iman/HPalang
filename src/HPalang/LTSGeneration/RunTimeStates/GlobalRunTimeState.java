@@ -5,6 +5,8 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.Actor;
+import HPalang.Core.PhysicalActor;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.CompositeStateT;
 import HPalang.Core.Statements.SendStatement;
@@ -40,6 +42,16 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
     public VariablePoolState VariablePoolState()
     {
         return FindSubState(VariablePoolState.class);
+    }
+    
+    public ActorState FindActorState(Actor actor)
+    {
+        ActorState state = null;
+        state = DiscreteState().FindActorState((SoftwareActor)actor);
+        if(state == null)
+            state = ContinuousState().FindActorState((PhysicalActor)actor);
+        
+        return state;
     }
 
     public void AddSendStatement(SendStatement sendStatement)
