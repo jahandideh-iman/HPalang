@@ -24,7 +24,7 @@ public class IfStatementRule extends SoftwareStatementRule<IfStatement>
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState actorState, IfStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, IfStatement statement, HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState newGlobalState)
     {
         if(statement.Expression().Evaluate(actorState.FindSubState(ValuationState.class).Valuation()) > 0)
             actorState.FindSubState(ExecutionQueueState.class).Statements().Push(statement.TrueStatements());

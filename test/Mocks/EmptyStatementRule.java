@@ -22,7 +22,7 @@ public class EmptyStatementRule extends SoftwareStatementRule<EmptyStatement>
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState actorState, EmptyStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, EmptyStatement statement, HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState newGlobalState)
     {
         
     }

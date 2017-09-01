@@ -23,7 +23,7 @@ public class MessageTeardownStatementRule extends SoftwareStatementRule<MessageT
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState actorState, MessageTeardownStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, MessageTeardownStatement statement, HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState newGlobalState)
     {
         for(VariableParameter parameter : statement.ParametersToRemove().AsSet())
             actorState.ValuationState().Valuation().Remove(parameter.Variable());

@@ -14,6 +14,8 @@ import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.ResumeStatement;
 import HPalang.Core.Statement;
 import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.RunTimeStates.Event.ResumeSoftwareActorAction;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 
 /**
  *
@@ -28,26 +30,12 @@ public class DelayStatementRule extends SoftwareStatementRule<DelayStatement>
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState actorState, DelayStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, DelayStatement statement, GlobalRunTimeState newGlobalState)
     {
-//        ContinuousVariable delayVar = actorState.Actor().GetDelayVariable();
-//        ContinuousBehavior behavior = CreateDelayBehavior(actorState.Actor(), statement.GetDelay(), delayVar);
-////        actorState.SuspendedStatements().Enqueue(actorState.StatementQueue());
-////        actorState.StatementQueue().Clear();
-//        actorState.SetSuspended(true);
-//        actorState.ContinuousBehaviors().Add(behavior);
+        newGlobalState.EventsState().RegisterEvent(
+                statement.GetDelay(),
+                new ResumeSoftwareActorAction(actorState.SActor()));
     }
     
-    @Override
-    protected SoftwareLabel CreateTransitionLabel(SoftwareActorState actorState, DelayStatement statement)
-    {
-        //return new SoftwareLabel(Reset.ResetsFrom(new Reset(actorState.Actor().GetDelayVariable(), new ConstantContinuousExpression(0f))));
-        return  null;
-    }
     
-    private ContinuousBehavior CreateDelayBehavior(SoftwareActor actor,float delay, RealVariable delayVar)
-    {
-        DifferentialEquation equation = new DifferentialEquation(delayVar, "1");
-        return new ContinuousBehavior(delayVar+"<="+delay,equation,delayVar+"=="+delay,Statement.StatementsFrom(new ResumeStatement()));
-    }
 }

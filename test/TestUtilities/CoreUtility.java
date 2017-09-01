@@ -119,6 +119,11 @@ public class CoreUtility
         actorState.ExecutionQueueState().Statements().Clear();
     }
 
+    static public void ClearStatementsFor(SoftwareActor actor, GlobalRunTimeState globalState)
+    {
+        globalState.DiscreteState().FindActorState(actor).ExecutionQueueState().Statements().Clear();
+    }
+    
     static public  void DequeueOneStatemenet(SoftwareActorState actorState)
     {
         actorState.ExecutionQueueState().Statements().Dequeue();

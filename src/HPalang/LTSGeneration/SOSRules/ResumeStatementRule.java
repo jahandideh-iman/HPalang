@@ -21,7 +21,7 @@ public class ResumeStatementRule extends SoftwareStatementRule<ResumeStatement>
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState actorState, ResumeStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, ResumeStatement statement, HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState newGlobalState)
     {
         actorState.SetSuspended(false);
         //actorState.FindSubState(ExecutionQueueState.class).Statements().Enqueue(actorState.SuspendedStatements());

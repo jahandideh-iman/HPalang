@@ -29,6 +29,7 @@ import java.util.Collections;
  */
 public class SOSRuleTestFixture
 {
+    @Deprecated //Use transitionCollectorChecker
     protected LTSGenerator ltsGenerator = new LTSGenerator();
     protected LabeledTransitionSystem generatedLTS;
     protected GlobalRunTimeState globalState = CreateGlobalState();

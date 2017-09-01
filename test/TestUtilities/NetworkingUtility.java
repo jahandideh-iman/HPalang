@@ -14,6 +14,9 @@ import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.IntegerVariable;
+import HPalang.LTSGeneration.RunTimeStates.Event.Action;
+import HPalang.LTSGeneration.RunTimeStates.Event.Event;
+import HPalang.LTSGeneration.RunTimeStates.Event.SendPacketAndResetNetworkAction;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
@@ -119,6 +122,11 @@ public class NetworkingUtility
             MessagePacket packet = EmptySelfMessagePacketFor(receiverState.SActor());
             PutMessagePacketInActor(packet, receiverState);
         }
+    }
+    
+    static public Event CreateEventFor(float delay, Action action, GlobalRunTimeState globalState)
+    {
+        return globalState.DeepCopy().EventsState().RegisterEvent(delay, action);
     }
     
 }

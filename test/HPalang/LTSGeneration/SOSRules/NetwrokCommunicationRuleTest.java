@@ -98,7 +98,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
         
         EventsState generatedEventState = CollectedGlobalState().EventsState();
         
-        Event expectedEvent = CreateEventFor(highPriorityDelay, highPriorityPacket, globalState);
+        Event expectedEvent = CreateEventFor(highPriorityDelay, NetworkAction(highPriorityPacket), globalState);
         
         assertThat(generatedEventState.Events(), hasItem(expectedEvent));
     }
@@ -126,8 +126,9 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
         transitionCollectorChecker.ExpectTransition(new NetworkLabel(), nextGlobalState);
     }
     
-    private Event CreateEventFor(float delay, MessagePacket packet, GlobalRunTimeState globalState)
+    
+    public SendPacketAndResetNetworkAction NetworkAction(MessagePacket packet)
     {
-        return globalState.DeepCopy().EventsState().RegisterEvent(delay, new SendPacketAndResetNetworkAction(packet));
+        return new SendPacketAndResetNetworkAction(packet);
     }
 }

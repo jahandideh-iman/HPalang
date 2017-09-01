@@ -25,7 +25,7 @@ public class DiscreteAssignmentRule extends SoftwareStatementRule<DiscreteAssign
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState actorState, DiscreteAssignmentStatement statement)
+    protected void ApplyStatement(SoftwareActorState actorState, DiscreteAssignmentStatement statement, HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState newGlobalState)
     {
         actorState.FindSubState(ValuationState.class).Valuation().
                 Set((IntegerVariable )statement.Variable(), statement.Expression().Evaluate(actorState.ValuationState().Valuation()));
