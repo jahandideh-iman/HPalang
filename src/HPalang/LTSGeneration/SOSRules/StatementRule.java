@@ -45,12 +45,12 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
         newActorState.ExecutionQueueState().Statements().Dequeue();
         ApplyStatement(newActorState, statement);
         
-        SoftwareLabel label = CreateTransitionLabel(actorState, statement);
+        SoftwareLabel label = CreateTransitionLabel(newActorState, statement);
         
         collector.AddTransition(label, newGlobalState);
     }
     
-    protected abstract void ApplyStatement(ActorState actorState, T statement);
+    protected abstract void ApplyStatement(ActorState newActorState, T statement);
     protected SoftwareLabel CreateTransitionLabel(ActorState actorState, T statement)
     {
         return new SoftwareLabel();

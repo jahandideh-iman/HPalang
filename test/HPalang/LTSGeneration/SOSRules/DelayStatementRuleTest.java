@@ -34,7 +34,7 @@ public class DelayStatementRuleTest extends SOSRuleTestFixture
     }
     
     @Test
-    public void AddsTheDelayToEventsState()
+    public void SuspendsTheActorAndAddsTheDelayToEventsState()
     {
         SoftwareActorState actorState = CreateSoftwareActorState("actor");
         
@@ -50,6 +50,7 @@ public class DelayStatementRuleTest extends SOSRuleTestFixture
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
         ClearStatementsFor(actorState.SActor(), expectedGlobalState);
         RegisterEvent(delayDuration, DelayAction(actorState), expectedGlobalState);
+        FindActorState(actorState.SActor(), expectedGlobalState).SetSuspended(true);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
     }

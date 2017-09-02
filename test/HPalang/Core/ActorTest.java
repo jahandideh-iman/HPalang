@@ -38,7 +38,7 @@ public class ActorTest
         
         sender.SetNetworkDelay(receiver, message, 2f);
         
-        assertThat(sender.NetworkDelayFor(receiver, message), equalTo(2f));
+        assertThat(sender.NetworkDelayFor(message, receiver), equalTo(2f));
     }
     
 }

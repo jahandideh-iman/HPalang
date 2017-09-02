@@ -30,11 +30,11 @@ public class DelayStatementRule extends SoftwareStatementRule<DelayStatement>
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState actorState, DelayStatement statement, GlobalRunTimeState newGlobalState)
+    protected void ApplyStatement(SoftwareActorState newActorState, DelayStatement statement, GlobalRunTimeState newGlobalState)
     {
-        newGlobalState.EventsState().RegisterEvent(
-                statement.GetDelay(),
-                new ResumeSoftwareActorAction(actorState.SActor()));
+        newActorState.SetSuspended(true);
+        newGlobalState.EventsState().RegisterEvent(statement.GetDelay(),
+                new ResumeSoftwareActorAction(newActorState.SActor()));
     }
     
     

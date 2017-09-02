@@ -8,19 +8,12 @@ package HPalang;
 import HPalang.Convertors.HybridAutomatonToDMEConvertor;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Convertors.LTSToXMLConvertor;
-import HPalang.Core.SoftwareActor;
-import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DifferentialEquation;
 import HPalang.Core.ModelDefinition;
-import HPalang.Core.MainBlock;
-import HPalang.Core.MessageHandler;
 import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.HybridAutomataGeneration.SOSRules.ConversionRule;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.Core.Messages.NormalMessage;
 import HPalang.LTSGeneration.LTSUtility;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorExpirationRule;
 import HPalang.LTSGeneration.SOSRules.DelayStatementRule;
@@ -28,9 +21,6 @@ import HPalang.LTSGeneration.SOSRules.MessageDropRule;
 import HPalang.LTSGeneration.SOSRules.MessageSendRule;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Transition;
-import HPalang.Core.Statements.DelayStatement;
-import HPalang.Core.Statements.SendStatement;
-import HPalang.Core.Statement;
 import HPalang.Core.Variable;
 import HPalang.LTSGeneration.SOSRules.DiscreteAssignmentRule;
 import HPalang.LTSGeneration.SOSRules.IfStatementRule;
@@ -39,6 +29,10 @@ import HPalang.LTSGeneration.SOSRules.ResumeStatementRule;
 import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.Labels.Reset;
+import HPalang.LTSGeneration.SOSRules.AssignmentStatementRule;
+import HPalang.LTSGeneration.SOSRules.EventExpirationRule;
+import HPalang.LTSGeneration.SOSRules.MessageTeardownStatementRule;
+import HPalang.LTSGeneration.SOSRules.NetwrokCommunicationRule;
 import HPalang.Parser.Parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -72,7 +66,7 @@ public class Main {
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
-        LTSGenerator tierOneLTSGenerator = CreateTierOneLTSGenrator(CreateTierTwoLTSGenrator());
+        LTSGenerator tierOneLTSGenerator = CreateTierOneLTSGenrator();
         
         HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
         hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
@@ -122,13 +116,24 @@ public class Main {
         return genetator;
     }
     
-    private static LTSGenerator CreateTierOneLTSGenrator(LTSGenerator tierTwoGenerator)
+    private static LTSGenerator CreateTierOneLTSGenrator()
     {
         LTSGenerator genetator = new LTSGenerator();
         
+        // Software
         genetator.AddSOSRule(new FIFOMessageTakeRule());
+        genetator.AddSOSRule(new MessageTeardownStatementRule());
+        genetator.AddSOSRule(new DelayStatementRule());
+        genetator.AddSOSRule(new AssignmentStatementRule());
+        genetator.AddSOSRule(new IfStatementRule());
+        genetator.AddSOSRule(new MessageSendRule());
+
+        // Network 
+        genetator.AddSOSRule(new NetwrokCommunicationRule());
+        
+        // Phyiscal
         genetator.AddSOSRule(new ContinuousBehaviorExpirationRule());
-        //genetator.AddSOSRule(new ResumeStatementRule(tierTwoGenerator));
+        genetator.AddSOSRule(new EventExpirationRule());
         
         return genetator;
     }

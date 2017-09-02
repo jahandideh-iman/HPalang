@@ -42,14 +42,15 @@ public class FIFOMessageTakeRule extends SoftwareActorLevelRule
         MessagePacket packet = FindAndRemoveAppropriateMessagePacket(newActorState.MessageQueueState().Messages());
         
         Message message = packet.Message();
+        
+        for(VariableParameter parameter : message.Parameters().AsSet())
+            newActorState.ValuationState().Valuation().Add(parameter.Variable());
+        
         for(VariableArgument argument : packet.Arguments().AsSet())
             newActorState.ExecutionQueueState().Statements().Enqueue(
                     new AssignmentStatement(
                             argument.Parameter().Variable(), 
                             argument.Value()));
-        
-        for(VariableParameter parameter : message.Parameters().AsSet())
-            newActorState.ValuationState().Valuation().Add(parameter.Variable());
         
         newActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
         newActorState.ExecutionQueueState().Statements().Enqueue(new MessageTeardownStatement(message.Parameters()));

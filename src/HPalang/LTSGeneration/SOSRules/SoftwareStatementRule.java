@@ -51,7 +51,7 @@ public abstract class SoftwareStatementRule<T extends Statement> extends Softwar
         collector.AddTransition(label, newGlobalState);
     }
     
-    protected abstract void ApplyStatement(SoftwareActorState actorState, T statement, GlobalRunTimeState newGlobalState);
+    protected abstract void ApplyStatement(SoftwareActorState newActorState, T statement, GlobalRunTimeState newGlobalState);
     protected SoftwareLabel CreateTransitionLabel(SoftwareActorState actorState, T statement)
     {
         return new SoftwareLabel();

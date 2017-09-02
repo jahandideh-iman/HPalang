@@ -26,11 +26,11 @@ public class AssignmentStatementRule extends StatementRule<AssignmentStatement>
     }
 
     @Override
-    protected void ApplyStatement(ActorState actorState, AssignmentStatement statement)
+    protected void ApplyStatement(ActorState newActorState, AssignmentStatement statement)
     {
         if(statement.Expression().IsComputable(null))
         {
-            ValuationContainer valuation = FindValuation(actorState);
+            ValuationContainer valuation = FindValuation(newActorState);
             
             valuation.Set(statement.Variable(), statement.Expression().Evaluate(valuation));
         }

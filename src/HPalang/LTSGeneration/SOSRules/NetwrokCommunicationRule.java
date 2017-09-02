@@ -35,7 +35,7 @@ public class NetwrokCommunicationRule implements SOSRule
             return;
         
         MessagePacket packet = FindHighestPriority(networkState.Buffer());
-        float networkDelay = packet.Sender().NetworkDelayFor(packet.Receiver(), packet.Message());
+        float networkDelay = packet.Sender().NetworkDelayFor(packet.Message(), packet.Receiver());
         networkState.SetIdle(false);
         newGlobalState.EventsState().RegisterEvent(networkDelay, new SendPacketAndResetNetworkAction(packet));
         networkState.Debuffer(packet);
@@ -46,7 +46,7 @@ public class NetwrokCommunicationRule implements SOSRule
     private MessagePacket FindHighestPriority(Collection<MessagePacket> buffer)
     {
         MessagePacket maxPacket = buffer.iterator().next();
-        for( MessagePacket packet : buffer)
+        for(MessagePacket packet : buffer)
         {
             if(packet.Message().Priority() > maxPacket.Message().Priority())
                 maxPacket = packet;

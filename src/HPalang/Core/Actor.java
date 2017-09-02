@@ -62,7 +62,7 @@ public class Actor
         networkDelays.put(pair, delay);
     }
     
-    public float NetworkDelayFor(Actor receiver, Message message)
+    public float NetworkDelayFor(Message message, Actor receiver)
     {
         Pair<Actor, Message> pair = new Pair<>(receiver,message);
         return networkDelays.get(pair);
