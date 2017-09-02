@@ -16,11 +16,11 @@ import HPalang.Core.ValuationContainer;
  */
 public class BinaryExpression extends DiscreteExpressionT<BinaryExpression>
 {  
-    private final DiscreteExpression operand1;
+    private final Expression operand1;
     private final BinaryOperator operator;
-    private final DiscreteExpression operand2;
+    private final Expression operand2;
 
-    public BinaryExpression(DiscreteExpression operand1, BinaryOperator operator,DiscreteExpression operand2)
+    public BinaryExpression(Expression operand1, BinaryOperator operator,Expression operand2)
     {
         this.operand1 = operand1;
         this.operator = operator;

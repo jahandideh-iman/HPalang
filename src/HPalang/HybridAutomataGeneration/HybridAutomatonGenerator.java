@@ -6,7 +6,7 @@
 package HPalang.HybridAutomataGeneration;
 
 import HPalang.HybridAutomataGeneration.SOSRules.TransitionSOSRule;
-import HPalang.LTSGeneration.GuardedlLabel;
+import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;

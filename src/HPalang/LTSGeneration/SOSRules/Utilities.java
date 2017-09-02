@@ -5,10 +5,18 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
+import HPalang.Core.Expression;
+import HPalang.Core.SoftwareActor;
+import HPalang.Core.Statement;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.Transition;
 import java.util.Collection;
+import java.util.Queue;
 
 /**
  *
@@ -39,5 +47,25 @@ public class Utilities
             if(tr.GetLabel() instanceof NetworkLabel)
                 return false;
         return true;
+    }
+    
+    static public void EnqueueStatements(Queue<Statement> statements, SoftwareActor actor, GlobalRunTimeState globalState)
+    {
+        FindActorState(actor, globalState).ExecutionQueueState().Statements().Enqueue(statements);
+    }
+    
+    static public SoftwareActorState FindActorState(SoftwareActor actor, GlobalRunTimeState globalState )
+    {
+        return globalState.DiscreteState().FindActorState(actor);
+    }
+    
+    static public BinaryExpression EqualityExpression(Expression oprand1, Expression oprand2)
+    {
+        return new BinaryExpression(oprand1, new EqualityOperator(), oprand2);
+    }
+    
+    static public Expression PartivalValuation(Expression expression, SoftwareActor actor, GlobalRunTimeState globalState)
+    {
+        return expression.PartiallyEvaluate(FindActorState(actor, globalState).ValuationState().Valuation());
     }
 }

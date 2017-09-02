@@ -6,6 +6,7 @@
 package HPalang.Core.DiscreteExpressions.BinaryOperators;
 
 import HPalang.Core.DiscreteExpression;
+import HPalang.Core.Expression;
 import HPalang.Core.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
@@ -17,7 +18,7 @@ public class AddOperator extends BinaryOperatorT<AddOperator>
 {
 
     @Override
-    public int Evaluate(DiscreteExpression operand1, DiscreteExpression operand2, ValuationContainer valuations)
+    public int Evaluate(Expression operand1, Expression operand2, ValuationContainer valuations)
     {
         return operand1.Evaluate(valuations) + operand2.Evaluate(valuations);
     }

@@ -5,8 +5,10 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.Core.Equalitable;
+import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import java.util.LinkedHashSet;
 import java.util.LinkedList;
@@ -19,15 +21,28 @@ import java.util.Set;
  */
 public abstract class Label<T extends Label> extends Equalitable<T> 
 {
-    protected Set<Reset> resets = new LinkedHashSet<>();
+    protected final Set<Reset> resets = new LinkedHashSet<>();
+    protected final Guard  guard;
     
     public Label()
     {
+        guard = null;
+    }
+    
+    public Label(Guard guard)
+    {
+        this.guard = guard;
+    }
+    
+    public Label(Guard guard,Set<Reset> resets)
+    {
+        this.guard = guard;
+        this.resets.addAll(resets);
     }
     
     public Label(Set<Reset> resets)
     {
-        this.resets.addAll(resets);
+        this(null, resets);
     }
     
     public Set<Reset> GetResets()
@@ -39,6 +54,18 @@ public abstract class Label<T extends Label> extends Equalitable<T>
     @Override
     protected boolean InternalEquals(T other)
     {
-        return other.GetResets().equals(this.resets);
+        return this.resets.equals(other.GetResets())
+                && GuardEqual(other.guard);
+    }
+    
+    
+    private boolean GuardEqual(Guard otherGuard)
+    {
+        if(guard == null && otherGuard == null)
+            return true;
+        else if(guard == null || otherGuard == null) // NOTE: "||" works as xor in this context.
+            return false;
+                    
+        return guard.equals(otherGuard);
     }
 }

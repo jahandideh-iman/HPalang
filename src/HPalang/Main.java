@@ -36,7 +36,7 @@ import HPalang.LTSGeneration.SOSRules.DiscreteAssignmentRule;
 import HPalang.LTSGeneration.SOSRules.IfStatementRule;
 import HPalang.LTSGeneration.SOSRules.FIFOMessageTakeRule;
 import HPalang.LTSGeneration.SOSRules.ResumeStatementRule;
-import HPalang.LTSGeneration.GuardedlLabel;
+import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.Parser.Parser;

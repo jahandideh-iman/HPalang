@@ -6,7 +6,7 @@
 package HPalang.HybridAutomataGeneration;
 
 import HPalang.Core.DifferentialEquation;
-import HPalang.LTSGeneration.GuardedlLabel;
+import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;

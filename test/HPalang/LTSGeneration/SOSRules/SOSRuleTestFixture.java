@@ -41,11 +41,11 @@ public class SOSRuleTestFixture
 
     public GlobalRunTimeState CollectedGlobalState()
     {
-        return transitionCollectorChecker.collectedGlobalState;
+        return transitionCollectorChecker.CollectedGlobalStateAt(0);
     }
     
     public Label CollectedLabel()
     {
-        return transitionCollectorChecker.collectedLabel;
+        return transitionCollectorChecker.CollectedLabelAt(0);
     }
 }

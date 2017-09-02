@@ -8,6 +8,7 @@ package HPalang.Core.DiscreteExpressions.BinaryOperators;
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
+import HPalang.Core.Expression;
 
 /**
  *
@@ -16,7 +17,7 @@ import HPalang.Core.ValuationContainer;
 public class LogicalOrOperator extends BinaryOperatorT<LogicalOrOperator>
 {
     @Override
-    public int Evaluate(DiscreteExpression operand1, DiscreteExpression operand2, ValuationContainer valuations)
+    public int Evaluate(Expression operand1, Expression operand2, ValuationContainer valuations)
     {
         return ((operand1.Evaluate(valuations)>0) || (operand2.Evaluate(valuations)>0))? 1:0;
     } 

@@ -10,6 +10,7 @@ import Builders.GlobalRunTimeStateBuilder;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.DifferentialEquation;
+import HPalang.Core.Expression;
 import HPalang.Core.Mode;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
@@ -26,6 +27,7 @@ import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
 import Mocks.EmptyStatement;
 import java.util.Collections;
+import java.util.Queue;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
@@ -128,10 +130,20 @@ public class CoreUtility
     {
         actorState.ExecutionQueueState().Statements().Dequeue();
     }
+    
+    static public  void DequeueOneStatemenet(SoftwareActor actor, GlobalRunTimeState globalState)
+    {
+        FindActorState(actor, globalState).ExecutionQueueState().Statements().Dequeue();
+    }
 
     static public void EnqueueStatement(Statement statement, SoftwareActorState actorState)
     {
         actorState.ExecutionQueueState().Statements().Enqueue(statement);
+    }
+    
+    static public void EnqueueStatements(Queue<Statement> statements, SoftwareActor actor, GlobalRunTimeState globalState)
+    {
+        FindActorState(actor, globalState).ExecutionQueueState().Statements().Enqueue(statements);
     }
     
     static public void ResetEventStatePool(GlobalRunTimeState globalState, int capacity)
@@ -158,4 +170,6 @@ public class CoreUtility
     {
         globalState.DiscreteState().AddSoftwareActorState(actorState);
     }
+    
+
 }

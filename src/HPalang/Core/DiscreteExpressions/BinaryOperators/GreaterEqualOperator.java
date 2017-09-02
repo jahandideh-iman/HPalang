@@ -8,6 +8,7 @@ package HPalang.Core.DiscreteExpressions.BinaryOperators;
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
+import HPalang.Core.Expression;
 
 /**
  *
@@ -17,7 +18,7 @@ public class GreaterEqualOperator extends BinaryOperatorT<GreaterEqualOperator>
 {
 
     @Override
-    public int Evaluate(DiscreteExpression operand1, DiscreteExpression operand2, ValuationContainer valuations)
+    public int Evaluate(Expression operand1, Expression operand2, ValuationContainer valuations)
     {
         return (operand1.Evaluate(valuations) >= operand2.Evaluate(valuations)) ? 1 : 0;
     }

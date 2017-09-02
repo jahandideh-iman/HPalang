@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package HPalang.LTSGeneration.Labels;
 
+import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.Labels.Reset;
 import java.util.Set;
 
@@ -13,6 +14,7 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
+@Deprecated
 public class GuardedlLabel extends Label<GuardedlLabel>
 {
     private final String guard;

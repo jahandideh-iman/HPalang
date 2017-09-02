@@ -19,6 +19,11 @@ public class SoftwareLabel extends Label<SoftwareLabel>
         
     }
     
+    public SoftwareLabel(Guard guard) 
+    {
+        super(guard);
+    }
+    
     public SoftwareLabel(Set<Reset> resets) 
     {
         super(resets);

@@ -5,31 +5,69 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.FalseConst;
+import HPalang.Core.DiscreteExpressions.TrueConst;
+import HPalang.Core.Expression;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.Statements.IfStatement;
+import HPalang.Core.ValuationContainer;
+import HPalang.LTSGeneration.Labels.Guard;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
-import HPalang.LTSGeneration.RunTimeStates.ValuationState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.TransitionCollector;
+import static HPalang.LTSGeneration.SOSRules.Utilities.*;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class IfStatementRule extends SoftwareStatementRule<IfStatement>
+public class IfStatementRule extends SoftwareActorLevelRule
 {
-
     @Override
-    protected Class<IfStatement> StatementType()
+    protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
     {
-        return IfStatement.class;
+        return actorState.ExecutionQueueState().Statements().IsEmpty() == false
+                && actorState.ExecutionQueueState().Statements().Head().Is(IfStatement.class);
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState actorState, IfStatement statement, HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState newGlobalState)
+    protected void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
-        if(statement.Expression().Evaluate(actorState.FindSubState(ValuationState.class).Valuation()) > 0)
-            actorState.FindSubState(ExecutionQueueState.class).Statements().Push(statement.TrueStatements());
+        GlobalRunTimeState newGlobalState = globalState.DeepCopy();
+        SoftwareActorState newActorState = newGlobalState.DiscreteState().FindActorState(actorState.SActor());
+        SoftwareActor actor = actorState.SActor();
+        
+        IfStatement ifStatement = (IfStatement) newActorState.ExecutionQueueState().Statements().Dequeue();
+        if(ifStatement.Expression().IsComputable(null))
+        {
+            ValuationContainer valuations = actorState.ValuationState().Valuation();
+            
+            if(ifStatement.Expression().Evaluate(valuations) > 0)
+                newActorState.ExecutionQueueState().Statements().Push(ifStatement.TrueStatements());
+            else
+                newActorState.ExecutionQueueState().Statements().Push(ifStatement.FalseStatements());
+            
+            collector.AddTransition(new SoftwareLabel(), newGlobalState);
+        }
         else
-            actorState.FindSubState(ExecutionQueueState.class).Statements().Push(statement.FalseStatements());
+        {
+            Expression partialCondition = PartivalValuation(ifStatement.Expression(), actor, globalState);
+            GlobalRunTimeState truePathGlobalState = newGlobalState.DeepCopy();
+            EnqueueStatements(ifStatement.TrueStatements(), actor, truePathGlobalState);
+            
+            SoftwareLabel truePathLabel = new SoftwareLabel(new Guard(EqualityExpression(partialCondition, new TrueConst())));
+            collector.AddTransition(truePathLabel, truePathGlobalState);
+            
+            GlobalRunTimeState falsePathGlobalState = newGlobalState.DeepCopy();
+            EnqueueStatements(ifStatement.FalseStatements(), actor, falsePathGlobalState);
+            
+            SoftwareLabel falsePathLabel = new SoftwareLabel(new Guard(EqualityExpression(partialCondition, new FalseConst())));
+            collector.AddTransition( falsePathLabel, falsePathGlobalState);
+        }
+        
+       
     }
     
 }

@@ -5,7 +5,7 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.LTSGeneration.GuardedlLabel;
+import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import java.util.Objects;
 
 

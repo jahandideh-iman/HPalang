@@ -11,9 +11,6 @@ import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;
-import HPalang.LTSGeneration.SOSRule;
-import HPalang.LTSGeneration.StateInfo;
-import HPalang.LTSGeneration.TransitionCollector;
 
 /**
  *
@@ -42,9 +39,11 @@ public class AssignmentStatementRule extends StatementRule<AssignmentStatement>
     @Override
     protected SoftwareLabel CreateTransitionLabel(ActorState actorState, AssignmentStatement statement)
     {
+        ValuationContainer valuation = FindValuation(actorState);
+        
         if(statement.Expression().IsComputable(null) == false)
         {
-            ValuationContainer valuation = FindValuation(actorState);
+            
             return new SoftwareLabel(Reset.From(
                     new Reset(
                             statement.Variable(),
