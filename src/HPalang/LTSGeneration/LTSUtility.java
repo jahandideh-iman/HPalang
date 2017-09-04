@@ -18,7 +18,7 @@ import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
  */
 public class LTSUtility
 {
-    static public GlobalRunTimeState FromProgramDefinition(ModelDefinition program)
+    static public GlobalRunTimeState FromModelDefinition(ModelDefinition model)
     {
         GlobalRunTimeState globalState = new GlobalRunTimeState();
         
@@ -26,10 +26,10 @@ public class LTSUtility
         globalState.AddSubstate(discreteState);
         
         
-        for(SoftwareActor actor : program.GetActors())
+        for(SoftwareActor actor : model.GetActors())
             discreteState.AddSoftwareActorState(new SoftwareActorState(actor));
         
-        for(SendStatement send : program.GetInitialSends())
+        for(SendStatement send : model.GetInitialSends())
             globalState.AddSendStatement(send);
         
         

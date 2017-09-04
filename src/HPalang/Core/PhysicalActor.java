@@ -12,10 +12,8 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
-public class PhysicalActor extends Actor
+public class PhysicalActor extends Actor<PhysicalActorType>
 {
-    private final PhysicalActorType type;
-    
     public PhysicalActor(String name)
     {
         this(name,null);
@@ -23,12 +21,6 @@ public class PhysicalActor extends Actor
     
     public PhysicalActor(String name, PhysicalActorType type)
     {
-        super(name);
-        this.type = type;
-    }
-
-    public PhysicalActorType Type()
-    {
-        return type;
+        super(name, type);
     }
 }

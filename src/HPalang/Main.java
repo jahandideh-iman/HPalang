@@ -15,24 +15,13 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.LTSUtility;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.SOSRules.ContinuousBehaviorExpirationRule;
-import HPalang.LTSGeneration.SOSRules.DelayStatementRule;
-import HPalang.LTSGeneration.SOSRules.MessageDropRule;
-import HPalang.LTSGeneration.SOSRules.MessageSendRule;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Variable;
-import HPalang.LTSGeneration.SOSRules.DiscreteAssignmentRule;
-import HPalang.LTSGeneration.SOSRules.IfStatementRule;
-import HPalang.LTSGeneration.SOSRules.FIFOMessageTakeRule;
-import HPalang.LTSGeneration.SOSRules.ResumeStatementRule;
 import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.Labels.Reset;
-import HPalang.LTSGeneration.SOSRules.AssignmentStatementRule;
-import HPalang.LTSGeneration.SOSRules.EventExpirationRule;
-import HPalang.LTSGeneration.SOSRules.MessageTeardownStatementRule;
-import HPalang.LTSGeneration.SOSRules.NetwrokCommunicationRule;
+import HPalang.LTSGeneration.SOSRules.*;
 import HPalang.Parser.Parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -62,18 +51,18 @@ public class Main {
     {
         ModelDefinition definition;
         if(args.length ==0 )
-            definition = new DrawBridge().Create();
+            definition = new BrakeByWireModel().Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
         LTSGenerator tierOneLTSGenerator = CreateTierOneLTSGenrator();
         
-        HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
-        hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
+        //HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
+        //hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
         
          
         
-        LabeledTransitionSystem lts =  tierOneLTSGenerator.Generate(LTSUtility.FromProgramDefinition(definition));
+        LabeledTransitionSystem lts =  tierOneLTSGenerator.Generate(LTSUtility.FromModelDefinition(definition));
         
         FileWriter writer = new FileWriter("output/");
         
@@ -84,16 +73,16 @@ public class Main {
         RemoveUnreachableStates(lts);
         //RemoveTauLabels(lts);
         
-        HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts);
-        
-        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
-        writer.Write("output_HA.xml", new HybridAutomatonToDMEConvertor().Convert(automaton));
-        
-        System.out.println("LTS(A) Pruning States : " + lts.GetStates().size());
-        System.out.println("LTS(A) Pruning Transition : " + lts.GetTransitions().size());
-        
-        System.out.println("HA Locations : " + automaton.GetLocations().size());
-        System.out.println("HA Transition : " + automaton.GetTransitions().size());
+//        HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts);
+//        
+//        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
+//        writer.Write("output_HA.xml", new HybridAutomatonToDMEConvertor().Convert(automaton));
+//        
+//        System.out.println("LTS(A) Pruning States : " + lts.GetStates().size());
+//        System.out.println("LTS(A) Pruning Transition : " + lts.GetTransitions().size());
+//        
+//        System.out.println("HA Locations : " + automaton.GetLocations().size());
+//        System.out.println("HA Transition : " + automaton.GetTransitions().size());
     }
     
     private static InputStream Read(String filePath) throws FileNotFoundException
@@ -127,6 +116,7 @@ public class Main {
         genetator.AddSOSRule(new AssignmentStatementRule());
         genetator.AddSOSRule(new IfStatementRule());
         genetator.AddSOSRule(new MessageSendRule());
+        genetator.AddSOSRule(new ModeChangeStatementRule());
 
         // Network 
         genetator.AddSOSRule(new NetwrokCommunicationRule());

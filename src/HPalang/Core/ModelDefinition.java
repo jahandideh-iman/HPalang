@@ -47,14 +47,14 @@ public class ModelDefinition
         return null;
     }
 
-    public void AddType(ActorType wheelType)
+    public void AddType(ActorType actorType)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void AddActor(PhysicalActor brake)
+    public void AddActor(PhysicalActor actor)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
-    
+
 }

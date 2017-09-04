@@ -84,7 +84,7 @@ public class MessageSendRule extends SoftwareActorLevelRule
             case CAN:
                 newGlobalState.NetworkState().Buffer(packet);
                 break;
-            case Wired:
+            case Wire:
                 reciverMessageQueueState.Messages().Enqueue(packet);
                 break;
             default:

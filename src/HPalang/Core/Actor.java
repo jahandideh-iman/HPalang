@@ -14,30 +14,38 @@ import java.util.Map;
  */
 
 
-public class Actor
+public class Actor<T extends ActorType>
 { 
+    private final T type; 
+    
     private final String name;
     
     private final Map<Actor, CommunicationType> communicationTypes = new HashMap<>();
     
     private final Map<Pair<Actor, Message>, Float > networkDelays = new HashMap<>();
+    private final Map<MessageHandler, Integer> messageHandlersPriority = new HashMap<>();
         
-    public Actor(String name)
+    public Actor(String name, T type)
     {
         this.name = name;
+        this.type = type;
     }
     
+    public T Type()
+    {
+        return type;
+    }
     public String Name()
     {
         return name;
     }
     
-    public void BindInstance(InstanceParameter parameter, Actor instance)
+    public void BindInstance(InstanceParameter parameter, Actor instance, CommunicationType communicationType)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
-    public void BindDelegation(DelegationParameter parameter, Delegation delegation)
+    public void BindDelegation(DelegationParameter parameter, Delegation delegation, CommunicationType communicationType)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
@@ -66,6 +74,12 @@ public class Actor
     {
         Pair<Actor, Message> pair = new Pair<>(receiver,message);
         return networkDelays.get(pair);
+    }
+
+    public void SetMessageHandlerPriority(MessageHandler handler, int priority)
+    {
+        assert (type.FindMessageHandler(handler.GetID()) != null);
+        messageHandlersPriority.put(handler, priority);
     }
     
 

@@ -15,10 +15,8 @@ import java.util.Map;
  *
  * @author Iman Jahandideh
  */
-public class SoftwareActor extends Actor
+public class SoftwareActor extends Actor<SoftwareActorType>
 {
-    private final SoftwareActorType type;
-        
     private final int capacity;
     
     private final Map<IntegerVariable, Integer> initialValues = new HashMap<>();
@@ -30,8 +28,7 @@ public class SoftwareActor extends Actor
 
     public SoftwareActor(String name, SoftwareActorType type , int capacity)
     {
-        super(name);
-        this.type = type;
+        super(name, type);
         this.capacity = capacity;
     }
     
@@ -49,10 +46,4 @@ public class SoftwareActor extends Actor
     {
         return capacity;
     }
-    
-    public SoftwareActorType Type()
-    {
-        return type;
-    }
-
 }

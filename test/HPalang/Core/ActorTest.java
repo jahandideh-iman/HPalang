@@ -20,8 +20,8 @@ public class ActorTest
     @Test
     public void HasTheAddedCommunication()
     {
-        Actor actor1 = new Actor("actor1");
-        Actor actor2 = new Actor("actor2");
+        Actor actor1 = new Actor("actor1",null);
+        Actor actor2 = new Actor("actor2",null);
         
         actor1.SetCommunicationType(actor2, CommunicationType.CAN);
         
@@ -31,8 +31,8 @@ public class ActorTest
     @Test
     public void HasTheAddedNetworkDelay()
     {
-        Actor sender = new Actor("sender");
-        Actor receiver = new Actor("receiver");
+        Actor sender = new Actor("sender",null);
+        Actor receiver = new Actor("receiver",null);
         
         Message message = new EmptyMessage();
         

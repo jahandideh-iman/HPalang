@@ -3,10 +3,21 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.LTSGeneration;
+
+import org.junit.Test;
+import static org.junit.Assert.*;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public enum CommunicationType { Invalid, CAN, Wire};
+public class LTSUtilityTest
+{
+
+    @Test
+    public void testSomeMethod()
+    {
+    }
+    
+}

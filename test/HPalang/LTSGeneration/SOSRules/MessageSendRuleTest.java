@@ -71,7 +71,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
     {  
         SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
         
-        senderState.SActor().SetCommunicationType(receiver, Wired); 
+        senderState.SActor().SetCommunicationType(receiver, Wire); 
         EnqueueStatement(sendStatement, senderState);
         
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
@@ -131,7 +131,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
                 message,
                 MessageArguments.From(argument));
         
-        sender.SetCommunicationType(receiver, Wired);
+        sender.SetCommunicationType(receiver, Wire);
         senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);
 
  
@@ -158,7 +158,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
                 message,
                 MessageArguments.From(argument));
         
-        sender.SetCommunicationType(receiver, Wired);
+        sender.SetCommunicationType(receiver, Wire);
         senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);
         
         globalState.VariablePoolState().SetPool(new SingleRealVariablePoolMock(pooledVariable));
