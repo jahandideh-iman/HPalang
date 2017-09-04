@@ -43,9 +43,7 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         Mode mode = new ModeBuilder().Build();
         PhysicalActor pActor = CreatePhysicalActor("pActor",mode);
         
-        PhysicalActorState physicalActorState = new PhysicalActorStateBuilder().
-                With(pActor).
-                With(mode).
+        PhysicalActorState physicalActorState = new PhysicalActorStateBuilder().WithActor(pActor).WithMode(mode).
                 Build();
 
         globalState = CreateGlobalState();
@@ -95,9 +93,7 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         Mode mode = new ModeBuilder().Build();
         PhysicalActor pActor = CreatePhysicalActor("pActor",mode);
         
-        PhysicalActorState physicalActorState = new PhysicalActorStateBuilder().
-                With(pActor).
-                With(mode).
+        PhysicalActorState physicalActorState = new PhysicalActorStateBuilder().WithActor(pActor).WithMode(mode).
                 Build();
         
         globalState = CreateGlobalState();

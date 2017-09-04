@@ -36,13 +36,13 @@ public class PhysicalActorStateBuilder
         return state;
     }
 
-    public PhysicalActorStateBuilder With(PhysicalActor actor)
+    public PhysicalActorStateBuilder WithActor(PhysicalActor actor)
     {
         this.actor = actor;
         return this;
     }
        
-    public PhysicalActorStateBuilder With(Mode mode)
+    public PhysicalActorStateBuilder WithMode(Mode mode)
     {
         this.mode = mode;
         return this;

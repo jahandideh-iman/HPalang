@@ -19,25 +19,10 @@ import java.util.Set;
  * @author Iman Jahandideh
  */
 public class SoftwareActorType extends ActorType
-{
-    private final Map<String,MessageHandler> messageHandlers = new HashMap<>();
-    
+{ 
     public SoftwareActorType(String name)
     {
         super(name, Arrays.asList(Type.integer,Type.integer));
     }
-    
-    public void AddMessageHandler(String id, MessageHandler handler)
-    {
-        handler.SetID(id);
-        messageHandlers.put(id,handler);
-    }
-     
-
-
-    public MessageHandler FindMessageHandler(String messageHandlerName)
-    {
-        return messageHandlers.get(messageHandlerName);
-    }
-
+   
 }

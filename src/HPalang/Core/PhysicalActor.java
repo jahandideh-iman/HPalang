@@ -15,7 +15,7 @@ import java.util.Set;
 public class PhysicalActor extends Actor
 {
     private final PhysicalActorType type;
-
+    
     public PhysicalActor(String name)
     {
         this(name,null);

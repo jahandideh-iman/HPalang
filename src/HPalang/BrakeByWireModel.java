@@ -30,6 +30,7 @@ import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
 import HPalang.Core.Statements.IfStatement;
 import HPalang.Core.Statements.ModeChangeStatement;
+import HPalang.Core.Statements.RequestModeChangeStatement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Variable;
 import HPalang.Core.Variable.Type;
@@ -226,8 +227,8 @@ public class BrakeByWireModel
                                 new VariableExpression(requested_torque),
                                 ComparisonExpression.Operator.Equal,
                                 new ConstantDiscreteExpression(2))),
-                Statement.StatementsFrom(new ModeChangeStatement(new ParametricActorLocator(wheel), noBrakeMode )), 
-                Statement.StatementsFrom(new ModeChangeStatement(new ParametricActorLocator(wheel), brakeMode ))
+                Statement.StatementsFrom(new RequestModeChangeStatement(new ParametricActorLocator(wheel), noBrakeMode )), 
+                Statement.StatementsFrom(new RequestModeChangeStatement(new ParametricActorLocator(wheel), brakeMode ))
         ));
         
         MessageHandler wheel_rpm_port = wheelControllerType.FindMessageHandler("wheel_rpm_port");

@@ -15,7 +15,6 @@ import java.util.Map;
  */
 public class PhysicalActorType extends ActorType
 {
-
     private final Map<String,Mode> modes = new HashMap<>();
     private Mode initialMode;
 

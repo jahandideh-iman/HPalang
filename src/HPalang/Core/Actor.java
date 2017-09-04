@@ -21,7 +21,7 @@ public class Actor
     private final Map<Actor, CommunicationType> communicationTypes = new HashMap<>();
     
     private final Map<Pair<Actor, Message>, Float > networkDelays = new HashMap<>();
-    
+        
     public Actor(String name)
     {
         this.name = name;
@@ -67,4 +67,6 @@ public class Actor
         Pair<Actor, Message> pair = new Pair<>(receiver,message);
         return networkDelays.get(pair);
     }
+    
+
 }

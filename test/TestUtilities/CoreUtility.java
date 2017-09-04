@@ -7,11 +7,13 @@ package TestUtilities;
 
 import Builders.SoftwareActorStateBuilder;
 import Builders.GlobalRunTimeStateBuilder;
+import Builders.PhysicalActorStateBuilder;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.Expression;
 import HPalang.Core.Mode;
+import static HPalang.Core.Mode.EquationsFrom;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
 import HPalang.Core.SimpleContinuousVariablePool;
@@ -19,6 +21,7 @@ import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
 import HPalang.LTSGeneration.Label;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
 import HPalang.LTSGeneration.RunTimeStates.Event.Action;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
@@ -73,6 +76,21 @@ public class CoreUtility
         return actor;
     }
     
+    static public PhysicalActorState CreatePhysicalActorState(String actorName, Mode ... modes )
+    {
+        PhysicalActorType type = new PhysicalActorType(actorName + "Type");
+        for(Mode mode : modes)
+            type.AddMode(mode);
+        
+        PhysicalActor actor = new PhysicalActor(actorName, type);
+        
+        PhysicalActorStateBuilder builder = new PhysicalActorStateBuilder().
+                WithActor(actor);
+        
+        return builder.Build();
+    }
+    
+        
     public static void assertEqualButNotSame(Object obj1,Object obj2)
     {
         assertThat(obj1, equalTo(obj2));
@@ -126,6 +144,11 @@ public class CoreUtility
         globalState.DiscreteState().FindActorState(actor).ExecutionQueueState().Statements().Clear();
     }
     
+    static public void ClearStatementsFor(PhysicalActor actor, GlobalRunTimeState globalState)
+    {
+        globalState.ContinuousState().FindActorState(actor).ExecutionQueueState().Statements().Clear();
+    }
+    
     static public  void DequeueOneStatemenet(SoftwareActorState actorState)
     {
         actorState.ExecutionQueueState().Statements().Dequeue();
@@ -136,7 +159,7 @@ public class CoreUtility
         FindActorState(actor, globalState).ExecutionQueueState().Statements().Dequeue();
     }
 
-    static public void EnqueueStatement(Statement statement, SoftwareActorState actorState)
+    static public void EnqueueStatement(Statement statement, ActorState actorState)
     {
         actorState.ExecutionQueueState().Statements().Enqueue(statement);
     }
@@ -171,5 +194,23 @@ public class CoreUtility
         globalState.DiscreteState().AddSoftwareActorState(actorState);
     }
     
+    static public void AddActorState(PhysicalActorState actorState, GlobalRunTimeState globalState)
+    {
+        globalState.ContinuousState().AddPhysicalActorState(actorState);
+    }
 
+    static public Mode CreateEmptyMode(String name)
+    {
+        return new Mode(
+                name,
+                "", 
+                EquationsFrom(DifferentialEquation.Empty()),
+                "", 
+                Statement.EmptyStatements());
+    }
+    
+    static public void SetMode(Mode mode, PhysicalActor actor, GlobalRunTimeState globalState)
+    {
+        globalState.ContinuousState().FindActorState(actor).SetMode(mode);
+    }
 }

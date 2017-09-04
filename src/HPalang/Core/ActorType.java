@@ -23,6 +23,7 @@ public abstract class ActorType
     private final Map<String,InstanceParameter> instanceParameters = new HashMap<>();
     private final Map<String,DelegationParameter> delegationParameters = new HashMap<>();
     private final Map<String,Variable> variables = new HashMap<>();
+    private final Map<String, MessageHandler> messageHandlers = new HashMap<>();
     
     private final List<Variable.Type> validTypes = new LinkedList<>();
     
@@ -31,6 +32,18 @@ public abstract class ActorType
         this.name = name;
         this.validTypes.addAll(validTypes);
     }
+    
+    public void AddMessageHandler(String id, MessageHandler handler)
+    {
+        handler.SetID(id);
+        messageHandlers.put(id,handler);
+    }
+   
+    public MessageHandler FindMessageHandler(String messageHandlerName)
+    {
+        return messageHandlers.get(messageHandlerName);
+    }
+    
     
     public void AddInstanceParameter(InstanceParameter parameter)
     {

@@ -12,24 +12,22 @@ import HPalang.Core.Mode;
  *
  * @author Iman Jahandideh
  */
-public class ModeChangeStatement extends AbstractStatement<ModeChangeStatement>
+public class RequestModeChangeStatement extends AbstractStatement<RequestModeChangeStatement>
 {
+    private final ActorLocator actorLocator;
     private final Mode mode;
     
-    public ModeChangeStatement(Mode mode)
+    public RequestModeChangeStatement(ActorLocator actorLocator, Mode mode)
     {
+        this.actorLocator = actorLocator;
         this.mode = mode;
     }
     
-    public Mode Mode()
-    {
-        return mode;
-    }
-    
     @Override
-    protected boolean InternalEquals(ModeChangeStatement other)
+    protected boolean InternalEquals(RequestModeChangeStatement other)
     {
-        return mode.equals(other.mode);
+        return actorLocator.equals(other.actorLocator) &&
+                mode.equals(other.mode);
     }
 
     @Override
@@ -37,7 +35,5 @@ public class ModeChangeStatement extends AbstractStatement<ModeChangeStatement>
     {
         return 0;
     }
-
-
     
 }
