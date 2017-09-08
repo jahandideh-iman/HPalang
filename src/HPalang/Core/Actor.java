@@ -24,6 +24,8 @@ public class Actor<T extends ActorType>
     
     private final Map<Pair<Actor, Message>, Float > networkDelays = new HashMap<>();
     private final Map<MessageHandler, Integer> messageHandlersPriority = new HashMap<>();
+    private final Map<InstanceParameter, Actor> instanceArguments = new HashMap<>();
+    private final Map<DelegationParameter, Delegation> delegationArguments = new HashMap<>();
         
     public Actor(String name, T type)
     {
@@ -42,15 +44,30 @@ public class Actor<T extends ActorType>
     
     public void BindInstance(InstanceParameter parameter, Actor instance, CommunicationType communicationType)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        assert (Type().HasInstanceParameter(parameter));
+        instanceArguments.put(parameter, instance);
+        SetCommunicationType(instance, communicationType);
+    }
+    
+    public Actor GetInstanceFor(InstanceParameter parameter)
+    {
+        return instanceArguments.get(parameter);
     }
 
     public void BindDelegation(DelegationParameter parameter, Delegation delegation, CommunicationType communicationType)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        assert (Type().HasDelegationParameter(parameter));
+        delegationArguments.put(parameter, delegation);
+        SetCommunicationType(delegation.Actor(), communicationType);
+    }
+    
+    public Delegation GetDelegationFor(DelegationParameter parameter)
+    {
+        return delegationArguments.get(parameter);
     }
     
     
+    // Warning: This is for testing. Use BindInstance instead.
     public void SetCommunicationType(Actor actor, CommunicationType communicationType)
     {
         communicationTypes.put(actor, communicationType);

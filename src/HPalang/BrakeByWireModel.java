@@ -5,6 +5,8 @@
  */
 package HPalang;
 
+import HPalang.Core.ActorLocator;
+import HPalang.Core.ActorLocators.DelegationActorLocator;
 import HPalang.Core.ActorType;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.SoftwareActor;
@@ -19,7 +21,9 @@ import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Mode;
-import HPalang.Core.ParametricActorLocator;
+import HPalang.Core.ActorLocators.ParametricActorLocator;
+import HPalang.Core.MainBlock;
+import HPalang.Core.Message;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
 import HPalang.Core.ModelDefinition;
@@ -146,6 +150,7 @@ public class BrakeByWireModel
         
         definition.AddActor(clock);
         
+        definition.SetMainBlock(new MainBlock());
         
         SetNetworkPriority(wheel_FR, Wheel__torque_port, 100);
         SetNetworkPriority(wheel_FL, Wheel__torque_port, 101);
@@ -285,9 +290,7 @@ public class BrakeByWireModel
                 Statement.StatementsFrom(CreateModeChangeRequest(brakeMode, new ParametricActorLocator(wheel)))
         ));
         
-        MessageHandler wheel_rpm_port = wheelControllerType.FindMessageHandler("wheel_rpm_port");
-        IntegerVariable port_wheel_rpm = (IntegerVariable) applyTorque.FindVariableParameter("port_wheel_rpm").Variable();
-        wheel_rpm_port.AddStatement(new AssignmentStatement(wheel_rpm, new VariableExpression(port_wheel_rpm)));
+        AddPort(wheelControllerType, Wheel_Controller__wheel_rmp_port, wheel_rpm);
     }
 
     private void FillSkeletonForBrakeType(PhysicalActorType brakeType, SoftwareActorType globalBrakeControllerType)
@@ -363,12 +366,10 @@ public class BrakeByWireModel
         control.AddStatement(new AssignmentStatement(estimated_speed, new VariableExpression(estimated_speed))); //?!!
         control.AddStatement(new AssignmentStatement(global_torque, new VariableExpression(brake_percent))); //?!!
         
-        control.AddStatement(CreateSendStatement(wheel_controller_FR, wheelControllerApply, global_torque));
-        control.AddStatement(CreateSendStatement(wheel_controller_FL, wheelControllerApply, global_torque));
-        control.AddStatement(CreateSendStatement(wheel_controller_RR, wheelControllerApply, global_torque));
-        control.AddStatement(CreateSendStatement(wheel_controller_RL, wheelControllerApply, global_torque));
-       
-        
+        control.AddStatement(CreateSendStatement(wheel_controller_FR, wheelControllerApply, global_torque, estimated_speed));
+        control.AddStatement(CreateSendStatement(wheel_controller_FL, wheelControllerApply, global_torque, estimated_speed));
+        control.AddStatement(CreateSendStatement(wheel_controller_RR, wheelControllerApply, global_torque, estimated_speed));
+        control.AddStatement(CreateSendStatement(wheel_controller_RL, wheelControllerApply, global_torque, estimated_speed));
     }
     
     private void FillClockType(PhysicalActorType clockType)
@@ -456,31 +457,4 @@ public class BrakeByWireModel
     {
         BindDelagation(clock, Clock__callback, global_brake_controller, controlHandler, CommunicationType.Wire);
     }
-
-    private Statement CreateSendStatement(InstanceParameter instance, MessageHandler handler, Variable ... argumentVariables)
-    {
-        MessageArguments arguments = new MessageArguments();
-        int i = 0;
-        for(VariableParameter parameter : handler.Parameters().AsSet())
-        {
-            arguments.Add(new VariableArgument(parameter, new VariableExpression(argumentVariables[i])));
-            i++;
-        }
-        
-        return new SendStatement(
-                                new ParametricActorLocator(instance),
-                                new NormalMessage(handler),
-                                arguments
-        );
-    }
-    
-    private Statement CreateSendStatement(DelegationParameter delegationParameter, Variable ... argumentVariables)
-    {
-        return CreateSendStatement(
-                delegationParameter.InstanceParameter(),
-                delegationParameter.MessageHandler(), 
-                argumentVariables);
-    }
-
-
 }

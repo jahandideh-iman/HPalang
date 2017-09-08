@@ -22,6 +22,7 @@ import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import Mocks.DirectActorLocator;
+import HPalang.Core.MessageLocators.DirectMessageLocator;
 import Mocks.EmptyMessage;
 import Mocks.NullExpression;
 
@@ -43,12 +44,17 @@ public class NetworkingUtility
        
     static public SendStatement CreateSendStatement(SoftwareActor actor, Message message)
     {
-        return new SendStatement(new DirectActorLocator(actor),message);
+        return new SendStatement(new DirectActorLocator(actor), new DirectMessageLocator(message));
+    }
+    
+    static public SendStatement CreateSendStatement(SoftwareActor actor, Message message, MessageArguments arguments)
+    {
+        return new SendStatement(new DirectActorLocator(actor), new DirectMessageLocator(message), arguments);
     }
     
     static public SendStatement CreateEmptySendStatementTo(SoftwareActor actor)
     {
-        return new SendStatement(new DirectActorLocator(actor),new EmptyMessage());
+        return CreateSendStatement(actor, new EmptyMessage());
     }
     
     static public void PutMessagePacketInActor(MessagePacket packet, SoftwareActorState actorState)
@@ -104,8 +110,8 @@ public class NetworkingUtility
     {
         return NetworkingUtility.MessagePacket(
                 sender, 
-                sendStatement.Receiver(), 
-                sendStatement.Message(), 
+                (SoftwareActor)sendStatement.ReceiverLocator().GetActor(), 
+                sendStatement.MessageLocator().Get(null), 
                 sendStatement.Arguments());
 
     }

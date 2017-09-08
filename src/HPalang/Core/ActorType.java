@@ -25,12 +25,12 @@ public abstract class ActorType
     private final Map<String,Variable> variables = new HashMap<>();
     private final Map<String, MessageHandler> messageHandlers = new HashMap<>();
     
-    private final List<Variable.Type> validTypes = new LinkedList<>();
+    private final List<Variable.Type> validVariableTypes = new LinkedList<>();
     
-    protected ActorType(String name, List<Variable.Type> validTypes)
+    protected ActorType(String name, List<Variable.Type> validVariableTypes)
     {
         this.name = name;
-        this.validTypes.addAll(validTypes);
+        this.validVariableTypes.addAll(validVariableTypes);
     }
     
     public void AddMessageHandler(String id, MessageHandler handler)
@@ -50,6 +50,11 @@ public abstract class ActorType
         instanceParameters.put(parameter.Name(),parameter);
     }
     
+    public boolean HasInstanceParameter(InstanceParameter parameter)
+    {
+        return instanceParameters.containsValue(parameter);
+    }
+    
     public InstanceParameter FindInstanceParameter(String instanceName)
     {
         return instanceParameters.get(instanceName);
@@ -58,6 +63,11 @@ public abstract class ActorType
     public void AddDelegationParameter(DelegationParameter delegationParameter)
     {
         delegationParameters.put(delegationParameter.Name(), delegationParameter);
+    }
+    
+    public boolean HasDelegationParameter(DelegationParameter parameter)
+    {
+        return delegationParameters.containsValue(parameter);
     }
     
     public DelegationParameter FindDelegationParameter(String delegationName)
@@ -73,7 +83,7 @@ public abstract class ActorType
 
     private void AssertValid(Variable var)
     {
-        assert (validTypes.contains(var.type()));
+        assert (validVariableTypes.contains(var.type()));
     }
     
     public Variable FindVariable(String variableName)

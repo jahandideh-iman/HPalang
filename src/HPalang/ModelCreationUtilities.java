@@ -7,6 +7,8 @@ package HPalang;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ActorLocator;
+import HPalang.Core.ActorLocators.DelegationActorLocator;
+import HPalang.Core.ActorLocators.ParametricActorLocator;
 import HPalang.Core.ActorType;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
@@ -14,7 +16,12 @@ import HPalang.Core.Delegation;
 import HPalang.Core.DelegationParameter;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.InstanceParameter;
+import HPalang.Core.Message;
+import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageHandler;
+import HPalang.Core.MessageLocator;
+import HPalang.Core.MessageLocators.DelegationMessageLocator;
+import HPalang.Core.MessageLocators.DirectMessageLocator;
 import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Mode;
@@ -25,6 +32,7 @@ import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.ModeChangeStatement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Variable;
+import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
@@ -64,8 +72,12 @@ public class ModelCreationUtilities
     
     public static SendStatement CreateModeChangeRequest(Mode mode, ActorLocator actorLocator)
     {
-        return new SendStatement(actorLocator, new MessageWithBody(
-                Statement.StatementsFrom(new ModeChangeStatement(mode))));
+        return CreateSendStateemnt(
+                actorLocator, 
+                new MessageWithBody(
+                        Statement.StatementsFrom(new ModeChangeStatement(mode))
+                )
+        );
     }
 
     public static void BindInstance(Actor actor, String parameterName, Actor instance, CommunicationType communicationType)
@@ -98,5 +110,44 @@ public class ModelCreationUtilities
     public static AssignmentStatement ResetFor(RealVariable var)
     {
         return new AssignmentStatement(var, new ConstantContinuousExpression(0));
+    }
+    
+    public static SendStatement CreateSendStateemnt(ActorLocator actorLocator, MessageLocator messageLocator, Variable ... argumentVariables )
+    {
+        MessageArguments arguments = new MessageArguments();
+        int i = 0;
+        
+        for(VariableParameter parameter : messageLocator.Parameters().AsSet())
+        {
+            arguments.Add(new VariableArgument(parameter, new VariableExpression(argumentVariables[i])));
+            i++;
+        }
+        
+        return new SendStatement(
+                                actorLocator,
+                                messageLocator,
+                                arguments
+        );
+    }
+
+    public static SendStatement CreateSendStateemnt(ActorLocator actorLocator, Message message, Variable ... argumentVariables )
+    {
+        return CreateSendStateemnt(actorLocator, new DirectMessageLocator(message), argumentVariables);
+    }
+        
+    public static SendStatement CreateSendStatement(InstanceParameter instance, MessageHandler handler, Variable ... argumentVariables)
+    {
+        return CreateSendStateemnt(
+                new ParametricActorLocator(instance), 
+                new NormalMessage(handler), 
+                argumentVariables);
+    }
+    
+    public static SendStatement CreateSendStatement(DelegationParameter delegationParameter, Variable ... argumentVariables)
+    {
+        return CreateSendStateemnt(
+                new DelegationActorLocator(delegationParameter), 
+                new DelegationMessageLocator(delegationParameter), 
+                argumentVariables);
     }
 }

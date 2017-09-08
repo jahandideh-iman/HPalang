@@ -71,7 +71,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
     {  
         SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
         
-        senderState.SActor().SetCommunicationType(receiver, Wire); 
+        senderState.Actor().SetCommunicationType(receiver, Wire); 
         EnqueueStatement(sendStatement, senderState);
         
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
@@ -126,10 +126,11 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         
         Message message = new FakeMessage(Statement.EmptyStatements(),MessageParameters.From(parameter));
         
-        SendStatement sendStatement = new SendStatement(
-                new DirectActorLocator(receiverState.SActor()),
-                message,
-                MessageArguments.From(argument));
+        SendStatement sendStatement = CreateSendStatement(receiverState.SActor(), message, MessageArguments.From(argument));
+//                new SendStatement(
+//                new DirectActorLocator(receiverState.SActor()),
+//                message,
+//                MessageArguments.From(argument));
         
         sender.SetCommunicationType(receiver, Wire);
         senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);
@@ -153,10 +154,11 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         
         Message message = new FakeMessage(Statement.EmptyStatements(),MessageParameters.From(parameter));
                 
-        SendStatement sendStatement = new SendStatement(
-                new DirectActorLocator(receiverState.SActor()),
-                message,
-                MessageArguments.From(argument));
+        SendStatement sendStatement = CreateSendStatement(receiverState.SActor(), message, MessageArguments.From(argument));
+//                new SendStatement(
+//                new DirectActorLocator(receiverState.SActor()),
+//                message,
+//                MessageArguments.From(argument));
         
         sender.SetCommunicationType(receiver, Wire);
         senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);

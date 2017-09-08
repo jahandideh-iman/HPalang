@@ -7,6 +7,7 @@ package HPalang.Core;
 
 import HPalang.Core.Statements.SendStatement;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
@@ -16,13 +17,13 @@ import java.util.Queue;
  */
 public class ModelDefinition
 {
-    private List<SoftwareActor> actors = new ArrayList<>();
+    private List<SoftwareActor> softwareActors = new LinkedList<>();   
+    private List<PhysicalActor> physicalActors = new LinkedList<>();
+
+    private List<ActorType> types = new LinkedList<>();
     private MainBlock mainBlock;
     
-    public void AddActor(SoftwareActor actor)
-    {
-        actors.add(actor);
-    }
+
 
     public void SetMainBlock(MainBlock mainBlock)
     {
@@ -31,7 +32,7 @@ public class ModelDefinition
 
     public List<SoftwareActor> GetActors()
     {
-        return actors;
+        return softwareActors;
     }
 
     public Queue<SendStatement> GetInitialSends()
@@ -41,7 +42,7 @@ public class ModelDefinition
 
     public SoftwareActor FindActor(String name)
     {
-        for(SoftwareActor actor : actors)
+        for(SoftwareActor actor : softwareActors)
             if(actor.Name().equals(name))
                 return actor;
         return null;
@@ -49,12 +50,18 @@ public class ModelDefinition
 
     public void AddType(ActorType actorType)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        types.add(actorType);
+        
     }
 
     public void AddActor(PhysicalActor actor)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        physicalActors.add(actor);
+    }
+    
+    public void AddActor(SoftwareActor actor)
+    {
+        softwareActors.add(actor);
     }
 
 }

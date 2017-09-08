@@ -32,8 +32,6 @@ public class LTSUtility
         for(SendStatement send : model.GetInitialSends())
             globalState.AddSendStatement(send);
         
-        
-        
         return globalState;
     }
 }

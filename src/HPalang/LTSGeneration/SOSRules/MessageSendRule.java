@@ -18,6 +18,7 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.SoftwareActor;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
@@ -42,7 +43,9 @@ public class MessageSendRule extends SoftwareActorLevelRule
             return false;
         
         SendStatement sendStatement = (SendStatement)actorState.ExecutionQueueState().Statements().Head();
-        SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(sendStatement.Receiver());
+        
+        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().GetActor();
+        SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(receiver);
         
         MessageQueueState queueState = receiverState.MessageQueueState();
         return  queueState.Messages().Size() < receiverState.GetMessageQueueCapacity();
@@ -56,7 +59,8 @@ public class MessageSendRule extends SoftwareActorLevelRule
         SoftwareActorState senderState = newGlobalState.DiscreteState().FindActorState(actorState.SActor());
         SendStatement sendStatement = (SendStatement)senderState.ExecutionQueueState().Statements().Dequeue();
         
-        SoftwareActorState receiverState = newGlobalState.DiscreteState().FindActorState(sendStatement.Receiver());
+        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().GetActor();
+        SoftwareActorState receiverState = newGlobalState.DiscreteState().FindActorState(receiver);
         MessageQueueState reciverMessageQueueState = receiverState.MessageQueueState();
         
         ValuationContainer valuations = senderState.ValuationState().Valuation();
@@ -64,7 +68,7 @@ public class MessageSendRule extends SoftwareActorLevelRule
         
         Pair<MessageArguments, Set<Reset>> maximalEvaluatoionReslut = 
                 CreateMaximalEvaluatedArguments(
-                        sendStatement.Message(), 
+                        sendStatement.MessageLocator().Get(actorState.Actor()), 
                         sendStatement.Arguments(),
                         valuations,
                         pool
@@ -74,7 +78,7 @@ public class MessageSendRule extends SoftwareActorLevelRule
         MessagePacket packet = new MessagePacket(
                 senderState.SActor(), 
                 receiverState.SActor(), 
-                sendStatement.Message(), 
+                sendStatement.MessageLocator().Get(actorState.Actor()), 
                 maximalEvaluatoionReslut.a
         );
         

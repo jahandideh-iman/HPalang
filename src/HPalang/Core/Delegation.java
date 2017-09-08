@@ -11,19 +11,35 @@ package HPalang.Core;
  */
 public class Delegation extends Equalitable<Delegation>
 {
+    private final Actor actor;
+    private final MessageHandler messageHandler;
+    
     public Delegation(Actor actor, MessageHandler messageHandler)
     {
+        this.actor = actor;
+        this.messageHandler = messageHandler;
+    }
+    
+    public Actor Actor()
+    {
+        return actor;
+    }
+    
+    public MessageHandler MessageHandler()
+    {
+        return messageHandler;
     }
 
     @Override
     protected boolean InternalEquals(Delegation other)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return actor.equals(other.actor) &&
+                messageHandler.equals(other.messageHandler);
     }
 
     @Override
     protected int InternalHashCode()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0;
     }
 }

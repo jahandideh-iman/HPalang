@@ -19,7 +19,7 @@ public class Mode extends Equalitable<Mode>
 {
     private final String name;
     private String invariant;
-    private Set<DifferentialEquation> equations;
+    private Set<DifferentialEquation> equations = new HashSet<>();
     private String guard;
     private Queue<Statement> actions = new LinkedList<>();
     

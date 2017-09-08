@@ -5,6 +5,14 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.Variables.FloatVariable;
+import HPalang.Core.Variables.IntegerVariable;
+import HPalang.Core.Variables.RealVariable;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
+
 /**
  *
  * @author Iman Jahandideh
@@ -12,27 +20,24 @@ package HPalang.Core;
 public class DelegationParameter extends Equalitable<DelegationParameter>
 {
     private final String name;
-    private final InstanceParameter instanceParameter;
-    private final MessageHandler messageHandler;
+    
+    private final List<Variable.Type> paramterTypes = new LinkedList<>();
+    
+    private MessageParameters cachedParameters = null;
     
     public DelegationParameter(String name)
     {
+        this(name, Collections.EMPTY_LIST);
+    }
+        
+    public DelegationParameter(String name, Collection<Variable.Type> paramterTypes)
+    {
         this.name = name;
-        this.instanceParameter = null;
-        this.messageHandler = null;
+        this.paramterTypes.addAll(paramterTypes);
     }
     
     
-    public InstanceParameter InstanceParameter()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
-    public MessageHandler MessageHandler()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
     public String Name()
     {
         return name;
@@ -41,13 +46,45 @@ public class DelegationParameter extends Equalitable<DelegationParameter>
     @Override
     protected boolean InternalEquals(DelegationParameter other)
     {
-        return name.equals(other.name);
+        return name.equals(other.name) &&
+                paramterTypes.equals(other.paramterTypes);
     }
 
-    @Override
     protected int InternalHashCode()
     {
         return 0;
+    }
+
+    public MessageParameters Parameters()
+    {
+        
+        // TODO: Refactor this crap.
+        if(cachedParameters == null)
+        {
+            cachedParameters = new MessageParameters();
+            for(int i =0; i< paramterTypes.size(); i++)
+            {
+                Variable variable = null;
+                
+                switch(paramterTypes.get(i))
+                {
+                    case floatingPoint:
+                        variable = new FloatVariable(Integer.toString(i));
+                        break;
+                    case integer:
+                        variable = new IntegerVariable(Integer.toString(i));
+                        break;
+                    case real:
+                        variable = new RealVariable(Integer.toString(i));
+                        break;
+                            
+                }
+                cachedParameters.Add(new VariableParameter(variable));
+
+            }
+        }
+        
+        return cachedParameters;
     }
 
 }

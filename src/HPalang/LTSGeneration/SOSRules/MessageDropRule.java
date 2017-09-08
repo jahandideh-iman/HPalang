@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -27,7 +28,9 @@ public class MessageDropRule extends SoftwareActorLevelRule
             return false;
         
         SendStatement sendStatement = (SendStatement)actorState.FindSubState(ExecutionQueueState.class).Statements().Head();
-        SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(sendStatement.Receiver());
+        
+        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().GetActor();   
+        SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(receiver);
         
         MessageQueueState queueState = receiverState.FindSubState(MessageQueueState.class);
         

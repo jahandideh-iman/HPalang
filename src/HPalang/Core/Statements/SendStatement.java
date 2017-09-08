@@ -9,6 +9,7 @@ import HPalang.Core.ActorLocator;
 import HPalang.Core.MessageArguments;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
+import HPalang.Core.MessageLocator;
 import java.io.UncheckedIOException;
 
 /**
@@ -21,33 +22,33 @@ public class SendStatement extends AbstractStatement<SendStatement>
     {
     }
     
-    private final Message message;
+    private final MessageLocator messageLocator;
     private final ActorLocator receiverLocator;
     private final MessageArguments arguments;
     
-    public SendStatement(ActorLocator receiverLocator, Message message, MessageArguments arguments)
+    public SendStatement(ActorLocator receiverLocator, MessageLocator messageLocator, MessageArguments arguments)
     {
-        if(arguments.Match(message.Parameters()) == false)
+        if(arguments.Match(messageLocator.Parameters()) == false)
             throw new ArgumentsDoesNotMatchException();
         this.receiverLocator = receiverLocator;
-        this.message = message;
+        this.messageLocator = messageLocator;
         this.arguments = arguments;
     }
     
-    public SendStatement(ActorLocator receiverLocator, Message message)
+    public SendStatement(ActorLocator receiverLocator, MessageLocator messageLocator)
     {
-        this(receiverLocator, message, new MessageArguments());
+        this(receiverLocator, messageLocator, new MessageArguments());
     }
 
     
-    public SoftwareActor Receiver()
+    public ActorLocator ReceiverLocator()
     {
-        return (SoftwareActor) receiverLocator.GetActor();
+        return receiverLocator;
     }
     
-    public Message Message()
+    public MessageLocator MessageLocator()
     {
-        return message;
+        return messageLocator;
     }
     
     public MessageArguments Arguments()
@@ -59,7 +60,7 @@ public class SendStatement extends AbstractStatement<SendStatement>
     protected boolean InternalEquals(SendStatement other)
     {
         return this.receiverLocator.equals(other.receiverLocator) &&
-                this.message.equals(other.message) &&
+                this.messageLocator.equals(other.messageLocator) &&
                 this.arguments.equals(other.arguments);
     }
 
@@ -72,6 +73,6 @@ public class SendStatement extends AbstractStatement<SendStatement>
     @Override
     public String toString()
     {
-        return "(" + receiverLocator.GetActor().Name() + "!" + message.toString() + ")";
+        return "(" + receiverLocator.GetActor().Name() + "!" + messageLocator.toString() + ")";
     }
 }

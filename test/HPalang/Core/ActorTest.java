@@ -6,7 +6,9 @@
 package HPalang.Core;
 
 import Mocks.EmptyMessage;
+import java.util.Collections;
 import static org.hamcrest.CoreMatchers.equalTo;
+import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -17,15 +19,13 @@ import static org.junit.Assert.*;
 public class ActorTest
 {
  
-    @Test
-    public void HasTheAddedCommunication()
+    class TestActorType extends ActorType
     {
-        Actor actor1 = new Actor("actor1",null);
-        Actor actor2 = new Actor("actor2",null);
-        
-        actor1.SetCommunicationType(actor2, CommunicationType.CAN);
-        
-        assertThat(actor1.CommunicationTypeFor(actor2), equalTo(CommunicationType.CAN));
+
+        public TestActorType(String name)
+        {
+            super(name, Collections.EMPTY_LIST);
+        }
     }
     
     @Test
@@ -41,4 +41,48 @@ public class ActorTest
         assertThat(sender.NetworkDelayFor(message, receiver), equalTo(2f));
     }
     
+    @Test
+    public void HasTheBoundedInstances()
+    {
+        InstanceParameter instanceParameter = new InstanceParameter("param", CreateEmptyType());
+        
+        ActorType type = CreateType("Type");
+        type.AddInstanceParameter(instanceParameter);
+        
+        Actor actor = new Actor("actor", type);
+        Actor instance = new Actor("instance",  CreateEmptyType());
+        
+        actor.BindInstance(instanceParameter, instance, CommunicationType.CAN);
+        
+        assertThat(actor.GetInstanceFor(instanceParameter), is(instance));
+        assertThat(actor.CommunicationTypeFor(instance), is(CommunicationType.CAN));
+    }
+    
+    @Test
+    public void HasTheBoundedDelegations()
+    {
+        DelegationParameter delegationParameter = new DelegationParameter("param");
+        ActorType type = CreateType("Type");
+        type.AddDelegationParameter(delegationParameter);
+        
+        Actor actor = new Actor("actor", type);
+        Actor delegationInstance = new Actor("instance",  CreateEmptyType());
+        MessageHandler delegationMessageHandler = new MessageHandler();
+        Delegation delagation = new Delegation(delegationInstance, delegationMessageHandler);
+        
+        actor.BindDelegation(delegationParameter, delagation, CommunicationType.CAN);
+        
+        assertThat(actor.GetDelegationFor(delegationParameter), is(delagation));
+        assertThat(actor.CommunicationTypeFor(delagation.Actor()), is(CommunicationType.CAN));
+    }
+    
+    private ActorType CreateEmptyType()
+    {
+        return CreateType("empty");
+    }
+    
+    private ActorType CreateType(String name)
+    {
+        return new TestActorType(name);
+    }
 }

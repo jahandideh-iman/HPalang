@@ -21,6 +21,7 @@ import Mocks.EmptyMessage;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
+import static TestUtilities.NetworkingUtility.*;
 
 /**
  *
@@ -45,12 +46,12 @@ public class MessageDropRuleTest extends SOSRuleTestFixture
 
         SoftwareActorState actor1State = new SoftwareActorStateBuilder()
                 .WithActor(actor1)
-                .EnqueueStatement(new SendStatement( new DirectActorLocator(actor2), messageTo2)).Build();
+                .EnqueueStatement(CreateSendStatement(actor2, messageTo2)).Build();
 
         
         SoftwareActorState actor2State = new SoftwareActorStateBuilder()
                 .WithActor(actor2)
-                .EnqueueStatement(new SendStatement(new DirectActorLocator(actor1), messageTo1)).Build();
+                .EnqueueStatement(CreateSendStatement(actor1, messageTo1)).Build();
         
         globalState.DiscreteState().AddSoftwareActorState(actor1State);
         globalState.DiscreteState().AddSoftwareActorState(actor2State);
