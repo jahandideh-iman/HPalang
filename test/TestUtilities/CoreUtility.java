@@ -33,6 +33,7 @@ import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
 import Mocks.DirectActorLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
+import HPalang.Core.SoftwareActorType;
 import Mocks.EmptyStatement;
 import java.util.Collections;
 import java.util.Queue;
@@ -47,6 +48,11 @@ import static org.junit.Assert.assertThat;
  */
 public class CoreUtility
 {
+    
+    static public SoftwareActorType EmptySoftwareActorType()
+    {
+        return new SoftwareActorType("type");
+    }
     static public ContinuousBehavior EmptyBehavior()
     {
         return new ContinuousBehavior("", DifferentialEquation.Empty(""), "", Statement.StatementsFrom(new EmptyStatement()));
@@ -60,24 +66,35 @@ public class CoreUtility
     static public SoftwareActorState CreateSoftwareActorState(String actorName, int capacity)
     {
         SoftwareActorStateBuilder builder = new SoftwareActorStateBuilder().
-                WithActor(new SoftwareActor(actorName, capacity));
+                WithActor(CreateSofwareActor(actorName, capacity));
         
         return builder.Build();
     }
     
+    static public SoftwareActor CreateSofwareActor(String actorName, int capacity)
+    {
+        return new SoftwareActor(actorName, EmptySoftwareActorType(), capacity);
+    }
+    
     static public SoftwareActor CreateSofwareActor(String actorName)
     {
-        return new SoftwareActor(actorName, null);
+        return new SoftwareActor(actorName, EmptySoftwareActorType(), 0);
     }
     
     static public PhysicalActor CreatePhysicalActor(String actorName, Mode ... modes )
     {
         PhysicalActorType type = new PhysicalActorType(actorName + "Type");
-        PhysicalActor actor = new PhysicalActor(actorName, type);
+        PhysicalActor actor = CreatePhysicalActor(actorName, type);
         
         for(Mode mode : modes)
             type.AddMode(mode);
         
+        return actor;
+    }
+    
+    static public PhysicalActor CreatePhysicalActor(String actorName, PhysicalActorType type)
+    {
+        PhysicalActor actor = new PhysicalActor(actorName, type, 0);
         return actor;
     }
     
@@ -87,7 +104,7 @@ public class CoreUtility
         for(Mode mode : modes)
             type.AddMode(mode);
         
-        PhysicalActor actor = new PhysicalActor(actorName, type);
+        PhysicalActor actor = CreatePhysicalActor(actorName, type);
         
         PhysicalActorStateBuilder builder = new PhysicalActorStateBuilder().
                 WithActor(actor);
@@ -122,7 +139,7 @@ public class CoreUtility
     
     public static PhysicalActorState CreatePhysicalState(String actorName, State substate)
     {
-        PhysicalActorState state =  new PhysicalActorState(new PhysicalActor(actorName));
+        PhysicalActorState state =  new PhysicalActorState(CreatePhysicalActor(actorName));
         
         state.AddSubstate(substate);
         

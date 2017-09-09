@@ -112,7 +112,7 @@ public class DrawBridge
     
     private SoftwareActor CreateCarDispatcher(String id, float delay, SoftwareActor bridge, MessageHandler handler_Bridge_EnqueueCar)
     {
-        SoftwareActor CarDispatcher = new SoftwareActor(id,1);
+        //SoftwareActor CarDispatcher = new SoftwareActor(id,1);
 //        DiscreteVariable totalCars = new DiscreteVariable("totalCars");
 //        
 //        CarDispatcher.AddDiscreteVariable(totalCars,2 );
@@ -128,6 +128,7 @@ public class DrawBridge
 //                new ComparisonExpression(new VariableExpression(totalCars), ComparisonExpression.Operator.Greater, new ConstantDiscreteExpression(0))
 //                , Statement.StatementsFrom(new DelayStatement(delay), new SendStatement(CarDispatcher,  new NormalMessage(handler_Dispatch)))
 //                , Statement.EmptyStatements()));
-        return CarDispatcher;
+        //return CarDispatcher;
+        return null;
     }
 }

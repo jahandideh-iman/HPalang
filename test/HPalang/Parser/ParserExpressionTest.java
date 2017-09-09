@@ -30,6 +30,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import org.junit.Ignore;
 import org.junit.Test;
+import static TestUtilities.CoreUtility.*;
 
 /**
  *
@@ -42,7 +43,7 @@ public class ParserExpressionTest extends ParserTestBase
     {
         input = CreateInput("true && false || false");
 
-        SoftwareActor a = new SoftwareActor("actor", 0);
+        SoftwareActor a = CreateSofwareActor("actor");
         ExpressionHolder holder = new ExpressionHolder();
 
         new ExpressionParser(
@@ -61,7 +62,7 @@ public class ParserExpressionTest extends ParserTestBase
     {
         input = CreateInput("1 < 2 && 3 <= 4 && 5==6 && 7>=8 && 9>10 ");
 
-        SoftwareActor a = new SoftwareActor("actor", 0);
+        SoftwareActor a = CreateSofwareActor("actor");
         ExpressionHolder holder = new ExpressionHolder();
 
         new ExpressionParser(
@@ -89,7 +90,7 @@ public class ParserExpressionTest extends ParserTestBase
     {
         input = CreateInput("true && (false || false)");
 
-        SoftwareActor a = new SoftwareActor("actor", 0);
+        SoftwareActor a = CreateSofwareActor("actor");
         ExpressionHolder holder = new ExpressionHolder();
 
         new ExpressionParser(
@@ -110,7 +111,7 @@ public class ParserExpressionTest extends ParserTestBase
     {
         input = CreateInput("1 + 2 - 3 ");
         
-        SoftwareActor a = new SoftwareActor("actor", 0);
+        SoftwareActor a = CreateSofwareActor("actor");
         ExpressionHolder holder = new ExpressionHolder();
 
         new ExpressionParser(

@@ -24,7 +24,7 @@ public class ActorSkeletonParser extends SubParser<HPalangParser.ActorContext>
     public ActorSkeletonParser(ModelDefinition model, HPalangParser.ActorContext ctx)
     {
         super(model, ctx);
-        actor = new SoftwareActor(ctx.ID().getText(), 5);
+        actor = new SoftwareActor(ctx.ID().getText(), null  ,5);
     }
 
     @Override

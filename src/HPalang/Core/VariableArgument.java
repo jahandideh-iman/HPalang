@@ -11,18 +11,13 @@ package HPalang.Core;
  */
 public class VariableArgument  extends Equalitable<VariableArgument>
 {
-    private final VariableParameter parameter;
     private final Expression value;
+    private final Variable.Type type;
     
-    public VariableArgument(VariableParameter parameter, Expression value)
+    public VariableArgument(Variable.Type type, Expression value)
     {
-        this.parameter = parameter;
-        this.value = value;
-    }
-    
-    public VariableParameter Parameter()
-    {
-        return parameter;
+        this.value = value;     
+        this.type = type;
     }
     
     public Expression Value()
@@ -33,7 +28,7 @@ public class VariableArgument  extends Equalitable<VariableArgument>
     @Override
     protected boolean InternalEquals(VariableArgument other)
     {
-        return this.parameter.equals(other.parameter) &&
+        return this.type.equals(other.type) &&
                 this.value.equals(other.value);
     }
 
@@ -41,6 +36,11 @@ public class VariableArgument  extends Equalitable<VariableArgument>
     protected int InternalHashCode()
     {
         return 0;
+    }
+
+    public Variable.Type Type()
+    {
+        return type;
     }
     
 }

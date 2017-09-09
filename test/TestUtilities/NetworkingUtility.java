@@ -23,8 +23,10 @@ import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import Mocks.DirectActorLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
+import HPalang.Core.Variable;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import Mocks.EmptyMessage;
+import Mocks.FakeVariable;
 import Mocks.NullExpression;
 
 /**
@@ -33,14 +35,31 @@ import Mocks.NullExpression;
  */
 public class NetworkingUtility
 {
+    
+    @Deprecated // Use ArgumentFor(Variable.Type type)
     static public VariableArgument ArgumentFor(VariableParameter parameter)
     {
-        return new VariableArgument(parameter, new NullExpression());
+        return new VariableArgument(parameter.Type(), new NullExpression());
+    }
+    
+    static public VariableArgument ArgumentFor(Variable.Type type)
+    {
+        return new VariableArgument(type, new NullExpression());
     }
     
     static public VariableParameter ParameterFor(String param)
     {
         return new VariableParameter(new IntegerVariable(param));
+    }
+    
+    static public VariableParameter ParameterWithType(Variable.Type type)
+    {
+        return new VariableParameter(new FakeVariable("var", type));
+    }
+    
+    static public VariableParameter Parameter(String name, Variable.Type type)
+    {
+        return new VariableParameter(new FakeVariable(name, type));
     }
        
     static public SendStatement CreateSendStatement(SoftwareActor actor, Message message)
@@ -117,14 +136,14 @@ public class NetworkingUtility
 
     }
     
-    static public MessagePacket FindLastPacket(SoftwareActor actor, GlobalRunTimeState globalState)
+    static public MessagePacket FindLastPacket(Actor actor, GlobalRunTimeState globalState)
     {
-        return globalState.DiscreteState().FindActorState(actor).MessageQueueState().Messages().Head();
+        return globalState.FindActorState(actor).MessageQueueState().Messages().Head();
     }
     
     static public void FillActorsQeueue(SoftwareActorState receiverState)
     {
-        for(int i = 0 ; i < receiverState.SActor().Capacity(); i++)
+        for(int i = 0 ; i < receiverState.Actor().QueueCapacity(); i++)
         {
             MessagePacket packet = EmptySelfMessagePacketFor(receiverState.SActor());
             PutMessagePacketInActor(packet, receiverState);

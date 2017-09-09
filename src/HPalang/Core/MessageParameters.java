@@ -7,6 +7,8 @@ package HPalang.Core;
 
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,6 +22,7 @@ public class MessageParameters extends Equalitable<MessageParameters>
     
     public void Add(VariableParameter variableParameter)
     {
+        assert (parameters.containsKey(variableParameter.Name()) == false);
         parameters.put(variableParameter.Name(),variableParameter);
     }
     
@@ -37,6 +40,11 @@ public class MessageParameters extends Equalitable<MessageParameters>
     public Set<VariableParameter> AsSet()
     {
         return new HashSet<>(parameters.values());
+    }
+    
+    public List<VariableParameter> AsList()
+    {
+        return new LinkedList<>(parameters.values());
     }
     
     @Override

@@ -54,6 +54,6 @@ public class ConstantDiscreteExpression extends DiscreteExpressionT<ConstantDisc
     @Override
     public Expression PartiallyEvaluate(ValuationContainer valuations)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this;
     }
 }

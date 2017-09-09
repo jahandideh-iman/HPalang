@@ -94,7 +94,7 @@ public class BrakeByWireModel
         FillFleshForBrakeType(brakeType, globalBrakeControllerType.FindMessageHandler(Global_Brake_Controller__brake_percent_port));
         FillFleshForGlobalBrakeControllerType(globalBrakeControllerType, wheelControllerType.FindMessageHandler(Wheel_Controller__apply_torque_handler));
         
-        PhysicalActor brake_pedal = new PhysicalActor("brake", brakeType);
+        PhysicalActor brake_pedal = new PhysicalActor("brake", brakeType, 10);
         SoftwareActor global_brake_controller = new SoftwareActor("global_brake_controller", globalBrakeControllerType, 10);
         
         SoftwareActor wheel_controller_FR = new SoftwareActor("wheel_controller_FR",wheelControllerType, 10);     
@@ -102,12 +102,12 @@ public class BrakeByWireModel
         SoftwareActor wheel_controller_RR = new SoftwareActor("wheel_controller_RR", wheelControllerType, 10);
         SoftwareActor wheel_controller_RL = new SoftwareActor("wheel_controller_RL", wheelControllerType, 10);
 
-        PhysicalActor wheel_FR = new PhysicalActor("wheel_FR", wheelType);       
-        PhysicalActor wheel_FL = new PhysicalActor("wheel_FL", wheelType);
-        PhysicalActor wheel_RR = new PhysicalActor("wheel_RR", wheelType);
-        PhysicalActor wheel_RL = new PhysicalActor("wheel_RL", wheelType);
+        PhysicalActor wheel_FR = new PhysicalActor("wheel_FR", wheelType,10);       
+        PhysicalActor wheel_FL = new PhysicalActor("wheel_FL", wheelType,10);
+        PhysicalActor wheel_RR = new PhysicalActor("wheel_RR", wheelType,10);
+        PhysicalActor wheel_RL = new PhysicalActor("wheel_RL", wheelType,10);
         
-        PhysicalActor clock = new PhysicalActor("clock", clockType);
+        PhysicalActor clock = new PhysicalActor("clock", clockType,0);
         
         FillWheelActor(wheel_FR,wheel_controller_FR,global_brake_controller,Global_Brake_Controller__wheel_rpm_FR_port);
         FillWheelActor(wheel_FL,wheel_controller_FL,global_brake_controller,Global_Brake_Controller__wheel_rpm_FL_port);

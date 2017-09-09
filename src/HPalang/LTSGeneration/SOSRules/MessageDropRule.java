@@ -5,12 +5,14 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.Actor;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.TransitionCollector;
@@ -29,12 +31,12 @@ public class MessageDropRule extends SoftwareActorLevelRule
         
         SendStatement sendStatement = (SendStatement)actorState.FindSubState(ExecutionQueueState.class).Statements().Head();
         
-        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().Locate(actorState);   
-        SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(receiver);
+        Actor receiver = sendStatement.ReceiverLocator().Locate(actorState);   
+        ActorState receiverState = globalState.FindActorState(receiver);
         
-        MessageQueueState queueState = receiverState.FindSubState(MessageQueueState.class);
+        MessageQueueState queueState = receiverState.MessageQueueState();
         
-        return  queueState.Messages().Size() >= receiverState.GetMessageQueueCapacity();
+        return  queueState.Messages().Size() >= receiver.QueueCapacity();
     }
 
     @Override

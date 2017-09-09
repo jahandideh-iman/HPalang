@@ -122,16 +122,12 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
     {
         int value = 13;
         VariableParameter parameter = new VariableParameter(new ComputableVariable("param"));
-        VariableArgument argument = new VariableArgument(parameter, new ComputableExpression(value));
+        VariableArgument argument = new VariableArgument(parameter.Type(), new ComputableExpression(value));
         
         Message message = new FakeMessage(Statement.EmptyStatements(),MessageParameters.From(parameter));
         
         SendStatement sendStatement = CreateSendStatement(receiverState.SActor(), message, MessageArguments.From(argument));
-//                new SendStatement(
-//                new DirectActorLocator(receiverState.SActor()),
-//                message,
-//                MessageArguments.From(argument));
-        
+
         sender.SetCommunicationType(receiver, Wire);
         senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);
 
@@ -139,7 +135,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorMock);
         
         VariableArgument expectedArgument =  FindLastPacket(receiverState.SActor(),transitionCollectorMock.collectedState).
-                Arguments().ArgumentFor(parameter);
+                Arguments().AsList().get(0);
         
         assertThat(expectedArgument.Value(), equalTo(new ConstantDiscreteExpression(value)));
     }
@@ -150,15 +146,12 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         RealVariable pooledVariable = new RealVariable("pooledVaraible");
         Expression partialValue = new NullExpression("exp");
         VariableParameter parameter = new VariableParameter(new FakeVariable("param"));
-        VariableArgument argument = new VariableArgument(parameter, new UncomputableExpression(partialValue));
+        VariableArgument argument = new VariableArgument(parameter.Type(), new UncomputableExpression(partialValue));
         
         Message message = new FakeMessage(Statement.EmptyStatements(),MessageParameters.From(parameter));
                 
         SendStatement sendStatement = CreateSendStatement(receiverState.SActor(), message, MessageArguments.From(argument));
-//                new SendStatement(
-//                new DirectActorLocator(receiverState.SActor()),
-//                message,
-//                MessageArguments.From(argument));
+
         
         sender.SetCommunicationType(receiver, Wire);
         senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);
@@ -168,8 +161,8 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
        
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorMock);
         
-        VariableArgument generatedArgument =  FindLastPacket(receiverState.SActor(),transitionCollectorMock.collectedState).
-                Arguments().ArgumentFor(parameter);
+        VariableArgument generatedArgument =  FindLastPacket(receiverState.Actor(),transitionCollectorMock.collectedState).
+                Arguments().AsList().get(0);
         
         Label expectedLabel = new SoftwareLabel(Reset.From(new Reset(pooledVariable, partialValue)));
         

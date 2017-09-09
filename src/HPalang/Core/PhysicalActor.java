@@ -5,23 +5,16 @@
  */
 package HPalang.Core;
 
-import java.util.HashSet;
-import java.util.Set;
-
 /**
  *
  * @author Iman Jahandideh
  */
 public class PhysicalActor extends Actor<PhysicalActorType>
 {
-    public PhysicalActor(String name)
-    {
-        this(name,null);
-    }
     
-    public PhysicalActor(String name, PhysicalActorType type)
+    public PhysicalActor(String name, PhysicalActorType type, int queueCapacity)
     {
-        super(name, type);
+        super(name, type, queueCapacity);
     }
     
     public Mode InitialMode()

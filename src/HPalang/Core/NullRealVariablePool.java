@@ -37,5 +37,17 @@ public class NullRealVariablePool implements RealVariablePool
     {
         return this;
     }
+
+    @Override
+    public boolean HasAnyAvailableVariable()
+    {
+        throw new ShouldNotBeUsedException();
+    }
+
+    @Override
+    public boolean HasAvailableVariable(int number)
+    {
+        return number == 0;
+    }
     
 }

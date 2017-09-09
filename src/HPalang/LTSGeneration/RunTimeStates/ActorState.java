@@ -32,6 +32,11 @@ public abstract class ActorState<T extends ActorState> extends  CompositeStateT<
         return FindSubState(ExecutionQueueState.class);
     }
     
+    public MessageQueueState MessageQueueState()
+    {
+        return FindSubState(MessageQueueState.class);
+    }
+    
     public ValuationState ValuationState()
     {
         return FindSubState(ValuationState.class);

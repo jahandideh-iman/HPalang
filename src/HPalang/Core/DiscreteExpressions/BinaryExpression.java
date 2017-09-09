@@ -50,12 +50,12 @@ public class BinaryExpression extends DiscreteExpressionT<BinaryExpression>
     @Override
     public boolean IsComputable(ValuationContainer valuations)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return operand1.IsComputable(valuations) && operand2.IsComputable(valuations);
     }
 
     @Override
     public Expression PartiallyEvaluate(ValuationContainer valuations)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new BinaryExpression(operand1.PartiallyEvaluate(valuations), operator, operand2.PartiallyEvaluate(valuations));
     }
 }

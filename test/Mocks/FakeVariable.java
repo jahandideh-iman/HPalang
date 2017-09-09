@@ -19,4 +19,9 @@ public class FakeVariable extends Variable
         super(name);
     }
     
+    public FakeVariable(String name, Variable.Type type)
+    {
+        super(name, type);
+    }
+    
 }

@@ -16,6 +16,8 @@ import HPalang.Core.Variables.RealVariable;
 public class SingleRealVariablePoolMock implements RealVariablePool
 {
     private final RealVariable var;
+    
+    private boolean isAcquired = false;
     public SingleRealVariablePoolMock(RealVariable var)
     {
         this.var = var;
@@ -24,6 +26,7 @@ public class SingleRealVariablePoolMock implements RealVariablePool
     @Override
     public RealVariable Acquire()
     {
+        isAcquired = true;
         return var;
     }
 
@@ -43,6 +46,18 @@ public class SingleRealVariablePoolMock implements RealVariablePool
     public RealVariablePool DeepCopy()
     {
         return new SingleRealVariablePoolMock(var);
+    }
+
+    @Override
+    public boolean HasAnyAvailableVariable()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean HasAvailableVariable(int number)
+    {
+        return number == 1 && isAcquired == false;
     }
     
 }

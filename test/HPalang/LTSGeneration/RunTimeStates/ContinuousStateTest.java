@@ -8,7 +8,8 @@ package HPalang.LTSGeneration.RunTimeStates;
 import HPalang.Core.PhysicalActor;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static TestUtilities.CoreUtility.assertEqualButNotSame;
+import static TestUtilities.CoreUtility.*;
+
 
 
 /**
@@ -22,8 +23,8 @@ public class ContinuousStateTest
     public void ClonesThePhysicalActorStates()
     {
         ContinuousState original = new ContinuousState();
-        PhysicalActorState actorState1 = new PhysicalActorState(new PhysicalActor("actor1"));       
-        PhysicalActorState actorState2 = new PhysicalActorState(new PhysicalActor("actor2"));
+        PhysicalActorState actorState1 = new PhysicalActorState(CreatePhysicalActor("actor1"));
+        PhysicalActorState actorState2 = new PhysicalActorState(CreatePhysicalActor("actor2"));
         
         original.AddPhysicalActorState(actorState1);        
         original.AddPhysicalActorState(actorState2);

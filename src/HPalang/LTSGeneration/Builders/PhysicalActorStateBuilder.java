@@ -9,6 +9,7 @@ import HPalang.Core.Mode;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.ValuationContainers.NullValutationContainer;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
+import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;
 import HPalang.LTSGeneration.State;
@@ -42,6 +43,7 @@ public class PhysicalActorStateBuilder
         PhysicalActorState state = new PhysicalActorState(actor);
         
         state.AddSubstate(new ValuationState( new NullValutationContainer()));
+        state.AddSubstate(new MessageQueueState());
         
         state.SetMode(mode);
         

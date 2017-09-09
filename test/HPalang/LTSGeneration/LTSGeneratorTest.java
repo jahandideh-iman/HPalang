@@ -14,8 +14,7 @@ import Mocks.SOSRuleMonitor;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
-import static TestUtilities.CoreUtility.CreateGlobalState;
-import static TestUtilities.CoreUtility.CreateSoftwareActorState;
+import static TestUtilities.CoreUtility.*;
 
 /**
  *
@@ -48,7 +47,7 @@ public class LTSGeneratorTest
         GlobalRunTimeState initialState = CreateGlobalState();
         
         GlobalRunTimeState transitionState = CreateGlobalState();
-        transitionState.DiscreteState().AddSoftwareActorState(new SoftwareActorState(new SoftwareActor("actor",0)));
+        transitionState.DiscreteState().AddSoftwareActorState(new SoftwareActorState(CreateSofwareActor("actor")));
         
         SOSRuleMock rule = new SOSRuleMock(new SoftwareLabel(),transitionState);        
         

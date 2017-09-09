@@ -29,6 +29,7 @@ import Mocks.EmptyStatement;
 import Mocks.FakeMessage;
 import Mocks.NullExpression;
 import static TestUtilities.CoreUtility.SimpleStateInfo;
+import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -85,8 +86,8 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         VariableParameter param1 = new VariableParameter(new IntegerVariable("param1"));
         VariableParameter param2 = new VariableParameter(new IntegerVariable("param2"));
         
-        VariableArgument arg1 = new VariableArgument(param1, new NullExpression("e1"));
-        VariableArgument arg2 = new VariableArgument(param2, new NullExpression("e2"));
+        VariableArgument arg1 = new VariableArgument(param1.Type(), new NullExpression("e1"));
+        VariableArgument arg2 = new VariableArgument(param2.Type(), new NullExpression("e2"));
         
         Message message = new FakeMessage(
                 StatementsFrom(new EmptyStatement("s1")),
@@ -117,8 +118,8 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         VariableParameter param1 = new VariableParameter(new IntegerVariable("param1"));
         VariableParameter param2 = new VariableParameter(new IntegerVariable("param2"));
         
-        VariableArgument arg1 = new VariableArgument(param1, new NullExpression("e1"));
-        VariableArgument arg2 = new VariableArgument(param2, new NullExpression("e2"));
+        VariableArgument arg1 = new VariableArgument(param1.Type(), new NullExpression("e1"));
+        VariableArgument arg2 = new VariableArgument(param2.Type(), new NullExpression("e2"));
         
         Message message = new FakeMessage(
                 StatementsFrom(new EmptyStatement("s1")),
@@ -143,7 +144,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
     public void AddsATearDownStatementAfterMessageBodyToRemoveMessageParametersFromValuation()
     {
         VariableParameter param = new VariableParameter(new IntegerVariable("param"));
-        VariableArgument arg = new VariableArgument(param, new NullExpression("e2"));
+        VariableArgument arg = new VariableArgument(param.Type(), new NullExpression("e2"));
         
         Message message = new FakeMessage(
                 StatementsFrom(new EmptyStatement("s1")),
@@ -198,9 +199,11 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         SoftwareActorState expectedActorState = expectedGlobalState.DiscreteState().FindActorState(senderState.SActor());
         MessagePacket packet =  expectedActorState.MessageQueueState().Messages().Dequeue();
         
-        for(VariableArgument argument : packet.Arguments().AsSet())
+        List<VariableParameter> parametersList = message.Parameters().AsList();
+        List<VariableArgument> argumentsList = packet.Arguments().AsList();
+        for(int i = 0 ; i < parametersList.size(); i++ )
             expectedActorState.ExecutionQueueState().Statements().Enqueue(
-                    new AssignmentStatement(argument.Parameter().Variable(), argument.Value()));
+                    new AssignmentStatement(parametersList.get(i).Variable(), argumentsList.get(i).Value()));
         
         expectedActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
         

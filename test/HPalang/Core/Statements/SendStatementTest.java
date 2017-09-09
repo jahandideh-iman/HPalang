@@ -28,6 +28,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static TestUtilities.CoreUtility.*;
 
 /**
  *
@@ -35,7 +36,7 @@ import static org.junit.Assert.*;
  */
 public class SendStatementTest
 {
-    SoftwareActor actor = new SoftwareActor("Actor", 0);
+    SoftwareActor actor = new SoftwareActor("Actor", EmptySoftwareActorType(), 0);
     
     @Test
     public void  StatementsWithEqualDataAreEqual()
@@ -51,18 +52,18 @@ public class SendStatementTest
     }
     
     @Test(expected = ArgumentsDoesNotMatchException.class)
-    public void  RaisesExceptionWhenTheArgumentsDoesNotMatchTheMessageParameters()
+    public void  RaisesExceptionWhenTheArgumentsDoesNotMatchTheMessageParametersType()
     {
         VariableParameter param = new VariableParameter( new IntegerVariable("var"));
-        VariableParameter anotherParam = new VariableParameter( new IntegerVariable("anotherVar"));
-        assertThat(param, is(not(equalTo(anotherParam))));
+        VariableParameter anotherParam = new VariableParameter( new FloatVariable("anotherVar"));
+        assertThat(param.Type(), not(equalTo(anotherParam.Type())));
 
         FakeMessage message = new FakeMessage();
         message.AddParameter(param);
         MessageLocator messageLocator = new DirectMessageLocator(message);
         
         MessageArguments arguments = new MessageArguments();
-        arguments.Add(new VariableArgument(anotherParam, new NullExpression()));
+        arguments.Add(new VariableArgument(anotherParam.Type(), new NullExpression()));
         
         SendStatement statement = new SendStatement(new DirectActorLocator(actor), messageLocator, arguments);       
     }   

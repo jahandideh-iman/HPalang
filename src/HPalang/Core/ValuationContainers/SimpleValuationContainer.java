@@ -87,13 +87,17 @@ public class SimpleValuationContainer extends Equalitable<SimpleValuationContain
     @Override
     public boolean Has(Variable var)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(var instanceof IntegerVariable)
+            return values.containsKey((IntegerVariable)var);
+        
+        return false;
     }
 
     @Override
     public void Remove(Variable var)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(var instanceof IntegerVariable)
+            values.remove((IntegerVariable)var);
     }
 
 }

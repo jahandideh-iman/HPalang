@@ -21,16 +21,6 @@ public class SoftwareActorState extends ActorState<SoftwareActorState>
         super(actor);
     }
     
-    public MessageQueueState MessageQueueState()
-    {
-        return FindSubState(MessageQueueState.class);
-    }
-        
-    public int GetMessageQueueCapacity()
-    {
-        return SActor().Capacity();
-    }
-    
     public SoftwareActor SActor()
     {
        return (SoftwareActor)Actor();

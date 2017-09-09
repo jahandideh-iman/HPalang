@@ -8,6 +8,7 @@ package HPalang.LTSGeneration.RunTimeStates.Event;
 import HPalang.Core.Equalitable;
 import HPalang.Core.MessagePacket;
 import HPalang.Core.SoftwareActor;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 
@@ -29,7 +30,7 @@ public class SendPacketAndResetNetworkAction extends Equalitable<SendPacketAndRe
     {
         globalState.NetworkState().SetIdle(true);
         
-        SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(packet.Receiver());
+        ActorState receiverState = globalState.FindActorState(packet.Receiver());
         
         receiverState.MessageQueueState().Messages().Enqueue(packet);
     }

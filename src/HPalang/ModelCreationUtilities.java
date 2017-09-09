@@ -120,7 +120,7 @@ public class ModelCreationUtilities
         
         for(VariableParameter parameter : messageLocator.Parameters().AsSet())
         {
-            arguments.Add(new VariableArgument(parameter, new VariableExpression(argumentVariables[i])));
+            arguments.Add(new VariableArgument(parameter.Type(), new VariableExpression(argumentVariables[i])));
             i++;
         }
         

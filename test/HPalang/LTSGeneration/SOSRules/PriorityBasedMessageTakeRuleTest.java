@@ -21,6 +21,7 @@ import static TestUtilities.NetworkingUtility.*;
 import static TestUtilities.CoreUtility.*;
 import Mocks.EmptyMessage;
 import static TestUtilities.CoreUtility.SimpleStateInfo;
+import java.util.List;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.*;
 import org.junit.Test;
@@ -65,9 +66,12 @@ public class PriorityBasedMessageTakeRuleTest extends SOSRuleTestFixture
         MessagePacket relatedPacket =  FindFirstPacketForMessage(expectedActorState.MessageQueueState().Messages(),message);
         expectedActorState.MessageQueueState().Messages().Remove(relatedPacket);
         
-        for(VariableArgument argument : relatedPacket.Arguments().AsSet())
+        List<VariableParameter> parametersList = message.Parameters().AsList();
+        List<VariableArgument> argumentsList = relatedPacket.Arguments().AsList();
+        for(int i = 0 ; i < parametersList.size(); i++ )
             expectedActorState.ExecutionQueueState().Statements().Enqueue(
-                    new AssignmentStatement(argument.Parameter().Variable(), argument.Value()));
+                    new AssignmentStatement(parametersList.get(i).Variable(), argumentsList.get(i).Value()));
+        
         
         expectedActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
         

@@ -12,11 +12,11 @@ package HPalang.Core;
 public class MessagePacket extends Equalitable<MessagePacket>
 {
     private final Actor sender;
-    private final SoftwareActor receiver;
+    private final Actor receiver;
     private final Message message;
     private final MessageArguments arguments;
 
-    public MessagePacket(Actor sender, SoftwareActor receiver, Message message, MessageArguments arguments)
+    public MessagePacket(Actor sender, Actor receiver, Message message, MessageArguments arguments)
     {
         this.sender = sender;
         this.receiver = receiver;
@@ -24,7 +24,7 @@ public class MessagePacket extends Equalitable<MessagePacket>
         this.arguments = arguments;
     }
     
-    public SoftwareActor Receiver()
+    public Actor Receiver()
     {
         return receiver;
     }

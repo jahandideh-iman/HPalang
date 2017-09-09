@@ -40,7 +40,7 @@ public class IfStatementRule extends SoftwareActorLevelRule
         SoftwareActor actor = actorState.SActor();
         
         IfStatement ifStatement = (IfStatement) newActorState.ExecutionQueueState().Statements().Dequeue();
-        if(ifStatement.Expression().IsComputable(null))
+        if(ifStatement.Expression().IsComputable(actorState.ValuationState().Valuation()))
         {
             ValuationContainer valuations = actorState.ValuationState().Valuation();
             

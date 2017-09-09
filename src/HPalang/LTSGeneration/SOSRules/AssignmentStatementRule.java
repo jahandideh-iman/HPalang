@@ -41,7 +41,7 @@ public class AssignmentStatementRule extends StatementRule<AssignmentStatement>
     {
         ValuationContainer valuation = FindValuation(actorState);
         
-        if(statement.Expression().IsComputable(null) == false)
+        if(statement.Expression().IsComputable(actorState.ValuationState().Valuation()) == false)
         {
             
             return new SoftwareLabel(Reset.From(

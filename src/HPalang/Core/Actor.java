@@ -19,6 +19,8 @@ public class Actor<T extends ActorType>
     private final T type; 
     
     private final String name;
+    private final int queueCapacity;
+    
     
     private final Map<Actor, CommunicationType> communicationTypes = new HashMap<>();
     
@@ -26,11 +28,17 @@ public class Actor<T extends ActorType>
     private final Map<MessageHandler, Integer> messageHandlersPriority = new HashMap<>();
     private final Map<InstanceParameter, Actor> instanceArguments = new HashMap<>();
     private final Map<DelegationParameter, Delegation> delegationArguments = new HashMap<>();
-        
+       
     public Actor(String name, T type)
+    {
+        this(name, type, 0);
+    }
+        
+    public Actor(String name, T type, int queueCapacity)
     {
         this.name = name;
         this.type = type;
+        this.queueCapacity = queueCapacity;
     }
     
     public T Type()
@@ -40,6 +48,11 @@ public class Actor<T extends ActorType>
     public String Name()
     {
         return name;
+    }
+    
+    public int QueueCapacity()
+    {
+        return queueCapacity;
     }
     
     public void BindInstance(InstanceParameter parameter, Actor instance, CommunicationType communicationType)
@@ -98,6 +111,4 @@ public class Actor<T extends ActorType>
         assert (type.FindMessageHandler(handler.GetID()) != null);
         messageHandlersPriority.put(handler, priority);
     }
-    
-
 }

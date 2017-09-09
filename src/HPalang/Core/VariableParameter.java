@@ -28,6 +28,11 @@ public class VariableParameter extends Equalitable<VariableParameter>
     {
         return variable;
     }
+    
+    public Variable.Type Type()
+    {
+        return variable.type();
+    }
 
     @Override
     protected int InternalHashCode()

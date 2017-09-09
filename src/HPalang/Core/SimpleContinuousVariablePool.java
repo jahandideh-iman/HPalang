@@ -40,7 +40,7 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     @Override
     public RealVariable Acquire()
     {
-        if(variables.isEmpty())
+        if(!HasAnyAvailableVariable())
             throw new RuntimeException("The is no real variable to acquire");
         else
         {
@@ -82,5 +82,17 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     public RealVariablePool DeepCopy()
     {
         return new SimpleContinuousVariablePool(this);
+    }
+
+    @Override
+    public boolean HasAnyAvailableVariable()
+    {
+        return variables.isEmpty() == false;
+    }
+
+    @Override
+    public boolean HasAvailableVariable(int number)
+    {
+        return variables.size() >= number;
     }
 }

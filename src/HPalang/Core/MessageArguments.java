@@ -6,6 +6,8 @@
 package HPalang.Core;
 
 import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -14,8 +16,7 @@ import java.util.Set;
  */
 public class MessageArguments extends Equalitable<MessageArguments>
 {
-
-    private final Set<VariableArgument> arguments = new HashSet<>();
+    private final List<VariableArgument> arguments = new LinkedList<>();
     
     public void Add(VariableArgument argument)
     {
@@ -24,19 +25,29 @@ public class MessageArguments extends Equalitable<MessageArguments>
     
     public boolean Match(MessageParameters parameters)
     {
-        Set<VariableParameter> params = new HashSet<>();
-        arguments.forEach(a -> params.add(a.Parameter()));
+        List<VariableParameter> paramsList = parameters.AsList();
         
-        return params.equals(parameters.AsSet());
+        if(paramsList.size() != arguments.size())
+            return false;
+        
+        for(int i = 0 ; i< arguments.size(); i++)
+            if(DoesNotHaveSameType(arguments.get(i), paramsList.get(i)))
+                return false;
+        return true;
+        
     }
     
-    public VariableArgument ArgumentFor(VariableParameter parameter)
+    private boolean DoesNotHaveSameType(VariableArgument argument, VariableParameter parameter)
     {
-       for(VariableArgument arg : arguments)
-           if(arg.Parameter().equals(parameter))
-               return arg;
-       return null;
+        return argument.Type().equals(parameter.Type()) == false;
     }
+//    private VariableArgument ArgumentFor(VariableParameter parameter)
+//    {
+//       for(VariableArgument arg : arguments)
+//           if(arg.Parameter().equals(parameter))
+//               return arg;
+//       return null;
+//    }
 
     @Override
     protected boolean InternalEquals(MessageArguments other)
@@ -50,9 +61,9 @@ public class MessageArguments extends Equalitable<MessageArguments>
         return 0;
     }
     
-    public Set<VariableArgument> AsSet()
+    public List<VariableArgument> AsList()
     {
-        return new HashSet<>(arguments);
+        return arguments;
     }
     
     public static MessageArguments From(VariableArgument ... args)

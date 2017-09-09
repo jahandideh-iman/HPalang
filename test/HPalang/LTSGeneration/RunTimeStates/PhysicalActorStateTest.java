@@ -13,6 +13,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static TestUtilities.CoreUtility.*;
 
 /**
  *
@@ -23,7 +24,7 @@ public class PhysicalActorStateTest
     @Test
     public void PhysicalActorStatesWithEqualDataAreEqual()
     {
-        PhysicalActor actor = new PhysicalActor("actor");
+        PhysicalActor actor = CreatePhysicalActor("Actor");
         Mode mode = new ModeBuilder().Build();
         
         PhysicalActorState state1 = new PhysicalActorState(actor);
@@ -38,8 +39,8 @@ public class PhysicalActorStateTest
     @Test
     public void PhysicalActorStatesWithDifferentActorsAreNotEqual()
     {
-        PhysicalActor actor1 = new PhysicalActor("actor1");        
-        PhysicalActor actor2 = new PhysicalActor("actor2");
+        PhysicalActor actor1 = CreatePhysicalActor("Actor1");    
+        PhysicalActor actor2 = CreatePhysicalActor("Actor2");
 
         PhysicalActorState state1 = new PhysicalActorState(actor1);
         PhysicalActorState state2 = new PhysicalActorState(actor2);
@@ -50,7 +51,7 @@ public class PhysicalActorStateTest
     @Test
     public void PhysicalActorStatesWithDifferentModeAreNotEqual()
     {
-        PhysicalActor actor = new PhysicalActor("actor");
+        PhysicalActor actor = CreatePhysicalActor("Actor");
         
         Mode mode1 = new ModeBuilder().WithInvarient("inv1").WithName("mode1").Build();    
         Mode mode2 = new ModeBuilder().WithInvarient("inv2").WithName("mode2").Build();
@@ -67,7 +68,7 @@ public class PhysicalActorStateTest
     @Test
     public void CloneIsCorrect()
     {
-        PhysicalActor actor = new PhysicalActor("actor");
+        PhysicalActor actor = CreatePhysicalActor("Actor");
         
         Mode mode1 = new ModeBuilder().Build();    
 
