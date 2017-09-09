@@ -8,6 +8,7 @@ package HPalang.Core.ActorLocators;
 import HPalang.Core.Actor;
 import HPalang.Core.ActorLocator;
 import HPalang.Core.InstanceParameter;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 
 /**
  *
@@ -23,9 +24,9 @@ public class ParametricActorLocator extends ActorLocator<ParametricActorLocator>
     }
     
     @Override
-    public Actor GetActor()
+    public Actor Locate(ActorState actorState)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return actorState.Actor().GetInstanceFor(instanceParameter);
     }
 
     @Override

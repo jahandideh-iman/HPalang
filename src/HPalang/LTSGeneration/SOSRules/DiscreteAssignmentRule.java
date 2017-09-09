@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
-import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;

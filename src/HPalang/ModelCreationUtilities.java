@@ -34,6 +34,7 @@ import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Variable;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
+import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
 import java.lang.reflect.InvocationTargetException;
@@ -46,8 +47,8 @@ public class ModelCreationUtilities
 {
     public static void AddPort(ActorType actorType, String portName, Variable targetVariable)
     {
-        MessageHandler port = new MessageHandler();
-        IntegerVariable localVariable =new IntegerVariable("local_" + portName); 
+        MessageHandler port = new MessageHandler(Message.MessageType.Data);
+        Variable localVariable =CreateVariable(targetVariable.type(),"local_" + portName); 
         port.Parameters().Add(new VariableParameter(localVariable));
         port.AddStatement(new AssignmentStatement(targetVariable, new VariableExpression(localVariable)));
         
@@ -149,5 +150,22 @@ public class ModelCreationUtilities
                 new DelegationActorLocator(delegationParameter), 
                 new DelegationMessageLocator(delegationParameter), 
                 argumentVariables);
+    }
+    
+    
+    public static Variable CreateVariable(Variable.Type type, String name)
+    {
+        switch(type)
+        {
+            case floatingPoint:
+                return new FloatVariable(name);
+            case integer:
+                return new IntegerVariable(name);
+            case real:
+                return new RealVariable(name);
+        }
+        
+        throw new RuntimeException("Unknow variable type.");
+        
     }
 }

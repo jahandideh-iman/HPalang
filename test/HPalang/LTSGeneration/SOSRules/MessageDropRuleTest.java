@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import Builders.SoftwareActorBuilder;
-import Builders.SoftwareActorStateBuilder;
+import HPalang.LTSGeneration.Builders.SoftwareActorStateBuilder;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
@@ -38,8 +38,8 @@ public class MessageDropRuleTest extends SOSRuleTestFixture
     @Test
     public void ForEachActorStateIfThereIsSendStatementAndRecieverCapacityIsFullThenDropsTheMessage()
     {
-        SoftwareActor actor1 = new SoftwareActorBuilder().WithID("actor1").WithCapacity(0).WithHandler("a", new MessageHandler()).Build();
-        SoftwareActor actor2 = new SoftwareActorBuilder().WithID("actor2").WithCapacity(0).WithHandler("b", new MessageHandler()).Build();
+        SoftwareActor actor1 = new SoftwareActorBuilder().WithID("actor1").WithCapacity(0).WithHandler("a", new MessageHandler(Message.MessageType.Data)).Build();
+        SoftwareActor actor2 = new SoftwareActorBuilder().WithID("actor2").WithCapacity(0).WithHandler("b", new MessageHandler(Message.MessageType.Data)).Build();
         
         Message messageTo2 = new NormalMessage(actor2.Type().FindMessageHandler("b"));
         Message messageTo1 = new NormalMessage(actor1.Type().FindMessageHandler("a"));

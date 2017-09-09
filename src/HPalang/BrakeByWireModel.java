@@ -95,12 +95,12 @@ public class BrakeByWireModel
         FillFleshForGlobalBrakeControllerType(globalBrakeControllerType, wheelControllerType.FindMessageHandler(Wheel_Controller__apply_torque_handler));
         
         PhysicalActor brake_pedal = new PhysicalActor("brake", brakeType);
-        SoftwareActor global_brake_controller = new SoftwareActor("global_brake_controller", globalBrakeControllerType);
+        SoftwareActor global_brake_controller = new SoftwareActor("global_brake_controller", globalBrakeControllerType, 10);
         
-        SoftwareActor wheel_controller_FR = new SoftwareActor("wheel_controller_FR",wheelControllerType);     
-        SoftwareActor wheel_controller_FL = new SoftwareActor("wheel_controller_FL",wheelControllerType);
-        SoftwareActor wheel_controller_RR = new SoftwareActor("wheel_controller_RR", wheelControllerType);
-        SoftwareActor wheel_controller_RL = new SoftwareActor("wheel_controller_RL", wheelControllerType);
+        SoftwareActor wheel_controller_FR = new SoftwareActor("wheel_controller_FR",wheelControllerType, 10);     
+        SoftwareActor wheel_controller_FL = new SoftwareActor("wheel_controller_FL",wheelControllerType, 10);
+        SoftwareActor wheel_controller_RR = new SoftwareActor("wheel_controller_RR", wheelControllerType, 10);
+        SoftwareActor wheel_controller_RL = new SoftwareActor("wheel_controller_RL", wheelControllerType, 10);
 
         PhysicalActor wheel_FR = new PhysicalActor("wheel_FR", wheelType);       
         PhysicalActor wheel_FL = new PhysicalActor("wheel_FL", wheelType);
@@ -134,6 +134,7 @@ public class BrakeByWireModel
         definition.AddType(wheelControllerType);
         definition.AddType(brakeType);
         definition.AddType(globalBrakeControllerType);
+        definition.AddType(clockType);
         
         definition.AddActor(brake_pedal);
         definition.AddActor(global_brake_controller);
@@ -200,7 +201,12 @@ public class BrakeByWireModel
     private void FillSkeletonForWheelType(PhysicalActorType wheelType, ActorType wheelControllerType)
     {
         wheelType.AddInstanceParameter(new InstanceParameter(Wheel__controller_instance, wheelControllerType));
-        wheelType.AddDelegationParameter(new DelegationParameter(Wheel__rpm_delegation)); // parameters
+        wheelType.AddDelegationParameter(
+                new DelegationParameter(
+                        Wheel__rpm_delegation, 
+                        DelegationParameter.TypesFrom(Variable.Type.floatingPoint)
+                )
+        ); 
                 
         wheelType.AddVariable(new RealVariable("timer"));
         wheelType.AddVariable(new RealVariable("rpm"));
@@ -254,7 +260,7 @@ public class BrakeByWireModel
         wheelControllerType.AddVariable(new FloatVariable("wheel_rpm"));
         wheelControllerType.AddVariable(new FloatVariable("slip_rate"));
         
-        MessageHandler applyTorque = new MessageHandler();
+        MessageHandler applyTorque = new MessageHandler(Message.MessageType.Control);
         
         AddParameter(applyTorque, "requested_torque", FloatVariable.class);
         AddParameter(applyTorque, "vehicle_speed", FloatVariable.class);
@@ -343,7 +349,7 @@ public class BrakeByWireModel
         AddPort(globalBrakeControllerType, Global_Brake_Controller__wheel_rpm_RL_port, globalBrakeControllerType.FindVariable("wheel_rpm_RL"));
         AddPort(globalBrakeControllerType, Global_Brake_Controller__brake_percent_port, globalBrakeControllerType.FindVariable("brake_percent"));
         
-        globalBrakeControllerType.AddMessageHandler(Global_Brake_Controller__control_handler, new MessageHandler());
+        globalBrakeControllerType.AddMessageHandler(Global_Brake_Controller__control_handler, new MessageHandler(Message.MessageType.Control));
     }
 
     private void FillFleshForGlobalBrakeControllerType(SoftwareActorType globalBrakeControllerType, MessageHandler wheelControllerApply)

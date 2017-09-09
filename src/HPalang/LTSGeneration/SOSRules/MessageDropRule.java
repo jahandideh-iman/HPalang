@@ -29,7 +29,7 @@ public class MessageDropRule extends SoftwareActorLevelRule
         
         SendStatement sendStatement = (SendStatement)actorState.FindSubState(ExecutionQueueState.class).Statements().Head();
         
-        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().GetActor();   
+        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().Locate(actorState);   
         SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(receiver);
         
         MessageQueueState queueState = receiverState.FindSubState(MessageQueueState.class);

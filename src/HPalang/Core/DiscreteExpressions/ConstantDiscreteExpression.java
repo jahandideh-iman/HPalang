@@ -6,7 +6,7 @@
 package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.Expression;
-import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
 /**

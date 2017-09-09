@@ -5,13 +5,16 @@
  */
 package HPalang.Core;
 
-import HPalang.LTSGeneration.RunTimeStates.ActorState;
-
 /**
  *
  * @author Iman Jahandideh
  */
-public abstract class ActorLocator<T extends ActorLocator> extends Equalitable<T>
-{
-    public abstract Actor Locate(ActorState actorState);  
-}
+    public class ShouldNotBeUsedException extends RuntimeException
+    {
+
+        public ShouldNotBeUsedException()
+        {
+            super("This operation should not be used.");
+        }
+        
+    }

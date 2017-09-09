@@ -7,6 +7,7 @@ package Mocks;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ActorLocator;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 
 /**
  *
@@ -22,7 +23,7 @@ public class DirectActorLocator extends ActorLocator<DirectActorLocator>
     }
     
     @Override
-    public Actor GetActor()
+    public Actor Locate(ActorState actorState)
     {
         return actor;
     }

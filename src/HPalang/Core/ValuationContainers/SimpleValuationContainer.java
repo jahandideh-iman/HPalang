@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.Core.ValuationContainers;
 
+import HPalang.Core.Equalitable;
+import HPalang.Core.ValuationContainer;
+import HPalang.Core.Variable;
 import HPalang.Core.Variables.IntegerVariable;
 import java.util.HashMap;
 import java.util.Iterator;

@@ -5,6 +5,7 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.Messages.NormalMessage;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.Map;
@@ -20,7 +21,12 @@ public class MessageHandler
     private SoftwareActor owner;
     private String id;
     private final MessageParameters parameters = new MessageParameters();
-      
+    private final Message.MessageType messageType;
+
+    public MessageHandler(Message.MessageType messageType)
+    {
+        this.messageType = messageType;
+    }  
     public void SetOwner(SoftwareActor owner)
     {
         this.owner = owner;
@@ -61,5 +67,10 @@ public class MessageHandler
     public  MessageParameters Parameters()
     {
         return parameters;
+    }
+
+    public Message.MessageType MessageType()
+    {
+        return messageType;
     }
 }

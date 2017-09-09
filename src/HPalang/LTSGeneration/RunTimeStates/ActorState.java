@@ -31,6 +31,11 @@ public abstract class ActorState<T extends ActorState> extends  CompositeStateT<
     {
         return FindSubState(ExecutionQueueState.class);
     }
+    
+    public ValuationState ValuationState()
+    {
+        return FindSubState(ValuationState.class);
+    }
 
     @Override
     protected boolean DataEquals(T other)

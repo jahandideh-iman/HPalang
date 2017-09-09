@@ -67,7 +67,7 @@ public class ActorTest
         
         Actor actor = new Actor("actor", type);
         Actor delegationInstance = new Actor("instance",  CreateEmptyType());
-        MessageHandler delegationMessageHandler = new MessageHandler();
+        MessageHandler delegationMessageHandler = CreateMessageHandler();
         Delegation delagation = new Delegation(delegationInstance, delegationMessageHandler);
         
         actor.BindDelegation(delegationParameter, delagation, CommunicationType.CAN);
@@ -84,5 +84,10 @@ public class ActorTest
     private ActorType CreateType(String name)
     {
         return new TestActorType(name);
+    }
+    
+    private MessageHandler CreateMessageHandler()
+    {
+        return new MessageHandler(Message.MessageType.Data);
     }
 }

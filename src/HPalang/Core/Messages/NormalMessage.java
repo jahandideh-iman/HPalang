@@ -24,6 +24,12 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
     {
         this.messageHandler = messageHandler;
     }
+    
+    @Override
+    public MessageType MessageType()
+    {
+        return messageHandler.MessageType();
+    }
    
     @Override
     public Queue<Statement> GetMessageBody()
@@ -46,13 +52,13 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
     @Override
     protected boolean InternalEquals(NormalMessage other)
     {
-        return other.messageHandler.equals(this.messageHandler);
+        return this.messageHandler.equals(other.messageHandler);
     }
 
     @Override
     protected int InternalHashCode()
     {
-        return messageHandler.hashCode();
+        return 0;
     }
     
     @Override
@@ -67,9 +73,4 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
         return messageHandler.Parameters();
     }
 
-    @Override
-    public MessageType MessageType()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 }

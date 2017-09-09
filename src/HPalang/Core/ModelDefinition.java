@@ -30,9 +30,14 @@ public class ModelDefinition
         this.mainBlock = mainBlock;
     }
 
-    public List<SoftwareActor> GetActors()
+    public List<SoftwareActor> SoftwareActors()
     {
         return softwareActors;
+    }
+    
+    public List<PhysicalActor> PhysicalActors()
+    {
+        return physicalActors;
     }
 
     public Queue<SendStatement> GetInitialSends()

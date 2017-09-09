@@ -19,7 +19,6 @@ public class VariablePoolState extends SimpleState<VariablePoolState>
 
     public VariablePoolState()
     {
-        pool = new NullRealVariablePool();
     }
         
     public VariablePoolState(RealVariablePool pool)

@@ -10,6 +10,7 @@ import HPalang.Core.PhysicalActor;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.CompositeStateT;
 import HPalang.Core.Statements.SendStatement;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,12 +47,12 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
     
     public ActorState FindActorState(Actor actor)
     {
-        ActorState state = null;
-        state = DiscreteState().FindActorState((SoftwareActor)actor);
-        if(state == null)
-            state = ContinuousState().FindActorState((PhysicalActor)actor);
+        if(actor instanceof SoftwareActor)
+            return DiscreteState().FindActorState((SoftwareActor)actor);
+        else if (actor instanceof PhysicalActor)
+            return ContinuousState().FindActorState((PhysicalActor)actor);
         
-        return state;
+        return null;
     }
 
     public void AddSendStatement(SendStatement sendStatement)

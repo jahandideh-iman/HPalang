@@ -8,6 +8,7 @@ package HPalang.Core;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -19,6 +20,7 @@ import java.util.List;
  */
 public class DelegationParameter extends Equalitable<DelegationParameter>
 {
+
     private final String name;
     
     private final List<Variable.Type> paramterTypes = new LinkedList<>();
@@ -87,4 +89,9 @@ public class DelegationParameter extends Equalitable<DelegationParameter>
         return cachedParameters;
     }
 
+    public static Collection<Variable.Type> TypesFrom(Variable.Type ... types)
+    {
+        return Arrays.asList(types);
+    }
+        
 }

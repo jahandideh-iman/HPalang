@@ -44,7 +44,7 @@ public class HPalangToCompositionalSXConvertor
             systemComp.AddParameter(new LabelParameter(send.GetLabel(), true));
         }
 
-        for(SoftwareActor actor : def.GetActors())
+        for(SoftwareActor actor : def.SoftwareActors())
         {
             ActorModelData actorData = hpalangModelData.GetActorData(actor);
             ActorConvertor convertor = new ActorConvertor(actorData, model);

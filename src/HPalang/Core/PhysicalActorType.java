@@ -16,7 +16,7 @@ import java.util.Map;
 public class PhysicalActorType extends ActorType
 {
     private final Map<String,Mode> modes = new HashMap<>();
-    private Mode initialMode;
+    private Mode initialMode = Mode.None();
 
     public PhysicalActorType(String name)
     {
@@ -33,6 +33,11 @@ public class PhysicalActorType extends ActorType
         this.initialMode = mode;
     }
 
+    public Mode InitialMode()
+    {
+        return initialMode;
+    }
+    
     public Mode FindMode(String modeName)
     {
         return modes.get(modeName);

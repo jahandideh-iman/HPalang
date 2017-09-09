@@ -23,4 +23,9 @@ public class PhysicalActor extends Actor<PhysicalActorType>
     {
         super(name, type);
     }
+    
+    public Mode InitialMode()
+    {
+        return Type().InitialMode();
+    }
 }

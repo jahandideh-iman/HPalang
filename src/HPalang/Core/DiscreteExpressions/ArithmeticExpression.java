@@ -9,7 +9,7 @@ import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.AddOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.SubtractOperator;
 import HPalang.Core.Expression;
-import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
 /**

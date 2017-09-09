@@ -36,14 +36,13 @@ public class SimpleContinuousVariablePoolTest
     }
     
     
-    @Test
-    public void IfPoolIsEmptyWhenAcquiredThenReturnNull()
+    @Test(expected = RuntimeException.class)
+    public void IfPoolIsEmptyWhenAcquiredThenThrowsExpection()
     {
         SimpleContinuousVariablePool pool = new SimpleContinuousVariablePool(0);      
 
         RealVariable var = pool.Acquire();
         
-        assertThat(var,is(nullValue()));
     }
     
     @Test

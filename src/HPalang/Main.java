@@ -13,7 +13,7 @@ import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.HybridAutomataGeneration.SOSRules.ConversionRule;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.LTSUtility;
+import HPalang.LTSGeneration.ModeDefinitionToGlobalStateConvertor;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Transition;
@@ -61,8 +61,8 @@ public class Main {
         //hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
         
          
-        
-        LabeledTransitionSystem lts =  tierOneLTSGenerator.Generate(LTSUtility.FromModelDefinition(definition));
+        ModeDefinitionToGlobalStateConvertor convertor = new ModeDefinitionToGlobalStateConvertor();
+        LabeledTransitionSystem lts =  tierOneLTSGenerator.Generate(convertor.Convert(definition));
         
         FileWriter writer = new FileWriter("output/");
         
@@ -88,21 +88,6 @@ public class Main {
     private static InputStream Read(String filePath) throws FileNotFoundException
     {
         return new FileInputStream(filePath);
-    }
-    
-    private static LTSGenerator CreateTierTwoLTSGenrator()
-    {
-        LTSGenerator genetator = new LTSGenerator();
-        
-        genetator.AddSOSRule(new DelayStatementRule());
-        genetator.AddSOSRule(new MessageSendRule());
-        genetator.AddSOSRule(new MessageDropRule());
-        genetator.AddSOSRule(new DiscreteAssignmentRule());
-        genetator.AddSOSRule(new IfStatementRule());
-        genetator.AddSOSRule(new ResumeStatementRule());
-
-        
-        return genetator;
     }
     
     private static LTSGenerator CreateTierOneLTSGenrator()

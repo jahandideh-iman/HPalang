@@ -73,6 +73,7 @@ public class SendStatement extends AbstractStatement<SendStatement>
     @Override
     public String toString()
     {
-        return "(" + receiverLocator.GetActor().Name() + "!" + messageLocator.toString() + ")";
+        return "sendStatement";
+        //return "(" + receiverLocator.Locate(error).Name() + "!" + messageLocator.toString() + ")";
     }
 }

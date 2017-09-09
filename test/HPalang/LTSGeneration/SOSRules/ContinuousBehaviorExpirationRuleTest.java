@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import Builders.ModeBuilder;
-import Builders.PhysicalActorStateBuilder;
+import HPalang.LTSGeneration.Builders.PhysicalActorStateBuilder;
 import Builders.StateInfoBuilder;
 import HPalang.Core.Mode;
 import HPalang.Core.PhysicalActor;

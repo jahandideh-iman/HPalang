@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.Variable;
 import HPalang.Core.Variables.IntegerVariable;
@@ -18,15 +18,22 @@ import java.util.Map;
  */
 public class ValuationState extends SimpleState<ValuationState>
 {
-    private ValuationContainer valuation = new SimpleValuationContainer();
+    private ValuationContainer  valuation;
     
     public ValuationState()
     {
         
     }
+    
+    public ValuationState(ValuationContainer valuation)
+    {
+        this.valuation = valuation;
+    }
         
     public ValuationState(Map<IntegerVariable, Integer> initialValuations)
     {
+        if(valuation == null)
+            valuation = new SimpleValuationContainer();
         valuation.Add(initialValuations);
     }
     

@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import Builders.SoftwareActorBuilder;
-import Builders.SoftwareActorStateBuilder;
+import HPalang.LTSGeneration.Builders.SoftwareActorStateBuilder;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
 import HPalang.Core.SoftwareActor;

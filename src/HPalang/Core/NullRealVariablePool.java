@@ -17,13 +17,13 @@ public class NullRealVariablePool implements RealVariablePool
     @Override
     public RealVariable Acquire()
     {
-        return null;
+        throw new ShouldNotBeUsedException();
     }
 
     @Override
     public void Release(RealVariable variable)
     {
-       
+       throw new ShouldNotBeUsedException();
     }
 
     @Override

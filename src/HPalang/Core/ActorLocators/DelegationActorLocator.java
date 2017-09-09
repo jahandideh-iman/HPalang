@@ -8,6 +8,7 @@ package HPalang.Core.ActorLocators;
 import HPalang.Core.Actor;
 import HPalang.Core.ActorLocator;
 import HPalang.Core.DelegationParameter;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 
 /**
  *
@@ -24,21 +25,21 @@ public class DelegationActorLocator extends ActorLocator<DelegationActorLocator>
     
     
     @Override
-    public Actor GetActor()
+    public Actor Locate(ActorState actorState)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return actorState.Actor().GetDelegationFor(delegationParameter).Actor();
     }
 
     @Override
     protected boolean InternalEquals(DelegationActorLocator other)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return delegationParameter.equals(other.delegationParameter);
     }
 
     @Override
     protected int InternalHashCode()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0;
     }
     
 }

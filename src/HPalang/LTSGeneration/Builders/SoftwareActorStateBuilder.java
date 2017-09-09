@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Builders;
+package HPalang.LTSGeneration.Builders;
 
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Message;
@@ -26,8 +26,6 @@ public class SoftwareActorStateBuilder
     private boolean isSuspended = false;
     
 
-    private final Queue<Message> lowPriorityMessages = new Queue<>();
-    
     private final Queue<Statement> statements = new Queue<>();
 
     public SoftwareActorStateBuilder WithActor(SoftwareActor actor)
@@ -36,11 +34,6 @@ public class SoftwareActorStateBuilder
         return this;
     }
     
-    private SoftwareActorStateBuilder EnqueueLowPriorityMessage(Message message)
-    {
-        lowPriorityMessages.Enqueue(message);
-        return this;
-    }
        
     public SoftwareActorStateBuilder SetSuspended(boolean suspended)
     {
@@ -65,8 +58,6 @@ public class SoftwareActorStateBuilder
         actorState.AddSubstate(executionQueueState);
         actorState.AddSubstate(valuationState);
         
-        
-        //messageQueueState.Messages().Enqueue(lowPriorityMessages);
         executionQueueState.Statements().Enqueue(statements);
         
         actorState.SetSuspended(isSuspended);

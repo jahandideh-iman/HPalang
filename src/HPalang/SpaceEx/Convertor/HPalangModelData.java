@@ -32,13 +32,13 @@ public class HPalangModelData
     
     public HPalangModelData(ModelDefinition hpalangModel)
     {
-        for(SoftwareActor actor : hpalangModel.GetActors())
+        for(SoftwareActor actor : hpalangModel.SoftwareActors())
         {
             ActorModelData actorData = new ActorModelData(actor);
             actorsData.put(actor,actorData);
         }
         
-//        for(SoftwareActor actor : hpalangModel.GetActors())
+//        for(SoftwareActor actor : hpalangModel.SoftwareActors())
 //            for(MessageHandler handler : actor.GetMessageHandlers())
 //                ProcessStatements(handler.GetBody(), actor, null);
                 

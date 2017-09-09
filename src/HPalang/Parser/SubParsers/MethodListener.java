@@ -5,6 +5,7 @@
  */
 package HPalang.Parser.SubParsers;
 
+import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.Parser.antlr.HPalangParser;
@@ -20,7 +21,7 @@ public class MethodListener extends InnerListener<Method_defContext>
     public MethodListener(Method_defContext ctx)
     {
         super(ctx);
-        handler = new MessageHandler();
+        handler = new MessageHandler(Message.MessageType.Invalid);
     }
 
     @Override

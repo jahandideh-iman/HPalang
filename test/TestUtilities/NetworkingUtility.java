@@ -23,6 +23,7 @@ import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import Mocks.DirectActorLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import Mocks.EmptyMessage;
 import Mocks.NullExpression;
 
@@ -106,11 +107,11 @@ public class NetworkingUtility
         return packet;
     }
     
-    static public MessagePacket MessagePacket(Actor sender,SendStatement sendStatement)
+    static public MessagePacket MessagePacket(ActorState senderState,SendStatement sendStatement)
     {
         return NetworkingUtility.MessagePacket(
-                sender, 
-                (SoftwareActor)sendStatement.ReceiverLocator().GetActor(), 
+                senderState.Actor(), 
+                (SoftwareActor)sendStatement.ReceiverLocator().Locate(senderState), 
                 sendStatement.MessageLocator().Get(null), 
                 sendStatement.Arguments());
 

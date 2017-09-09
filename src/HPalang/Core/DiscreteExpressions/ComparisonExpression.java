@@ -12,7 +12,7 @@ import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserEqualOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserOperator;
 import HPalang.Core.Expression;
-import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
 /**

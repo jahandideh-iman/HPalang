@@ -9,6 +9,7 @@ import HPalang.Core.Actor;
 import HPalang.Core.DelegationParameter;
 import HPalang.Core.Message;
 import HPalang.Core.MessageParameters;
+import HPalang.Core.Messages.NormalMessage;
 
 /**
  *
@@ -26,7 +27,7 @@ public class DelegationMessageLocator extends MessageLocatorT<DelegationMessageL
     @Override
     public Message Get(Actor actor)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return new NormalMessage(actor.GetDelegationFor(delegationParameter).MessageHandler());
     }
     
     @Override

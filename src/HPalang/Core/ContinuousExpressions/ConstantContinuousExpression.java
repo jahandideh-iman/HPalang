@@ -6,13 +6,14 @@
 package HPalang.Core.ContinuousExpressions;
 
 import HPalang.Core.Expression;
-import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
 /**
  *
  * @author Iman Jahandideh
  */
+
 public class ConstantContinuousExpression extends ContinuousExpressionT<ConstantContinuousExpression>
 {
     private final float constant;
@@ -60,7 +61,7 @@ public class ConstantContinuousExpression extends ContinuousExpressionT<Constant
     @Override
     public Expression PartiallyEvaluate(ValuationContainer valuations)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this;
     }
     
 }

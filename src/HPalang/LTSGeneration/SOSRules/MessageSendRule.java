@@ -17,13 +17,14 @@ import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
-import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.Labels.Reset;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.TransitionCollector;
 import java.util.HashSet;
@@ -34,17 +35,17 @@ import org.antlr.v4.runtime.misc.Pair;
  *
  * @author Iman Jahandideh
  */
-public class MessageSendRule extends SoftwareActorLevelRule
+public class MessageSendRule extends ActorLevelRule
 {
     @Override
-    protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
+    protected boolean IsRuleSatisfied(ActorState actorState, GlobalRunTimeState globalState)
     {
         if((actorState.ExecutionQueueState().Statements().Head() instanceof SendStatement) == false)
             return false;
         
         SendStatement sendStatement = (SendStatement)actorState.ExecutionQueueState().Statements().Head();
         
-        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().GetActor();
+        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().Locate(actorState);
         SoftwareActorState receiverState = globalState.DiscreteState().FindActorState(receiver);
         
         MessageQueueState queueState = receiverState.MessageQueueState();
@@ -52,14 +53,14 @@ public class MessageSendRule extends SoftwareActorLevelRule
     }
 
     @Override
-    protected void ApplyToActorState(SoftwareActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
+    protected void ApplyToActorState(ActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
 
-        SoftwareActorState senderState = newGlobalState.DiscreteState().FindActorState(actorState.SActor());
+        ActorState senderState = newGlobalState.FindActorState(actorState.Actor());
         SendStatement sendStatement = (SendStatement)senderState.ExecutionQueueState().Statements().Dequeue();
         
-        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().GetActor();
+        SoftwareActor receiver = (SoftwareActor) sendStatement.ReceiverLocator().Locate(actorState);
         SoftwareActorState receiverState = newGlobalState.DiscreteState().FindActorState(receiver);
         MessageQueueState reciverMessageQueueState = receiverState.MessageQueueState();
         
@@ -76,13 +77,13 @@ public class MessageSendRule extends SoftwareActorLevelRule
         
         
         MessagePacket packet = new MessagePacket(
-                senderState.SActor(), 
+                senderState.Actor(), 
                 receiverState.SActor(), 
                 sendStatement.MessageLocator().Get(actorState.Actor()), 
                 maximalEvaluatoionReslut.a
         );
         
-        CommunicationType communicationType = senderState.SActor().CommunicationTypeFor(receiverState.SActor());
+        CommunicationType communicationType = senderState.Actor().CommunicationTypeFor(receiverState.SActor());
         
         switch (communicationType) {
             case CAN:

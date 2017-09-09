@@ -28,7 +28,7 @@ public class AssignmentStatementRule extends StatementRule<AssignmentStatement>
     @Override
     protected void ApplyStatement(ActorState newActorState, AssignmentStatement statement)
     {
-        if(statement.Expression().IsComputable(null))
+        if(statement.Expression().IsComputable(newActorState.ValuationState().Valuation()))
         {
             ValuationContainer valuation = FindValuation(newActorState);
             
@@ -58,12 +58,7 @@ public class AssignmentStatementRule extends StatementRule<AssignmentStatement>
 
     private ValuationContainer FindValuation(ActorState actorState)
     {
-        ValuationState valuationState = (ValuationState) actorState.FindSubState(ValuationState.class);
-        
-        if(valuationState == null)
-            return null;
-        
-        return valuationState.Valuation();
+        return actorState.ValuationState().Valuation();
     }
     
 }

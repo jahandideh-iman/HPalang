@@ -77,7 +77,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
 
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
-        MessagePacket expectedPacket = MessagePacket(sender, sendStatement);
+        MessagePacket expectedPacket = MessagePacket(senderState, sendStatement);
         ClearStatementsFor(FindActorState(sender, expectedGlobalState));
         PutMessagePacketInActor(expectedPacket, FindActorState(receiver, expectedGlobalState));
         
@@ -96,7 +96,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
 
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
-        MessagePacket expectedPacket = MessagePacket(sender, sendStatement);
+        MessagePacket expectedPacket = MessagePacket(senderState, sendStatement);
         ClearStatementsFor(FindActorState(sender, expectedGlobalState));
         PutMessagePacketInNetworkState(expectedPacket, expectedGlobalState);
         

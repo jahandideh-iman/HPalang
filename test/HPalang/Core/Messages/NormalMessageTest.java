@@ -5,6 +5,7 @@
  */
 package HPalang.Core.Messages;
 
+import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.DelayStatement;
@@ -24,7 +25,7 @@ public class NormalMessageTest
     @Test
     public void MessagesWithEqualMessageHandlersAreEqual()
     {
-        MessageHandler messageHandler = new MessageHandler();
+        MessageHandler messageHandler = new MessageHandler(Message.MessageType.Control);
         
         NormalMessage message1 = new NormalMessage(messageHandler);
         NormalMessage message2 = new NormalMessage(messageHandler);

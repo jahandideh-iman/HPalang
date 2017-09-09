@@ -41,7 +41,7 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     public RealVariable Acquire()
     {
         if(variables.isEmpty())
-            return null;
+            throw new RuntimeException("The is no real variable to acquire");
         else
         {
             RealVariable var = variables.iterator().next();

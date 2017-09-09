@@ -6,7 +6,7 @@
 package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.Expression;
-import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.Variable;
 import HPalang.Core.Variables.IntegerVariable;
@@ -53,6 +53,6 @@ public class VariableExpression extends DiscreteExpressionT<VariableExpression>
     @Override
     public boolean IsComputable(ValuationContainer valuations)
     {
-        return valuations.Has((IntegerVariable)variable);
+        return valuations.Has(variable);
     }    
 }

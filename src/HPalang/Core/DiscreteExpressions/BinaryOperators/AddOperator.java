@@ -7,7 +7,7 @@ package HPalang.Core.DiscreteExpressions.BinaryOperators;
 
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.Expression;
-import HPalang.Core.SimpleValuationContainer;
+import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
 /**

@@ -5,9 +5,9 @@
  */
 package TestUtilities;
 
-import Builders.SoftwareActorStateBuilder;
-import Builders.GlobalRunTimeStateBuilder;
-import Builders.PhysicalActorStateBuilder;
+import HPalang.LTSGeneration.Builders.SoftwareActorStateBuilder;
+import HPalang.LTSGeneration.Builders.GlobalRunTimeStateBuilder;
+import HPalang.LTSGeneration.Builders.PhysicalActorStateBuilder;
 import HPalang.Core.Actor;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.SoftwareActor;

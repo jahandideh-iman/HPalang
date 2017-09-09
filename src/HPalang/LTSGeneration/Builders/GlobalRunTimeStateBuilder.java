@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Builders;
+package HPalang.LTSGeneration.Builders;
 
+import HPalang.Core.NullRealVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
 import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
 import HPalang.LTSGeneration.RunTimeStates.EventsState;
@@ -36,11 +37,11 @@ public class GlobalRunTimeStateBuilder
         DiscreteState discreteState = new DiscreteState();
         ContinuousState continuosState = new ContinuousState();
         EventsState eventState = new EventsState();
-        eventState.AddSubstate(new VariablePoolState());
+        eventState.AddSubstate(new VariablePoolState(new NullRealVariablePool()));
         
         globalState.AddSubstate(discreteState);
         globalState.AddSubstate(continuosState);
-        globalState.AddSubstate(new VariablePoolState());
+        globalState.AddSubstate(new VariablePoolState(new NullRealVariablePool()));
         globalState.AddSubstate(new NetworkState());
         globalState.AddSubstate(eventState);
         
