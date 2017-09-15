@@ -16,7 +16,7 @@ import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import Mocks.DirectActorLocator;
+import HPalang.Core.ActorLocators.DirectActorLocator;
 import Mocks.EmptyMessage;
 import org.junit.Test;
 import static org.junit.Assert.*;

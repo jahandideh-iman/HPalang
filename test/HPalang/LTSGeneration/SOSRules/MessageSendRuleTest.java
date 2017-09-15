@@ -25,7 +25,7 @@ import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import Mocks.ComputableExpression;
 import Mocks.ComputableVariable;
-import Mocks.DirectActorLocator;
+import HPalang.Core.ActorLocators.DirectActorLocator;
 import Mocks.FakeVariable;
 import Mocks.FakeMessage;
 import Mocks.NullExpression;

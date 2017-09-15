@@ -31,7 +31,7 @@ import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.State;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
-import Mocks.DirectActorLocator;
+import HPalang.Core.ActorLocators.DirectActorLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
 import HPalang.Core.SoftwareActorType;
 import Mocks.EmptyStatement;

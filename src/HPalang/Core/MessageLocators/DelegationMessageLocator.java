@@ -25,7 +25,7 @@ public class DelegationMessageLocator extends MessageLocatorT<DelegationMessageL
     }
     
     @Override
-    public Message Get(Actor actor)
+    public Message Locate(Actor actor)
     {
         return new NormalMessage(actor.GetDelegationFor(delegationParameter).MessageHandler());
     }

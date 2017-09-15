@@ -9,14 +9,19 @@ import static HPalang.BrakeByWireModel.Clock__callback;
 import HPalang.Core.Actor;
 import HPalang.Core.ActorLocator;
 import HPalang.Core.ActorLocators.DelegationActorLocator;
+import HPalang.Core.ActorLocators.DirectActorLocator;
 import HPalang.Core.ActorLocators.ParametricActorLocator;
+import HPalang.Core.ActorLocators.SelfActorLocator;
 import HPalang.Core.ActorType;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.Delegation;
 import HPalang.Core.DelegationParameter;
 import HPalang.Core.DifferentialEquation;
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
+import HPalang.Core.Expression;
 import HPalang.Core.InstanceParameter;
 import HPalang.Core.Message;
 import HPalang.Core.MessageArguments;
@@ -30,6 +35,7 @@ import HPalang.Core.Mode;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
 import HPalang.Core.SoftwareActor;
+import HPalang.Core.SoftwareActorType;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.ModeChangeStatement;
@@ -48,6 +54,17 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ModelCreationUtilities
 {
+    public static void AddMessageHandler(SoftwareActorType type, String handlerName, Message.MessageType messageType )
+    {
+        type.AddMessageHandler(handlerName, new MessageHandler(messageType));
+    }
+    
+    public static void AddControlMessageHandler(SoftwareActorType type, String handlerName)
+    {
+        AddMessageHandler(type, handlerName, Message.MessageType.Control);
+    }
+    
+    
     public static void AddPort(ActorType actorType, String portName, Variable targetVariable)
     {
         MessageHandler port = new MessageHandler(Message.MessageType.Data);
@@ -63,6 +80,10 @@ public class ModelCreationUtilities
         AddPort(actorType, portName, actorType.FindVariable(targetVariableName));
     }
     
+    public static void AddVariable(ActorType actorType, Variable variale)
+    {
+        actorType.AddVariable(variale);
+    }
     public static void SetNetworkPriority(Actor actor, String messageHandlerName, int priority)
     {
         MessageHandler handler = actor.Type().FindMessageHandler(messageHandlerName);
@@ -73,17 +94,28 @@ public class ModelCreationUtilities
     {
         sender.SetNetworkDelay(reciever,  new NormalMessage(reciever.Type().FindMessageHandler(messageHandler)), delay);
     }
-    
+   
     public static SendStatement CreateModeChangeRequest(Mode mode, ActorLocator actorLocator)
     {
-        return CreateSendStateemnt(
+        return ModelCreationUtilities.CreateSendStatement(
                 actorLocator, 
                 new MessageWithBody(
                         Statement.StatementsFrom(new ModeChangeStatement(mode))
                 )
         );
     }
+    
+    public static SendStatement CreateModeChangeRequest(String mode, InstanceParameter instance)
+    {
+        return CreateModeChangeRequest(
+                ((PhysicalActorType) instance.Type()).FindMode(mode), 
+                new ParametricActorLocator(instance));
+    }
 
+    public static void AddInstanceParameter(ActorType type, String parameterName, ActorType parameterType)
+    {
+        type.AddInstanceParameter(new InstanceParameter(parameterName, parameterType));
+    }
     public static void BindInstance(Actor actor, String parameterName, Actor instance, CommunicationType communicationType)
     {
         InstanceParameter wheelControllerInstanceParam = actor.Type().FindInstanceParameter(parameterName);
@@ -121,19 +153,19 @@ public class ModelCreationUtilities
         }
     }
     
-    public static AssignmentStatement ResetFor(RealVariable var)
+    public static AssignmentStatement CreateResetFor(RealVariable var)
     {
         return new AssignmentStatement(var, new ConstantContinuousExpression(0));
     }
     
-    public static SendStatement CreateSendStateemnt(ActorLocator actorLocator, MessageLocator messageLocator, Variable ... argumentVariables )
+    public static SendStatement CreateSendStatement(ActorLocator actorLocator, MessageLocator messageLocator, Expression ... argumentExpressions )
     {
         MessageArguments arguments = new MessageArguments();
         int i = 0;
         
         for(VariableParameter parameter : messageLocator.Parameters().AsSet())
         {
-            arguments.Add(new VariableArgument(parameter.Type(), new VariableExpression(argumentVariables[i])));
+            arguments.Add(new VariableArgument(parameter.Type(), argumentExpressions[i]));
             i++;
         }
         
@@ -144,27 +176,56 @@ public class ModelCreationUtilities
         );
     }
 
-    public static SendStatement CreateSendStateemnt(ActorLocator actorLocator, Message message, Variable ... argumentVariables )
+    public static SendStatement CreateSendStatement(ActorLocator actorLocator, Message message, Expression ... arguments )
     {
-        return CreateSendStateemnt(actorLocator, new DirectMessageLocator(message), argumentVariables);
+        return CreateSendStatement(actorLocator, new DirectMessageLocator(message), arguments);
     }
-        
-    public static SendStatement CreateSendStatement(InstanceParameter instance, MessageHandler handler, Variable ... argumentVariables)
+            
+    public static SendStatement CreateSendStatement(InstanceParameter instance, MessageHandler handler, Expression ... arguments)
     {
-        return CreateSendStateemnt(
+        return ModelCreationUtilities.CreateSendStatement(
                 new ParametricActorLocator(instance), 
                 new NormalMessage(handler), 
-                argumentVariables);
+                arguments);
     }
     
-    public static SendStatement CreateSendStatement(DelegationParameter delegationParameter, Variable ... argumentVariables)
+    public static SendStatement CreateSendStatement(InstanceParameter instance, String handler, Expression ... arguments)
     {
-        return CreateSendStateemnt(
+        return CreateSendStatement(instance, 
+                instance.Type().FindMessageHandler(handler), 
+                arguments);
+    }
+    
+    public static SendStatement CreateSendStatement(DelegationParameter delegationParameter, Expression ... arguments)
+    {
+        return CreateSendStatement(
                 new DelegationActorLocator(delegationParameter), 
                 new DelegationMessageLocator(delegationParameter), 
-                argumentVariables);
+                arguments);
     }
     
+    public static SendStatement CreateSelfSendStatement(ActorType type, String message, Expression ... arguments )
+    {
+        return CreateSendStatement(new SelfActorLocator(), MessageForm(type.FindMessageHandler(message)), arguments);
+    }
+    
+    public static SendStatement CreateDirectSendStatement(Actor actor, String message, Expression ... arguments )
+    {
+        return CreateSendStatement(
+                new DirectActorLocator(actor),
+                MessageForm(actor.Type().FindMessageHandler(message)),
+                arguments);
+    }
+    
+    public static Message MessageForm(MessageHandler handler)
+    {
+        return new NormalMessage(handler);
+    }
+    
+    public static VariableExpression VariableExpression(Variable variable)
+    {
+        return new VariableExpression(variable);
+    }
     
     public static Variable CreateVariable(Variable.Type type, String name)
     {
@@ -199,8 +260,8 @@ public class ModelCreationUtilities
                 
         runningMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         
-        runningMode.AddAction(ResetFor(timer));
-        runningMode.AddAction(CreateSendStatement(callback));
+        runningMode.AddAction(CreateResetFor(timer));
+        runningMode.AddAction(ModelCreationUtilities.CreateSendStatement(callback));
         
         
         clockType.AddMode(runningMode);
@@ -216,5 +277,10 @@ public class ModelCreationUtilities
         BindDelagation(clock, "callback", actor, messageHandlerName, CommunicationType.Wire);
         
         return clock;
+    }
+    
+    public static Expression CreateEqualityExpression(Expression e1, Expression e2)
+    {
+        return new BinaryExpression(e1, new EqualityOperator(), e2);
     }
 }

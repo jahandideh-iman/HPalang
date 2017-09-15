@@ -22,13 +22,13 @@ public class InstanceParameter extends Equalitable<InstanceParameter>
         this.type = type;
     }
     
-    public void Bind(SoftwareActor instance)
-    {
-        assert (this.instance == null);
-        assert (this.type.equals(instance.Type()));
-        
-        this.instance = instance;
-    }
+//    public void Bind(SoftwareActor instance)
+//    {
+//        assert (this.instance == null);
+//        assert (this.type.equals(instance.Type()));
+//        
+//        this.instance = instance;
+//    }
 
     @Override
     protected boolean InternalEquals(InstanceParameter other)
@@ -46,5 +46,10 @@ public class InstanceParameter extends Equalitable<InstanceParameter>
     public String Name()
     {
         return name;
+    }
+    
+    public ActorType Type()
+    {
+        return type;
     }
 }

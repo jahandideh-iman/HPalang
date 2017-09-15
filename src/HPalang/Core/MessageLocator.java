@@ -11,6 +11,6 @@ package HPalang.Core;
  */
 public interface MessageLocator
 {
-    public Message Get(Actor actor);
+    public Message Locate(Actor actor);
     public MessageParameters Parameters();
 }

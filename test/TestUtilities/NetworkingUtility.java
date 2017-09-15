@@ -21,7 +21,7 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import Mocks.DirectActorLocator;
+import HPalang.Core.ActorLocators.DirectActorLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
 import HPalang.Core.Variable;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
@@ -131,7 +131,7 @@ public class NetworkingUtility
         return NetworkingUtility.MessagePacket(
                 senderState.Actor(), 
                 (SoftwareActor)sendStatement.ReceiverLocator().Locate(senderState), 
-                sendStatement.MessageLocator().Get(null), 
+                sendStatement.MessageLocator().Locate(null), 
                 sendStatement.Arguments());
 
     }

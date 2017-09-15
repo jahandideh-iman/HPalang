@@ -51,7 +51,7 @@ public class Main {
     {
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BrakeByWireModelSingleWheel.Create();
+            definition = VendingMachine.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         

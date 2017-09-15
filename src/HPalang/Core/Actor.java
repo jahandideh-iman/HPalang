@@ -58,6 +58,8 @@ public class Actor<T extends ActorType>
     public void BindInstance(InstanceParameter parameter, Actor instance, CommunicationType communicationType)
     {
         assert (Type().HasInstanceParameter(parameter));
+        assert (parameter.Type().equals(instance.Type()));
+        
         instanceArguments.put(parameter, instance);
         SetCommunicationType(instance, communicationType);
     }

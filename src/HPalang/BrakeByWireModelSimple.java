@@ -138,8 +138,8 @@ public class BrakeByWireModelSimple
         noBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         noBrakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, "?!!!"));
         
-        noBrakeMode.AddAction(ResetFor(timer));
-        noBrakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation, rpm));
+        noBrakeMode.AddAction(CreateResetFor(timer));
+        noBrakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation, VariableExpression(rpm)));
         //noBrakeMode.AddAction(CreateSendStatement(instanceParam, globalBrakeControllerType.FindMessageHandler(Global_Brake_Controller__wheel_rpm_FR_port), rpm));
 
     }

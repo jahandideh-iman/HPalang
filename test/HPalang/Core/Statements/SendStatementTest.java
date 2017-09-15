@@ -18,7 +18,7 @@ import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.IntegerVariable;
-import Mocks.DirectActorLocator;
+import HPalang.Core.ActorLocators.DirectActorLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
 import Mocks.FakeMessage;
 import Mocks.EmptyMessage;

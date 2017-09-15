@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Mocks;
+package HPalang.Core.ActorLocators;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ActorLocator;
@@ -13,31 +13,25 @@ import HPalang.LTSGeneration.RunTimeStates.ActorState;
  *
  * @author Iman Jahandideh
  */
-public class DirectActorLocator extends ActorLocator<DirectActorLocator>
+public class SelfActorLocator  extends ActorLocator<SelfActorLocator>
 {
-    private Actor actor;
-    
-    public DirectActorLocator(Actor actor)
-    {
-        this.actor = actor;
-    }
-    
+
     @Override
     public Actor Locate(ActorState actorState)
     {
-        return actor;
+        return actorState.Actor();
     }
 
     @Override
-    protected boolean InternalEquals(DirectActorLocator other)
+    protected boolean InternalEquals(SelfActorLocator other)
     {
-        return this.actor.equals(other.actor);
+        return true;
     }
 
     @Override
     protected int InternalHashCode()
     {
-       return 0;
+        return 0;
     }
     
 }

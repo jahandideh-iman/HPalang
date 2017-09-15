@@ -72,7 +72,7 @@ public class MessageSendRule extends ActorLevelRule
         
         Pair<MessageArguments, Set<Reset>> maximalEvaluatoionReslut = 
                 CreateMaximalEvaluatedArguments(
-                        sendStatement.MessageLocator().Get(actorState.Actor()), 
+                        sendStatement.MessageLocator().Locate(actorState.Actor()), 
                         sendStatement.Arguments(),
                         valuations,
                         pool
@@ -82,7 +82,7 @@ public class MessageSendRule extends ActorLevelRule
         MessagePacket packet = new MessagePacket(
                 senderState.Actor(), 
                 receiverState.Actor(), 
-                sendStatement.MessageLocator().Get(actorState.Actor()), 
+                sendStatement.MessageLocator().Locate(actorState.Actor()), 
                 maximalEvaluatoionReslut.a
         );
         

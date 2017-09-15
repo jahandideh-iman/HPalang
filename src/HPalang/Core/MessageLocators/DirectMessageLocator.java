@@ -23,7 +23,7 @@ public class DirectMessageLocator extends MessageLocatorT<DirectMessageLocator>
     }
     
     @Override
-    public Message Get(Actor actor)
+    public Message Locate(Actor actor)
     {
         return message;
     }
