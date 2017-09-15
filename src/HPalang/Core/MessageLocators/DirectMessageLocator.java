@@ -7,7 +7,6 @@ package HPalang.Core.MessageLocators;
 
 import HPalang.Core.Actor;
 import HPalang.Core.Message;
-import HPalang.Core.MessageLocators.MessageLocatorT;
 import HPalang.Core.MessageParameters;
 
 /**
@@ -29,7 +28,7 @@ public class DirectMessageLocator extends MessageLocatorT<DirectMessageLocator>
         return message;
     }
     
-        @Override
+    @Override
     public MessageParameters Parameters()
     {
         return message.Parameters();

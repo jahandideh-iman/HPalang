@@ -50,8 +50,8 @@ public class Main {
     public static void main(String[] args) throws FileNotFoundException, IOException 
     {
         ModelDefinition definition;
-        if(args.length ==0 )
-            definition = new BrakeByWireModel().Create();
+        if(args.length ==0)
+            definition = BrakeByWireModelSingleWheel.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         

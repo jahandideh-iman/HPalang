@@ -49,28 +49,6 @@ public class ContinuousBehaviorContianer extends EqualitableAndClonable<Continuo
     }
     
     @Override
-    public boolean equals(Object other)
-    {
-         if(other == null)
-            return false;
-        
-        if (!ContinuousBehaviorContianer.class.isAssignableFrom(other.getClass()))
-            return false;
-            
-        ContinuousBehaviorContianer otherState = (ContinuousBehaviorContianer) other;
-        
-        return Arrays.equals(this.continuousBehaviors.toArray(), otherState.continuousBehaviors.toArray());
-    }
-
-    @Override
-    public int hashCode()
-    {
-        int hash = 3;
-        hash = 59 * hash + Objects.hashCode(this.continuousBehaviors);
-        return hash;
-    }
-
-    @Override
     protected boolean InternalEquals(ContinuousBehaviorContianer other)
     {
         return this.continuousBehaviors.equals(other.continuousBehaviors);

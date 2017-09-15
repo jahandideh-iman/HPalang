@@ -59,7 +59,8 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         IfStatement ifStatement = CreateTrueIfStatement();
         EnqueueStatement(ifStatement, actorState); 
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
         DequeueOneStatemenet(actor, expectedGlobalState);
@@ -69,6 +70,7 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
                 , equalTo(FindActorState(actor, expectedGlobalState).ExecutionQueueState()));
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
@@ -77,13 +79,15 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         IfStatement ifStatement = CreateFalseIfStatement();
         EnqueueStatement(ifStatement, actorState); 
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
         DequeueOneStatemenet(actor, expectedGlobalState);
         EnqueueStatements(ifStatement.FalseStatements(), actor, expectedGlobalState);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
@@ -94,7 +98,8 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         
         transitionCollectorChecker.SetAllowedTransitions(2);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState falsePathGlobalState = globalState.DeepCopy();
         DequeueOneStatemenet(actor, falsePathGlobalState);
@@ -118,6 +123,7 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(truePathGuard), truePathGlobalState);
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(falsePathGuard), falsePathGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     private IfStatement CreateTrueIfStatement()

@@ -14,6 +14,7 @@ import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import Mocks.ComputableExpression;
 import Mocks.EmptyExpression;
 import Mocks.FakeVariable;
+import Mocks.TransitionCollectorMock;
 import Mocks.UncomputableExpression;
 import Mocks.ValuationContainerMock;
 import org.junit.Test;
@@ -54,9 +55,11 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
         actorState.ValuationState().SetValuation(valuationMock);
         EnqueueStatement(assignment, actorState);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
         
         assertThat(valuationMock.ValueFor(var), equalTo(value));
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test 
@@ -68,11 +71,13 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
         Statement assignment = new AssignmentStatement(variable, expr);
         EnqueueStatement(assignment, actorState);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
         
         Reset expectedReset = new Reset(variable, partialExpression);
         
         assertThat((Set<Reset>)CollectedLabel().GetResets(), hasItem(equalTo(expectedReset)));
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
+    
     
 }

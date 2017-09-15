@@ -40,10 +40,12 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         nextGlobalState.EventsState().UnregisterEvent(event);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectTransition(EventTransitionLabel(event), nextGlobalState);
         assertTrue(((ActionMonitor)event.Action()).isExecuted);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
@@ -58,11 +60,12 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
                 Build();
            
 
-        
-        rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(stateInfoWithSoftwareTransition);
+        //rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
         assertFalse(((ActionMonitor)event.Action()).isExecuted);
+        VerifyEqualOutputForMultipleApply(stateInfoWithSoftwareTransition);
     }
     
     @Test
@@ -71,15 +74,17 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         ResetEventStatePool(globalState);
         Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, new ActionMonitor());
         
-        StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
+        StateInfo stateInfoWithNetworkTransition = new StateInfoBuilder().
                 WithState(globalState).
                 AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
                 Build();
         
-        rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(stateInfoWithNetworkTransition);
+        //rule.TryApply(stateInfoWithNetworkTransition, transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
         assertFalse(((ActionMonitor)event.Action()).isExecuted);
+        VerifyEqualOutputForMultipleApply(stateInfoWithNetworkTransition);
     }
     
     private ContinuousLabel EventTransitionLabel(Event event)

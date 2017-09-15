@@ -5,6 +5,7 @@
  */
 package HPalang;
 
+import static HPalang.BrakeByWireModel.Clock__callback;
 import HPalang.Core.Actor;
 import HPalang.Core.ActorLocator;
 import HPalang.Core.ActorLocators.DelegationActorLocator;
@@ -14,6 +15,7 @@ import HPalang.Core.CommunicationType;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.Delegation;
 import HPalang.Core.DelegationParameter;
+import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.InstanceParameter;
 import HPalang.Core.Message;
@@ -26,6 +28,7 @@ import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Mode;
 import HPalang.Core.PhysicalActor;
+import HPalang.Core.PhysicalActorType;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.AssignmentStatement;
@@ -89,11 +92,21 @@ public class ModelCreationUtilities
 
     public static void BindDelagation(Actor actor, String parameterName, Actor instance, String instanceHandlerName, CommunicationType communicationType)
     {
+        BindDelagation(
+                actor,
+                parameterName,
+                instance,
+                instance.Type().FindMessageHandler(instanceHandlerName), 
+                communicationType);
+    }
+    
+    public static void BindDelagation(Actor actor, String parameterName, Actor instance, MessageHandler instanceHandler, CommunicationType communicationType)
+    {
         DelegationParameter delgationParam = actor.Type().FindDelegationParameter(parameterName);
 
         Delegation delegation = new Delegation(
                 instance,
-                instance.Type().FindMessageHandler(instanceHandlerName));
+                instanceHandler);
 
         actor.BindDelegation(delgationParam, delegation, communicationType);
     }
@@ -167,5 +180,41 @@ public class ModelCreationUtilities
         
         throw new RuntimeException("Unknow variable type.");
         
+    }
+    
+    public static PhysicalActorType CreatePeriodicClockType()
+    {
+        PhysicalActorType clockType = new PhysicalActorType("Clock");
+        DelegationParameter callback = new DelegationParameter("callback");
+        clockType.AddDelegationParameter(callback);
+        
+        RealVariable timer = new RealVariable("timer");
+        
+        clockType.AddVariable(timer);
+        
+        Mode runningMode = new Mode("Running");
+        
+        runningMode.SetGuard("timer <= 0.01");
+        runningMode.SetInvarient("timer == 0.01");
+                
+        runningMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
+        
+        runningMode.AddAction(ResetFor(timer));
+        runningMode.AddAction(CreateSendStatement(callback));
+        
+        
+        clockType.AddMode(runningMode);
+        clockType.SetInitialMode(runningMode);
+        
+        return clockType;
+    }
+    
+    
+    public static PhysicalActor CreatePreriodicClock(SoftwareActor actor, String messageHandlerName, PhysicalActorType clockType)
+    {
+        PhysicalActor clock = new PhysicalActor("clock", clockType, 10);
+        BindDelagation(clock, "callback", actor, messageHandlerName, CommunicationType.Wire);
+        
+        return clock;
     }
 }

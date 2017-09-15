@@ -28,8 +28,8 @@ public class NetworkStateTest
         SoftwareActor arbitraryActor = CreateSofwareActor("actor");
         MessagePacket packet = EmptySelfMessagePacketFor(arbitraryActor);
         
-        NetworkState networkState1 = new NetworkState();
-        NetworkState networkState2 = new NetworkState();
+        NetworkState networkState1 = new NetworkState(5);
+        NetworkState networkState2 = new NetworkState(5);
         
         networkState1.Buffer(packet);
         networkState1.SetIdle(true);
@@ -43,7 +43,7 @@ public class NetworkStateTest
     @Test
     public void HasTheBufferedPackets()
     {
-        NetworkState networkState = new NetworkState();
+        NetworkState networkState = new NetworkState(10);
         SoftwareActor actor1 = CreateSofwareActor("actor1");
         SoftwareActor actor2 = CreateSofwareActor("actor2");
         MessageArguments emptyArguments = new MessageArguments();
@@ -56,6 +56,23 @@ public class NetworkStateTest
         
         assertThat(networkState.Buffer(), hasItem(packet1));
         assertThat(networkState.Buffer(), hasItem(packet2));
+    }
+    
+    @Test (expected = RuntimeException.class)
+    public void RaisesErrorWhenBufferingIfBufferSizeIsMaxed()
+    {
+        int bufferSize = 1;
+        NetworkState networkState = new NetworkState(bufferSize);
+        SoftwareActor actor1 = CreateSofwareActor("actor1");
+        SoftwareActor actor2 = CreateSofwareActor("actor2");
+        MessageArguments emptyArguments = new MessageArguments();
+        
+        MessagePacket packet1 = new MessagePacket(actor1, actor2,  new EmptyMessage("1to2"), emptyArguments);
+        MessagePacket packet2 = new MessagePacket(actor1, actor2, new EmptyMessage("2to1"), emptyArguments);
+        
+        networkState.Buffer(packet1);
+        networkState.Buffer(packet2);
+        
     }
     
 }

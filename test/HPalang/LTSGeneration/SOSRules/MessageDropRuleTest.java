@@ -22,6 +22,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import org.junit.Before;
 import static TestUtilities.NetworkingUtility.*;
+import static TestUtilities.CoreUtility.*;
 
 /**
  *
@@ -33,6 +34,7 @@ public class MessageDropRuleTest extends SOSRuleTestFixture
     public void Setup()
     {
         ltsGenerator.AddSOSRule(new MessageDropRule());
+        rule = new MessageDropRule();
     }
     
     @Test
@@ -56,7 +58,7 @@ public class MessageDropRuleTest extends SOSRuleTestFixture
         globalState.DiscreteState().AddSoftwareActorState(actor1State);
         globalState.DiscreteState().AddSoftwareActorState(actor2State);
                 
-                  
+                
         generatedLTS = ltsGenerator.Generate(globalState);
         
         GlobalRunTimeState stateAfterMessageTo2Sent = globalState.DeepCopy();
@@ -67,6 +69,7 @@ public class MessageDropRuleTest extends SOSRuleTestFixture
         
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), stateAfterMessageTo2Sent));
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), stateAfterMessageTo2Sent));
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     } 
     
 }

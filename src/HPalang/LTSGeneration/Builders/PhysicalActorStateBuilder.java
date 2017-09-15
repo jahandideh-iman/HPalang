@@ -23,7 +23,7 @@ import java.util.List;
 public class PhysicalActorStateBuilder
 {
     private PhysicalActor actor;
-    private Mode mode;
+    private Mode mode = Mode.None();
     
     
     public PhysicalActorStateBuilder WithActor(PhysicalActor actor)

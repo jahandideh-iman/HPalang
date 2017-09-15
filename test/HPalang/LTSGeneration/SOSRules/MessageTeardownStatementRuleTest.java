@@ -47,9 +47,11 @@ public class MessageTeardownStatementRuleTest extends SOSRuleTestFixture
         Statement teardownStatemeent = new MessageTeardownStatement(messageParamters);
         EnqueueStatement(teardownStatemeent, actorState);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         assertThat(valuationMock.removedVariables, hasItem(parameter.Variable()));
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
 }

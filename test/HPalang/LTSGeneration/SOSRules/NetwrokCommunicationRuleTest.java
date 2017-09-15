@@ -66,6 +66,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
         PutMessagePacketInNetworkState(highPriorityPacket, globalState);
         ResetEventStatePool(globalState);
         SetNetworkStateIdle(true, globalState);
+        
     }
     
     @Test
@@ -73,9 +74,11 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
     {
         SetNetworkStateIdle(false, globalState);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
         @Test
@@ -86,37 +89,44 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
                 AddOutTransition(SelfTransition(globalState, new SoftwareLabel())).
                 Build();
         
-        rule.TryApply(stateInfoWithSoftwareAction, transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(stateInfoWithSoftwareAction);
+        //rule.TryApply(stateInfoWithSoftwareAction, transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
+        VerifyEqualOutputForMultipleApply(stateInfoWithSoftwareAction);
     }
     
     @Test
     public void RegistersTheHighestPriorityMessageInTheEventsState()
     {
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         EventsState generatedEventState = CollectedGlobalState().EventsState();
         
         Event expectedEvent = CreateEventFor(highPriorityDelay, NetworkAction(highPriorityPacket), globalState);
         
         assertThat(generatedEventState.Events(), hasItem(expectedEvent));
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
     public void MakeNetworkStateNotIdleWhenApplied()
     {
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         NetworkState generatedNetworkState =  CollectedGlobalState().NetworkState();
         
         assertThat(generatedNetworkState.IsIdle(), is(false));
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
     public void Inegration()
     {
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
 
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         DebufferFromNetworkState(highPriorityPacket, nextGlobalState);
@@ -124,6 +134,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
         RegisterEvent(highPriorityDelay, new SendPacketAndResetNetworkAction(highPriorityPacket), nextGlobalState);
 
         transitionCollectorChecker.ExpectTransition(new NetworkLabel(), nextGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     

@@ -53,9 +53,11 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         PhysicalActorState nextActorState = nextGlobalState.ContinuousState().FindActorState(pActor);
         nextActorState.ExecutionQueueState().Statements().Enqueue(mode.Actions());
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);  
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);  
         
         transitionCollectorChecker.ExpectTransition(new ContinuousLabel(mode.Guard()),nextGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
@@ -68,9 +70,11 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
                 AddOutTransition(new Transition(globalState, new SoftwareLabel(), globalState)).
                 Build();
         
-        rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(stateInfoWithSoftwareTransition);
+        //rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
+        VerifyEqualOutputForMultipleApply(stateInfoWithSoftwareTransition);
     }
     
     @Test
@@ -78,14 +82,16 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
     {
         SetupGlobalStateWithOneActivePhyiscalActor();
         
-        StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
+        StateInfo stateWithNetworkTransition = new StateInfoBuilder().
                 WithState(globalState).
                 AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
                 Build();
         
-        rule.TryApply(stateInfoWithSoftwareTransition, transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(stateWithNetworkTransition);
+        //rule.TryApply(stateWithNetworkTransition, transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
+        VerifyEqualOutputForMultipleApply(stateWithNetworkTransition);
     }
     
     private void SetupGlobalStateWithOneActivePhyiscalActor()

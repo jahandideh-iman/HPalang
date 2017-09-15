@@ -10,7 +10,6 @@ import HPalang.Core.Message.MessageType;
 import HPalang.Core.MessageArguments;
 import HPalang.Core.MessagePacket;
 import HPalang.Core.MessageParameters;
-import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.SoftwareActor;
 import static HPalang.Core.Statement.StatementsFrom;
 import HPalang.Core.Statements.AssignmentStatement;
@@ -74,9 +73,11 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         GlobalRunTimeState expectedGlobalState = 
                 ExpectedGlobalStateWhenMessageIsTaken(globalState, receiverState, message);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     // TODO: Refactor the assertion.
@@ -105,9 +106,11 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         
         GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, receiverState, message);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     
@@ -135,9 +138,11 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
 
         GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, receiverState, message);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
 
     @Test
@@ -160,9 +165,11 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
 
         GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, receiverState, message);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
@@ -184,7 +191,8 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         
         globalState.DiscreteState().AddSoftwareActorState(actorState);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         MessageQueueState expectedMessageQueue = FindActorState(actorState.SActor() , globalState.DeepCopy()).MessageQueueState();
         RemoveMessagePacket(dataMessagePacket, expectedMessageQueue);
@@ -192,7 +200,9 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         MessageQueueState actualMessageQueue = FindActorState(actorState.SActor(), CollectedGlobalState()).MessageQueueState();
         
         assertThat(actualMessageQueue, equalTo(expectedMessageQueue));
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
+    
     private GlobalRunTimeState ExpectedGlobalStateWhenMessageIsTaken(GlobalRunTimeState originalState, SoftwareActorState senderState , Message message)
     {
         GlobalRunTimeState expectedGlobalState = originalState.DeepCopy();

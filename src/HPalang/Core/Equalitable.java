@@ -14,7 +14,7 @@ package HPalang.Core;
 public abstract class Equalitable<T>
 {
     @Override
-    public boolean equals(Object other)
+    public final boolean equals(Object other)
     {
         if(other == null)
             return false;
@@ -33,10 +33,10 @@ public abstract class Equalitable<T>
     }
     
     @Override
-    public int hashCode()
+    public final int hashCode()
     {
-        return InternalHashCode();
-        //return 0;
+        //return InternalHashCode();
+        return 0;
     }
 
     abstract protected boolean InternalEquals(T other);

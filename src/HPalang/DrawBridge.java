@@ -16,6 +16,7 @@ import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.ModelDefinition;
+import HPalang.Core.SoftwareActorType;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.DiscreteAssignmentStatement;
@@ -32,6 +33,12 @@ public class DrawBridge
     public ModelDefinition Create()
     {
         ModelDefinition definition = new ModelDefinition();
+        
+        SoftwareActorType carDispatcherType = new SoftwareActorType("CarDispatcher");
+        SoftwareActorType drawBridgeContollerType = new SoftwareActorType("DrawBridgeController");
+        
+        
+        
 //        
 //        DiscreteVariable Bridge_cars = new DiscreteVariable("cars");
 //        DiscreteVariable Bridge_bridgeStatus =  new DiscreteVariable("bridgeStatus");

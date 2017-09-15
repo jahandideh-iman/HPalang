@@ -19,9 +19,14 @@ import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.State;
 import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.TransitionCollector;
 import Mocks.TransitionCollectorChecker;
+import Mocks.TransitionCollectorMock;
+import TestUtilities.CoreUtility;
 import static TestUtilities.CoreUtility.CreateGlobalState;
 import java.util.Collections;
+import static org.hamcrest.CoreMatchers.equalTo;
+import static org.junit.Assert.assertThat;
 
 /**
  *
@@ -48,4 +53,39 @@ public class SOSRuleTestFixture
     {
         return transitionCollectorChecker.CollectedLabelAt(0);
     }
+    
+    public void VerifyEqualOutputForMultipleApply(StateInfo stateInfo)
+    {
+        GlobalRunTimeState originalCopy =  stateInfo.State().DeepCopy();
+        
+        rule.TryApply(stateInfo, new TransitionCollectorMock());
+        
+        assertThat(stateInfo.State(), equalTo(originalCopy));
+
+    }
+    
+    public void ApplyAndVerifyRuleOn(GlobalRunTimeState globalState, TransitionCollector collector)
+    {
+        ApplyAndVerifyRuleOn(CoreUtility.SimpleStateInfo(globalState), collector);
+    }
+    
+    public void ApplyAndVerifyRuleOn(StateInfo stateInfo, TransitionCollector collector)
+    {
+        GlobalRunTimeState orignalState = stateInfo.State().DeepCopy();
+        
+        rule.TryApply(stateInfo, collector);
+        
+        assertThat(" The initial global state is modified. ",stateInfo.State(), equalTo(orignalState));
+    }
+    
+    public void ApplyAndVerifyRuleOn(GlobalRunTimeState globalState)
+    {
+        ApplyAndVerifyRuleOn(CoreUtility.SimpleStateInfo(globalState));
+    }
+    
+    public void ApplyAndVerifyRuleOn(StateInfo stateInfo)
+    {
+        ApplyAndVerifyRuleOn(stateInfo, transitionCollectorChecker);
+    }
+   
 }

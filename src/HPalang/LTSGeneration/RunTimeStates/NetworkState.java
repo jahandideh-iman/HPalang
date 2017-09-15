@@ -17,13 +17,19 @@ import java.util.List;
  */
 public class NetworkState extends CompositeStateT<NetworkState>
 {
+    private final int bufferLimit;
     private final List<MessagePacket> buffer = new LinkedList<>();
     private boolean isIdle;
+
+    public NetworkState(int bufferLimit)
+    {
+        this.bufferLimit = bufferLimit;
+    }
     
     @Override
     protected NetworkState NewInstance()
     {
-        return new NetworkState();
+        return new NetworkState(bufferLimit);
     }
 
     @Override
@@ -52,6 +58,8 @@ public class NetworkState extends CompositeStateT<NetworkState>
     
     public void Buffer(MessagePacket packet)
     {
+        if(buffer.size() >= bufferLimit)
+            throw new RuntimeException("Buffer is full");
         buffer.add(packet);
     }
     

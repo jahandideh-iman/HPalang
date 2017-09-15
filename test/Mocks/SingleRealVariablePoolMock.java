@@ -6,6 +6,7 @@
 package Mocks;
 
 import HPalang.Core.ContinuousVariable;
+import HPalang.Core.Equalitable;
 import HPalang.Core.RealVariablePool;
 import HPalang.Core.Variables.RealVariable;
 
@@ -13,7 +14,7 @@ import HPalang.Core.Variables.RealVariable;
  *
  * @author Iman Jahandideh
  */
-public class SingleRealVariablePoolMock implements RealVariablePool
+public class SingleRealVariablePoolMock extends Equalitable<SingleRealVariablePoolMock> implements RealVariablePool
 {
     private final RealVariable var;
     
@@ -58,6 +59,19 @@ public class SingleRealVariablePoolMock implements RealVariablePool
     public boolean HasAvailableVariable(int number)
     {
         return number == 1 && isAcquired == false;
+    }
+
+    @Override
+    protected boolean InternalEquals(SingleRealVariablePoolMock other)
+    {
+        return this.isAcquired == other.isAcquired &&
+                this.var.equals(other.var);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return 0;
     }
     
 }

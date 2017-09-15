@@ -20,7 +20,6 @@ import java.util.List;
  */
 public class DelegationParameter extends Equalitable<DelegationParameter>
 {
-
     private final String name;
     
     private final List<Variable.Type> paramterTypes = new LinkedList<>();
@@ -38,8 +37,6 @@ public class DelegationParameter extends Equalitable<DelegationParameter>
         this.paramterTypes.addAll(paramterTypes);
     }
     
-    
-
     public String Name()
     {
         return name;
@@ -52,6 +49,7 @@ public class DelegationParameter extends Equalitable<DelegationParameter>
                 paramterTypes.equals(other.paramterTypes);
     }
 
+    @Override
     protected int InternalHashCode()
     {
         return 0;

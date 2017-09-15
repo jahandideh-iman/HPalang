@@ -74,7 +74,8 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         senderState.Actor().SetCommunicationType(receiver, Wire); 
         EnqueueStatement(sendStatement, senderState);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
 
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
         MessagePacket expectedPacket = MessagePacket(senderState, sendStatement);
@@ -82,6 +83,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         PutMessagePacketInActor(expectedPacket, FindActorState(receiver, expectedGlobalState));
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     } 
 
     
@@ -93,7 +95,8 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         senderState.SActor().SetCommunicationType(receiver, CAN); 
         EnqueueStatement(sendStatement, senderState);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
 
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
         MessagePacket expectedPacket = MessagePacket(senderState, sendStatement);
@@ -101,6 +104,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         PutMessagePacketInNetworkState(expectedPacket, expectedGlobalState);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     } 
     
     @Test
@@ -112,9 +116,11 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         EnqueueStatement(sendStatement, senderState);
         FillActorsQeueue(receiverState);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
@@ -131,13 +137,14 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         sender.SetCommunicationType(receiver, Wire);
         senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);
 
- 
+        ApplyAndVerifyRuleOn(globalState);
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorMock);
         
-        VariableArgument expectedArgument =  FindLastPacket(receiverState.SActor(),transitionCollectorMock.collectedState).
+        VariableArgument expectedArgument =  FindLastPacket(receiverState.SActor(),transitionCollectorMock.GetState(0)).
                 Arguments().AsList().get(0);
         
         assertThat(expectedArgument.Value(), equalTo(new ConstantDiscreteExpression(value)));
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
@@ -158,16 +165,16 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         
         globalState.VariablePoolState().SetPool(new SingleRealVariablePoolMock(pooledVariable));
 
-       
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorMock);
+        ApplyAndVerifyRuleOn(globalState, transitionCollectorMock);
+        //rule.TryApply(SimpleStateInfo(globalState.DeepCopy()), transitionCollectorMock);
         
-        VariableArgument generatedArgument =  FindLastPacket(receiverState.Actor(),transitionCollectorMock.collectedState).
+        VariableArgument generatedArgument =  FindLastPacket(receiverState.Actor(),transitionCollectorMock.GetState(0)).
                 Arguments().AsList().get(0);
         
         Label expectedLabel = new SoftwareLabel(Reset.From(new Reset(pooledVariable, partialValue)));
         
         assertThat(generatedArgument.Value(), equalTo(new VariableExpression(pooledVariable)));
-        assertThat(transitionCollectorMock.collectedLabel, equalTo(expectedLabel));
+        assertThat(transitionCollectorMock.GetLabel(0), equalTo(expectedLabel));
     }
     
     

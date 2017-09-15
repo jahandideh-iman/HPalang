@@ -41,7 +41,9 @@ public class ModeChangeStatementRuleTest extends SOSRuleTestFixture
         EnqueueStatement(modeChangeStatement, actorState);
         AddActorState(actorState, globalState);
         
-        rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        
+        ApplyAndVerifyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
         ClearStatementsFor(actorState.PActor(), expectedGlobalState);

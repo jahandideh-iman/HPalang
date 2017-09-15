@@ -59,6 +59,7 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
         
         assertTrue(generatedLTS.HasTransition(globalState, label , expectedState));
         assertThat(generatedLTS.GetStates().size(), is(IsEqual.equalTo(2)));
+        
     }
    
 }

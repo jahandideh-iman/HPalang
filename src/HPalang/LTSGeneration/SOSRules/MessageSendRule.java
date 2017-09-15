@@ -68,7 +68,7 @@ public class MessageSendRule extends ActorLevelRule
         MessageQueueState reciverMessageQueueState = receiverState.MessageQueueState();
         
         ValuationContainer valuations = senderState.ValuationState().Valuation();
-        RealVariablePool pool = globalState.VariablePoolState().Pool();
+        RealVariablePool pool = newGlobalState.VariablePoolState().Pool();
         
         Pair<MessageArguments, Set<Reset>> maximalEvaluatoionReslut = 
                 CreateMaximalEvaluatedArguments(

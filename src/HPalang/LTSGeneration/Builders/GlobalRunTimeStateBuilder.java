@@ -42,7 +42,7 @@ public class GlobalRunTimeStateBuilder
         globalState.AddSubstate(discreteState);
         globalState.AddSubstate(continuosState);
         globalState.AddSubstate(new VariablePoolState(new NullRealVariablePool()));
-        globalState.AddSubstate(new NetworkState());
+        globalState.AddSubstate(new NetworkState(10));
         globalState.AddSubstate(eventState);
         
         for(SoftwareActorState state : softwareActorStates)
