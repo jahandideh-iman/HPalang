@@ -6,6 +6,8 @@
 package HPalang;
 
 import HPalang.Convertors.HybridAutomatonToDMEConvertor;
+import HPalang.Convertors.LTSToAUTConvertor;
+import HPalang.Convertors.LTSToFSMConvertor;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Convertors.LTSToXMLConvertor;
 import HPalang.Core.ModelDefinition;
@@ -66,11 +68,14 @@ public class Main {
         
         FileWriter writer = new FileWriter("output/");
         
-        System.out.println("LTS(B) States  : " + lts.GetStates().size());
-        System.out.println("LTS(B) Transition : " + lts.GetTransitions().size());
+        System.out.println("LTS(B) States  : " + lts.States().size());
+        System.out.println("LTS(B) Transition : " + lts.Transitions().size());
         
-        PrioritizeTauActions(lts);
-        RemoveUnreachableStates(lts);
+        writer.Write("output_aut.aut", new LTSToAUTConvertor().Convert(lts));
+        writer.Write("output_fsm.fsm", new LTSToFSMConvertor().Convert(lts));
+        
+        //PrioritizeTauActions(lts);
+        //RemoveUnreachableStates(lts);
         //RemoveTauLabels(lts);
         
 //        HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts);
@@ -78,11 +83,11 @@ public class Main {
 //        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
 //        writer.Write("output_HA.xml", new HybridAutomatonToDMEConvertor().Convert(automaton));
 //        
-//        System.out.println("LTS(A) Pruning States : " + lts.GetStates().size());
-//        System.out.println("LTS(A) Pruning Transition : " + lts.GetTransitions().size());
+//        System.out.println("LTS(A) Pruning States : " + lts.States().size());
+//        System.out.println("LTS(A) Pruning Transition : " + lts.Transitions().size());
 //        
 //        System.out.println("HA Locations : " + automaton.GetLocations().size());
-//        System.out.println("HA Transition : " + automaton.GetTransitions().size());
+//        System.out.println("HA Transition : " + automaton.Transitions().size());
     }
     
     private static InputStream Read(String filePath) throws FileNotFoundException
@@ -96,6 +101,7 @@ public class Main {
         
         // Software
         genetator.AddSOSRule(new FIFOMessageTakeRule());
+        genetator.AddSOSRule(new PhysicalActorFIFOMessageTake());
         genetator.AddSOSRule(new MessageTeardownStatementRule());
         genetator.AddSOSRule(new DelayStatementRule());
         genetator.AddSOSRule(new AssignmentStatementRule());
@@ -118,7 +124,7 @@ public class Main {
         while(true)
         {
             boolean change = false;
-            for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.GetStates()))
+            for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
             {
                 List<Transition> outTrans = lts.GetOutTransitionsFor(state);
                 boolean hasTauLabled = false;
@@ -148,14 +154,14 @@ public class Main {
         while(true)
         {
             boolean change = false;
-            for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.GetStates()))
+            for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
             {
                 List<Transition> outTrans = lts.GetOutTransitionsFor(state);
                 List<Transition> inTrans = lts.GetInTransitionFor(state);
                 
                 if(inTrans.size() == 1 && outTrans.size() == 1
                         && inTrans.get(0).GetLabel() instanceof SoftwareLabel
-                        && state.equals(lts.GetInitialState()) == false)
+                        && state.equals(lts.InitialState()) == false)
                 {
                     lts.RemoveTranstion(inTrans.get(0));
                     lts.RemoveTranstion(outTrans.get(0));
@@ -169,7 +175,7 @@ public class Main {
             if(change == false)
                 break;
         }
-//        for(GlobalRunTimeState state : lts.GetStates())
+//        for(GlobalRunTimeState state : lts.States())
 //        {
 //            List<LabeledTransitionSystem.Transition> trans = lts.GetOutTransitionsFor(state);
 //            
@@ -193,7 +199,7 @@ public class Main {
 //        }
         
 //        
-//        for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.GetStates()))
+//        for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
 //        {
 //            List<LabeledTransitionSystem.Transition> fromTrans = lts.GetOutTransitionsFor(state);
 //            List<LabeledTransitionSystem.Transition> toTrans = lts.GetInTransitionFor(state);
@@ -345,7 +351,7 @@ public class Main {
         Queue<GlobalRunTimeState> notVisitedStates = new LinkedList<>();
         Queue<GlobalRunTimeState> visitedStates = new LinkedList<>();
         
-        notVisitedStates.add(lts.GetInitialState());
+        notVisitedStates.add(lts.InitialState());
         
         while(notVisitedStates.isEmpty() == false)
         {
@@ -359,7 +365,7 @@ public class Main {
                     notVisitedStates.add(t.GetDestination());
         }
         
-        for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.GetStates()))
+        for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
             if(reachableStates.contains(state) == false)
                 lts.RemoveState(state);
         
@@ -370,9 +376,9 @@ public class Main {
         while(true)
         {
             boolean change = false;
-            for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.GetStates()))
+            for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
             {
-                if(state.equals(lts.GetInitialState()))
+                if(state.equals(lts.InitialState()))
                     continue;
                 
                 List<Transition> outTrans = lts.GetOutTransitionsFor(state);
@@ -412,10 +418,10 @@ public class Main {
     {
         Map<Variable, Reset> resets = new HashMap<>();
         
-        for(Reset re : (Set<Reset>)firstLabel.GetResets())
+        for(Reset re : (Set<Reset>)firstLabel.Resets())
                 resets.put(re.Variable(), re);
         
-        for(Reset re : (Set<Reset>)secondLabel.GetResets())
+        for(Reset re : (Set<Reset>)secondLabel.Resets())
                 resets.put(re.Variable(), re);
 
         if(firstLabel instanceof SoftwareLabel)

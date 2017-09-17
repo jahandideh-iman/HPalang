@@ -195,7 +195,7 @@ public class BrakeByWireModelSingleWheel
         Mode brakeMode = wheelType.FindMode("Break");
         
         noBrakeMode.SetInvarient("timer <= 0.01");
-        noBrakeMode.SetGuard("timer == 0.01");
+        noBrakeMode.SetGuard(CreateGuard(timer, "==", 0.01f));
         noBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         noBrakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, "?!!!"));
         
@@ -204,7 +204,7 @@ public class BrakeByWireModelSingleWheel
         noBrakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation, VariableExpression(rpm)));
         
         brakeMode.SetInvarient("timer <= 0.01");
-        brakeMode.SetGuard("timer == 0.01");
+        brakeMode.SetGuard(CreateGuard(timer, "==", 0.01f));
         brakeMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         brakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, "?!!!"));
         
@@ -279,8 +279,8 @@ public class BrakeByWireModelSingleWheel
         RealVariable timer = (RealVariable) brakeType.FindVariable("timer");
         
         Mode brakingMode = brakeType.FindMode("Braking");
-        brakingMode.SetGuard("timer <= 0.01");
-        brakingMode.SetInvarient("timer == 0.01");
+        brakingMode.SetGuard(CreateGuard(timer, "==", 0.01f));
+        brakingMode.SetInvarient("timer <= 0.01");
         
         brakingMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         brakingMode.AddDifferentialEquation(new DifferentialEquation(brake_percent, "?!!!"));
@@ -333,8 +333,8 @@ public class BrakeByWireModelSingleWheel
         
         Mode runningMode = new Mode("Running");
         
-        runningMode.SetGuard("timer <= 0.01");
-        runningMode.SetInvarient("timer == 0.01");
+        runningMode.SetGuard(CreateGuard(timer, "==", 0.01f));
+        runningMode.SetInvarient("timer <= 0.01");
                 
         runningMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         

@@ -25,7 +25,7 @@ public class LabeledTransitionSystemTest
     {
         LabeledTransitionSystem lts = new LabeledTransitionSystem();
         
-        assertThat(lts.GetStates().size(),is(0));
+        assertThat(lts.States().size(),is(0));
     }
     
     @Test
@@ -35,7 +35,7 @@ public class LabeledTransitionSystemTest
         
         transitionSystem.AddState(state);
 
-        assertThat(transitionSystem.GetStates().size(),is(1));
+        assertThat(transitionSystem.States().size(),is(1));
         assertTrue(transitionSystem.HasState(state));
     }
     
@@ -47,7 +47,7 @@ public class LabeledTransitionSystemTest
         transitionSystem.AddState(state);
         transitionSystem.AddState(state.DeepCopy());
         
-        assertThat(transitionSystem.GetStates().size(),is(1));
+        assertThat(transitionSystem.States().size(),is(1));
     }
     
     @Test
@@ -78,6 +78,6 @@ public class LabeledTransitionSystemTest
         transitionSystem.AddTransition(originState, labled, destinatioState);
         transitionSystem.AddTransition(originState, labled, destinatioState);
         
-        assertThat(transitionSystem.GetTransitions().size(), equalTo(1));
+        assertThat(transitionSystem.Transitions().size(), equalTo(1));
     }
 }

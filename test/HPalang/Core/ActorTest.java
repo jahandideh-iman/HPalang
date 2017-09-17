@@ -44,13 +44,14 @@ public class ActorTest
     @Test
     public void HasTheBoundedInstances()
     {
-        InstanceParameter instanceParameter = new InstanceParameter("param", CreateEmptyType());
-        
         ActorType type = CreateType("Type");
-        type.AddInstanceParameter(instanceParameter);
-        
         Actor actor = new Actor("actor", type);
-        Actor instance = new Actor("instance",  CreateEmptyType());
+
+        ActorType instanceType = CreateType("InstanceType");
+        Actor instance = new Actor("instance",  instanceType);
+        InstanceParameter instanceParameter = new InstanceParameter("param", instanceType);
+        
+        type.AddInstanceParameter(instanceParameter);
         
         actor.BindInstance(instanceParameter, instance, CommunicationType.CAN);
         

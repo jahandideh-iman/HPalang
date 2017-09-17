@@ -30,7 +30,7 @@ public class LabeledTransitionSystem
             states.add(state);
     }
     
-    public GlobalRunTimeState GetInitialState()
+    public GlobalRunTimeState InitialState()
     {
         return initialState;
     }
@@ -45,7 +45,7 @@ public class LabeledTransitionSystem
         return states.contains(state);
     }
     
-    public Set<GlobalRunTimeState> GetStates()
+    public Set<GlobalRunTimeState> States()
     {
         return states;
     }
@@ -61,7 +61,7 @@ public class LabeledTransitionSystem
         AddState(destination);
     }
     
-    public List<Transition> GetTransitions()
+    public List<Transition> Transitions()
     {
         return transitions;
     }

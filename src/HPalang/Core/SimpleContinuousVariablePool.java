@@ -15,7 +15,8 @@ import java.util.Set;
  */
 public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVariablePool> implements RealVariablePool
 {
-    private final Set<RealVariable> variables = new HashSet<>();
+    private final Set<RealVariable> avaiableVariables = new HashSet<>();
+    private final Set<RealVariable> origianlVariables = new HashSet<>();
     private final String prefix;
     
     public SimpleContinuousVariablePool(int size)
@@ -28,13 +29,16 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
         this.prefix = prefix;
         
         for(int i = 0; i< size; i++)
-            variables.add(new RealVariable("timer_" + i ));
+            origianlVariables.add(new RealVariable(prefix + i ));
+        
+        avaiableVariables.addAll(origianlVariables);
     }
     
     public SimpleContinuousVariablePool(SimpleContinuousVariablePool other)
     {
         this.prefix = other.prefix;
-        variables.addAll(other.variables);
+        origianlVariables.addAll(other.origianlVariables);
+        avaiableVariables.addAll(other.avaiableVariables);
     }
     
     @Override
@@ -44,8 +48,8 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
             throw new RuntimeException("The is no real variable to acquire");
         else
         {
-            RealVariable var = variables.iterator().next();
-            variables.remove(var);
+            RealVariable var = avaiableVariables.iterator().next();
+            avaiableVariables.remove(var);
             return var;
         }
     }
@@ -53,23 +57,25 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     @Override
     public void Release(RealVariable variable)
     {
-        variables.add(variable);
+        assert (origianlVariables.contains(variable) && !avaiableVariables.contains(variable));
+        avaiableVariables.add(variable);
     }
     
     @Override
     public boolean Has(RealVariable variable)
     {
-        return variables.contains(variable);
+        return avaiableVariables.contains(variable);
     }
     public int Size()
     {
-        return variables.size();
+        return avaiableVariables.size();
     }
     
     @Override
     protected boolean InternalEquals(SimpleContinuousVariablePool other)
     {
-        return variables.equals(other.variables);
+        return avaiableVariables.equals(other.avaiableVariables) &&
+                origianlVariables.equals(other.origianlVariables);
     }
 
     @Override
@@ -87,12 +93,12 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     @Override
     public boolean HasAnyAvailableVariable()
     {
-        return variables.isEmpty() == false;
+        return avaiableVariables.isEmpty() == false;
     }
 
     @Override
     public boolean HasAvailableVariable(int number)
     {
-        return variables.size() >= number;
+        return avaiableVariables.size() >= number;
     }
 }

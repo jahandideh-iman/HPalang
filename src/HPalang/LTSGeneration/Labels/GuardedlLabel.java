@@ -45,7 +45,7 @@ public class GuardedlLabel extends Label<GuardedlLabel>
     protected boolean InternalEquals(GuardedlLabel other)
     {
         return this.guard.equals(other.guard)
-                && other.GetResets().equals(this.resets);
+                && other.Resets().equals(this.resets);
     }
 
     @Override

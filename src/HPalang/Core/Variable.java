@@ -52,10 +52,10 @@ public abstract class Variable extends Equalitable<Variable>
     {
         return 0;
     }
-    
-//    @Override
-//    public String toString()
-//    {
-//        return name;
-//    }
+        
+    @Override
+    public String toString()
+    {
+        return name;
+    }
 }

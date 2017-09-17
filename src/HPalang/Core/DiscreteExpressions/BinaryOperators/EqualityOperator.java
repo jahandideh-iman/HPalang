@@ -22,5 +22,12 @@ public class EqualityOperator extends BinaryOperatorT<EqualityOperator>
     {
         return (operand1.Evaluate(valuations) == operand2.Evaluate(valuations)) ? 1 : 0;
     }
+
+    @Override
+    public String toString()
+    {
+        return "==";
+    }
+    
     
 }

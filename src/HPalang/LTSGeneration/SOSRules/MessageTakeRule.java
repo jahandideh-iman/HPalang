@@ -80,7 +80,7 @@ public abstract class MessageTakeRule extends SoftwareActorLevelRule
         
         for(Transition tr : trace.GetTransitions())
         {
-            for(Reset re : (Set<Reset>)tr.GetLabel().GetResets())
+            for(Reset re : (Set<Reset>)tr.GetLabel().Resets())
                 resets.put(re.Variable(), re);
         }
         

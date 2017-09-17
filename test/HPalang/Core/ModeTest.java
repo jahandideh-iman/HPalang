@@ -5,7 +5,9 @@
  */
 package HPalang.Core;
 
+import static HPalang.Core.CreationUtilities.CreateTrivialFlaseGuard;
 import static HPalang.Core.Statement.StatementsFrom;
+import HPalang.LTSGeneration.Labels.Guard;
 import Mocks.EmptyStatement;
 import java.util.Queue;
 import java.util.Set;
@@ -13,6 +15,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import static TestUtilities.CoreUtility.*;
 
 /**
  *
@@ -26,11 +29,11 @@ public class ModeTest
     {
         String inv = "inv";
         Set<DifferentialEquation> equations = Mode.EquationsFrom(DifferentialEquation.Empty("eq1"));
-        String guard = "guard";
+        Guard guard = CreateTrivialFlaseGuard();
         Queue<Statement> actions = StatementsFrom(new EmptyStatement());
         
-        Mode mode1 = new Mode("mode","inv", equations , "guard", actions);
-        Mode mode2 = new Mode("mode","inv", equations , "guard", actions);
+        Mode mode1 = new Mode("mode","inv", equations , guard, actions);
+        Mode mode2 = new Mode("mode","inv", equations , guard, actions);
         
         assertThat(mode1, is(equalTo(mode2)));
     }

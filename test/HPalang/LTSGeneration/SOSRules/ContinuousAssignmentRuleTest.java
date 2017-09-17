@@ -58,7 +58,7 @@ public class ContinuousAssignmentRuleTest extends SOSRuleTestFixture
         SoftwareLabel label = new SoftwareLabel(Reset.From(new Reset(assignment.Variable(), assignment.Expression())));
         
         assertTrue(generatedLTS.HasTransition(globalState, label , expectedState));
-        assertThat(generatedLTS.GetStates().size(), is(IsEqual.equalTo(2)));
+        assertThat(generatedLTS.States().size(), is(IsEqual.equalTo(2)));
         
     }
    

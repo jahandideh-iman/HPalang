@@ -37,8 +37,8 @@ public class LTSGeneratorTest
         
         LabeledTransitionSystem lts = ltsGenerator.Generate(initialState);
         
-        assertThat(rule1.appliedStates,hasItem(equalTo(lts.GetInitialState())));
-        assertThat(rule2.appliedStates,hasItem(equalTo(lts.GetInitialState())));
+        assertThat(rule1.appliedStates,hasItem(equalTo(lts.InitialState())));
+        assertThat(rule2.appliedStates,hasItem(equalTo(lts.InitialState())));
     }
     
     @Test
@@ -55,7 +55,7 @@ public class LTSGeneratorTest
 
         LabeledTransitionSystem lts = ltsGenerator.Generate(initialState);
         
-        assertTrue(lts.HasTransition(lts.GetInitialState(),rule.transitonLabel,rule.transitionState));
+        assertTrue(lts.HasTransition(lts.InitialState(),rule.transitonLabel,rule.transitionState));
     }
     
 }

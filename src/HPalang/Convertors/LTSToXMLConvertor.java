@@ -27,7 +27,7 @@ public class LTSToXMLConvertor
         String output = "";
         output += "<DMEComponent type=\"FiniteStateMachine\" >";
         output += "<States>\n";
-        for(GlobalRunTimeState state : lts.GetStates())
+        for(GlobalRunTimeState state : lts.States())
         {
             String stateStr = StateToString(state);
             
@@ -39,7 +39,7 @@ public class LTSToXMLConvertor
         
         output += "<Transitions>\n";
         
-        for(Transition transition : lts.GetTransitions())
+        for(Transition transition : lts.Transitions())
         {
             String transitionStr = "\t<Transition>\n";
             
@@ -57,7 +57,7 @@ public class LTSToXMLConvertor
         }
         
         output += "</Transitions>\n";
-        output +="<InitialState>" + StateToString(lts.GetInitialState())+"</InitialState>";
+        output +="<InitialState>" + StateToString(lts.InitialState())+"</InitialState>";
         output += "</DMEComponent>";
         return output;
     }

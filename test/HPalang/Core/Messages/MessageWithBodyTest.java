@@ -5,6 +5,7 @@
  */
 package HPalang.Core.Messages;
 
+import HPalang.Core.Message;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.DelayStatement;
 import Mocks.EmptyStatement;
@@ -24,23 +25,26 @@ public class MessageWithBodyTest
     @Test
     public void MessagesWithEqualStatementQueueAreEqual()
     {
-        Queue<Statement> statements1 = Statement.StatementsFrom(new EmptyStatement(),new EmptyStatement());
-        Queue<Statement> statements2 = Statement.StatementsFrom(new EmptyStatement(),new EmptyStatement());
+        Queue<Statement> statements = Statement.StatementsFrom(new EmptyStatement(),new EmptyStatement());
         
-        MessageWithBody message1 = new MessageWithBody(statements1);
-        MessageWithBody message2 = new MessageWithBody(statements2);
+        Message.MessageType messageType = Message.MessageType.Control;
+        
+        MessageWithBody message1 = new MessageWithBody(statements, messageType);
+        MessageWithBody message2 = new MessageWithBody(statements, messageType);
         
         assertThat(message2, equalTo(message1));   
     }
     
     @Test
-    public void MessagesWithEqualStatementAndDifferentOrderingAreNotEqual()
+    public void MessageWithNotEqualStatementsAreNotEqual()
     {
         Statement statement1 = new EmptyStatement();
         Statement statement2 = new DelayStatement(1f);
+        
+        Message.MessageType messageType = Message.MessageType.Control;
        
-        MessageWithBody message1 = new MessageWithBody(Statement.StatementsFrom(statement1, statement2));
-        MessageWithBody message2 = new MessageWithBody(Statement.StatementsFrom(statement2, statement1));
+        MessageWithBody message1 = new MessageWithBody(Statement.StatementsFrom(statement1, statement2),messageType);
+        MessageWithBody message2 = new MessageWithBody(Statement.StatementsFrom(statement2, statement1),messageType);
         
         assertThat(message2, not(equalTo(message1)));   
     }

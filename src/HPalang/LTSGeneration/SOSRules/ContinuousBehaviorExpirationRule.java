@@ -8,15 +8,11 @@ package HPalang.LTSGeneration.SOSRules;
 import HPalang.Core.Mode;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
-import HPalang.LTSGeneration.Labels.NetworkLabel;
-import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import static HPalang.LTSGeneration.SOSRules.Utilities.NoNetworkActions;
 import static HPalang.LTSGeneration.SOSRules.Utilities.NoSoftwareActions;
 import HPalang.LTSGeneration.StateInfo;
-import HPalang.LTSGeneration.Transition;
 import HPalang.LTSGeneration.TransitionCollector;
-import java.util.Collection;
 
 /**
  *

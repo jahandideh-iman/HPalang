@@ -15,6 +15,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
+import java.util.Collections;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Before;
 
@@ -44,7 +45,7 @@ public class MessageTeardownStatementRuleTest extends SOSRuleTestFixture
         VariableParameter parameter = ParameterFor("param");
         MessageParameters messageParamters  = MessageParameters.From(parameter);
         
-        Statement teardownStatemeent = new MessageTeardownStatement(messageParamters);
+        Statement teardownStatemeent = new MessageTeardownStatement(messageParamters, Collections.EMPTY_LIST);
         EnqueueStatement(teardownStatemeent, actorState);
         
         ApplyAndVerifyRuleOn(globalState);

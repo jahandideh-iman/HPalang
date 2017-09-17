@@ -45,16 +45,25 @@ public abstract class Label<T extends Label> extends Equalitable<T>
         this(null, resets);
     }
     
-    public Set<Reset> GetResets()
+    public Set<Reset> Resets()
     {
         return resets;
     }
     
+    public boolean IsGuarded()
+    {
+        return guard != null;
+    }
+    
+    public Guard Guard()
+    {
+        return guard;
+    }
     
     @Override
     protected boolean InternalEquals(T other)
     {
-        return this.resets.equals(other.GetResets())
+        return this.resets.equals(other.Resets())
                 && GuardEqual(other.guard);
     }
     

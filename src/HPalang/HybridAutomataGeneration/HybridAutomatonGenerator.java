@@ -39,13 +39,13 @@ public class HybridAutomatonGenerator
 //        transitionSystem.SetInitialState(currentGlobalState);
 //        notVisitedStates.add(currentGlobalState);
         
-        for(Transition transition : lts.GetTransitions())
+        for(Transition transition : lts.Transitions())
         {
             for(TransitionSOSRule rule : sosRules)
                 rule.TryApply(transition, this);
         }
         
-        hybridAutomaton.SetInitialState(ToLocation(lts.GetInitialState()));
+        hybridAutomaton.SetInitialState(ToLocation(lts.InitialState()));
             
 //        while (!notVisitedStates.isEmpty()) 
 //        { 
@@ -65,8 +65,8 @@ public class HybridAutomatonGenerator
 //                
 //        transitionSystem.AddState(destination);
 //        transitionSystem.AddTransition(currentGlobalState, label, destination);
-//        if(transitionSystem.GetTransitions().size() == 25)
-//            transitionSystem.GetTransitions();       
+//        if(transitionSystem.Transitions().size() == 25)
+//            transitionSystem.Transitions();       
 //    }
 
     public void AddTransition(Location origin, GuardedlLabel label, Location destination)

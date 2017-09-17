@@ -55,4 +55,12 @@ public class VariableExpression extends DiscreteExpressionT<VariableExpression>
     {
         return valuations.Has(variable);
     }    
+
+    @Override
+    public String toString()
+    {
+        return variable.Name();
+    }
+    
+    
 }

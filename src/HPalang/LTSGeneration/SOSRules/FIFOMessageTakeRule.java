@@ -67,7 +67,7 @@ public class FIFOMessageTakeRule extends SoftwareActorLevelRule
         }
         
         newActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
-        newActorState.ExecutionQueueState().Statements().Enqueue(new MessageTeardownStatement(message.Parameters()));
+        newActorState.ExecutionQueueState().Statements().Enqueue(new MessageTeardownStatement(message.Parameters(), packet.PooledVariables()));
         
         collector.AddTransition(new SoftwareLabel(), newGlobalState);
     }

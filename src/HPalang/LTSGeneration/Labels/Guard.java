@@ -7,6 +7,7 @@ package HPalang.LTSGeneration.Labels;
 
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.Equalitable;
+import HPalang.LTSGeneration.Label;
 
 /**
  *
@@ -31,8 +32,21 @@ public class Guard extends Equalitable<Guard>
     @Override
     protected int InternalHashCode()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return 0;
     }
+
+    public BinaryExpression Expression()
+    {
+        return guardExpression;
+    }
+
+    @Override
+    public String toString()
+    {
+        return guardExpression.toString();
+    }
+    
+    
     
     
 }

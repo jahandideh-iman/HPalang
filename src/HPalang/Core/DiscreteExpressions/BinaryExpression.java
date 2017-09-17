@@ -5,9 +5,7 @@
  */
 package HPalang.Core.DiscreteExpressions;
 
-import HPalang.Core.DiscreteExpression;
 import HPalang.Core.Expression;
-import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
 /**
@@ -57,5 +55,11 @@ public class BinaryExpression extends DiscreteExpressionT<BinaryExpression>
     public Expression PartiallyEvaluate(ValuationContainer valuations)
     {
         return new BinaryExpression(operand1.PartiallyEvaluate(valuations), operator, operand2.PartiallyEvaluate(valuations));
+    }
+
+    @Override
+    public String toString()
+    {
+        return String.format("(%s %s %s)", operand1.toString(), operator.toString(), operand2.toString());
     }
 }

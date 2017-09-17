@@ -5,6 +5,7 @@
  */
 package HPalang.Core;
 
+import HPalang.LTSGeneration.Labels.Guard;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.Objects;
@@ -20,14 +21,14 @@ public class Mode extends Equalitable<Mode>
     private final String name;
     private String invariant;
     private Set<DifferentialEquation> equations = new HashSet<>();
-    private String guard;
+    private Guard guard;
     private Queue<Statement> actions = new LinkedList<>();
     
     public Mode(String name)
     {
         this.name = name;
     }
-    public Mode(String name, String inv, Set<DifferentialEquation> odes, String guard, Queue<Statement> actions )
+    public Mode(String name, String inv, Set<DifferentialEquation> odes, Guard guard, Queue<Statement> actions )
     {
         this.name = name;
         this.invariant = inv;
@@ -41,7 +42,7 @@ public class Mode extends Equalitable<Mode>
         this.invariant = invariant;
     }
     
-    public void SetGuard(String guard)
+    public void SetGuard(Guard guard)
     {
         this.guard = guard;
     }
@@ -61,7 +62,7 @@ public class Mode extends Equalitable<Mode>
         return actions;
     }
     
-    public String Guard()
+    public Guard Guard()
     {
         return guard;
     }
@@ -94,7 +95,7 @@ public class Mode extends Equalitable<Mode>
     
     public static Mode None()
     {
-        return new Mode("None","", EquationsFrom(DifferentialEquation.Empty()), "", Statement.EmptyStatements());
+        return new Mode("None","", EquationsFrom(DifferentialEquation.Empty()), CreationUtilities.CreateTrivialFlaseGuard(), Statement.EmptyStatements());
     }
     
     static public Set<DifferentialEquation> EquationsFrom(DifferentialEquation ...equations)

@@ -5,8 +5,11 @@
  */
 package HPalang.Core.Statements;
 
+import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageParameters;
 import HPalang.Core.VariableParameter;
+import HPalang.Core.Variables.RealVariable;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -16,15 +19,19 @@ import java.util.Set;
 public class MessageTeardownStatement extends AbstractStatement<MessageTeardownStatement>
 {
     private final MessageParameters parametersToRemove;
+    private final List<RealVariable> variablesToRelease;
     
-    public MessageTeardownStatement(MessageParameters parametersToRemove)
+    public MessageTeardownStatement(MessageParameters parametersToRemove, List<RealVariable> argumentsToRelease)
     {
         this.parametersToRemove = parametersToRemove;
+        this.variablesToRelease = argumentsToRelease;
     }
+    
     @Override
     protected boolean InternalEquals(MessageTeardownStatement other)
     {
-        return this.parametersToRemove.equals(other.parametersToRemove);
+        return this.parametersToRemove.equals(other.parametersToRemove)
+                && this.variablesToRelease.equals(other.variablesToRelease);
     }
 
     @Override
@@ -36,6 +43,11 @@ public class MessageTeardownStatement extends AbstractStatement<MessageTeardownS
     public MessageParameters ParametersToRemove()
     {
         return parametersToRemove;
+    }
+    
+    public List<RealVariable> VariablesToRelease()
+    {
+        return variablesToRelease;
     }
     
 }

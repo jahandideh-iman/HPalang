@@ -19,7 +19,11 @@ import HPalang.Core.Delegation;
 import HPalang.Core.DelegationParameter;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.AddOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserEqualOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.SubtractOperator;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.Expression;
 import HPalang.Core.InstanceParameter;
@@ -46,6 +50,7 @@ import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.Labels.Guard;
 import java.lang.reflect.InvocationTargetException;
 
 /**
@@ -100,7 +105,7 @@ public class ModelCreationUtilities
         return ModelCreationUtilities.CreateSendStatement(
                 actorLocator, 
                 new MessageWithBody(
-                        Statement.StatementsFrom(new ModeChangeStatement(mode))
+                        Statement.StatementsFrom(new ModeChangeStatement(mode)), Message.MessageType.Control
                 )
         );
     }
@@ -109,6 +114,13 @@ public class ModelCreationUtilities
     {
         return CreateModeChangeRequest(
                 ((PhysicalActorType) instance.Type()).FindMode(mode), 
+                new ParametricActorLocator(instance));
+    }
+    
+    public static SendStatement CreateDeactiveModeRequest(InstanceParameter instance)
+    {
+        return CreateModeChangeRequest(
+                Mode.None(), 
                 new ParametricActorLocator(instance));
     }
 
@@ -255,8 +267,8 @@ public class ModelCreationUtilities
         
         Mode runningMode = new Mode("Running");
         
-        runningMode.SetGuard("timer <= 0.01");
-        runningMode.SetInvarient("timer == 0.01");
+        runningMode.SetGuard(CreateGuard(timer, "==", 0.01f));
+        runningMode.SetInvarient("timer <= 0.01");
                 
         runningMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         
@@ -279,8 +291,51 @@ public class ModelCreationUtilities
         return clock;
     }
     
-    public static Expression CreateEqualityExpression(Expression e1, Expression e2)
+    public static BinaryExpression CreateEqualityExpression(Expression e1, Expression e2)
     {
         return new BinaryExpression(e1, new EqualityOperator(), e2);
+    }
+    
+    public static BinaryExpression CreateEqualityExpression(Variable var, float value)
+    {
+        return new BinaryExpression(VariableExpression(var), new EqualityOperator(), new ConstantContinuousExpression(value));
+    }
+    
+    public static BinaryExpression CreateGreaterExpression(Expression e1, Expression e2)
+    {
+        return new BinaryExpression(e1, new GreaterOperator(), e2);
+    }
+        
+    public static BinaryExpression CreateAddExpression(Expression e1, Expression e2)
+    {
+        return new BinaryExpression(e1, new AddOperator(), e2);
+    }
+            
+    public static Expression CreateSubtractExpression(Expression e1, Expression e2)
+    {
+        return new BinaryExpression(e1, new SubtractOperator(), e2);
+    }
+                
+    public static Expression CreateLesserEqualExpression(Expression e1, Expression e2)
+    {
+        return new BinaryExpression(e1, new LesserEqualOperator(), e2);
+    }
+    
+    public static Guard CreateGuard(Variable var, String operator, float value)
+    {
+        return CreateGuard(new VariableExpression(var), operator, new ConstantContinuousExpression(value));
+    }
+    
+    public static Guard CreateGuard(Expression expr1, String operator, Expression expr2)
+    {
+        if(operator.equals("=="))
+            return new Guard(CreateEqualityExpression(expr1, expr2));
+        
+        throw new RuntimeException(String.format("Operator %s is not defined yet.", operator));
+    }
+    
+    public static Guard CreateGuard(Variable var1, String operator, Variable var2)
+    {
+        return CreateGuard(new VariableExpression(var1), operator, new VariableExpression(var2));
     }
 }

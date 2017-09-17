@@ -5,38 +5,21 @@
  */
 package HPalang;
 
-import HPalang.Core.ActorLocator;
-import HPalang.Core.ActorLocators.DelegationActorLocator;
-import HPalang.Core.ActorType;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.DelegationParameter;
 import HPalang.Core.DifferentialEquation;
-import HPalang.Core.DiscreteExpressions.BinaryExpression;
-import HPalang.Core.DiscreteExpressions.BinaryOperators.*;
-import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
-import HPalang.Core.DiscreteExpressions.VariableExpression;
-import HPalang.Core.InstanceParameter;
-import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageHandler;
-import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Mode;
-import HPalang.Core.ActorLocators.ParametricActorLocator;
 import HPalang.Core.MainBlock;
 import HPalang.Core.Message;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
 import HPalang.Core.ModelDefinition;
 import HPalang.Core.SoftwareActorType;
-import HPalang.Core.Statement;
-import HPalang.Core.Statements.AssignmentStatement;
-import HPalang.Core.Statements.IfStatement;
-import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Variable;
-import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.FloatVariable;
-import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
 import static HPalang.ModelCreationUtilities.*;
 
@@ -134,7 +117,7 @@ public class BrakeByWireModelSimple
 
         
         noBrakeMode.SetInvarient("timer <= 0.01");
-        noBrakeMode.SetGuard("timer == 0.01");
+        noBrakeMode.SetGuard(CreateGuard(timer, "==", 0.01f));
         noBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
         noBrakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, "?!!!"));
         

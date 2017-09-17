@@ -32,8 +32,14 @@ import HPalang.LTSGeneration.State;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
 import HPalang.Core.ActorLocators.DirectActorLocator;
+import static HPalang.Core.CreationUtilities.CreateTrivialFlaseGuard;
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
+import HPalang.Core.DiscreteExpressions.FalseConst;
+import HPalang.Core.DiscreteExpressions.TrueConst;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
 import HPalang.Core.SoftwareActorType;
+import HPalang.LTSGeneration.Labels.Guard;
 import Mocks.EmptyStatement;
 import java.util.Collections;
 import java.util.Queue;
@@ -227,7 +233,7 @@ public class CoreUtility
                 name,
                 "", 
                 EquationsFrom(DifferentialEquation.Empty()),
-                "", 
+                CreateTrivialFlaseGuard(), 
                 Statement.EmptyStatements());
     }
     
@@ -235,4 +241,6 @@ public class CoreUtility
     {
         globalState.ContinuousState().FindActorState(actor).SetMode(mode);
     }
+    
+
 }

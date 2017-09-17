@@ -6,8 +6,12 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
+import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
+import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.EventsState;
@@ -49,7 +53,11 @@ public class EventExpirationRule implements SOSRule
     
     public ContinuousLabel CreateEventTransitionLabel(Event event)
     {
-        String guard = event.Timer().Name()+"=="+event.Delay();
+        Guard guard = new Guard(new BinaryExpression(
+                new VariableExpression(event.Timer()), 
+                new EqualityOperator(), 
+                new ConstantContinuousExpression(event.Delay())));
+        
         Reset reset = new Reset(event.Timer(), new ConstantContinuousExpression(0));
         return new ContinuousLabel(guard, Reset.From(reset));
     }

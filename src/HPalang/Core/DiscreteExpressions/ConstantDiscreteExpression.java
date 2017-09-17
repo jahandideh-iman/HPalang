@@ -56,4 +56,12 @@ public class ConstantDiscreteExpression extends DiscreteExpressionT<ConstantDisc
     {
         return this;
     }
+
+    @Override
+    public String toString()
+    {
+        return String.valueOf(constant);
+    }
+    
+    
 }

@@ -5,10 +5,12 @@
  */
 package Builders;
 
+import static HPalang.Core.CreationUtilities.CreateTrivialFlaseGuard;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.Mode;
 import HPalang.Core.Statement;
 import static HPalang.Core.Statement.StatementsFrom;
+import static TestUtilities.CoreUtility.*;
 import Mocks.EmptyStatement;
 
 /**
@@ -22,7 +24,7 @@ public class ModeBuilder
     
     public Mode Build()
     {
-        return new Mode(name,inv, Mode.EquationsFrom(DifferentialEquation.Empty()), "guard", StatementsFrom(new EmptyStatement()));
+        return new Mode(name,inv, Mode.EquationsFrom(DifferentialEquation.Empty()), CreateTrivialFlaseGuard(), StatementsFrom(new EmptyStatement()));
     }
 
     public ModeBuilder WithName(String name)

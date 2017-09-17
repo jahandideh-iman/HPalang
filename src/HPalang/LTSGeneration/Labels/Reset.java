@@ -5,17 +5,11 @@
  */
 package HPalang.LTSGeneration.Labels;
 
-import HPalang.Core.ContinuousExpression;
-import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Equalitable;
 import HPalang.Core.Expression;
-import HPalang.Core.Statement;
 import HPalang.Core.Variable;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -49,9 +43,16 @@ public class Reset extends Equalitable<Reset>
     {
         return variable;
     }
+
+    @Override
+    public String toString()
+    {
+        return String.format("%s = %s", variable.toString(), expression.toString());
+    }
     
     static public Set<Reset> From(Reset ...resets)
     {
         return new LinkedHashSet<>(Arrays.asList(resets));
     }
+    
 }

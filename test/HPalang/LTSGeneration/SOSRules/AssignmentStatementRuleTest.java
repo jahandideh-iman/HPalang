@@ -75,7 +75,7 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
         
         Reset expectedReset = new Reset(variable, partialExpression);
         
-        assertThat((Set<Reset>)CollectedLabel().GetResets(), hasItem(equalTo(expectedReset)));
+        assertThat((Set<Reset>)CollectedLabel().Resets(), hasItem(equalTo(expectedReset)));
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     

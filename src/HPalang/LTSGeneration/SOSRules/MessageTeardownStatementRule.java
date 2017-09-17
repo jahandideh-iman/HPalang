@@ -5,8 +5,11 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.Statements.MessageTeardownStatement;
+import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
+import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 
 /**
@@ -27,6 +30,9 @@ public class MessageTeardownStatementRule extends SoftwareStatementRule<MessageT
     {
         for(VariableParameter parameter : statement.ParametersToRemove().AsSet())
             newActorState.ValuationState().Valuation().Remove(parameter.Variable());
+        
+        for(RealVariable variable : statement.VariablesToRelease())
+            newGlobalState.VariablePoolState().Pool().Release(variable);
         
     }
     

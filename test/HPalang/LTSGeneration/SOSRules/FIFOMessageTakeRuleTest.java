@@ -221,7 +221,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
             expectedActorState.ValuationState().Valuation().Add(parameter.Variable());
         }
         expectedActorState.ExecutionQueueState().Statements().Enqueue(
-                new MessageTeardownStatement(message.Parameters()));
+                new MessageTeardownStatement(message.Parameters(), packet.PooledVariables()));
         
         return expectedGlobalState;
     }

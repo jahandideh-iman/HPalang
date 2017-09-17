@@ -58,6 +58,6 @@ public class DiscreteAssignmentTest extends SOSRuleTestFixture
        
 
         assertTrue(generatedLTS.HasTransition(globalState, new SoftwareLabel(), expectedState));
-        assertThat(generatedLTS.GetStates().size(), is(IsEqual.equalTo(2)));
+        assertThat(generatedLTS.States().size(), is(IsEqual.equalTo(2)));
     }
 }

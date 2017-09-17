@@ -18,10 +18,12 @@ import java.util.Queue;
 public class MessageWithBody extends Equalitable<MessageWithBody> implements Message
 {
     private final Queue<Statement> statements;
+    private final MessageType messageType;
     
-    public MessageWithBody(Queue<Statement> statements)
+    public MessageWithBody(Queue<Statement> statements, MessageType messageType)
     {
         this.statements = statements;
+        this.messageType = messageType;
     }
 
     @Override
@@ -69,6 +71,6 @@ public class MessageWithBody extends Equalitable<MessageWithBody> implements Mes
     @Override
     public MessageType MessageType()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return messageType;
     }
 }

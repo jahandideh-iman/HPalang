@@ -5,24 +5,23 @@
  */
 package HPalang;
 
+import HPalang.Core.CommunicationType;
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.ContinuousVariable;
+import HPalang.Core.DelegationParameter;
 import HPalang.Core.DifferentialEquation;
-import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
-import HPalang.Core.DiscreteExpressions.ArithmeticExpression;
-import HPalang.Core.DiscreteExpressions.ComparisonExpression;
-import HPalang.Core.DiscreteExpressions.VariableExpression;
-import HPalang.Core.MainBlock;
+import HPalang.Core.DiscreteExpressions.*;
+import HPalang.Core.InstanceParameter;
 import HPalang.Core.MessageHandler;
-import HPalang.Core.Messages.NormalMessage;
+import HPalang.Core.Mode;
 import HPalang.Core.ModelDefinition;
+import HPalang.Core.PhysicalActor;
+import HPalang.Core.PhysicalActorType;
 import HPalang.Core.SoftwareActorType;
 import HPalang.Core.Statement;
-import HPalang.Core.Statements.DelayStatement;
-import HPalang.Core.Statements.DiscreteAssignmentStatement;
-import HPalang.Core.Statements.IfStatement;
-import HPalang.Core.Statements.SendStatement;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
+import HPalang.Core.Statements.*;
+import HPalang.Core.Variables.*;
+import static HPalang.ModelCreationUtilities.*;
 
 /**
  *
@@ -30,112 +29,223 @@ import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
  */
 public class DrawBridge
 {
+    static final String Clock__callback_param = "callBack";
+    static final String Clock__timer = "timer";
+    static final String Clock__on_mode = "On";
+    
+    static final String Car_Dispatcher__controller_param = "controller";
+    static final String Car_Dispatcher__total_cars = "totalCars";
+    static final String Car_Dispatcher__dispatch_handler = "dispatch";
+    
+    static final String DBC__bridge_param = "drawBridge";
+    static final String DBC__clock_param = "clock";
+    static final String DBC__cars = "cars";
+    static final String DBC__bridge_status = "drawBridgeStatus";
+    static final String DBC__enqueue_car_handler = "enqueueCar";
+    static final String DBC__bridge_lowered_handler = "bridgeLowered";
+    static final String DBC__bridge_raised_handler = "bridgeRaised";
+    static final String DBC__car_passed_handler = "ACarPassed";
+    
+    static final String Draw_Bridge__controller_param = "controller";
+    static final String Draw_Bridge__degree = "degree";
+    static final String Draw_Bridge__lowering_mode = "lowering";
+    static final String Draw_Bridge__raising_mode = "raising";
+
+
+    
+    
     public ModelDefinition Create()
     {
         ModelDefinition definition = new ModelDefinition();
         
+        PhysicalActorType clockType = new PhysicalActorType("Clock");
         SoftwareActorType carDispatcherType = new SoftwareActorType("CarDispatcher");
         SoftwareActorType drawBridgeContollerType = new SoftwareActorType("DrawBridgeController");
+        PhysicalActorType drawBridgeType = new PhysicalActorType("DrawBridge");
         
         
+        FillSkeletonForClockType(clockType);
+        FillSkeletonForCarDispatcherType(carDispatcherType, drawBridgeContollerType);
+        FillSkeletonForDrawBridgeController(drawBridgeContollerType, clockType, drawBridgeType);
+        FillSkeletonForDrawBridgeType(drawBridgeType, drawBridgeContollerType);
         
-//        
-//        DiscreteVariable Bridge_cars = new DiscreteVariable("cars");
-//        DiscreteVariable Bridge_bridgeStatus =  new DiscreteVariable("bridgeStatus");
-//        ContinuousVariable Bridge_timer = new ContinuousVariable("timer");
-//        ContinuousVariable Bridge_degree = new ContinuousVariable("degree");
-//        
-//        SoftwareActor Bridge = new SoftwareActor("Bridge",10); 
-//        Bridge.AddDiscreteVariable(Bridge_cars, 0 );
-//        Bridge.AddDiscreteVariable(Bridge_bridgeStatus , 0 );
-////        Bridge.AddContinuousVariable(Bridge_timer, 0);
-////        Bridge.AddContinuousVariable(Bridge_degree, 0);
-//        
-//        MessageHandler handler_Bridge_EnqueueCar = new MessageHandler();
-//        MessageHandler handler_Bridge_StartLowering = new MessageHandler();
-//        MessageHandler handler_Bridge_StartRaising = new MessageHandler();
-//        MessageHandler handler_Bridge_PassACar = new MessageHandler();
-//        
-//        Bridge.AddMessageHandler("EnqueueCar", handler_Bridge_EnqueueCar);
-//        Bridge.AddMessageHandler("PassCar", handler_Bridge_PassACar);
-//        Bridge.AddMessageHandler("StartLowering", handler_Bridge_StartLowering);
-//        Bridge.AddMessageHandler("StartRaising", handler_Bridge_StartRaising);
-//        
-//        SoftwareActor CarDispatcher1 = CreateCarDispatcher("CarDispatcher1", 1.0f, Bridge, handler_Bridge_EnqueueCar);
-//        SoftwareActor CarDispatcher2 = CreateCarDispatcher("CarDispatcher2", 1.0f, Bridge, handler_Bridge_EnqueueCar);
-//        
-//
-//        handler_Bridge_EnqueueCar.AddStatement(new DiscreteAssignmentStatement(Bridge_cars , 
-//                new ArithmeticExpression(new VariableExpression(Bridge_cars), ArithmeticExpression.Operator.Add ,new ConstantDiscreteExpression(1))));
-//        handler_Bridge_EnqueueCar.AddStatement(new IfStatement(
-//                new ComparisonExpression(new VariableExpression(Bridge_bridgeStatus ), ComparisonExpression.Operator.Equal, new ConstantDiscreteExpression(0))
-//                , Statement.StatementsFrom(new SendStatement(Bridge,  new NormalMessage(handler_Bridge_StartLowering)))
-//                , Statement.EmptyStatements()));
-//       
-//        handler_Bridge_StartLowering.AddStatement(new IfStatement(
-//                new ComparisonExpression(new VariableExpression(Bridge_bridgeStatus), ComparisonExpression.Operator.Equal, new ConstantDiscreteExpression(0)),
-//                Statement.StatementsFrom(new DiscreteAssignmentStatement(Bridge_bridgeStatus, new ConstantDiscreteExpression(1))
-//                        ,new ContinuousBehaviorStatement(
-//                                new ContinuousBehavior("degree>=0", new DifferentialEquation(Bridge_degree, "-10"), "degree==0",
-//                                        Statement.StatementsFrom(
-//                                                new DiscreteAssignmentStatement(Bridge_bridgeStatus, new ConstantDiscreteExpression(2)),
-//                                                 new SendStatement(Bridge, new NormalMessage(handler_Bridge_PassACar)))))),
-//                 Statement.EmptyStatements()));
-//
-//        handler_Bridge_PassACar.AddStatement
-//        (new ContinuousBehaviorStatement(
-//                new ContinuousBehavior("timer<=d", new DifferentialEquation(Bridge_timer, "1"), "timer==d",
-//                Statement.StatementsFrom(
-//                        new DiscreteAssignmentStatement(Bridge_cars,new ArithmeticExpression(new VariableExpression(Bridge_cars), ArithmeticExpression.Operator.Subtract ,new ConstantDiscreteExpression(1)))
-//                        ,new IfStatement(
-//                                new ComparisonExpression(new VariableExpression(Bridge_cars), ComparisonExpression.Operator.LesserEqual, new ConstantDiscreteExpression(0))
-//                                , Statement.StatementsFrom(new SendStatement(Bridge,  new NormalMessage(handler_Bridge_StartRaising)))
-//                                , Statement.StatementsFrom(new SendStatement(Bridge,  new NormalMessage(handler_Bridge_PassACar))))
-//                ))));
-//
-//        handler_Bridge_StartRaising.AddStatement(new DiscreteAssignmentStatement(Bridge_bridgeStatus, new ConstantDiscreteExpression(1)));
-//        handler_Bridge_StartRaising.AddStatement(new ContinuousBehaviorStatement(
-//                new ContinuousBehavior("degree<=90", new DifferentialEquation(Bridge_degree, "degree/10+5"), "degree==90",
-//                        Statement.StatementsFrom(new DiscreteAssignmentStatement(Bridge_bridgeStatus, new ConstantDiscreteExpression(0)),
-//                                new IfStatement(
-//                                        new ComparisonExpression(new VariableExpression(Bridge_cars), ComparisonExpression.Operator.Greater, new ConstantDiscreteExpression(0)),
-//                                         Statement.StatementsFrom(new SendStatement(Bridge, new NormalMessage(handler_Bridge_StartLowering))),
-//                                         Statement.EmptyStatements())))));
-//
-//        
-//        MainBlock mainBlock = new MainBlock();     
-//        mainBlock.AddSendStatement(new SendStatement(CarDispatcher1, new NormalMessage(CarDispatcher1.GetMessageHandler("Dispatch"))));
-//        //mainBlock.AddSendStatement(new SendStatement(CarDispatcher2, new NormalMessage(CarDispatcher1.GetMessageHandler("Dispatch"))));
-//        //mainBlock.AddSendStatement(new SendStatement(Bridge, new NormalMessage(handler_Bridge_EnqueueCar)));
-//        //mainBlock.AddSendStatement(new SendStatement(Bridge, new NormalMessage(handler_Bridge_EnqueueCar)));
-//        
-//        definition.AddActor(CarDispatcher1);
-//        //definition.AddActor(CarDispatcher2);
-//        definition.AddActor(Bridge);
-//        definition.SetMainBlock(mainBlock);
+        FillFleshForClockType(clockType);
+        FillFleshForCarDispatcherType(carDispatcherType);
+        FillFleshForDrawBridgeController(drawBridgeContollerType);
+        FillFleshForDrawBridgeType(drawBridgeType);
+        
+        PhysicalActor carDispatcherClock = new PhysicalActor("carDisptacherClock", clockType, 10);
+        SoftwareActor carDispatcher = new SoftwareActor("carDispatcher", carDispatcherType, 10);
+        
+        PhysicalActor carPassageClock = new PhysicalActor("carPassageClock", clockType, 10);
+        SoftwareActor drawBridgeController = new SoftwareActor("drawBridgeController", drawBridgeContollerType, 10);
+        
+        PhysicalActor drawBridge = new PhysicalActor("drawBridge", drawBridgeType, 0);
+        
+        BindDelagation(carDispatcherClock, Clock__callback_param, carDispatcher,  Car_Dispatcher__dispatch_handler, CommunicationType.Wire);
+        BindInstance(carDispatcher, Car_Dispatcher__controller_param, drawBridgeController, CommunicationType.Wire);
+        
+        BindDelagation(carPassageClock, Clock__callback_param, drawBridgeController, DBC__car_passed_handler, CommunicationType.Wire);
+        BindInstance(drawBridgeController, DBC__bridge_param, drawBridge, CommunicationType.Wire);
+        BindInstance(drawBridgeController, DBC__clock_param, carPassageClock, CommunicationType.Wire);
+        
+        BindInstance(drawBridge, Draw_Bridge__controller_param, drawBridgeController, CommunicationType.Wire);
         
         return definition;
     }
-    
-    private SoftwareActor CreateCarDispatcher(String id, float delay, SoftwareActor bridge, MessageHandler handler_Bridge_EnqueueCar)
+
+    private void FillSkeletonForClockType(PhysicalActorType clockType)
     {
-        //SoftwareActor CarDispatcher = new SoftwareActor(id,1);
-//        DiscreteVariable totalCars = new DiscreteVariable("totalCars");
-//        
-//        CarDispatcher.AddDiscreteVariable(totalCars,2 );
-//                
-//        MessageHandler handler_Dispatch = new MessageHandler();
-//        
-//        CarDispatcher.AddMessageHandler("Dispatch", handler_Dispatch);
-//
-//        handler_Dispatch.AddStatement(new DiscreteAssignmentStatement(totalCars , 
-//                new ArithmeticExpression(new VariableExpression(totalCars), ArithmeticExpression.Operator.Subtract ,new ConstantDiscreteExpression(1))));
-//        handler_Dispatch.AddStatement(new SendStatement(bridge, new NormalMessage(handler_Bridge_EnqueueCar)));
-//        handler_Dispatch.AddStatement(new IfStatement(
-//                new ComparisonExpression(new VariableExpression(totalCars), ComparisonExpression.Operator.Greater, new ConstantDiscreteExpression(0))
-//                , Statement.StatementsFrom(new DelayStatement(delay), new SendStatement(CarDispatcher,  new NormalMessage(handler_Dispatch)))
-//                , Statement.EmptyStatements()));
-        //return CarDispatcher;
-        return null;
+        DelegationParameter callback = new DelegationParameter(Clock__callback_param);
+        RealVariable timer = new RealVariable(Clock__timer);
+        
+        clockType.AddDelegationParameter(callback);
+        clockType.AddVariable(timer);
+        
+        clockType.AddMode(new Mode(Clock__on_mode));
+    }
+
+    private void FillSkeletonForCarDispatcherType(SoftwareActorType carDispatcherType, SoftwareActorType drawBridgeContollerType)
+    {
+        InstanceParameter instanceParam = new InstanceParameter(Car_Dispatcher__controller_param, drawBridgeContollerType);
+        carDispatcherType.AddInstanceParameter(instanceParam);
+        
+        IntegerVariable totalCars = new IntegerVariable(Car_Dispatcher__total_cars);
+        carDispatcherType.AddVariable(totalCars);
+        
+        AddControlMessageHandler(carDispatcherType, Car_Dispatcher__dispatch_handler);
+    }
+
+    private void FillSkeletonForDrawBridgeController(SoftwareActorType DBCType, PhysicalActorType clockType, PhysicalActorType drawBridgeType)
+    {
+        AddInstanceParameter(DBCType, DBC__bridge_param, drawBridgeType);
+        AddInstanceParameter(DBCType, DBC__clock_param, clockType);
+        
+        AddVariable(DBCType, new IntegerVariable(DBC__cars));
+        AddVariable(DBCType, new IntegerVariable(DBC__bridge_status));
+        
+        AddControlMessageHandler(DBCType, DBC__enqueue_car_handler);
+        AddControlMessageHandler(DBCType, DBC__bridge_lowered_handler);
+        AddControlMessageHandler(DBCType, DBC__bridge_raised_handler);
+        AddControlMessageHandler(DBCType, DBC__car_passed_handler);
+    }
+
+    private void FillSkeletonForDrawBridgeType(PhysicalActorType drawBridgeType, SoftwareActorType DBCType)
+    {
+        AddInstanceParameter(drawBridgeType, Draw_Bridge__controller_param, DBCType);
+        AddVariable(drawBridgeType, new RealVariable(Draw_Bridge__degree));
+        
+        drawBridgeType.AddMode(new Mode(Draw_Bridge__lowering_mode));
+        drawBridgeType.AddMode(new Mode(Draw_Bridge__raising_mode));
+    }
+
+    private void FillFleshForClockType(PhysicalActorType clockType)
+    {
+        Mode on = clockType.FindMode(Clock__on_mode);
+        RealVariable timer = (RealVariable) clockType.FindVariable(Clock__timer);
+        DelegationParameter callback = clockType.FindDelegationParameter(Clock__callback_param);
+        
+        on.SetInvarient(String.format("%s <= 5", timer.Name()));
+        on.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
+        on.SetGuard(CreateGuard(timer, "==", 5f));
+        on.AddAction(CreateResetFor(timer));
+        on.AddAction(CreateSendStatement(callback));
+    }
+
+    private void FillFleshForCarDispatcherType(SoftwareActorType carDispatcherType)
+    {
+        MessageHandler dispatch = carDispatcherType.FindMessageHandler(Car_Dispatcher__dispatch_handler);
+        IntegerVariable totalCars = (IntegerVariable) carDispatcherType.FindVariable(Car_Dispatcher__total_cars);
+        InstanceParameter controllerParam = carDispatcherType.FindInstanceParameter(Car_Dispatcher__controller_param);
+        
+        dispatch.AddStatement(
+                new IfStatement(
+                        CreateGreaterExpression(new VariableExpression(totalCars),new ConstantDiscreteExpression(0)), 
+                        Statement.StatementsFrom(
+                                new AssignmentStatement(totalCars, CreateSubtractExpression(new VariableExpression(totalCars), new ConstantDiscreteExpression(1))),
+                                CreateSendStatement(controllerParam, DBC__enqueue_car_handler)), 
+                        Statement.StatementsFrom()));
+        
+        
+    }
+
+    private void FillFleshForDrawBridgeController(SoftwareActorType DBCType)
+    {
+        InstanceParameter drawBridge = DBCType.FindInstanceParameter(DBC__bridge_param);
+        InstanceParameter clock  = DBCType.FindInstanceParameter(DBC__clock_param);
+        
+        IntegerVariable cars = (IntegerVariable) DBCType.FindVariable(DBC__cars);
+        IntegerVariable bridgeStatus = (IntegerVariable) DBCType.FindVariable(DBC__bridge_status);
+        
+        MessageHandler enqueueCar = DBCType.FindMessageHandler(DBC__enqueue_car_handler);
+        enqueueCar.AddStatement(
+                new AssignmentStatement(cars, 
+                CreateAddExpression(new VariableExpression(cars), new ConstantDiscreteExpression(1) )));
+        
+        enqueueCar.AddStatement(new IfStatement(
+                        CreateEqualityExpression(new VariableExpression(bridgeStatus), new ConstantDiscreteExpression(0)), 
+                        Statement.StatementsFrom(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(1)),
+                                CreateModeChangeRequest(Draw_Bridge__lowering_mode, drawBridge)),
+                        Statement.EmptyStatements()
+                        
+                )
+        );
+        
+        MessageHandler bridgeLowred = DBCType.FindMessageHandler(DBC__bridge_lowered_handler);
+        
+        bridgeLowred.AddStatement(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(2)));
+        bridgeLowred.AddStatement(new IfStatement(
+                        CreateLesserEqualExpression(new VariableExpression(cars), new ConstantContinuousExpression(0)), 
+                        Statement.StatementsFrom(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(1)),
+                                CreateModeChangeRequest(Draw_Bridge__raising_mode, drawBridge)),
+                        Statement.StatementsFrom(CreateModeChangeRequest(Clock__on_mode, clock))));
+        
+        MessageHandler bridgeRaised = DBCType.FindMessageHandler(DBC__bridge_raised_handler);
+        
+        bridgeRaised.AddStatement(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(0)));
+        bridgeRaised.AddStatement(new IfStatement(
+                        CreateGreaterExpression(new VariableExpression(cars), new ConstantContinuousExpression(0)), 
+                        Statement.StatementsFrom(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(1)),
+                                CreateModeChangeRequest(Draw_Bridge__lowering_mode, drawBridge)
+                        ),
+                        Statement.StatementsFrom()
+                )
+        );
+        
+        
+        MessageHandler carPassedHandler = DBCType.FindMessageHandler(DBC__car_passed_handler);
+        
+        carPassedHandler.AddStatement(new IfStatement(
+                        CreateLesserEqualExpression(new VariableExpression(cars), new ConstantDiscreteExpression(0)), 
+                        Statement.StatementsFrom(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(1)),
+                                CreateModeChangeRequest(Draw_Bridge__raising_mode, drawBridge),
+                                CreateDeactiveModeRequest(drawBridge)
+                        ), 
+                        Statement.StatementsFrom(
+                                CreateModeChangeRequest(Clock__on_mode, clock))
+                )
+        );
+
+    }
+
+    private void FillFleshForDrawBridgeType(PhysicalActorType drawBridgeType)
+    {
+        InstanceParameter controller = drawBridgeType.FindInstanceParameter(Draw_Bridge__controller_param);
+        RealVariable degree = (RealVariable) drawBridgeType.FindVariable(Draw_Bridge__degree);
+        
+        Mode loweringMode = drawBridgeType.FindMode(Draw_Bridge__lowering_mode);
+        Mode raisingMode = drawBridgeType.FindMode(Draw_Bridge__raising_mode);
+        
+        loweringMode.SetInvarient(String.format("%s >= 0", degree.Name()));
+        loweringMode.AddDifferentialEquation(new DifferentialEquation(degree, "-10"));
+        loweringMode.SetGuard(CreateGuard(degree, "==", 0f));
+        loweringMode.AddAction(new ModeChangeStatement(Mode.None()));
+        loweringMode.AddAction(CreateSendStatement(controller, DBC__bridge_lowered_handler));
+        
+        raisingMode.SetInvarient(String.format("%s <= 90", degree.Name()));
+        raisingMode.AddDifferentialEquation(new DifferentialEquation(degree, String.format("$s / 100", degree.Name())));
+        raisingMode.SetGuard(CreateGuard(degree, "==", 90));
+        raisingMode.AddAction(new ModeChangeStatement(Mode.None()));
+        raisingMode.AddAction(CreateSendStatement(controller, DBC__bridge_raised_handler));   
     }
 }
