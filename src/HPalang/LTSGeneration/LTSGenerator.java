@@ -47,8 +47,7 @@ public class LTSGenerator implements TransitionCollector
                                 transitionSystem.GetInTransitionFor(currentGlobalState),
                                 transitionSystem.GetOutTransitionsFor(currentGlobalState)),
                         this);
-            if(transitionSystem.States().size() % 50 == 0)
-                System.out.println("States so far: " + transitionSystem.States().size());
+            
             
         }
         return transitionSystem;
@@ -62,5 +61,8 @@ public class LTSGenerator implements TransitionCollector
                 
         transitionSystem.AddState(destination);
         transitionSystem.AddTransition(currentGlobalState, label, destination);
+        
+        if (transitionSystem.States().size() % 50 == 0) 
+            System.out.println("States so far: " + transitionSystem.States().size());
     }
 }

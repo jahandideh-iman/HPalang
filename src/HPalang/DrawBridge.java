@@ -5,6 +5,7 @@
  */
 package HPalang;
 
+import HPalang.Core.ActorLocators.DirectActorLocator;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.SoftwareActor;
@@ -12,6 +13,7 @@ import HPalang.Core.DelegationParameter;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.*;
 import HPalang.Core.InstanceParameter;
+import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Mode;
 import HPalang.Core.ModelDefinition;
@@ -54,7 +56,7 @@ public class DrawBridge
 
     
     
-    public ModelDefinition Create()
+    static public ModelDefinition Create()
     {
         ModelDefinition definition = new ModelDefinition();
         
@@ -91,10 +93,26 @@ public class DrawBridge
         
         BindInstance(drawBridge, Draw_Bridge__controller_param, drawBridgeController, CommunicationType.Wire);
         
+        carDispatcher.SetInitialValue((IntegerVariable)carDispatcher.Type().FindVariable(Car_Dispatcher__total_cars), 2); 
+        definition.AddActor(carDispatcherClock);
+        definition.AddActor(carDispatcher);
+        
+        definition.AddActor(carPassageClock);
+        definition.AddActor(drawBridgeController);
+        definition.AddActor(drawBridge);
+        
+        MainBlock main = new MainBlock();
+        
+        main.AddSendStatement(
+                CreateModeChangeRequest(
+                        clockType.FindMode(Clock__on_mode),
+                        new DirectActorLocator(carDispatcherClock)));
+        
+        definition.SetMainBlock(main);
         return definition;
     }
 
-    private void FillSkeletonForClockType(PhysicalActorType clockType)
+    static private void FillSkeletonForClockType(PhysicalActorType clockType)
     {
         DelegationParameter callback = new DelegationParameter(Clock__callback_param);
         RealVariable timer = new RealVariable(Clock__timer);
@@ -105,7 +123,7 @@ public class DrawBridge
         clockType.AddMode(new Mode(Clock__on_mode));
     }
 
-    private void FillSkeletonForCarDispatcherType(SoftwareActorType carDispatcherType, SoftwareActorType drawBridgeContollerType)
+    static private void FillSkeletonForCarDispatcherType(SoftwareActorType carDispatcherType, SoftwareActorType drawBridgeContollerType)
     {
         InstanceParameter instanceParam = new InstanceParameter(Car_Dispatcher__controller_param, drawBridgeContollerType);
         carDispatcherType.AddInstanceParameter(instanceParam);
@@ -116,7 +134,7 @@ public class DrawBridge
         AddControlMessageHandler(carDispatcherType, Car_Dispatcher__dispatch_handler);
     }
 
-    private void FillSkeletonForDrawBridgeController(SoftwareActorType DBCType, PhysicalActorType clockType, PhysicalActorType drawBridgeType)
+    static private void FillSkeletonForDrawBridgeController(SoftwareActorType DBCType, PhysicalActorType clockType, PhysicalActorType drawBridgeType)
     {
         AddInstanceParameter(DBCType, DBC__bridge_param, drawBridgeType);
         AddInstanceParameter(DBCType, DBC__clock_param, clockType);
@@ -130,7 +148,7 @@ public class DrawBridge
         AddControlMessageHandler(DBCType, DBC__car_passed_handler);
     }
 
-    private void FillSkeletonForDrawBridgeType(PhysicalActorType drawBridgeType, SoftwareActorType DBCType)
+    static private void FillSkeletonForDrawBridgeType(PhysicalActorType drawBridgeType, SoftwareActorType DBCType)
     {
         AddInstanceParameter(drawBridgeType, Draw_Bridge__controller_param, DBCType);
         AddVariable(drawBridgeType, new RealVariable(Draw_Bridge__degree));
@@ -139,7 +157,7 @@ public class DrawBridge
         drawBridgeType.AddMode(new Mode(Draw_Bridge__raising_mode));
     }
 
-    private void FillFleshForClockType(PhysicalActorType clockType)
+    static private void FillFleshForClockType(PhysicalActorType clockType)
     {
         Mode on = clockType.FindMode(Clock__on_mode);
         RealVariable timer = (RealVariable) clockType.FindVariable(Clock__timer);
@@ -152,7 +170,7 @@ public class DrawBridge
         on.AddAction(CreateSendStatement(callback));
     }
 
-    private void FillFleshForCarDispatcherType(SoftwareActorType carDispatcherType)
+    static private void FillFleshForCarDispatcherType(SoftwareActorType carDispatcherType)
     {
         MessageHandler dispatch = carDispatcherType.FindMessageHandler(Car_Dispatcher__dispatch_handler);
         IntegerVariable totalCars = (IntegerVariable) carDispatcherType.FindVariable(Car_Dispatcher__total_cars);
@@ -169,7 +187,7 @@ public class DrawBridge
         
     }
 
-    private void FillFleshForDrawBridgeController(SoftwareActorType DBCType)
+    static private void FillFleshForDrawBridgeController(SoftwareActorType DBCType)
     {
         InstanceParameter drawBridge = DBCType.FindInstanceParameter(DBC__bridge_param);
         InstanceParameter clock  = DBCType.FindInstanceParameter(DBC__clock_param);
@@ -228,7 +246,7 @@ public class DrawBridge
 
     }
 
-    private void FillFleshForDrawBridgeType(PhysicalActorType drawBridgeType)
+    static private void FillFleshForDrawBridgeType(PhysicalActorType drawBridgeType)
     {
         InstanceParameter controller = drawBridgeType.FindInstanceParameter(Draw_Bridge__controller_param);
         RealVariable degree = (RealVariable) drawBridgeType.FindVariable(Draw_Bridge__degree);

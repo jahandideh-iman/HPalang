@@ -41,9 +41,10 @@ public class SimpleValuationContainer extends Equalitable<SimpleValuationContain
         valuation.forEach(e -> values.put(e.getKey(), e.getValue()));
     }
     
+    @Override
     public void Add(Map<IntegerVariable,Integer> values)
     {
-        values.putAll(values);
+        this.values.putAll(values);
     }
     
     public boolean Has(IntegerVariable var)
@@ -51,6 +52,7 @@ public class SimpleValuationContainer extends Equalitable<SimpleValuationContain
         return values.containsKey(var);
     }
     
+    @Override
     public int ValueFor(Variable var)
     {
         return values.get(var);

@@ -21,15 +21,15 @@ public abstract class Equalitable<T>
         if (!this.getClass().isAssignableFrom(other.getClass()))
             return false;
             
-        //return InternalEquals((T) other);
+        return InternalEquals((T) other);
         
-        boolean temp = InternalEquals((T) other);
-        if(temp == false)
-            temp = false;
-        
-        if(other == this && temp == false)
-            throw new RuntimeException("Same But Not equal?!!");
-        return temp;
+//        boolean temp = InternalEquals((T) other);
+//        if(temp == false)
+//            temp = false;
+//        
+//        if(other == this && temp == false)
+//            throw new RuntimeException("Same But Not equal?!!");
+//        return temp;
     }
     
     @Override

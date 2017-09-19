@@ -5,28 +5,26 @@
  */
 package HPalang.Core.DiscreteExpressions.BinaryOperators;
 
-import HPalang.Core.DiscreteExpression;
 import HPalang.Core.Expression;
-import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class AddOperator extends BinaryOperatorT<AddOperator>
+public class MultiplyOperator extends BinaryOperatorT<MultiplyOperator>
 {
 
     @Override
     public int Evaluate(Expression operand1, Expression operand2, ValuationContainer valuations)
     {
-        return operand1.Evaluate(valuations) + operand2.Evaluate(valuations);
+        return operand1.Evaluate(valuations) * operand2.Evaluate(valuations);
     }
 
     @Override
     public String toString()
     {
-        return "+";
+        return "*";
     }
     
     

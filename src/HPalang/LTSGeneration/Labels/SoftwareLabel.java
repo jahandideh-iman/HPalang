@@ -13,12 +13,12 @@ import java.util.Set;
  * @author Iman Jahandideh
  */
 public class SoftwareLabel extends Label<SoftwareLabel>
-{  
+{
     public SoftwareLabel()
     {
-        
+        super();
     }
-    
+        
     public SoftwareLabel(Guard guard) 
     {
         super(guard);
@@ -28,6 +28,13 @@ public class SoftwareLabel extends Label<SoftwareLabel>
     {
         super(resets);
     }
+    
+    public SoftwareLabel(Guard guard, Set<Reset> resets)
+    {
+        super(guard, resets);
+    }
+
+
     
     @Override
     public String toString()

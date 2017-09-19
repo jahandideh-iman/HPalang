@@ -10,6 +10,8 @@ import HPalang.Convertors.LTSToAUTConvertor;
 import HPalang.Convertors.LTSToFSMConvertor;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Convertors.LTSToXMLConvertor;
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
 import HPalang.Core.ModelDefinition;
 import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.HybridAutomataGeneration.SOSRules.ConversionRule;
@@ -22,6 +24,8 @@ import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Variable;
 import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
+import HPalang.LTSGeneration.Labels.ContinuousLabel;
+import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.SOSRules.*;
 import HPalang.Parser.Parser;
@@ -272,42 +276,6 @@ public class Main {
         return definition;
     }
     
-    static ModelDefinition CreateThermostatPorgram()
-    {
-        ModelDefinition definition = new ModelDefinition();
-        
-//        SoftwareActor actorThermostat = new SoftwareActor("Thermostat",1);   
-//        
-//        ContinuousVariable x = new ContinuousVariable("x");
-//        
-//        MessageHandler hanlder_On = new MessageHandler();        
-//        MessageHandler hanlder_Off = new MessageHandler();
-//
-//        
-//        actorThermostat.AddMessageHandler("TurnOn",hanlder_On);
-//        actorThermostat.AddMessageHandler("TurnOff",hanlder_Off);
-//        
-//        hanlder_On.AddStatement(new ContinuousBehaviorStatement
-//        (new ContinuousBehavior("x <= 100"
-//                , new DifferentialEquation(x, "-x + 100")
-//                , "x >= 18"
-//                , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_Off))))));
-//
-//        hanlder_Off.AddStatement(new ContinuousBehaviorStatement
-//        (new ContinuousBehavior("x>=50"
-//                ,  new DifferentialEquation(x, "-x + 50")
-//                , "x <= 2"
-//                , Statement.StatementsFrom(new SendStatement(actorThermostat, new NormalMessage(hanlder_On))))));
-//        
-//        MainBlock mainBlock = new MainBlock();     
-//        mainBlock.AddSendStatement(new SendStatement(actorThermostat, new NormalMessage(hanlder_On)));
-//               
-//        definition.AddActor(actorThermostat);
-//        definition.SetMainBlock(mainBlock);
-        
-        return definition;
-    }
-   
     static ModelDefinition CreateProgramWithComplexMessageing()
     {
         ModelDefinition definition = new ModelDefinition();
@@ -376,7 +344,7 @@ public class Main {
         while(true)
         {
             boolean change = false;
-            for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
+            for(GlobalRunTimeState state : new ArrayList<>(lts.States()))
             {
                 if(state.equals(lts.InitialState()))
                     continue;
@@ -418,16 +386,20 @@ public class Main {
     {
         Map<Variable, Reset> resets = new HashMap<>();
         
+        Guard newGuard;
+        
         for(Reset re : (Set<Reset>)firstLabel.Resets())
                 resets.put(re.Variable(), re);
         
         for(Reset re : (Set<Reset>)secondLabel.Resets())
                 resets.put(re.Variable(), re);
 
+   
+        newGuard = new Guard(new BinaryExpression(firstLabel.Guard().Expression(), new LogicalAndOperator(), secondLabel.Guard().Expression()));
         if(firstLabel instanceof SoftwareLabel)
-            return new SoftwareLabel(new LinkedHashSet<>(resets.values()));
+            return new SoftwareLabel(newGuard ,new LinkedHashSet<>(resets.values()));
         else
-          return new GuardedlLabel(((GuardedlLabel) firstLabel).GetGuard() ,new LinkedHashSet<>(resets.values()));  
+          return new ContinuousLabel(newGuard ,new LinkedHashSet<>(resets.values()));  
     }
 }
 

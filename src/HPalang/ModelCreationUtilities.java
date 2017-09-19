@@ -19,11 +19,7 @@ import HPalang.Core.Delegation;
 import HPalang.Core.DelegationParameter;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
-import HPalang.Core.DiscreteExpressions.BinaryOperators.AddOperator;
-import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
-import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterOperator;
-import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserEqualOperator;
-import HPalang.Core.DiscreteExpressions.BinaryOperators.SubtractOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.*;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.Expression;
 import HPalang.Core.InstanceParameter;
@@ -295,16 +291,17 @@ public class ModelCreationUtilities
     {
         return new BinaryExpression(e1, new EqualityOperator(), e2);
     }
-    
-    public static BinaryExpression CreateEqualityExpression(Variable var, float value)
-    {
-        return new BinaryExpression(VariableExpression(var), new EqualityOperator(), new ConstantContinuousExpression(value));
-    }
-    
+        
     public static BinaryExpression CreateGreaterExpression(Expression e1, Expression e2)
     {
         return new BinaryExpression(e1, new GreaterOperator(), e2);
     }
+    
+    public static BinaryExpression CreateGreaterEqualExpression(Expression e1, Expression e2)
+    {
+        return new BinaryExpression(e1, new GreaterEqualOperator(), e2);
+    }
+    
         
     public static BinaryExpression CreateAddExpression(Expression e1, Expression e2)
     {

@@ -155,6 +155,9 @@ public class BrakeByWireModelSingleWheel
         
         SetNetworkDelay(global_brake_controller, wheel_controller_FR, Wheel_Controller__apply_torque_handler, 4.0f);
         
+        definition.SetEventSystemVariablePoolSize(2);
+        definition.SetGlobalVariablePoolSize(3);
+        
         return definition;
     }
 

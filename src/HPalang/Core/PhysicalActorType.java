@@ -30,6 +30,7 @@ public class PhysicalActorType extends ActorType
 
     public void SetInitialMode(Mode mode)
     {
+        assert (mode != null);
         this.initialMode = mode;
     }
 

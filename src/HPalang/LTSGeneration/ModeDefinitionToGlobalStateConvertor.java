@@ -34,8 +34,10 @@ public class ModeDefinitionToGlobalStateConvertor
         FillDiscreteState(globalState, model.SoftwareActors());
         FillContinuousState(globalState, model.PhysicalActors());
         
-        globalState.EventsState().PoolState().SetPool(new SimpleContinuousVariablePool(3));
-        globalState.VariablePoolState().SetPool(new SimpleContinuousVariablePool(3));
+        globalState.EventsState().PoolState().SetPool(
+                new SimpleContinuousVariablePool(model.EventSystemVariablePoolSize()));
+        globalState.VariablePoolState().SetPool(
+                new SimpleContinuousVariablePool(model.GlobalVariablePoolSize()));
         
         
         for(SendStatement sendStatement : model.GetInitialSends())

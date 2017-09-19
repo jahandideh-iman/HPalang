@@ -17,7 +17,7 @@ import java.util.Map;
  */
 public class SoftwareActor extends Actor<SoftwareActorType>
 {
-    private final Map<IntegerVariable, Integer> initialValues = new HashMap<>();
+    private final Map<IntegerVariable, Integer> specifiedInitialValues = new HashMap<>();
  
     public SoftwareActor(String name, SoftwareActorType type , int capacity)
     {
@@ -27,6 +27,20 @@ public class SoftwareActor extends Actor<SoftwareActorType>
 
     public Map<IntegerVariable, Integer> InitialValues()
     {
-        return initialValues;
+        Map<IntegerVariable, Integer> initalValues = new HashMap<>();
+        
+        for(Variable variable : Type().Variables())
+        {
+            if(variable instanceof IntegerVariable)
+                initalValues.put((IntegerVariable) variable, 0);
+        }
+        
+        initalValues.putAll(specifiedInitialValues);
+        return initalValues;
+    }
+
+    public void SetInitialValue(IntegerVariable integerVariable, int i)
+    {
+        specifiedInitialValues.put(integerVariable, i);
     }
 }

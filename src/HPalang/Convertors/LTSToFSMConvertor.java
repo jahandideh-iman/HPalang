@@ -5,7 +5,6 @@
  */
 package HPalang.Convertors;
 
-import static HPalang.Convertors.StringConversionUtilities.StringFor;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
@@ -13,6 +12,10 @@ import HPalang.LTSGeneration.Transition;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
+import static HPalang.Convertors.StringConversionUtilities.StringForCommonActorState;
+import static HPalang.Convertors.StringConversionUtilities.StringForSoftwareActorState;
+import static HPalang.Convertors.StringConversionUtilities.StringForDiscreteState;
+import static HPalang.Convertors.StringConversionUtilities.StringFor;
 
 /**
  *
@@ -63,7 +66,7 @@ public class LTSToFSMConvertor
         String values = "";
         
         for(GlobalRunTimeState gs : globalStates)
-            values = values.concat(" " + Qoute(gs.toString()));
+            values = values.concat(" " + Qoute(StringFor(gs)));
 
         return values;
     }

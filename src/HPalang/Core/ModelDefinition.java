@@ -23,7 +23,28 @@ public class ModelDefinition
     private List<ActorType> types = new LinkedList<>();
     private MainBlock mainBlock;
     
-
+    private int eventSystemVariablePoolSize = 1;
+    private int globalVariablePoolSize = 1;
+    
+    public void SetEventSystemVariablePoolSize(int size)
+    {
+        eventSystemVariablePoolSize = size;
+    }
+    
+    public int EventSystemVariablePoolSize()
+    {
+        return eventSystemVariablePoolSize;
+    }
+    
+    public void SetGlobalVariablePoolSize(int size)
+    {
+        globalVariablePoolSize = size;
+    }
+    
+    public int GlobalVariablePoolSize()
+    {
+        return globalVariablePoolSize;
+    }
 
     public void SetMainBlock(MainBlock mainBlock)
     {
