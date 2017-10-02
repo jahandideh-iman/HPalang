@@ -55,14 +55,16 @@ import java.lang.reflect.InvocationTargetException;
  */
 public class ModelCreationUtilities
 {
-    public static void AddMessageHandler(SoftwareActorType type, String handlerName, Message.MessageType messageType )
+    public static MessageHandler AddMessageHandler(SoftwareActorType type, String handlerName, Message.MessageType messageType )
     {
         type.AddMessageHandler(handlerName, new MessageHandler(messageType));
+        
+        return type.FindMessageHandler(handlerName);
     }
     
-    public static void AddControlMessageHandler(SoftwareActorType type, String handlerName)
+    public static MessageHandler AddControlMessageHandler(SoftwareActorType type, String handlerName)
     {
-        AddMessageHandler(type, handlerName, Message.MessageType.Control);
+        return AddMessageHandler(type, handlerName, Message.MessageType.Control);
     }
     
     
@@ -84,6 +86,11 @@ public class ModelCreationUtilities
     public static void AddVariable(ActorType actorType, Variable variale)
     {
         actorType.AddVariable(variale);
+    }
+    
+    public static void AddIntegerVariable(ActorType actorType, String name)
+    {
+        AddVariable(actorType, new IntegerVariable(name));
     }
     public static void SetNetworkPriority(Actor actor, String messageHandlerName, int priority)
     {

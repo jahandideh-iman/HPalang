@@ -24,5 +24,4 @@ public class SoftwareActorType extends ActorType
     {
         super(name, Arrays.asList(Type.integer,Type.integer));
     }
-   
 }

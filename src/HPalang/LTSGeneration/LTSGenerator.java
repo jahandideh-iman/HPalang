@@ -43,7 +43,7 @@ public class LTSGenerator implements TransitionCollector
             for(SOSRule rule : sosRules)
                 rule.TryApply(
                         new StateInfo(
-                                currentGlobalState, 
+                                currentGlobalState.DeepCopy(), 
                                 transitionSystem.GetInTransitionFor(currentGlobalState),
                                 transitionSystem.GetOutTransitionsFor(currentGlobalState)),
                         this);

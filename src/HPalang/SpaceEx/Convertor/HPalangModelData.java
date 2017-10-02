@@ -5,6 +5,7 @@
  */
 package HPalang.SpaceEx.Convertor;
 
+import HPalang.Core.ActorType;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.ModelDefinition;
@@ -24,19 +25,32 @@ import java.util.Set;
 public class HPalangModelData
 {
     
-    private Map<SoftwareActor, ActorModelData> actorsData = new HashMap<>();
-    private Set<CommunicationLabel> globalSendLabels = new HashSet<>();
+    private final Map<SoftwareActor, ActorModelData> actorsData = new HashMap<>();
+    private final Set<CommunicationLabel> globalSendLabels = new HashSet<>();
     
-    private Map<CommunicationLabel, CommunicationLabel> receiveToSendMap = new HashMap<>();
+    private final Map<CommunicationLabel, CommunicationLabel> receiveToSendMap = new HashMap<>();
+    
+    private final Map<ActorType, ActorTypeModelData> actorTypesData = new HashMap<>();
+    
+    private final Map<MessageHandler, Integer> messageHandlersGUID = new HashMap<>();
     
     
     public HPalangModelData(ModelDefinition hpalangModel)
     {
-        for(SoftwareActor actor : hpalangModel.SoftwareActors())
+        int messageGUID = 0;
+        for(ActorType type : hpalangModel.ActorTypes())
         {
-            ActorModelData actorData = new ActorModelData(actor);
-            actorsData.put(actor,actorData);
+            for(MessageHandler handler : type.MessageHandlers())
+            {
+                messageHandlersGUID.put(handler, messageGUID);
+                messageGUID++;
+            }
+            actorTypesData.put(type, new ActorTypeModelData(type));
         }
+        
+        for(SoftwareActor actor : hpalangModel.SoftwareActors())
+            actorsData.put(actor,new ActorModelData(actor, this));
+        
         
 //        for(SoftwareActor actor : hpalangModel.SoftwareActors())
 //            for(MessageHandler handler : actor.GetMessageHandlers())
@@ -45,6 +59,11 @@ public class HPalangModelData
         
     }
     
+    public int MessageGUID(MessageHandler messageHandler)
+    {
+        return messageHandlersGUID.get(messageHandler);
+    }
+        
     private void ProcessStatements(Collection<Statement> statements, SoftwareActor actor, ContinuousBehavior ownerCB )
     {
         for (Statement stat :statements) {
@@ -70,11 +89,16 @@ public class HPalangModelData
         }
     }
     
+    ActorTypeModelData GetActorTypeData(ActorType type)
+    {
+        return actorTypesData.get(type);
+    }
+    
     public final ActorModelData GetActorData(SoftwareActor actor)
     {
         return actorsData.get(actor);
     }
-
+    
     Collection<CommunicationLabel> GetGlobalSendLabels()
     {
         return globalSendLabels;
@@ -85,4 +109,6 @@ public class HPalangModelData
         return receiveToSendMap.get(receive);
             
     }
+
+
 }

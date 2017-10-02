@@ -5,6 +5,7 @@
  */
 package HPalang.SpaceEx.Convertor;
 
+import HPalang.SpaceEx.Convertor.QueueCreation.ActorQueueCreator;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Variables.IntegerVariable;
@@ -27,20 +28,20 @@ import HPalang.SpaceEx.Core.SpaceExModel;
  *
  * @author Iman Jahandideh
  */
-public class ActorConvertor
+public class ActorConvertor extends Convertor
 {   
-    private final SpaceExModel model;
     private final ActorModelData actorData;
     
     private NetworkComponent actorComponent;
     
     public ActorConvertor(ActorModelData actorData, SpaceExModel model)
     {
+        super(model);
         this.actorData = actorData;
-        this.model = model;
     }
     
     
+    @Override
     public void Convert()
     {              
         actorComponent = new NetworkComponent(actorData.GetName()+"_Actor");
@@ -52,8 +53,8 @@ public class ActorConvertor
         for(CommunicationLabel receive : actorData.GetReceiveLabels())
             actorComponent.AddParameter(new LabelParameter(receive.GetLabel(), receive.IsSelf()));
         
-        for (CommunicationLabel sned : actorData.GetSendLables()) 
-            actorComponent.AddParameter(new LabelParameter(sned.GetLabel(), sned.IsSelf()));
+        for (CommunicationLabel send : actorData.GetSendLables()) 
+            actorComponent.AddParameter(new LabelParameter(send.GetLabel(), send.IsSelf()));
         
         // NOTE: What is the difference of bellow "for" with about "for"?!!
         for (CommunicationLabel send : actorData.GetSendLables())
@@ -152,7 +153,7 @@ public class ActorConvertor
     }
     private Component CreateContinuousVariableLockTemplate()
     {
-        BaseComponent comp = new BaseComponent(actorData.GetActor().Name()+ "_VarLockTemplate");
+        BaseComponent comp = new BaseComponent(actorData.Actor().Name()+ "_VarLockTemplate");
         
         comp.AddParameter(new RealParameter("var", false));
         
@@ -174,7 +175,7 @@ public class ActorConvertor
     
     private BaseComponent CreateContinuousBehavior(ContinuousBehavior cb)
     {
-        BaseComponent comp = new BaseComponent(actorData.GetActor().Name() +"_CB_" + actorData.GetIDFor(cb));
+        BaseComponent comp = new BaseComponent(actorData.Actor().Name() +"_CB_" + actorData.GetIDFor(cb));
         
         String acquireLabel = "Acquire_" + cb.GetEquation().GetVariable().Name();
         String releaseLabel = "Release_" + cb.GetEquation().GetVariable().Name();
@@ -258,7 +259,7 @@ public class ActorConvertor
         for(CommunicationLabel send : actorData.GetHandlersSendLables())
             comp.AddParameter(new LabelParameter(send.GetLabel(), false));
         
-//        for(MessageHandler handler : actorData.GetActor().GetMessageHandlers())
+//        for(MessageHandler handler : actorData.Actor().GetMessageHandlers())
 //            CreateHandler(handler,comp, idleLoc);
         
         return comp;
@@ -266,7 +267,7 @@ public class ActorConvertor
     
     private void CreateHandler(MessageHandler handler, BaseComponent comp, Location startLoc)
     {
-        String takeLabel =  actorData.CreateTakeLabel(handler.GetID());
+        String takeLabel =  actorData.TakeLabelFor(handler);
         comp.AddParameter(new LabelParameter(takeLabel, false));
         
         Location preLoc = new Location("pre_" + handler.GetID());
@@ -321,16 +322,16 @@ public class ActorConvertor
     {
         BaseComponent comp = new BaseComponent(actorData.GetName()+"_Queue");
         
-        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false));
-        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));
-
-        
-        for(CommunicationLabel label : actorData.GetReceiveLabels())
-            comp.AddParameter(new LabelParameter(label.GetLabel(), false));
-        
-        for(String label : actorData.GetHandlersName())
-            comp.AddParameter(new LabelParameter(actorData.CreateTakeLabel(label), false));
-        
+//        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false));
+//        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));
+//
+//        
+//        for(CommunicationLabel label : actorData.GetReceiveLabels())
+//            comp.AddParameter(new LabelParameter(label.GetLabel(), false));
+//        
+//        for(String label : actorData.MessageHandlers())
+//            comp.AddParameter(new LabelParameter(actorData.TakeLabelFor(label), false));
+//        
         new ActorQueueCreator(comp, actorData).Create();
         
         return comp;

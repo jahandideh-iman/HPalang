@@ -54,11 +54,6 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
         
         return null;
     }
-
-    public void AddSendStatement(SendStatement sendStatement)
-    {
-        //DiscreteState().FindActorState(sendStatement.GetReceiver()).MessageQueueState().Messages().Enqueue(sendStatement.GetMessage());
-    }
     
     @Override
     protected boolean DataEquals(GlobalRunTimeState other)

@@ -26,12 +26,12 @@ import java.util.Set;
  */
 public class ActorModelData
 {
-
-
     private final Set<CommunicationLabel> receiveLabels = new HashSet<>();
     private final Map<String, List<CommunicationLabel>> handlersReceiveLabelMap = new HashMap<>();
     
-    private final List<String> handlersName = new LinkedList<>();
+    //private final List<String> handlersName = new LinkedList<>();
+
+    
     private final List<String> handlerTakeLabels = new LinkedList<>();
     private final List<ContinuousBehavior> continuousBehaviors = new LinkedList<>();
     private final Map<ContinuousBehavior,String> cBehaviorsID = new HashMap<>();
@@ -42,28 +42,51 @@ public class ActorModelData
     
     private Map<SendStatement, CommunicationLabel> sendLabelsMap = new HashMap<>();
 
+    private final HPalangModelData modelDatal;
     private SoftwareActor actor;
+    
+    private ActorQueueData queueData;
 
-    public ActorModelData(SoftwareActor actor)
+    public ActorModelData(SoftwareActor actor, HPalangModelData modelData)
     {
+        this.modelDatal = modelData;
         this.actor = actor;
-//        for (MessageHandler handler : actor.GetMessageHandlers()) 
+//        for (MessageHandler handler : actor.Type().MessageHandlers()) 
 //        {
 //            handlersName.add(handler.GetID());
-//            handlerTakeLabels.add(CreateTakeLabel(handler.GetID()));
+//            handlerTakeLabels.add(TakeLabelFor(handler.GetID()));
 //            handlersReceiveLabelMap.put(handler.GetID(), new LinkedList<>());
 //               
 //        }
+                
+        this.queueData = new ActorQueueData(this);
+
     }
+
     
-    public SoftwareActor GetActor()
+    public SoftwareActor Actor()
     {
         return actor;
     }
-
-    public final String CreateTakeLabel(String handler)
+    
+    public ActorQueueData QueueData()
     {
-        return "Take_" + handler;
+        return queueData;
+    }
+
+    public int MessageGUID(MessageHandler messageHandler)
+    {
+        return modelDatal.MessageGUID(messageHandler);
+    }
+    
+    public final String TakeLabelFor(MessageHandler handler)
+    {
+        return "Take_" + MessageHandlerName(handler);
+    }
+    
+    public final String ExecuteLabelFor(MessageHandler handler)
+    {
+        return "Execute_" + MessageHandlerName(handler);
     }
     
     public String GetUrgentVar()
@@ -88,9 +111,14 @@ public class ActorModelData
         return handlersReceiveLabelMap.get(handler);
     }
 
-    public Collection<String> GetHandlersName()
+    public Iterable<MessageHandler> MessageHandlers()
     {
-        return handlersName;
+        return actor.Type().MessageHandlers();
+    }
+    
+    public String MessageHandlerName(MessageHandler handler)
+    {
+        return handler.GetID();
     }
     
     public Collection<String> GetHandlerTakeLabels()
@@ -148,12 +176,12 @@ public class ActorModelData
         return GetUrgentVar()+"'" + " == 1";
     }
 
-    String GetUrgentReset()
+    public String GetUrgentReset()
     {
         return GetUrgentVar() + ":= 0";
     }
 
-    String GetStartLabelFor(ContinuousBehavior behavior)
+    public String GetStartLabelFor(ContinuousBehavior behavior)
     {
         return "Start_CB_" + cBehaviorsID.get(behavior);
     }
@@ -198,22 +226,22 @@ public class ActorModelData
         return GetBusyVar() + " := 0";
     }
     
-    String GetIsBusyGuard()
+    public String GetIsBusyGuard()
     {
         return GetBusyVar() + " == 1";
     }
     
-    String GetIsNotBusyGuard()
+    public String GetIsNotBusyGuard()
     {
         return GetBusyVar() + " == 0";
     }
 
-    String GetBusyInvarient()
+    public String GetBusyInvarient()
     {
         return GetBusyVar() + " == 1";
     }
 
-    String GetName()
+    public String GetName()
     {
         return actor.Name();
     }
@@ -279,4 +307,5 @@ public class ActorModelData
     {
         return handlersSendLabels;
     }
+
 }

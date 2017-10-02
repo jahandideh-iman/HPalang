@@ -7,11 +7,9 @@ package HPalang.Core;
 
 import java.util.Collection;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  *
@@ -100,5 +98,14 @@ public abstract class ActorType
     {
         return variables.values();
     }
-
+    
+    public Iterable<MessageHandler> MessageHandlers()
+    {
+        return messageHandlers.values();
+    }
+        
+    public String Name()
+    {
+        return name;
+    }
 }

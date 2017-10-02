@@ -57,7 +57,7 @@ public class Main {
     {
         ModelDefinition definition;
         if(args.length ==0)
-            definition = VendingMachine.Create();
+            definition = HRToHAExample1.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
@@ -72,15 +72,14 @@ public class Main {
         
         FileWriter writer = new FileWriter("output/");
         
-        System.out.println("LTS(B) States  : " + lts.States().size());
-        System.out.println("LTS(B) Transition : " + lts.Transitions().size());
-        
-        writer.Write("output_aut.aut", new LTSToAUTConvertor().Convert(lts));
-        writer.Write("output_fsm.fsm", new LTSToFSMConvertor().Convert(lts));
+        OutputLTS("FineLTS",lts, writer);
         
         //PrioritizeTauActions(lts);
         //RemoveUnreachableStates(lts);
         //RemoveTauLabels(lts);
+        
+        //LabeledTransitionSystem reduceLTS =  new LTSReducer().Reduce(lts);
+        //OutputLTS("ReducedLTS", reduceLTS, writer);
         
 //        HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts);
 //        
@@ -92,6 +91,15 @@ public class Main {
 //        
 //        System.out.println("HA Locations : " + automaton.GetLocations().size());
 //        System.out.println("HA Transition : " + automaton.Transitions().size());
+    }
+
+    private static void OutputLTS(String prefix, LabeledTransitionSystem lts, FileWriter writer)
+    {
+        System.out.println(prefix + " States  : " + lts.States().size());
+        System.out.println(prefix+ " Transition : " + lts.Transitions().size());
+        
+        writer.Write(prefix +"_aut.aut", new LTSToAUTConvertor().Convert(lts));
+        writer.Write(prefix +"_fsm.fsm", new LTSToFSMConvertor().Convert(lts));
     }
     
     private static InputStream Read(String filePath) throws FileNotFoundException
@@ -214,105 +222,8 @@ public class Main {
 //        }
 //        
     }
-    
-    static ModelDefinition CreateProgramWithSimpleMessageing1()
-    {
-        ModelDefinition definition = new ModelDefinition();
-//        
-//        SoftwareActor actorA = new SoftwareActor("A",2);        
-//        SoftwareActor actorB = new SoftwareActor("B",2);
-//        
-//        MessageHandler hanlder_a1 = new MessageHandler();        
-//        MessageHandler hanlder_b1 = new MessageHandler();
-//
-//        
-//        actorA.AddMessageHandler("a1",hanlder_a1);
-//        actorB.AddMessageHandler("b1",hanlder_b1);
-//        
-//        hanlder_a1.AddStatement(new DelayStatement(1.0f));
-//        hanlder_a1.AddStatement(new SendStatement(actorB,new NormalMessage(hanlder_b1)));
-//
-//        hanlder_b1.AddStatement(new DelayStatement(1.0f));
-//        hanlder_b1.AddStatement(new SendStatement(actorA,new NormalMessage(hanlder_a1)));
-//        
-//        MainBlock mainBlock = new MainBlock();     
-//        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage(hanlder_b1)));
-//               
-//        definition.AddActor(actorA);
-//        definition.AddActor(actorB);
-//        definition.SetMainBlock(mainBlock);
-//        
-        return definition;
-    }
-    
-    static ModelDefinition CreateProgramWithSimpleMessageing2()
-    {
-        ModelDefinition definition = new ModelDefinition();
-        
-//        SoftwareActor actorA = new SoftwareActor("A",1);        
-//        SoftwareActor actorB = new SoftwareActor("B",1);
-//        
-//        MessageHandler hanlder_a1 = new MessageHandler();        
-//        MessageHandler hanlder_b1 = new MessageHandler();
-//
-//        
-//        actorA.AddMessageHandler("a1",hanlder_a1);
-//        actorB.AddMessageHandler("b1",hanlder_b1);
-//        
-//        hanlder_a1.AddStatement(new DelayStatement(1.0f));
-//        hanlder_a1.AddStatement(new SendStatement(actorB,new NormalMessage(hanlder_b1)));
-//
-//        hanlder_b1.AddStatement(new DelayStatement(1.0f));
-//        hanlder_b1.AddStatement(new SendStatement(actorA,new NormalMessage(hanlder_a1)));
-//        
-//        MainBlock mainBlock = new MainBlock();     
-//        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage(hanlder_b1)));
-//        mainBlock.AddSendStatement(new SendStatement(actorA, new NormalMessage(hanlder_a1)));
-//               
-//        definition.AddActor(actorA);
-//        definition.AddActor(actorB);
-//        definition.SetMainBlock(mainBlock);
-        
-        return definition;
-    }
-    
-    static ModelDefinition CreateProgramWithComplexMessageing()
-    {
-        ModelDefinition definition = new ModelDefinition();
-        
-//        SoftwareActor actorA = new SoftwareActor("A",1);        
-//        SoftwareActor actorB = new SoftwareActor("B",1);
-//        
-//        MessageHandler handler_a1 = new MessageHandler();        
-//        MessageHandler handler_b1 = new MessageHandler();
-//        MessageHandler handler_b2 = new MessageHandler();
-//
-//        
-//        actorA.AddMessageHandler("a1",handler_a1);
-//        actorB.AddMessageHandler("b1",handler_b1);
-//        actorB.AddMessageHandler("b2",handler_b2);
-//        
-//        handler_a1.AddStatement(new DelayStatement(1.0f));
-//        handler_a1.AddStatement(new SendStatement(actorB,new NormalMessage(handler_b1)));
-//        handler_a1.AddStatement(new SendStatement(actorB,new NormalMessage(handler_b2)));
-//
-//        handler_b1.AddStatement(new DelayStatement(1.0f));
-//        handler_b1.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1)));
-//        
-//        handler_b2.AddStatement(new DelayStatement(0.5f));
-//        handler_b2.AddStatement(new SendStatement(actorA,new NormalMessage(handler_a1)));
-//       
-//        MainBlock mainBlock = new MainBlock();     
-//        mainBlock.AddSendStatement(new SendStatement(actorB, new NormalMessage(handler_b1)));
-//        
-//                
-//        definition.AddActor(actorA);
-//        definition.AddActor(actorB);
-//        definition.SetMainBlock(mainBlock);
-        
-        return definition;
-    }
-    
+
+
     private static void RemoveUnreachableStates(LabeledTransitionSystem lts)
     {
         List<GlobalRunTimeState> reachableStates = new LinkedList<>();

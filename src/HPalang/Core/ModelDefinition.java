@@ -6,10 +6,12 @@
 package HPalang.Core;
 
 import HPalang.Core.Statements.SendStatement;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  *
@@ -20,7 +22,7 @@ public class ModelDefinition
     private List<SoftwareActor> softwareActors = new LinkedList<>();   
     private List<PhysicalActor> physicalActors = new LinkedList<>();
 
-    private List<ActorType> types = new LinkedList<>();
+    private Set<ActorType> types = new HashSet<>();
     private MainBlock mainBlock;
     
     private int eventSystemVariablePoolSize = 1;
@@ -74,20 +76,27 @@ public class ModelDefinition
         return null;
     }
 
-    public void AddType(ActorType actorType)
-    {
-        types.add(actorType);
-        
-    }
-
     public void AddActor(PhysicalActor actor)
     {
         physicalActors.add(actor);
+        types.add(actor.Type());
     }
     
     public void AddActor(SoftwareActor actor)
     {
         softwareActors.add(actor);
+        types.add(actor.Type());
+    }
+
+    @Deprecated // AddActor will automatically adds the actor's type.
+    public void AddType(ActorType type)
+    {
+        types.add(type);
+    }
+    
+    public Iterable<ActorType> ActorTypes()
+    {
+        return types;
     }
 
 }

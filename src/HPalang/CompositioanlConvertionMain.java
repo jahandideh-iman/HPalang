@@ -19,7 +19,7 @@ public class CompositioanlConvertionMain
     public static void main(String[] args) 
     {
         
-        ModelDefinition definition = new SimpleModel().Create();
+        ModelDefinition definition = HRToHAExample1.Create();
         
         HPalangToCompositionalSXConvertor spaceExConvertor = new HPalangToCompositionalSXConvertor();
         SpaceExToXMLConvertor xmlConvertor = new SpaceExToXMLConvertor();

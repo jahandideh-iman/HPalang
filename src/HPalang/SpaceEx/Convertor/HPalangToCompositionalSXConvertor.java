@@ -5,8 +5,10 @@
  */
 package HPalang.SpaceEx.Convertor;
 
+import HPalang.Core.ActorType;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ModelDefinition;
+import HPalang.Core.SoftwareActorType;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
@@ -30,7 +32,7 @@ public class HPalangToCompositionalSXConvertor
     SpaceExModel model = new SpaceExModel();
     HPalangModelData hpalangModelData;
     
-    private List<NetworkComponent> actorComponents = new LinkedList<>();
+    //private List<NetworkComponent> actorTypeComponents = new LinkedList<>();
 
     
     public void Convert(ModelDefinition def)
@@ -39,11 +41,18 @@ public class HPalangToCompositionalSXConvertor
         
         NetworkComponent systemComp = new NetworkComponent("System");
         
-        for(CommunicationLabel send : hpalangModelData.GetGlobalSendLabels())
-        {
-            systemComp.AddParameter(new LabelParameter(send.GetLabel(), true));
-        }
-
+//        for(CommunicationLabel send : hpalangModelData.GetGlobalSendLabels())
+//        {
+//            systemComp.AddParameter(new LabelParameter(send.GetLabel(), true));
+//        }
+//
+//        for(ActorType type : def.ActorTypes())
+//        {
+//            ActorTypeModelData typeData = hpalangModelData.GetActorTypeData(type);
+//            
+//            ActorTypeConvertor convertor = new ActorTypeConvertor(typeData, model);
+//            convertor.Convert();
+//        }
         for(SoftwareActor actor : def.SoftwareActors())
         {
             ActorModelData actorData = hpalangModelData.GetActorData(actor);
