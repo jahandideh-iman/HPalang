@@ -5,10 +5,18 @@
  */
 package HPalang.SpaceEx.Convertor;
 
+import HPalang.Core.ActorLocator;
+import HPalang.Core.ActorLocators.ParametricActorLocator;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
+import HPalang.Core.InstanceParameter;
+import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
+import HPalang.Core.MessageLocator;
+import HPalang.Core.MessageLocators.DirectMessageLocator;
 import HPalang.Core.Statements.SendStatement;
+import HPalang.Core.Variable;
+import HPalang.Core.VariableArgument;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import java.util.Collection;
@@ -41,16 +49,20 @@ public class ActorModelData
     private Set<CommunicationLabel> handlersSendLabels = new HashSet<>();
     
     private Map<SendStatement, CommunicationLabel> sendLabelsMap = new HashMap<>();
+    
+    private final Map<InstanceParameter, ActorModelData> instanceBindings = new HashMap<>();
 
-    private final HPalangModelData modelDatal;
+    private final HPalangModelData modelData;
     private SoftwareActor actor;
     
     private ActorQueueData queueData;
 
     public ActorModelData(SoftwareActor actor, HPalangModelData modelData)
     {
-        this.modelDatal = modelData;
+        this.modelData = modelData;
         this.actor = actor;
+        
+        
 //        for (MessageHandler handler : actor.Type().MessageHandlers()) 
 //        {
 //            handlersName.add(handler.GetID());
@@ -60,10 +72,17 @@ public class ActorModelData
 //        }
                 
         this.queueData = new ActorQueueData(this);
-
     }
-
     
+    public void Init()
+    {
+        for (InstanceParameter param : actor.Type().InstanceParameters()) {
+            instanceBindings.put(
+                    param,
+                    modelData.ActorModelDataFor(actor.GetInstanceFor(param)));
+        }
+    }
+ 
     public SoftwareActor Actor()
     {
         return actor;
@@ -76,7 +95,7 @@ public class ActorModelData
 
     public int MessageGUID(MessageHandler messageHandler)
     {
-        return modelDatal.MessageGUID(messageHandler);
+        return modelData.MessageGUID(messageHandler);
     }
     
     public final String TakeLabelFor(MessageHandler handler)
@@ -139,7 +158,7 @@ public class ActorModelData
         return sendLabels;
     }
     
-    CommunicationLabel GetSendLabelFor(SendStatement statement)
+    public CommunicationLabel GetSendLabelFor(SendStatement statement)
     {
         return sendLabelsMap.get(statement);
     }
@@ -191,22 +210,22 @@ public class ActorModelData
         return cBehaviorsID.get(behavior);
     }
 
-    String GetLockVar()
+    public String GetLockVar()
     {
         return "lock";
     }
 
-    String GetLockReleaseReset()
+    public String GetLockReleaseReset()
     {
         return GetLockVar() + ":= 0";
     }
     
-    String GetLockGainReset()
+    public String GetLockGainReset()
     {
         return GetLockVar() + ":= 1";
     }
 
-    String GetLockGainGuard()
+    public String GetLockGainGuard()
     {
         return GetLockVar() + "== 0";
     }
@@ -246,10 +265,9 @@ public class ActorModelData
         return actor.Name();
     }
     
-    public String GetDelayVar()
+    public String DelayVar()
     {
-        //return actor.GetDelayVariable().Name();
-        return "";
+        return "delay";
     }
 
     Collection<IntegerVariable> GetDiscreteVaraible()
@@ -308,4 +326,83 @@ public class ActorModelData
         return handlersSendLabels;
     }
 
+    public Iterable<Variable> Variables()
+    {
+        return actor.Type().Variables();
+    }
+
+    public String DelayInvarient(float delay)
+    {
+        return String.format("%s <= %f", DelayVar(), delay);
+    }
+
+    public String DelayFlow()
+    {
+        return String.format("%s' == 1", DelayVar());
+    }
+
+    public String ResetFor(String variable, float value)
+    {
+        return ResetFor(variable, String.valueOf(value));
+    }
+    
+    public String ResetFor(String variable, String value)
+    {
+        return String.format("%s := %s", variable, value);
+    }
+
+    public String ReceiverMessageBufferEmptyGuard(SendStatement statement)
+    {
+        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+        
+        return receiver.queueData.BufferIsEmptyGuard(receiver.actor.Name());   
+    }
+
+    public String SetMessageBufferFullAssignment(SendStatement statement)
+    {
+        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+
+        return receiver.queueData.SetBufferFullAssignment(receiver.actor.Name());
+    }
+
+    public ActorModelData FindActorDataFor(ActorLocator actorLocator)
+    {
+        if(actorLocator instanceof ParametricActorLocator)
+        {
+            return instanceBindings.get(((ParametricActorLocator) actorLocator).InstanceParameter());
+        }
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
+    private Message FindMessageHandlerFor(MessageLocator messageLocator)
+    {
+        if (messageLocator instanceof DirectMessageLocator) {
+            return ((DirectMessageLocator)messageLocator).Locate(null);
+        }
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+
+    public Iterable<String> BufferParameterAssignmentsFor(SendStatement statement)
+    {
+        List<String> assignments = new LinkedList<>();
+        
+        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+        Message message = FindMessageHandlerFor(statement.MessageLocator());
+        
+        List<VariableArgument> arguments = statement.Arguments().AsList();
+        for(int i = 0 ; i< arguments.size(); i++)
+        {
+            assignments.add(
+                    receiver.queueData.BufferParameterAssignmentFor(
+                            message,
+                            i,
+                            arguments.get(i).Value().toString(),
+                            receiver.actor.Name()));
+        }
+
+        return assignments;
+    }
+
+
+    
 }

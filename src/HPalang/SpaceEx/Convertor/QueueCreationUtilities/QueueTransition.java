@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.SpaceEx.Convertor.QueueCreation;
+package HPalang.SpaceEx.Convertor.QueueCreationUtilities;
 
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.HybridLabel;

@@ -3,12 +3,10 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.SpaceEx.Convertor.QueueCreation;
+package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.MessageHandler;
-import HPalang.SpaceEx.Convertor.ActorModelData;
-import HPalang.SpaceEx.Convertor.ActorQueueData;
-import HPalang.SpaceEx.Convertor.CommunicationLabel;
+import HPalang.SpaceEx.Convertor.QueueCreationUtilities.*;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.LabelParameter;
@@ -125,7 +123,7 @@ public class ActorQueueCreator
         QueueLocation messageLoc_0 = new UrgentQueueLocation("messageProc", actorData);
         AddLocation(messageLoc_0);
         
-        AddTransition(CreateTransition(initialQueueLocation, messageLoc_0));
+        AddTransition(CreateGuardedTransition(initialQueueLocation,queueData.QueueIsNotEmptyGuard(), messageLoc_0));
         
         for (int i = 0; i < actorData.Actor().QueueCapacity(); i++) 
         {
@@ -147,9 +145,12 @@ public class ActorQueueCreator
                         String.format("messageProc_unbox_%d_%s", i, actorData.MessageHandlerName(messageHandler)),
                         actorData);
                 
+                List<String> paramterUnboxingAssignments = queueData.BufferToElementAssignmentsFor(messageHandler, i);
+                
                 AddTransition(new QueueTransitionBuilder().
                         SetOrigin(messageLoc_check_m).
                         SetDestination(messageLoc_unbox_m).
+                        AddAssignments(paramterUnboxingAssignments).
                         Build());
                 
                 AddTransition(new QueueTransitionBuilder()
@@ -160,6 +161,8 @@ public class ActorQueueCreator
                         .Build());
             }
         }
+        
+        
         
 
     }

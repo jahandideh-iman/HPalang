@@ -23,6 +23,11 @@ public class ParametricActorLocator extends ActorLocator<ParametricActorLocator>
         this.instanceParameter = instanceParameter;
     }
     
+    public InstanceParameter InstanceParameter()
+    {
+        return instanceParameter;
+    }
+    
     @Override
     public Actor Locate(ActorState actorState)
     {

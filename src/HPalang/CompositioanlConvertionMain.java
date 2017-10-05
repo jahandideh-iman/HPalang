@@ -18,7 +18,6 @@ public class CompositioanlConvertionMain
 {
     public static void main(String[] args) 
     {
-        
         ModelDefinition definition = HRToHAExample1.Create();
         
         HPalangToCompositionalSXConvertor spaceExConvertor = new HPalangToCompositionalSXConvertor();

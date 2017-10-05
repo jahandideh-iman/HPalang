@@ -3,9 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.SpaceEx.Convertor.QueueCreation;
+package HPalang.SpaceEx.Core;
 
-import HPalang.SpaceEx.Core.HybridLabel;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -13,58 +12,55 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
-public class QueueTransitionBuilder
+public class HybridTransitionBuilder
 {
-    private QueueLocation origin;
-    private QueueLocation destination;
-    
+    private Location origin;
+    private Location destination;
+
     private List<String> guards = new LinkedList<>();
     private List<String> assignments = new LinkedList<>();
     private String syncLabel = "";
-    
-    
-    QueueTransitionBuilder SetOrigin(QueueLocation origin)
+
+    public HybridTransitionBuilder SetOrigin(Location origin)
     {
         this.origin = origin;
         return this;
     }
-    
-    QueueTransitionBuilder SetDestination(QueueLocation destination)
+
+    public HybridTransitionBuilder SetDestination(Location destination)
     {
         this.destination = destination;
         return this;
     }
-    
-    QueueTransitionBuilder AddGuard(String guard)
+
+    public HybridTransitionBuilder AddGuard(String guard)
     {
         guards.add(guard);
         return this;
     }
-    
-    QueueTransitionBuilder AddAssignment(String assignent)
+
+    public HybridTransitionBuilder AddAssignment(String assignent)
     {
         assignments.add(assignent);
         return this;
     }
-        
-    QueueTransitionBuilder SetSynclabel(String syncLabel)
+
+    public HybridTransitionBuilder SetSynclabel(String syncLabel)
     {
         this.syncLabel = syncLabel;
         return this;
     }
-    
-    
-    public QueueTransition Build()
+
+    public HybridTransition Build()
     {
         HybridLabel label = new HybridLabel();
-        
+
         guards.forEach(g -> label.AddGuard(g));
         assignments.forEach(a -> label.AddAssignment(a));
         label.SetSyncLabel(syncLabel);
-        
-        QueueTransition tran = new QueueTransition(origin, label, destination);
-        
-        
+
+        HybridTransition tran = new HybridTransition(origin, label, destination);
+
         return tran;
     }
 

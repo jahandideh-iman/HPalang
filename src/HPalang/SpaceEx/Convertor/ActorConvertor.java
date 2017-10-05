@@ -5,7 +5,6 @@
  */
 package HPalang.SpaceEx.Convertor;
 
-import HPalang.SpaceEx.Convertor.QueueCreation.ActorQueueCreator;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Variables.IntegerVariable;
@@ -79,26 +78,26 @@ public class ActorConvertor extends Convertor
         
         actorComponent.AddInstance(varsInst);
         
-        for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
-        {
-            BaseComponent cbComp = CreateContinuousBehavior(cb);
-            model.AddComponent(cbComp);
-            
-            ComponentInstance cbCompInst = new ComponentInstance("CB_" + actorData.GetIDFor(cb), cbComp);
-            
-            actorComponent.AddInstance(cbCompInst);
-            
-            actorComponent.AddParameter(new LabelParameter(actorData.GetStartLabelFor(cb), true));
-            cbCompInst.SetBinding("Start", actorData.GetStartLabelFor(cb));
-            for(Parameter param : cbComp.GetParameters())
-            {
-                if(param instanceof LabelParameter 
-                        && param.GetName().equals("Start") == false)
-                    cbCompInst.SetBinding(param.GetName(), param.GetName());
-                else if(param instanceof RealParameter && param.IsLocal() == false)
-                    cbCompInst.SetBinding(param.GetName(), param.GetName());
-            }
-        }
+//        for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
+//        {
+//            BaseComponent cbComp = CreateContinuousBehavior(cb);
+//            model.AddComponent(cbComp);
+//            
+//            ComponentInstance cbCompInst = new ComponentInstance("CB_" + actorData.GetIDFor(cb), cbComp);
+//            
+//            actorComponent.AddInstance(cbCompInst);
+//            
+//            actorComponent.AddParameter(new LabelParameter(actorData.GetStartLabelFor(cb), true));
+//            cbCompInst.SetBinding("Start", actorData.GetStartLabelFor(cb));
+//            for(Parameter param : cbComp.GetParameters())
+//            {
+//                if(param instanceof LabelParameter 
+//                        && param.GetName().equals("Start") == false)
+//                    cbCompInst.SetBinding(param.GetName(), param.GetName());
+//                else if(param instanceof RealParameter && param.IsLocal() == false)
+//                    cbCompInst.SetBinding(param.GetName(), param.GetName());
+//            }
+//        }
         
         Component varLockTempComp = CreateContinuousVariableLockTemplate();
         model.AddComponent(varLockTempComp);
@@ -173,91 +172,93 @@ public class ActorConvertor extends Convertor
         return comp;
     }
     
-    private BaseComponent CreateContinuousBehavior(ContinuousBehavior cb)
-    {
-        BaseComponent comp = new BaseComponent(actorData.Actor().Name() +"_CB_" + actorData.GetIDFor(cb));
-        
-        String acquireLabel = "Acquire_" + cb.GetEquation().GetVariable().Name();
-        String releaseLabel = "Release_" + cb.GetEquation().GetVariable().Name();
-        
-        comp.AddParameter(new LabelParameter("Start", false));
-        comp.AddParameter(new LabelParameter(acquireLabel, false));
-        comp.AddParameter(new LabelParameter(releaseLabel, false));
-        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));       
-        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
-        comp.AddParameter(new RealParameter(cb.GetEquation().GetVariable().Name(), false));
-        
-        for(CommunicationLabel send : actorData.GetSendLables())
-            comp.AddParameter(new LabelParameter(send.GetLabel(), false));
-        
-        Location idleLoc = new Location("idle");
-        comp.AddLocation(idleLoc);
-
-        Location acquireLockLoc = new Location("acquireLock");
-        MakeLocationUrgent(acquireLockLoc, actorData);
-        comp.AddLocation(acquireLockLoc);
-        
-        Location behaviorLoc = new Location("behvaior");        
-        behaviorLoc.AddFlow(new Flow(cb.GetEquation()));
-        behaviorLoc.AddInvarient(new Invarient(cb.GetInvarient()));
-        comp.AddLocation(behaviorLoc);
-        
-        Location releaseLockLoc = new Location("releaseLock");
-        MakeLocationUrgent(releaseLockLoc, actorData);
-        comp.AddLocation(releaseLockLoc);
-        
-        comp.AddTransition(idleLoc, new HybridLabel().SetSyncLabel("Start").AddAssignment(actorData.GetUrgentReset()), acquireLockLoc);
-        
-        comp.AddTransition(acquireLockLoc, new HybridLabel().SetSyncLabel(acquireLabel).AddGuard(actorData.GetUrgentGuard()), behaviorLoc);
-        
-        comp.AddTransition(
-                behaviorLoc, 
-                new HybridLabel()
-                .SetSyncLabel(releaseLabel)
-                .AddGuard(cb.GetGuard())
-                .AddAssignment(actorData.GetUrgentReset()), 
-                releaseLockLoc);
-        
-        StatementToLocationConvertor convertor = new StatementToLocationConvertor(
-                cb.GetActions(), 
-                actorData, 
-                releaseLockLoc, 
-                comp, 
-                "s");
-        convertor.ConvertStatementChain(false);
-        HybridTransition trans =  convertor.GetFirstTransition();
-        trans.GetLabel().AddGuard(actorData.GetUrgentGuard());
-
-        
-        HybridTransition recurseTrans = new HybridTransition(convertor.GetLastLocation(), new HybridLabel(), idleLoc);
-        
-        convertor.ProcessLastLocation(recurseTrans.GetLabel());
-        
-        comp.AddTransition(recurseTrans);
-
-        return comp;
-    }
+//    private BaseComponent CreateContinuousBehavior(ContinuousBehavior cb)
+//    {
+//        BaseComponent comp = new BaseComponent(actorData.Actor().Name() +"_CB_" + actorData.GetIDFor(cb));
+//        
+//        String acquireLabel = "Acquire_" + cb.GetEquation().GetVariable().Name();
+//        String releaseLabel = "Release_" + cb.GetEquation().GetVariable().Name();
+//        
+//        comp.AddParameter(new LabelParameter("Start", false));
+//        comp.AddParameter(new LabelParameter(acquireLabel, false));
+//        comp.AddParameter(new LabelParameter(releaseLabel, false));
+//        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));       
+//        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
+//        comp.AddParameter(new RealParameter(cb.GetEquation().GetVariable().Name(), false));
+//        
+//        for(CommunicationLabel send : actorData.GetSendLables())
+//            comp.AddParameter(new LabelParameter(send.GetLabel(), false));
+//        
+//        Location idleLoc = new Location("idle");
+//        comp.AddLocation(idleLoc);
+//
+//        Location acquireLockLoc = new Location("acquireLock");
+//        MakeLocationUrgent(acquireLockLoc, actorData);
+//        comp.AddLocation(acquireLockLoc);
+//        
+//        Location behaviorLoc = new Location("behvaior");        
+//        behaviorLoc.AddFlow(new Flow(cb.GetEquation()));
+//        behaviorLoc.AddInvarient(new Invarient(cb.GetInvarient()));
+//        comp.AddLocation(behaviorLoc);
+//        
+//        Location releaseLockLoc = new Location("releaseLock");
+//        MakeLocationUrgent(releaseLockLoc, actorData);
+//        comp.AddLocation(releaseLockLoc);
+//        
+//        comp.AddTransition(idleLoc, new HybridLabel().SetSyncLabel("Start").AddAssignment(actorData.GetUrgentReset()), acquireLockLoc);
+//        
+//        comp.AddTransition(acquireLockLoc, new HybridLabel().SetSyncLabel(acquireLabel).AddGuard(actorData.GetUrgentGuard()), behaviorLoc);
+//        
+//        comp.AddTransition(
+//                behaviorLoc, 
+//                new HybridLabel()
+//                .SetSyncLabel(releaseLabel)
+//                .AddGuard(cb.GetGuard())
+//                .AddAssignment(actorData.GetUrgentReset()), 
+//                releaseLockLoc);
+//        
+//        StatementToLocationConvertor convertor = new StatementToLocationConvertor(
+//                cb.GetActions(), 
+//                actorData, 
+//                releaseLockLoc, 
+//                comp, 
+//                "s");
+//        convertor.ConvertStatementChain(false);
+//        HybridTransition trans =  convertor.GetFirstTransition();
+//        trans.GetLabel().AddGuard(actorData.GetUrgentGuard());
+//
+//        
+//        HybridTransition recurseTrans = new HybridTransition(convertor.GetLastLocation(), new HybridLabel(), idleLoc);
+//        
+//        convertor.ProcessLastLocation(recurseTrans.GetLabel());
+//        
+//        comp.AddTransition(recurseTrans);
+//
+//        return comp;
+//    }
     
     private BaseComponent CreateHandlers()
     {
         BaseComponent comp = new BaseComponent(actorData.GetName()+"_Handlers");
         
-        Location idleLoc = new Location("idle");
-        comp.AddLocation(idleLoc);
+        new ActorHandlersCreator(comp, actorData).Create();
         
-        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true)); 
-        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
-        comp.AddParameter(new RealParameter(actorData.GetDelayVar(), true));
-        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false ));
-        
-        for(ContinuousVariable var : actorData.GetContinuousVariables())
-            comp.AddParameter(new RealParameter(var.Name(), false));
-        
-        for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
-            comp.AddParameter(new LabelParameter(actorData.GetStartLabelFor(cb), false));
-        
-        for(CommunicationLabel send : actorData.GetHandlersSendLables())
-            comp.AddParameter(new LabelParameter(send.GetLabel(), false));
+//        Location idleLoc = new Location("idle");
+//        comp.AddLocation(idleLoc);
+//        
+//        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true)); 
+//        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
+//        comp.AddParameter(new RealParameter(actorData.DelayVar(), true));
+//        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false ));
+//        
+//        for(ContinuousVariable var : actorData.GetContinuousVariables())
+//            comp.AddParameter(new RealParameter(var.Name(), false));
+//        
+//        for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
+//            comp.AddParameter(new LabelParameter(actorData.GetStartLabelFor(cb), false));
+//        
+//        for(CommunicationLabel send : actorData.GetHandlersSendLables())
+//            comp.AddParameter(new LabelParameter(send.GetLabel(), false));
         
 //        for(MessageHandler handler : actorData.Actor().GetMessageHandlers())
 //            CreateHandler(handler,comp, idleLoc);
@@ -265,36 +266,6 @@ public class ActorConvertor extends Convertor
         return comp;
     }
     
-    private void CreateHandler(MessageHandler handler, BaseComponent comp, Location startLoc)
-    {
-        String takeLabel =  actorData.TakeLabelFor(handler);
-        comp.AddParameter(new LabelParameter(takeLabel, false));
-        
-        Location preLoc = new Location("pre_" + handler.GetID());
-        MakeLocationUrgent(preLoc, actorData);
-        
-        HybridTransition trans = new HybridTransition(
-                startLoc, 
-                new HybridLabel().SetSyncLabel(takeLabel).AddAssignment(actorData.GetUrgentReset()), 
-                preLoc);
-        
-        comp.AddTransition(trans);
-
-        StatementToLocationConvertor statementsConvertor
-                = new StatementToLocationConvertor(handler.GetBody(), actorData, preLoc, comp, handler.GetID());
-
-        statementsConvertor.ConvertStatementChain(false);
-        
-        statementsConvertor.GetFirstTransition().GetLabel()
-                .AddAssignment(actorData.GetBusyAssignment()).AddGuard(actorData.GetUrgentGuard());
-        
-        HybridTransition recursTrans =  new HybridTransition(statementsConvertor.GetLastLocation(), new HybridLabel(), startLoc);
-        statementsConvertor.ProcessLastLocation(recursTrans.GetLabel());
-        recursTrans.GetLabel().AddAssignment(actorData.GetUnBusyAssignment());
-        
-        comp.AddTransition(recursTrans);
-    }
-
     private BaseComponent CreateVars(ActorModelData actorData)
     {
         BaseComponent comp = new BaseComponent(actorData.GetName() + "_DVars");

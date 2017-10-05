@@ -5,217 +5,26 @@
  */
 package HPalang.SpaceEx.Convertor;
 
+import HPalang.Core.Pair;
 import HPalang.Core.Statement;
-import HPalang.Core.Statements.ContinuousAssignmentStatement;
-import HPalang.Core.Statements.DelayStatement;
-import HPalang.Core.Statements.SendStatement;
-import HPalang.SpaceEx.Core.BaseComponent;
-import HPalang.SpaceEx.Core.Flow;
-import HPalang.SpaceEx.Core.HybridLabel;
-import HPalang.SpaceEx.Core.HybridTransition;
-import HPalang.SpaceEx.Core.Invarient;
-import HPalang.SpaceEx.Core.Location;
+import HPalang.Core.Statements.*;
+import HPalang.SpaceEx.Convertor.StatementConversionUtilities.*;
+import HPalang.SpaceEx.Core.*;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+import java.util.Set;
 
 /**
  *
  * @author Iman Jahandideh
  */
 public class StatementToLocationConvertor
-{  
-    private abstract class StatementLocation
-    {
-        protected Location loc;
-        
-        public Location GetLoc()
-        {
-            return loc;
-        }
-        
-        public abstract void ProcessInLabel(HybridLabel label);
-        public abstract void ProcessOutLabel(HybridLabel label);
-    }
-    
-    private class StartLocation extends UrgentLocation
-    {
+{    
 
-        public StartLocation(String name, ActorModelData actorData)
-        {
-            super(name, actorData);
-        }
 
-        @Override
-        public void ProcessInLabel(HybridLabel label)
-        {
-            super.ProcessInLabel(label);
-            label.AddGuard(actorData.GetLockGainGuard());
-            label.AddAssignment(actorData.GetLockGainReset());
-        }
-        
-    }
-    
-    private class EndLocation extends UrgentLocation
-    {
-        public EndLocation(String name, ActorModelData actorData)
-        {
-            super(name, actorData);
-        }
-
-        @Override
-        public void ProcessOutLabel(HybridLabel label)
-        {
-            super.ProcessOutLabel(label);
-            label.AddAssignment(actorData.GetLockReleaseReset());
-        }
-        
-        
-    }
-    
-    private class NotImplementedLocation extends StatementLocation
-    {
-        
-        public NotImplementedLocation(Statement statement, String name)
-        {
-            loc = new Location(name+"_NotImplementated");
-        }
-
-        @Override
-        public void ProcessInLabel(HybridLabel label)
-        {
-            
-        }
-
-        @Override
-        public void ProcessOutLabel(HybridLabel label)
-        {
-            
-        }
-        
-    }
-   
-    private abstract class UrgentLocation extends StatementLocation
-    {
-        protected ActorModelData actorData;
-        
-        public UrgentLocation(String name, ActorModelData actorData)
-        {
-            this.actorData = actorData;
-            
-            this.loc = new Location(name);
-            loc.AddInvarient(new Invarient(actorData.GetUrgentInvarient()));
-            loc.AddFlow(new Flow(actorData.GetUrgentFlow()));
-        }
-
-        @Override
-        public void ProcessInLabel(HybridLabel label)
-        {
-            label.AddAssignment(actorData.GetUrgentReset());
-        }
-        
-        @Override
-        public void ProcessOutLabel(HybridLabel label)
-        {
-            label.AddGuard(actorData.GetUrgentGuard());
-        }
-    }
-    private class DelayLocation extends StatementLocation
-    {
-        private DelayStatement statement;
-        private String delayVar;
-        public DelayLocation(DelayStatement statement, String name, ActorModelData actorData)
-        {
-            this.statement = statement;
-            this.loc = new Location(name);
-            this.delayVar =actorData.GetDelayVar();
-            String invarient = delayVar + "<=" + String.valueOf(statement.GetDelay());  
-            String flow = delayVar + "' == 1";
-            
-            loc.AddInvarient(new Invarient(invarient));
-            loc.AddFlow(new Flow(flow));
-        }
-
-        @Override
-        public void ProcessInLabel(HybridLabel label)
-        {
-            label.AddAssignment(delayVar+" := 0");
-            label.AddAssignment(actorData.GetLockReleaseReset());
-        }
-
-        @Override
-        public void ProcessOutLabel(HybridLabel label)
-        {
-            label.AddGuard(actorData.GetLockGainGuard());
-            label.AddAssignment(actorData.GetLockGainReset());
-            label.AddGuard(delayVar + " == " + String.valueOf(statement.GetDelay()));
-        }
-    }
-    
-    private class CAssignmentLocation extends UrgentLocation
-    {
-        private ContinuousAssignmentStatement statement;
-        
-   
-        public CAssignmentLocation(ContinuousAssignmentStatement statement, String name, ActorModelData actorData)
-        {
-            super(name, actorData);
-            this.statement = statement;         
-        }
-
-        @Override
-        public void ProcessOutLabel(HybridLabel label)
-        {
-            super.ProcessOutLabel(label);
-            label.AddAssignment(statement.Variable() +" := " + statement.Expression().toString());
-        }
-    }
-    
-//    private class CBehaviorLocation extends UrgentLocation
-//    {
-//        private ContinuousBehaviorStatement statement;
-//
-//        private String behaviorLabel;
-//        
-//        public CBehaviorLocation(ContinuousBehaviorStatement statement, String name, ActorModelData actorData)
-//        {
-//            super(name, actorData);
-//            this.statement = statement;
-//            this.behaviorLabel = actorData.GetStartLabelFor(statement.GetBehavior());        
-//        }
-//
-//        @Override
-//        public void ProcessOutLabel(HybridLabel label)
-//        {
-//           super.ProcessOutLabel(label);
-//           label.SetSyncLabel(behaviorLabel);
-//        }    
-//    }
-//    
-    private class SendLocation extends UrgentLocation
-    {
-        private SendStatement statement;
-        
-        private String sendLabel;
-        
-        public SendLocation(SendStatement statement,String name, ActorModelData actorData)
-        {
-            super(name, actorData);
-            this.statement = statement;
-            this.sendLabel = actorData.GetSendLabelFor(statement).GetLabel();
-        }
-
-        @Override
-        public void ProcessOutLabel(HybridLabel label)
-        {
-            super.ProcessOutLabel(label);
-            label.SetSyncLabel(sendLabel);
-        }
-        
-        
-    }
-                
     private class StatementTransition
     {
         public StatementLocation origin;
@@ -249,8 +58,8 @@ public class StatementToLocationConvertor
     private StatementLocation startLocation;
     private StatementLocation endLocation;
     
-    private final List<StatementLocation> statLocations = new LinkedList<>();   
-    private final List<StatementTransition> statTransitions = new LinkedList<>();
+    private final Set<StatementLocation> statLocations = new HashSet<>();   
+    private final Set<StatementTransition> statTransitions = new HashSet<>();
     
     private HybridTransition lastTransition;
 
@@ -304,7 +113,7 @@ public class StatementToLocationConvertor
         return endLocation.GetLoc();
     }
     
-    void ProcessLastLocation(HybridLabel label)
+    public void ProcessLastLocation(HybridLabel label)
     {
         endLocation.ProcessOutLabel(label);
     }
@@ -320,21 +129,80 @@ public class StatementToLocationConvertor
             return;
         }
         
-        Statement stat = statementIt.next();
-
-        StatementLocation loc = new NotImplementedLocation(stat, locName);
+        Statement statement = statementIt.next();
+        Pair<StatementLocation,StatementLocation> statementResult;
         
-        if(stat instanceof DelayStatement)
-            loc = new DelayLocation((DelayStatement) stat, locName, actorData);
-        else if(stat instanceof ContinuousAssignmentStatement)
-            loc = new CAssignmentLocation((ContinuousAssignmentStatement) stat,locName, actorData);
-//        else if(stat instanceof ContinuousBehaviorStatement)
-//            loc = new CBehaviorLocation((ContinuousBehaviorStatement) stat, locName, actorData);
-        else if(stat instanceof SendStatement)
-            loc = new SendLocation((SendStatement) stat, locName, actorData);
+        if(statement instanceof DelayStatement)
+            statementResult = CreateDelayStatementLocations(statement, locName);
+        else if(statement instanceof AssignmentStatement)
+            statementResult = CreateAssignmentLocation(statement, locName);
+        else if(statement instanceof IfStatement)
+            statementResult = CreateContidationlLocations((IfStatement)statement, locName);
+        else if(statement instanceof SendStatement)
+           statementResult = CreateSendLocation(statement, locName);
+        else 
+            statementResult = CreateNotImplementationLocation(statement, locName);
 
-        statLocations.add(loc);
-        statTransitions.add(new StatementTransition(origin, loc));
-        ConvertStatementChain(statementIt, loc, prefix, i+1);
-    }   
+        statTransitions.add(new StatementTransition(origin, statementResult.A()));
+        ConvertStatementChain(statementIt, statementResult.B(), prefix, i+1);
+    }  
+    
+    private Pair<StatementLocation,StatementLocation> CreateDelayStatementLocations(Statement statement, String name)
+    {
+        DelayLocation loc = new DelayLocation((DelayStatement) statement, name, actorData);
+        return new Pair<>(loc,loc);
+    }
+    
+    private Pair<StatementLocation,StatementLocation> CreateNotImplementationLocation(Statement statement, String locName)
+    {
+        StatementLocation loc = new NotImplementedLocation(statement, locName);
+        return new Pair<>(loc,loc);
+
+    }
+    
+    private Pair<StatementLocation,StatementLocation> CreateAssignmentLocation(Statement statement, String locName)
+    {
+        StatementLocation loc = new AssignmentLocation((AssignmentStatement) statement,locName, actorData);
+        return new Pair<>(loc,loc);
+    }
+    
+    private Pair<StatementLocation, StatementLocation> CreateSendLocation(Statement statement, String locName)
+    {
+        StatementLocation loc = new SendLocation((SendStatement) statement, locName, actorData);
+        return new Pair<>(loc,loc);
+    }
+
+    
+    private Pair<StatementLocation,StatementLocation> CreateContidationlLocations(IfStatement statement, String locName)
+    {
+        StartLocation conditional_startLocation = new StartLocation(locName+"_start", actorData);
+        EndLocation conditional_endLocation = new EndLocation(locName + "_end", actorData);
+        
+        StatementToLocationConvertor truePathConvertor =  new StatementToLocationConvertor(
+                statement.TrueStatements(), 
+                actorData, 
+                conditional_startLocation.GetLoc(),
+                comp, 
+                locName);
+        truePathConvertor.ConvertStatementChain(false);
+        
+        statTransitions.add(new StatementTransition(truePathConvertor.startLocation, conditional_startLocation));
+        statTransitions.add(new StatementTransition(truePathConvertor.endLocation, conditional_endLocation));
+
+        
+        StatementToLocationConvertor falsePathConvertor = new StatementToLocationConvertor(
+                statement.FalseStatements(),
+                actorData,
+                conditional_startLocation.GetLoc(),
+                comp,
+                locName);
+        falsePathConvertor.ConvertStatementChain(false);
+
+        statTransitions.add(new StatementTransition(falsePathConvertor.startLocation, conditional_startLocation));
+        statTransitions.add(new StatementTransition(falsePathConvertor.endLocation, conditional_endLocation));
+        
+        statLocations.add(endLocation);
+        
+        return new Pair<>(conditional_startLocation,conditional_endLocation);
+    }
 }

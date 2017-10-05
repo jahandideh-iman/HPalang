@@ -58,6 +58,11 @@ public abstract class ActorType
         return instanceParameters.get(instanceName);
     }
     
+    public Iterable<InstanceParameter> InstanceParameters()
+    {
+        return instanceParameters.values();
+    }
+    
     public void AddDelegationParameter(DelegationParameter delegationParameter)
     {
         delegationParameters.put(delegationParameter.Name(), delegationParameter);

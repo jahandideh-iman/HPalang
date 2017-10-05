@@ -5,8 +5,13 @@
  */
 package HPalang.SpaceEx.Convertor;
 
+import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.SoftwareActor;
+import HPalang.Core.VariableArgument;
+import HPalang.Core.VariableParameter;
+import java.util.LinkedList;
+import java.util.List;
 
 /**
  *
@@ -19,6 +24,7 @@ public class ActorQueueData
     public ActorQueueData(ActorModelData actorModelData)
     {
         this.actorModelData = actorModelData;
+        
     }
 
     public String QueueHeadVar()
@@ -46,6 +52,11 @@ public class ActorQueueData
         return String.format("element_%d_message", i);
     }
     
+    private String ElementParamterVarFor(VariableParameter parameter, int elementIndex)
+    {
+        return String.format("element_%d_parameter_%s", elementIndex, parameter.Name());
+    }
+    
     public String ElementValueVar(int i)
     {
         return String.format("element_%d_value", i);
@@ -54,6 +65,21 @@ public class ActorQueueData
     public String BufferValueVar()
     {
         return "buffer_value";
+    }
+    
+    String BufferParameterAssignmentFor(Message message, int parameterIndex, String value , String prefix)
+    {
+        VariableParameter parameter =  message.Parameters().AsList().get(parameterIndex);
+        
+        return actorModelData.ResetFor(
+                String.format("%s_%s", prefix, BufferParamaterVarFor(parameter)), 
+                value);
+        
+    }
+    
+    String BufferParamaterVarFor(VariableParameter parameter)
+    {
+        return String.format("buffer_value_%s", parameter.Name());
     }
 
     public String BufferMessageVar()
@@ -66,6 +92,10 @@ public class ActorQueueData
         return String.format("%s == 0", BufferIsEmptyVar());
     }
     
+    public String BufferIsEmptyGuard(String prefix)
+    {
+        return String.format("%s_%s == 1", prefix,BufferIsEmptyVar());
+    }
 
     public String TailGuard(int i)
     {
@@ -80,6 +110,11 @@ public class ActorQueueData
     public String SetBufferEmptyAssignment()
     {
         return String.format("%s := 1", BufferIsEmptyVar());
+    }
+    
+    String SetBufferFullAssignment(String prefix)
+    {
+        return String.format("%s_%s := 0", prefix, BufferIsEmptyVar());
     }
 
     public String TailIncrementAssignment(int i)
@@ -122,6 +157,21 @@ public class ActorQueueData
     {
         return actorModelData.Actor().QueueCapacity();
     }
-    
-    
+
+    public List<String> BufferToElementAssignmentsFor(MessageHandler messageHandler, int elementIndex)
+    {
+        List<String> assignments = new LinkedList<>();
+        
+        for(VariableParameter parameter : messageHandler.Parameters().AsList())
+        {
+            assignments.add(
+                    actorModelData.ResetFor(
+                            ElementParamterVarFor(parameter, elementIndex),
+                            BufferParamaterVarFor(parameter)));
+        }     
+        return assignments;
+    }
+
+
+
 }

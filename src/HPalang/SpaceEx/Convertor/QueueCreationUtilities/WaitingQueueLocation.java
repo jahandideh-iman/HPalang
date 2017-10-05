@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.SpaceEx.Convertor.QueueCreation;
+package HPalang.SpaceEx.Convertor.QueueCreationUtilities;
 
 import HPalang.SpaceEx.Convertor.ActorModelData;
 import HPalang.SpaceEx.Core.Invarient;
@@ -13,7 +13,7 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-class WaitingQueueLocation extends QueueLocation
+public class WaitingQueueLocation extends QueueLocation
 {
     public WaitingQueueLocation(Queue<String> content, ActorModelData actorData)
     {

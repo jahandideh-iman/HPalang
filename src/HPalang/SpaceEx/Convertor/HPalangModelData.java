@@ -5,6 +5,8 @@
  */
 package HPalang.SpaceEx.Convertor;
 
+import HPalang.Core.Actor;
+import HPalang.Core.ActorLocator;
 import HPalang.Core.ActorType;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessageHandler;
@@ -51,6 +53,8 @@ public class HPalangModelData
         for(SoftwareActor actor : hpalangModel.SoftwareActors())
             actorsData.put(actor,new ActorModelData(actor, this));
         
+        for(ActorModelData actorData : actorsData.values())
+            actorData.Init();
         
 //        for(SoftwareActor actor : hpalangModel.SoftwareActors())
 //            for(MessageHandler handler : actor.GetMessageHandlers())
@@ -73,8 +77,8 @@ public class HPalangModelData
                 //GetActorData(sendStat.ReceiverLocator()).AddReceiveHandler(handlerId, actor, ownerCB);
                 //GetActorData(actor).AddSendLabel(sendStat, handlerId, sendStat.ReceiverLocator(), ownerCB);
 
-//                CommunicationLabel sendLabel = GetActorData(actor).CreateSendLabel(handlerId, sendStat.ReceiverLocator(), ownerCB);
-//                CommunicationLabel receiveLabel = GetActorData(sendStat.ReceiverLocator()).CreateReceiveLabel(handlerId, actor, ownerCB);
+//                CommunicationLabel sendLabel = ActorModelDataFor(actor).CreateSendLabel(handlerId, sendStat.ReceiverLocator(), ownerCB);
+//                CommunicationLabel receiveLabel = ActorModelDataFor(sendStat.ReceiverLocator()).CreateReceiveLabel(handlerId, actor, ownerCB);
 //                if (sendLabel.IsSelf() == false) {
 //                    globalSendLabels.add(sendLabel);
 //                    receiveToSendMap.put(receiveLabel, sendLabel);
@@ -83,7 +87,7 @@ public class HPalangModelData
             }
 //            else if (stat instanceof ContinuousBehaviorStatement) {
 //                ContinuousBehaviorStatement cbStat = (ContinuousBehaviorStatement) stat;
-//                GetActorData(actor).AddContinuousBehavior(cbStat.GetBehavior());
+//                ActorModelDataFor(actor).AddContinuousBehavior(cbStat.GetBehavior());
 //                ProcessStatements(cbStat.GetBehavior().GetActions(), actor, cbStat.GetBehavior());
 //            }
         }
@@ -94,9 +98,12 @@ public class HPalangModelData
         return actorTypesData.get(type);
     }
     
-    public final ActorModelData GetActorData(SoftwareActor actor)
+    public final ActorModelData ActorModelDataFor(Actor actor)
     {
-        return actorsData.get(actor);
+        if(actor instanceof SoftwareActor)
+            return actorsData.get(actor);
+        else
+            throw new RuntimeException("Physical actor model data is not yet implemented");
     }
     
     Collection<CommunicationLabel> GetGlobalSendLabels()
@@ -109,6 +116,8 @@ public class HPalangModelData
         return receiveToSendMap.get(receive);
             
     }
+
+
 
 
 }

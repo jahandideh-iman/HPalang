@@ -22,5 +22,10 @@ public class SubtractOperator extends BinaryOperatorT<SubtractOperator>
     {
         return operand1.Evaluate(valuations) - operand2.Evaluate(valuations);
     }
-    
+
+    @Override
+    public String toString()
+    {
+        return "-";
+    }
 }

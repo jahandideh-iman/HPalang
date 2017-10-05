@@ -28,7 +28,4 @@ public class AddOperator extends BinaryOperatorT<AddOperator>
     {
         return "+";
     }
-    
-    
-    
 }

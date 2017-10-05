@@ -55,7 +55,7 @@ public class HPalangToCompositionalSXConvertor
 //        }
         for(SoftwareActor actor : def.SoftwareActors())
         {
-            ActorModelData actorData = hpalangModelData.GetActorData(actor);
+            ActorModelData actorData = hpalangModelData.ActorModelDataFor(actor);
             ActorConvertor convertor = new ActorConvertor(actorData, model);
             convertor.Convert();
             
