@@ -13,22 +13,22 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class WaitingQueueLocation extends QueueLocation
+public class WaitingQueueLocation // extends QueueLocation
 {
-    public WaitingQueueLocation(Queue<String> content, ActorModelData actorData)
-    {
-        super(String.join("_", content) + "_2", content, actorData);
-        loc.AddInvarient(new Invarient(actorData.GetBusyInvarient()));
-    }
-
-    @Override
-    public void ProcessInTransition(QueueTransition transition)
-    {
-    }
-
-    @Override
-    public void PrcoessOutTransition(QueueTransition transition)
-    {
-        transition.label.AddGuard(actorData.GetIsNotBusyGuard());
-    }
+//    public WaitingQueueLocation(Queue<String> content, ActorModelData actorData)
+//    {
+//        super(String.join("_", content) + "_2", content, actorData);
+//        loc.AddInvarient(new Invarient(actorData.GetBusyInvarient()));
+//    }
+//
+//    @Override
+//    public void ProcessInTransition(QueueTransition transition)
+//    {
+//    }
+//
+//    @Override
+//    public void PrcoessOutTransition(QueueTransition transition)
+//    {
+//        transition.label.AddGuard(actorData.GetIsNotBusyGuard());
+//    }
 }

@@ -1,1 +1,604 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><sspaceex><component id="a_VarLockTemplate"><param d1="1" d2="1" dynamics="any" local="false" name="var" type="real"/><param local="false" name="Acquire" type="label"/><param local="false" name="Release" type="label"/><location id="0" name="unlock"><flow> var' == 0</flow><invariant/></location><location id="1" name="lock"><flow/><invariant/></location><transition source="1" target="0"><label>Release</label><guard/><assignment/></transition><transition source="0" target="1"><label>Acquire</label><guard/><assignment/></transition></component><component id="a_Handlers"><param d1="1" d2="1" dynamics="any" local="true" name="delay" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="urg" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="lock" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="actorBusy" type="real"/><param local="false" name="take_message" type="label"/><param d1="1" d2="1" dynamics="any" local="false" name="c" type="real"/><location id="0" name="idle"><flow/><invariant/></location><location id="1" name="handlerProc_0"><flow/><invariant/></location><location id="2" name="handlerProc_X1"><flow/><invariant/></location><location id="3" name="X1_3_1_sendStatement"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="4" name="X1_3_2"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="5" name="X1_3_0"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="6" name="X1_3_0"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="7" name="X1_3_1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="8" name="X1_1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="9" name="X1_2"><flow>delay' == 1</flow><invariant>delay &lt;= 1.000000</invariant></location><location id="10" name="X1_3_end"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="11" name="X1_3_start"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="12" name="X1_0"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="13" name="X1_4"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><transition source="0" target="1"><label>take_message</label><guard/><assignment/></transition><transition source="1" target="2"><label>Execute_X1</label><guard/><assignment/></transition><transition source="3" target="4"><label/><guard>urg== 0&amp;&amp;b_buffer_isEmpty == 1</guard><assignment>b_buffer_isEmpty := 0&amp;&amp;urg:= 0</assignment></transition><transition source="5" target="3"><label/><guard>urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="6" target="7"><label/><guard>urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="8" target="9"><label/><guard>urg== 0</guard><assignment>c := (c - r)&amp;&amp;delay := 0.0&amp;&amp;lock:= 0</assignment></transition><transition source="7" target="10"><label/><guard>urg== 0</guard><assignment>lock:= 0&amp;&amp;urg:= 0</assignment></transition><transition source="9" target="11"><label/><guard>lock== 0&amp;&amp;delay == 1.0&amp;&amp;lock== 0</guard><assignment>lock:= 1&amp;&amp;urg:= 0&amp;&amp;lock:= 1</assignment></transition><transition source="6" target="11"><label/><guard>urg== 0&amp;&amp;lock== 0</guard><assignment>urg:= 0&amp;&amp;lock:= 1</assignment></transition><transition source="4" target="10"><label/><guard>urg== 0</guard><assignment>lock:= 0&amp;&amp;urg:= 0</assignment></transition><transition source="12" target="8"><label/><guard>urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="10" target="13"><label/><guard>urg== 0</guard><assignment>lock:= 0&amp;&amp;urg:= 0</assignment></transition><transition source="5" target="11"><label/><guard>urg== 0&amp;&amp;lock== 0</guard><assignment>urg:= 0&amp;&amp;lock:= 1</assignment></transition><transition source="2" target="12"><label/><guard>lock== 0&amp;&amp;urg== 0</guard><assignment>urg:= 0&amp;&amp;lock:= 1&amp;&amp;actorBusy := 1</assignment></transition><transition source="13" target="0"><label/><guard>urg== 0</guard><assignment>lock:= 0&amp;&amp;actorBusy := 0</assignment></transition></component><component id="a_DVars"><param d1="1" d2="1" dynamics="any" local="false" name="actorBusy" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="lock" type="real"/><location id="0" name="loc1"><flow>actorBusy' == 0&amp;&amp;lock' == 0</flow><invariant/></location></component><component id="a_Queue"><param d1="1" d2="1" dynamics="any" local="true" name="queue_tail" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="buffer_isEmpty" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="buffer_value" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="buffer_message" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="queue_head" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="queue_size" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="element_0_message" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="element_0_value" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="element_1_message" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="element_1_value" type="real"/><param local="false" name="take_message" type="label"/><param local="false" name="Execute_X1" type="label"/><location id="0" name="idle"><flow/><invariant/></location><location id="1" name="bufferProc"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="2" name="bufferProc_0"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="3" name="bufferProc_1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="4" name="bufferProc_full"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="5" name="messageProc"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="6" name="messageProc_check_0_X1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="7" name="messageProc_unbox_0_X1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="8" name="messageProc_check_1_X1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="9" name="messageProc_unbox_1_X1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><transition source="0" target="1"><label/><guard>buffer_isEmpty == 0</guard><assignment>urg:= 0</assignment></transition><transition source="1" target="2"><label/><guard>queue_tail == 0&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>element_0_value := buffer_value&amp;&amp;element_0_message := buffer_message&amp;&amp;buffer_isEmpty := 1&amp;&amp;queue_tail := 1&amp;&amp;queue_size := queue_size + 1&amp;&amp;urg:= 0</assignment></transition><transition source="2" target="0"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment/></transition><transition source="1" target="3"><label/><guard>queue_tail == 1&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>element_1_value := buffer_value&amp;&amp;element_1_message := buffer_message&amp;&amp;buffer_isEmpty := 1&amp;&amp;queue_tail := 0&amp;&amp;queue_size := queue_size + 1&amp;&amp;urg:= 0</assignment></transition><transition source="3" target="0"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment/></transition><transition source="1" target="4"><label/><guard>queue_size == 2&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>buffer_isEmpty := 1&amp;&amp;urg:= 0</assignment></transition><transition source="4" target="0"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment/></transition><transition source="0" target="5"><label/><guard>queue_size &gt;= 0</guard><assignment>urg:= 0</assignment></transition><transition source="5" target="6"><label/><guard>queue_head == 0&amp;&amp;element_0_message == 1&amp;&amp;queue_size &gt;= 0&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="6" target="7"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment>element_0_parameter_r := buffer_value_r&amp;&amp;urg:= 0</assignment></transition><transition source="7" target="0"><label>Execute_X1</label><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment>queue_head := 1</assignment></transition><transition source="5" target="8"><label/><guard>queue_head == 1&amp;&amp;element_1_message == 1&amp;&amp;queue_size &gt;= 0&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="8" target="9"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment>element_1_parameter_r := buffer_value_r&amp;&amp;urg:= 0</assignment></transition><transition source="9" target="0"><label>Execute_X1</label><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment>queue_head := 0</assignment></transition></component><component id="a_Actor"><param d1="1" d2="1" dynamics="any" local="true" name="actorBusy" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="lock" type="real"/><bind as="vars" component="a_DVars"><map key="lock">lock</map><map key="actorBusy">actorBusy</map></bind><bind as="queue" component="a_Queue"><map key="actorBusy">actorBusy</map></bind><bind as="handlers" component="a_Handlers"><map key="c">c</map><map key="lock">lock</map><map key="actorBusy">actorBusy</map><map key="take_message">take_message</map></bind></component><component id="b_VarLockTemplate"><param d1="1" d2="1" dynamics="any" local="false" name="var" type="real"/><param local="false" name="Acquire" type="label"/><param local="false" name="Release" type="label"/><location id="0" name="unlock"><flow> var' == 0</flow><invariant/></location><location id="1" name="lock"><flow/><invariant/></location><transition source="1" target="0"><label>Release</label><guard/><assignment/></transition><transition source="0" target="1"><label>Acquire</label><guard/><assignment/></transition></component><component id="b_Handlers"><param d1="1" d2="1" dynamics="any" local="true" name="delay" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="urg" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="lock" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="actorBusy" type="real"/><param local="false" name="take_message" type="label"/><location id="0" name="idle"><flow/><invariant/></location><location id="1" name="handlerProc_0"><flow/><invariant/></location><location id="2" name="handlerProc_Y1"><flow/><invariant/></location><location id="3" name="Y1_1_sendStatement"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="4" name="Y1_2"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="5" name="Y1_0"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><transition source="0" target="1"><label>take_message</label><guard/><assignment/></transition><transition source="1" target="2"><label>Execute_Y1</label><guard/><assignment/></transition><transition source="3" target="4"><label/><guard>urg== 0&amp;&amp;a_buffer_isEmpty == 1</guard><assignment>a_buffer_isEmpty := 0&amp;&amp;a_buffer_value_r := 2&amp;&amp;urg:= 0</assignment></transition><transition source="5" target="3"><label/><guard>urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="2" target="5"><label/><guard>lock== 0&amp;&amp;urg== 0</guard><assignment>urg:= 0&amp;&amp;lock:= 1&amp;&amp;actorBusy := 1</assignment></transition><transition source="4" target="0"><label/><guard>urg== 0</guard><assignment>lock:= 0&amp;&amp;actorBusy := 0</assignment></transition></component><component id="b_DVars"><param d1="1" d2="1" dynamics="any" local="false" name="actorBusy" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="lock" type="real"/><location id="0" name="loc1"><flow>actorBusy' == 0&amp;&amp;lock' == 0</flow><invariant/></location></component><component id="b_Queue"><param d1="1" d2="1" dynamics="any" local="false" name="buffer_value" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="buffer_isEmpty" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="buffer_message" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="queue_head" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="queue_tail" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="queue_size" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="element_0_message" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="element_0_value" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="element_1_message" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="element_1_value" type="real"/><param local="false" name="take_message" type="label"/><param local="false" name="Execute_Y1" type="label"/><location id="0" name="idle"><flow/><invariant/></location><location id="1" name="bufferProc"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="2" name="bufferProc_0"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="3" name="bufferProc_1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="4" name="bufferProc_full"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="5" name="messageProc"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="6" name="messageProc_check_0_Y1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="7" name="messageProc_unbox_0_Y1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="8" name="messageProc_check_1_Y1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><location id="9" name="messageProc_unbox_1_Y1"><flow>urg' == 1</flow><invariant>urg == 0</invariant></location><transition source="0" target="1"><label/><guard>buffer_isEmpty == 0</guard><assignment>urg:= 0</assignment></transition><transition source="1" target="2"><label/><guard>queue_tail == 0&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>element_0_value := buffer_value&amp;&amp;element_0_message := buffer_message&amp;&amp;buffer_isEmpty := 1&amp;&amp;queue_tail := 1&amp;&amp;queue_size := queue_size + 1&amp;&amp;urg:= 0</assignment></transition><transition source="2" target="0"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment/></transition><transition source="1" target="3"><label/><guard>queue_tail == 1&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>element_1_value := buffer_value&amp;&amp;element_1_message := buffer_message&amp;&amp;buffer_isEmpty := 1&amp;&amp;queue_tail := 0&amp;&amp;queue_size := queue_size + 1&amp;&amp;urg:= 0</assignment></transition><transition source="3" target="0"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment/></transition><transition source="1" target="4"><label/><guard>queue_size == 2&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>buffer_isEmpty := 1&amp;&amp;urg:= 0</assignment></transition><transition source="4" target="0"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment/></transition><transition source="0" target="5"><label/><guard>queue_size &gt;= 0</guard><assignment>urg:= 0</assignment></transition><transition source="5" target="6"><label/><guard>queue_head == 0&amp;&amp;element_0_message == 0&amp;&amp;queue_size &gt;= 0&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="6" target="7"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="7" target="0"><label>Execute_Y1</label><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment>queue_head := 1</assignment></transition><transition source="5" target="8"><label/><guard>queue_head == 1&amp;&amp;element_1_message == 0&amp;&amp;queue_size &gt;= 0&amp;&amp;actorBusy == 0&amp;&amp;urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="8" target="9"><label/><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment>urg:= 0</assignment></transition><transition source="9" target="0"><label>Execute_Y1</label><guard>actorBusy == 0&amp;&amp;urg== 0</guard><assignment>queue_head := 0</assignment></transition></component><component id="b_Actor"><param d1="1" d2="1" dynamics="any" local="true" name="actorBusy" type="real"/><param d1="1" d2="1" dynamics="any" local="true" name="lock" type="real"/><bind as="vars" component="b_DVars"><map key="lock">lock</map><map key="actorBusy">actorBusy</map></bind><bind as="queue" component="b_Queue"><map key="actorBusy">actorBusy</map></bind><bind as="handlers" component="b_Handlers"><map key="lock">lock</map><map key="actorBusy">actorBusy</map><map key="take_message">take_message</map></bind></component><component id="Timer"><param d1="1" d2="1" dynamics="const" local="false" name="duration" type="real"/><param d1="1" d2="1" dynamics="any" local="false" name="time" type="real"/><location id="0" name="loc1"><flow>time' == 1</flow><invariant>time &lt;= duration</invariant></location><location id="1" name="loc2"><flow>time' == 0</flow><invariant/></location><transition source="0" target="1"><label/><guard>time == duration</guard><assignment/></transition></component><component id="System"><param d1="1" d2="1" dynamics="any" local="false" name="time" type="real"/><bind as="a_Actor" component="a_Actor"/><bind as="b_Actor" component="b_Actor"/><bind as="timer" component="Timer"><map key="duration">15</map><map key="time">time</map></bind></component></sspaceex>
+<?xml version="1.0" encoding="iso-8859-1"?>
+<sspaceex>
+  <component id="a_VarLockTemplate">
+    <param d1="1" d2="1" dynamics="any" local="false" name="var" type="real" />
+    <param local="false" name="Acquire" type="label" />
+    <param local="false" name="Release" type="label" />
+    <location id="0" name="unlock">
+      <flow>var' == 0</flow>
+      <invariant />
+    </location>
+    <location id="1" name="lock">
+      <flow />
+      <invariant />
+    </location>
+    <transition source="1" target="0">
+      <label>Release</label>
+      <guard />
+      <assignment />
+    </transition>
+    <transition source="0" target="1">
+      <label>Acquire</label>
+      <guard />
+      <assignment />
+    </transition>
+  </component>
+  <component id="a_Handlers">
+    <param local="false" name="Take_Message" type="label" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="delay" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="urg" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="c" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="X1_r" type="real" />
+    <location id="0" name="idle">
+      <flow />
+      <invariant />
+    </location>
+    <location id="1" name="handlerProc_0">
+      <flow />
+      <invariant />
+    </location>
+    <location id="2" name="handlerProc_X1">
+      <flow />
+      <invariant />
+    </location>
+    <location id="3" name="X1_3_truePath_1_send">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="4" name="X1_3_truePath_2_end">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="5" name="X1_3_truePath_0_start">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="6" name="X1_3_falsePath_0_start">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="7" name="X1_3_falsePath_1_end">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="8" name="X1_2_delay">
+      <flow>delay' == 1</flow>
+      <invariant>delay &lt;= 1.0</invariant>
+    </location>
+    <location id="9" name="X1_3_if_start">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="10" name="X1_1_assignemnt">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="11" name="X1_3_if_end">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="12" name="X1_4_end">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="13" name="X1_0_start">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <transition source="0" target="1">
+      <label>Take_Message</label>
+      <guard />
+      <assignment />
+    </transition>
+    <transition source="1" target="2">
+      <label>Execute_X1</label>
+      <guard />
+      <assignment />
+    </transition>
+    <transition source="3" target="4">
+      <guard>urg== 0&amp;&amp;b_buffer_isEmpty == 1</guard>
+      <assignment>b_buffer_isEmpty := 0&amp;&amp;urg:= 0</assignment>
+    </transition>
+    <transition source="5" target="3">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="6" target="7">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="8" target="9">
+      <guard>delay == 1.0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="10" target="8">
+      <guard>urg== 0</guard>
+      <assignment>c := (c - r)&amp;&amp;delay := 0.0</assignment>
+    </transition>
+    <transition source="4" target="11">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="9" target="5">
+      <guard>(c &gt; 0)&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="11" target="12">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="7" target="11">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="13" target="10">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="9" target="6">
+      <guard>(c &lt;= 0)&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="2" target="13">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="12" target="0">
+      <guard>urg== 0</guard>
+      <assignment />
+    </transition>
+  </component>
+  <component id="a_Vars">
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_head" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="c" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="X1_r" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_size" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_tail" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_isEmpty" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_message" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_value_X1_r" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_0_message" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_0_parameter_X1_r" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_1_message" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_1_parameter_X1_r" type="real" />
+    <location id="0" name="loc">
+      <flow>c' == 0.0&amp;&amp;X1_r' == 0.0&amp;&amp;queue_head' == 0.0&amp;&amp;queue_size' == 0.0&amp;&amp;queue_tail' == 0.0&amp;&amp;buffer_isEmpty' == 0.0&amp;&amp;buffer_message' == 0.0&amp;&amp;buffer_value_X1_r' == 0.0&amp;&amp;element_0_message' == 0.0&amp;&amp;element_0_parameter_X1_r' == 0.0&amp;&amp;element_1_message' == 0.0&amp;&amp;element_1_parameter_X1_r' == 0.0</flow>
+      <invariant />
+    </location>
+  </component>
+  <component id="a_Queue">
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_value_X1_r" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="urg" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_isEmpty" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_message" type="real" />
+    <param local="false" name="Take_Message" type="label" />
+    <param local="false" name="Execute_X1" type="label" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_head" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_tail" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_size" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_0_message" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_0_parameter_X1_r" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_1_message" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_1_parameter_X1_r" type="real" />
+    <location id="0" name="initial_0" x="114.0" y="496.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="1" name="initial_1" x="210.0" y="110.0">
+      <flow />
+      <invariant>buffer_isEmpty == 1&amp;&amp;queue_size == 0</invariant>
+    </location>
+    <location id="2" name="messageProc" x="300.0" y="180.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="3" name="bufferProc" x="390.0" y="250.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="4" name="bufferProc_0" x="480.0" y="320.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="5" name="bufferProc_1" x="570.0" y="390.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="6" name="bufferProc_full" x="660.0" y="460.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="7" name="messageProc_check_0_X1" x="750.0" y="530.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="8" name="messageProc_unbox_0_X1" x="840.0" y="600.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="9" name="messageProc_check_1_X1" x="930.0" y="670.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="10" name="messageProc_unbox_1_X1" x="1020.0" y="740.0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <transition source="0" target="1">
+      <guard>buffer_isEmpty == 1&amp;&amp;urg== 0</guard>
+      <assignment />
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="0" target="3">
+      <guard>buffer_isEmpty == 0&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="1" target="3">
+      <guard>buffer_isEmpty == 0</guard>
+      <assignment>urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="3" target="4">
+      <guard>queue_tail == 0&amp;&amp;urg== 0</guard>
+      <assignment>element_0_message := buffer_message&amp;&amp;buffer_isEmpty := 1&amp;&amp;queue_tail := 1&amp;&amp;queue_size := queue_size + 1&amp;&amp;element_0_parameter_X1_r := buffer_value_X1_r&amp;&amp;urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="4" target="0">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="3" target="5">
+      <guard>queue_tail == 1&amp;&amp;urg== 0</guard>
+      <assignment>element_1_message := buffer_message&amp;&amp;buffer_isEmpty := 1&amp;&amp;queue_tail := 0&amp;&amp;queue_size := queue_size + 1&amp;&amp;element_1_parameter_X1_r := buffer_value_X1_r&amp;&amp;urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="5" target="0">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="3" target="6">
+      <guard>queue_size == 2&amp;&amp;urg== 0</guard>
+      <assignment>buffer_isEmpty := 1&amp;&amp;urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="6" target="0">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="0" target="1">
+      <guard>queue_size == 0&amp;&amp;urg== 0</guard>
+      <assignment />
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="0" target="2">
+      <guard>queue_size &gt; 0&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="1" target="2">
+      <guard>queue_size &gt; 0</guard>
+      <assignment>urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="2" target="7">
+      <guard>queue_head == 0&amp;&amp;element_0_message == 1&amp;&amp;queue_size &gt; 0&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="7" target="8">
+      <guard>urg== 0</guard>
+      <assignment>element_0_parameter_X1_r := buffer_value_X1_r&amp;&amp;urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="8" target="0">
+      <label>Execute_X1</label>
+      <guard>urg== 0</guard>
+      <assignment>queue_head := 1&amp;&amp;urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="2" target="9">
+      <guard>queue_head == 1&amp;&amp;element_1_message == 1&amp;&amp;queue_size &gt; 0&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="9" target="10">
+      <guard>urg== 0</guard>
+      <assignment>element_1_parameter_X1_r := buffer_value_X1_r&amp;&amp;urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+    <transition source="10" target="0">
+      <label>Execute_X1</label>
+      <guard>urg== 0</guard>
+      <assignment>queue_head := 0&amp;&amp;urg:= 0</assignment>
+      <labelposition x="0.0" y="0.0" />
+    </transition>
+  </component>
+  <component id="a_Actor">
+    <bind as="vars" component="a_Vars">
+      <map key="element_0_parameter_X1_r" />
+      <map key="c" />
+      <map key="element_0_message" />
+      <map key="X1_r" />
+      <map key="queue_size" />
+      <map key="queue_tail" />
+      <map key="buffer_message" />
+      <map key="queue_head" />
+      <map key="buffer_isEmpty" />
+      <map key="element_1_parameter_X1_r" />
+      <map key="element_1_message" />
+      <map key="buffer_value_X1_r" />
+    </bind>
+    <bind as="queue" component="a_Queue" />
+    <bind as="handlers" component="a_Handlers">
+      <map key="c" />
+      <map key="X1_r" />
+      <map key="Take_Message" />
+    </bind>
+  </component>
+  <component id="b_VarLockTemplate">
+    <param d1="1" d2="1" dynamics="any" local="false" name="var" type="real" />
+    <param local="false" name="Acquire" type="label" />
+    <param local="false" name="Release" type="label" />
+    <location id="0" name="unlock">
+      <flow>var' == 0</flow>
+      <invariant />
+    </location>
+    <location id="1" name="lock">
+      <flow />
+      <invariant />
+    </location>
+    <transition source="1" target="0">
+      <label>Release</label>
+      <guard />
+      <assignment />
+    </transition>
+    <transition source="0" target="1">
+      <label>Acquire</label>
+      <guard />
+      <assignment />
+    </transition>
+  </component>
+  <component id="b_Handlers">
+    <param local="false" name="Take_Message" type="label" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="delay" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="urg" type="real" />
+    <location id="0" name="idle">
+      <flow />
+      <invariant />
+    </location>
+    <location id="1" name="handlerProc_0">
+      <flow />
+      <invariant />
+    </location>
+    <location id="2" name="handlerProc_Y1">
+      <flow />
+      <invariant />
+    </location>
+    <location id="3" name="Y1_0_start">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="4" name="Y1_1_send">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="5" name="Y1_2_end">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <transition source="0" target="1">
+      <label>Take_Message</label>
+      <guard />
+      <assignment />
+    </transition>
+    <transition source="1" target="2">
+      <label>Execute_Y1</label>
+      <guard />
+      <assignment />
+    </transition>
+    <transition source="3" target="4">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="4" target="5">
+      <guard>urg== 0&amp;&amp;a_buffer_isEmpty == 1</guard>
+      <assignment>a_buffer_isEmpty := 0&amp;&amp;a_buffer_value_X1_r := 2&amp;&amp;urg:= 0</assignment>
+    </transition>
+    <transition source="2" target="3">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="5" target="0">
+      <guard>urg== 0</guard>
+      <assignment />
+    </transition>
+  </component>
+  <component id="b_Vars">
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_head" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_size" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_tail" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_isEmpty" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_message" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_0_message" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_1_message" type="real" />
+    <location id="0" name="loc">
+      <flow>queue_head' == 0.0&amp;&amp;queue_size' == 0.0&amp;&amp;queue_tail' == 0.0&amp;&amp;buffer_isEmpty' == 0.0&amp;&amp;buffer_message' == 0.0&amp;&amp;element_0_message' == 0.0&amp;&amp;element_1_message' == 0.0</flow>
+      <invariant />
+    </location>
+  </component>
+  <component id="b_Queue">
+    <param d1="1" d2="1" dynamics="any" local="true" name="urg" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_isEmpty" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="buffer_message" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_head" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_tail" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="queue_size" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_0_message" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="element_1_message" type="real" />
+    <param local="false" name="Take_Message" type="label" />
+    <param local="false" name="Execute_Y1" type="label" />
+    <location id="0" name="initial_0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="1" name="initial_1">
+      <flow />
+      <invariant>buffer_isEmpty == 1&amp;&amp;queue_size == 0</invariant>
+    </location>
+    <location id="2" name="messageProc">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="3" name="bufferProc">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="4" name="bufferProc_0">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="5" name="bufferProc_1">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="6" name="bufferProc_full">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="7" name="messageProc_check_0_Y1">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="8" name="messageProc_unbox_0_Y1">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="9" name="messageProc_check_1_Y1">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <location id="10" name="messageProc_unbox_1_Y1">
+      <flow>urg' == 1</flow>
+      <invariant>urg == 0</invariant>
+    </location>
+    <transition source="0" target="1">
+      <guard>buffer_isEmpty == 1&amp;&amp;urg== 0</guard>
+      <assignment />
+    </transition>
+    <transition source="0" target="3">
+      <guard>buffer_isEmpty == 0&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="1" target="3">
+      <guard>buffer_isEmpty == 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="3" target="4">
+      <guard>queue_tail == 0&amp;&amp;urg== 0</guard>
+      <assignment>element_0_message := buffer_message&amp;&amp;buffer_isEmpty := 1&amp;&amp;queue_tail := 1&amp;&amp;queue_size := queue_size + 1&amp;&amp;urg:= 0</assignment>
+    </transition>
+    <transition source="4" target="0">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="3" target="5">
+      <guard>queue_tail == 1&amp;&amp;urg== 0</guard>
+      <assignment>element_1_message := buffer_message&amp;&amp;buffer_isEmpty := 1&amp;&amp;queue_tail := 0&amp;&amp;queue_size := queue_size + 1&amp;&amp;urg:= 0</assignment>
+    </transition>
+    <transition source="5" target="0">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="3" target="6">
+      <guard>queue_size == 2&amp;&amp;urg== 0</guard>
+      <assignment>buffer_isEmpty := 1&amp;&amp;urg:= 0</assignment>
+    </transition>
+    <transition source="6" target="0">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="0" target="1">
+      <guard>queue_size == 0&amp;&amp;urg== 0</guard>
+      <assignment />
+    </transition>
+    <transition source="0" target="2">
+      <guard>queue_size &gt; 0&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="1" target="2">
+      <guard>queue_size &gt; 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="2" target="7">
+      <guard>queue_head == 0&amp;&amp;element_0_message == 0&amp;&amp;queue_size &gt; 0&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="7" target="8">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="8" target="0">
+      <label>Execute_Y1</label>
+      <guard>urg== 0</guard>
+      <assignment>queue_head := 1&amp;&amp;urg:= 0</assignment>
+    </transition>
+    <transition source="2" target="9">
+      <guard>queue_head == 1&amp;&amp;element_1_message == 0&amp;&amp;queue_size &gt; 0&amp;&amp;urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="9" target="10">
+      <guard>urg== 0</guard>
+      <assignment>urg:= 0</assignment>
+    </transition>
+    <transition source="10" target="0">
+      <label>Execute_Y1</label>
+      <guard>urg== 0</guard>
+      <assignment>queue_head := 0&amp;&amp;urg:= 0</assignment>
+    </transition>
+  </component>
+  <component id="b_Actor">
+    <bind as="vars" component="b_Vars">
+      <map key="element_0_message" />
+      <map key="queue_size" />
+      <map key="queue_tail" />
+      <map key="buffer_message" />
+      <map key="queue_head" />
+      <map key="buffer_isEmpty" />
+      <map key="element_1_message" />
+    </bind>
+    <bind as="queue" component="b_Queue" />
+    <bind as="handlers" component="b_Handlers">
+      <map key="Take_Message" />
+    </bind>
+  </component>
+  <component id="Timer">
+    <param d1="1" d2="1" dynamics="const" local="false" name="duration" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="time" type="real" />
+    <location id="0" name="loc1">
+      <flow>time' == 1</flow>
+      <invariant>time &lt;= duration</invariant>
+    </location>
+    <location id="1" name="loc2">
+      <flow>time' == 0</flow>
+      <invariant />
+    </location>
+    <transition source="0" target="1">
+      <guard>time == duration</guard>
+      <assignment />
+    </transition>
+  </component>
+  <component id="System">
+    <param d1="1" d2="1" dynamics="any" local="false" name="time" type="real" />
+    <bind as="a_Actor" component="a_Actor" />
+    <bind as="b_Actor" component="b_Actor" />
+    <bind as="timer" component="Timer">
+      <map key="duration">15</map>
+      <map key="time">time</map>
+    </bind>
+  </component>
+</sspaceex>
+

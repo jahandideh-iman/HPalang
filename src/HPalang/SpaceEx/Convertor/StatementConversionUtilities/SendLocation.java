@@ -20,7 +20,7 @@ public class SendLocation extends UrgentLocation
 
     public SendLocation(SendStatement statement, String name, ActorModelData actorData)
     {
-        super(name+"_sendStatement", actorData);
+        super(name+"_send", actorData);
         this.statement = statement;
         //this.sendLabel = actorData.GetSendLabelFor(statement).GetLabel();
     }

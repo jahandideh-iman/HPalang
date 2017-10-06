@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.SpaceEx.Convertor.QueueCreationUtilities;
+package HPalang.SpaceEx.Convertor.Utilities;
 
 import HPalang.SpaceEx.Core.HybridLabel;
 import java.util.LinkedList;
@@ -13,54 +13,54 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
-public class QueueTransitionBuilder
+public class ProcessableTransitionBuilder
 {
-    private QueueLocation origin;
-    private QueueLocation destination;
+    private ProcessableLocation origin;
+    private ProcessableLocation destination;
     
-    private List<String> guards = new LinkedList<>();
-    private List<String> assignments = new LinkedList<>();
+    private final List<String> guards = new LinkedList<>();
+    private final List<String> assignments = new LinkedList<>();
     private String syncLabel = "";
     
     
-    public QueueTransitionBuilder SetOrigin(QueueLocation origin)
+    public ProcessableTransitionBuilder SetOrigin(ProcessableLocation origin)
     {
         this.origin = origin;
         return this;
     }
     
-    public QueueTransitionBuilder SetDestination(QueueLocation destination)
+    public ProcessableTransitionBuilder SetDestination(ProcessableLocation destination)
     {
         this.destination = destination;
         return this;
     }
     
-    public QueueTransitionBuilder AddGuard(String guard)
+    public ProcessableTransitionBuilder AddGuard(String guard)
     {
         guards.add(guard);
         return this;
     }
     
-    public QueueTransitionBuilder AddAssignment(String assignent)
+    public ProcessableTransitionBuilder AddAssignment(String assignent)
     {
         assignments.add(assignent);
         return this;
     }
     
-    public QueueTransitionBuilder AddAssignments(List<String> assignments)
+    public ProcessableTransitionBuilder AddAssignments(List<String> assignments)
     {
         this.assignments.addAll(assignments);
         return this;
     }
         
-    public QueueTransitionBuilder SetSynclabel(String syncLabel)
+    public ProcessableTransitionBuilder SetSynclabel(String syncLabel)
     {
         this.syncLabel = syncLabel;
         return this;
     }
     
     
-    public QueueTransition Build()
+    public ProcessableTransition Build()
     {
         HybridLabel label = new HybridLabel();
         
@@ -68,7 +68,7 @@ public class QueueTransitionBuilder
         assignments.forEach(a -> label.AddAssignment(a));
         label.SetSyncLabel(syncLabel);
         
-        QueueTransition tran = new QueueTransition(origin, label, destination);
+        ProcessableTransition tran = new ProcessableTransition(origin, label, destination);
         
         
         return tran;

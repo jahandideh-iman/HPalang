@@ -17,15 +17,13 @@ public class StartLocation extends UrgentLocation
 
     public StartLocation(String name, ActorModelData actorData)
     {
-        super(name, actorData);
+        super(name+"_start", actorData);
     }
 
     @Override
     public void ProcessInLabel(HybridLabel label)
     {
         super.ProcessInLabel(label);
-        label.AddGuard(actorData.GetLockGainGuard());
-        label.AddAssignment(actorData.GetLockGainReset());
     }
 
 }

@@ -13,13 +13,12 @@ import HPalang.SpaceEx.Core.Location;
  *
  * @author Iman Jahandideh
  */
-public class NotImplementedLocation extends StatementLocation
+public class NotImplementedLocation extends UrgentLocation
 {
 
     public NotImplementedLocation(Statement statement, String name)
     {
-        super(null);
-        loc = new Location(name + "_NotImplementated");
+        super(name+ "_notImplementated", null);
     }
 
     @Override

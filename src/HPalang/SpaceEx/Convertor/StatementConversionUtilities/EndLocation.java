@@ -17,13 +17,12 @@ public class EndLocation extends UrgentLocation
 
     public EndLocation(String name, ActorModelData actorData)
     {
-        super(name, actorData);
+        super(name+"_end", actorData);
     }
 
     @Override
     public void ProcessOutLabel(HybridLabel label)
     {
         super.ProcessOutLabel(label);
-        label.AddAssignment(actorData.GetLockReleaseReset());
     }
 }

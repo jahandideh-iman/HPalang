@@ -25,6 +25,21 @@ public class BinaryExpression extends DiscreteExpressionT<BinaryExpression>
         this.operand2 = operand2;
     }
     
+    public BinaryOperator Operator()
+    {
+        return operator;
+    }
+    
+    public Expression Operand1()
+    {
+        return operand1;
+    }
+    
+    public Expression Operand2()
+    {
+        return operand2;
+    }
+    
     @Override
     public int Evaluate(ValuationContainer valuations)
     {

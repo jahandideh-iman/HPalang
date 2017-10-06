@@ -6,6 +6,7 @@
 package HPalang.SpaceEx.Convertor.StatementConversionUtilities;
 
 import HPalang.SpaceEx.Convertor.ActorModelData;
+import HPalang.SpaceEx.Convertor.Utilities.ProcessableLocation;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.Location;
 
@@ -13,21 +14,11 @@ import HPalang.SpaceEx.Core.Location;
  *
  * @author Iman Jahandideh
  */
-public abstract class StatementLocation
+public abstract class StatementLocation extends ProcessableLocation
 {
-    protected Location loc;
-    protected ActorModelData actorData;
     
-    public StatementLocation(ActorModelData actorData)
+    public StatementLocation(String name, ActorModelData actorData)
     {
-        this.actorData = actorData;
+        super(name, actorData);
     }
-    
-    public Location GetLoc()
-    {
-        return loc;
-    }
-
-    public abstract void ProcessInLabel(HybridLabel label);
-    public abstract void ProcessOutLabel(HybridLabel label);
 }

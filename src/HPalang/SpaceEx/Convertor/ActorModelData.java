@@ -17,6 +17,7 @@ import HPalang.Core.MessageLocators.DirectMessageLocator;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Variable;
 import HPalang.Core.VariableArgument;
+import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import java.util.Collection;
@@ -56,21 +57,14 @@ public class ActorModelData
     private SoftwareActor actor;
     
     private ActorQueueData queueData;
+    
+    private final Map<VariableParameter, String> messageParameterNames = new HashMap<>();
 
     public ActorModelData(SoftwareActor actor, HPalangModelData modelData)
     {
         this.modelData = modelData;
         this.actor = actor;
         
-        
-//        for (MessageHandler handler : actor.Type().MessageHandlers()) 
-//        {
-//            handlersName.add(handler.GetID());
-//            handlerTakeLabels.add(TakeLabelFor(handler.GetID()));
-//            handlersReceiveLabelMap.put(handler.GetID(), new LinkedList<>());
-//               
-//        }
-                
         this.queueData = new ActorQueueData(this);
     }
     
@@ -81,6 +75,16 @@ public class ActorModelData
                     param,
                     modelData.ActorModelDataFor(actor.GetInstanceFor(param)));
         }
+        
+        for (MessageHandler handler : actor.Type().MessageHandlers()) 
+        {
+            for( VariableParameter parameter : handler.Parameters().AsList())
+                messageParameterNames.put(
+                        parameter,
+                        String.format("%s_%s", handler.GetID(), parameter.Name()));
+        }
+        
+        queueData.Init();
     }
  
     public SoftwareActor Actor()
@@ -210,56 +214,6 @@ public class ActorModelData
         return cBehaviorsID.get(behavior);
     }
 
-    public String GetLockVar()
-    {
-        return "lock";
-    }
-
-    public String GetLockReleaseReset()
-    {
-        return GetLockVar() + ":= 0";
-    }
-    
-    public String GetLockGainReset()
-    {
-        return GetLockVar() + ":= 1";
-    }
-
-    public String GetLockGainGuard()
-    {
-        return GetLockVar() + "== 0";
-    }
-
-    public String GetBusyVar()
-    {
-        return "actorBusy";
-    }
-    
-    public String GetBusyAssignment()
-    {
-        return GetBusyVar() + " := 1";
-    }
-    
-    public String GetUnBusyAssignment()
-    {
-        return GetBusyVar() + " := 0";
-    }
-    
-    public String GetIsBusyGuard()
-    {
-        return GetBusyVar() + " == 1";
-    }
-    
-    public String GetIsNotBusyGuard()
-    {
-        return GetBusyVar() + " == 0";
-    }
-
-    public String GetBusyInvarient()
-    {
-        return GetBusyVar() + " == 1";
-    }
-
     public String GetName()
     {
         return actor.Name();
@@ -272,7 +226,7 @@ public class ActorModelData
 
     Collection<IntegerVariable> GetDiscreteVaraible()
     {
-        //return actor.Type().Variables();
+        //return actor.Type().InstanceVariables();
         return Collections.EMPTY_LIST;
     }
 
@@ -326,14 +280,24 @@ public class ActorModelData
         return handlersSendLabels;
     }
 
-    public Iterable<Variable> Variables()
+    public Iterable<Variable> InstanceVariables()
     {
         return actor.Type().Variables();
+    }
+    
+    public Iterable<String> MessageParameterNames()
+    {
+        return messageParameterNames.values();
+    }
+    
+    public Iterable<VariableParameter> MessageParameters()
+    {
+        return messageParameterNames.keySet();
     }
 
     public String DelayInvarient(float delay)
     {
-        return String.format("%s <= %f", DelayVar(), delay);
+        return String.format("%s <= %s", DelayVar(), delay);
     }
 
     public String DelayFlow()
@@ -374,6 +338,14 @@ public class ActorModelData
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
+    private String ReceiverNameIn(ActorLocator actorLocator)
+    {
+        if (actorLocator instanceof ParametricActorLocator) {
+            return ((ParametricActorLocator) actorLocator).InstanceParameter().Name();
+        }
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
+    
     private Message FindMessageHandlerFor(MessageLocator messageLocator)
     {
         if (messageLocator instanceof DirectMessageLocator) {
@@ -387,6 +359,7 @@ public class ActorModelData
         List<String> assignments = new LinkedList<>();
         
         ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+        String recieverName = ReceiverNameIn(statement.ReceiverLocator());
         Message message = FindMessageHandlerFor(statement.MessageLocator());
         
         List<VariableArgument> arguments = statement.Arguments().AsList();
@@ -403,6 +376,15 @@ public class ActorModelData
         return assignments;
     }
 
+    public String FlowFor(String variableName, float flow)
+    {
+        return String.format("%s' == %s", variableName, flow);
+    } 
 
-    
+    public String ParameterNameFor(VariableParameter parameter)
+    {
+        return messageParameterNames.get(parameter);
+    }
+
+
 }

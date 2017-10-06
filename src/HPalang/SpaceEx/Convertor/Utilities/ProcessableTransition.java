@@ -3,8 +3,9 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.SpaceEx.Convertor.QueueCreationUtilities;
+package HPalang.SpaceEx.Convertor.Utilities;
 
+import HPalang.SpaceEx.Convertor.QueueCreationUtilities.QueueLocation;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.HybridTransition;
@@ -13,14 +14,18 @@ import HPalang.SpaceEx.Core.HybridTransition;
  *
  * @author Iman Jahandideh
  */
-public class QueueTransition
+public class ProcessableTransition
 {
-
-    public final QueueLocation origin;
+    public final ProcessableLocation origin;
     public final HybridLabel label;
-    public final QueueLocation destination;
+    public final ProcessableLocation destination;
 
-    public QueueTransition(QueueLocation origin, HybridLabel label, QueueLocation destination)
+    public ProcessableTransition(ProcessableLocation origin,ProcessableLocation destination)
+    {
+        this(origin, new HybridLabel(), destination);
+    }
+        
+    public ProcessableTransition(ProcessableLocation origin, HybridLabel label, ProcessableLocation destination)
     {
         this.origin = origin;
         this.label = label;
@@ -29,10 +34,9 @@ public class QueueTransition
 
     public void Process(BaseComponent comp)
     {
-        origin.PrcoessOutTransition(this);
-        destination.ProcessInTransition(this);
+        origin.ProcessOutLabel(this.label);
+        destination.ProcessInLabel(this.label);
         HybridTransition firstTrans = new HybridTransition(origin.GetLoc(), label, destination.GetLoc());
         comp.AddTransition(firstTrans);
     }
-
 }

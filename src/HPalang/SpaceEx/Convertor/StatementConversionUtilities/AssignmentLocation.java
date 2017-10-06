@@ -20,7 +20,7 @@ public class AssignmentLocation extends UrgentLocation
 
     public AssignmentLocation(AssignmentStatement statement, String name, ActorModelData actorData)
     {
-        super(name, actorData);
+        super(name + "_assignemnt", actorData);
         this.statement = statement;
     }
 

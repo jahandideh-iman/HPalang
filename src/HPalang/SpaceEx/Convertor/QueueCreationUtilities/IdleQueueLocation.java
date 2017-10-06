@@ -6,6 +6,7 @@
 package HPalang.SpaceEx.Convertor.QueueCreationUtilities;
 
 import HPalang.SpaceEx.Convertor.ActorModelData;
+import HPalang.SpaceEx.Core.HybridLabel;
 import java.util.LinkedList;
 
 /**
@@ -21,12 +22,15 @@ public class IdleQueueLocation extends QueueLocation
     }
 
     @Override
-    public void ProcessInTransition(QueueTransition transition)
+    public void ProcessInLabel(HybridLabel label)
     {
+        
     }
 
     @Override
-    public void PrcoessOutTransition(QueueTransition transition)
+    public void ProcessOutLabel(HybridLabel label)
     {
+        
     }
+
 }

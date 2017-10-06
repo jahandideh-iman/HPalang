@@ -5,15 +5,22 @@
  */
 package HPalang.SpaceEx.Convertor;
 
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperator;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.*;
+import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
+import HPalang.Core.DiscreteExpressions.VariableExpression;
+import HPalang.Core.Expression;
 import HPalang.Core.Pair;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.*;
 import HPalang.SpaceEx.Convertor.StatementConversionUtilities.*;
+import HPalang.SpaceEx.Convertor.Utilities.ProcessableTransition;
+import HPalang.SpaceEx.Convertor.Utilities.ProcessableTransitionBuilder;
 import HPalang.SpaceEx.Core.*;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
@@ -24,32 +31,6 @@ import java.util.Set;
 public class StatementToLocationConvertor
 {    
 
-
-    private class StatementTransition
-    {
-        public StatementLocation origin;
-        public StatementLocation destination;
-        
-        public HybridTransition transition;
-        
-        public StatementTransition(StatementLocation origin, StatementLocation destination)
-        {
-            this.origin = origin;
-            this.destination = destination;
-        }
-        
-        public void Process(BaseComponent comp)
-        {
-            HybridLabel label = new HybridLabel();
-            transition = new HybridTransition(origin.GetLoc(), label, destination.GetLoc());
-            
-            origin.ProcessOutLabel(label);
-            destination.ProcessInLabel(label);
-            
-            comp.AddTransition(transition);
-        } 
-    }
-    
     private final Iterator<Statement> statIterator;
     private final String prefix;
     private final ActorModelData actorData;
@@ -59,7 +40,7 @@ public class StatementToLocationConvertor
     private StatementLocation endLocation;
     
     private final Set<StatementLocation> statLocations = new HashSet<>();   
-    private final Set<StatementTransition> statTransitions = new HashSet<>();
+    private final Set<ProcessableTransition> statTransitions = new HashSet<>();
     
     private HybridTransition lastTransition;
 
@@ -78,7 +59,7 @@ public class StatementToLocationConvertor
         statLocations.add(startLocation);
         ConvertStatementChain(statIterator,startLocation, prefix, 1);
         
-        for(StatementTransition tran : statTransitions)
+        for(ProcessableTransition tran : statTransitions)
             tran.Process(comp);
         
         if(recurse)
@@ -125,7 +106,7 @@ public class StatementToLocationConvertor
         if(statementIt.hasNext() == false)
         {
             endLocation = new EndLocation(locName, actorData);
-            statTransitions.add(new StatementTransition(origin, endLocation));
+            statTransitions.add(new ProcessableTransition(origin, endLocation));
             return;
         }
         
@@ -143,7 +124,7 @@ public class StatementToLocationConvertor
         else 
             statementResult = CreateNotImplementationLocation(statement, locName);
 
-        statTransitions.add(new StatementTransition(origin, statementResult.A()));
+        statTransitions.add(new ProcessableTransition(origin, statementResult.A()));
         ConvertStatementChain(statementIt, statementResult.B(), prefix, i+1);
     }  
     
@@ -175,19 +156,25 @@ public class StatementToLocationConvertor
     
     private Pair<StatementLocation,StatementLocation> CreateContidationlLocations(IfStatement statement, String locName)
     {
-        StartLocation conditional_startLocation = new StartLocation(locName+"_start", actorData);
-        EndLocation conditional_endLocation = new EndLocation(locName + "_end", actorData);
+        StartLocation conditional_startLocation = new StartLocation(locName+"_if", actorData);
+        EndLocation conditional_endLocation = new EndLocation(locName+"_if", actorData);
         
         StatementToLocationConvertor truePathConvertor =  new StatementToLocationConvertor(
                 statement.TrueStatements(), 
                 actorData, 
                 conditional_startLocation.GetLoc(),
                 comp, 
-                locName);
+                locName+"_truePath");
         truePathConvertor.ConvertStatementChain(false);
         
-        statTransitions.add(new StatementTransition(truePathConvertor.startLocation, conditional_startLocation));
-        statTransitions.add(new StatementTransition(truePathConvertor.endLocation, conditional_endLocation));
+        statTransitions.add(new ProcessableTransitionBuilder().
+                SetOrigin(conditional_startLocation).
+                SetDestination(truePathConvertor.startLocation).
+                AddGuard(statement.Expression().toString()).
+                Build()
+        );
+        
+        statTransitions.add(new ProcessableTransition(truePathConvertor.endLocation, conditional_endLocation));
 
         
         StatementToLocationConvertor falsePathConvertor = new StatementToLocationConvertor(
@@ -195,14 +182,51 @@ public class StatementToLocationConvertor
                 actorData,
                 conditional_startLocation.GetLoc(),
                 comp,
-                locName);
+                locName+"_falsePath");
         falsePathConvertor.ConvertStatementChain(false);
 
-        statTransitions.add(new StatementTransition(falsePathConvertor.startLocation, conditional_startLocation));
-        statTransitions.add(new StatementTransition(falsePathConvertor.endLocation, conditional_endLocation));
+        statTransitions.add(new ProcessableTransitionBuilder().
+                SetOrigin(conditional_startLocation).
+                SetDestination(falsePathConvertor.startLocation).
+                AddGuard(Not(statement.Expression()).toString()).
+                Build()
+        );
+        statTransitions.add(new ProcessableTransition(falsePathConvertor.endLocation, conditional_endLocation));
         
         statLocations.add(endLocation);
         
         return new Pair<>(conditional_startLocation,conditional_endLocation);
+    }
+
+    private Expression Not(Expression expression)
+    {
+        if(expression instanceof BinaryExpression)
+        {
+            BinaryExpression binaryExpression = (BinaryExpression) expression;
+            
+            return new BinaryExpression(
+                    Not(binaryExpression.Operand1()),
+                    Not(binaryExpression.Operator()),
+                    Not(binaryExpression.Operand2()));
+        }
+        
+        if(expression instanceof VariableExpression)
+            return expression;
+        if(expression instanceof ConstantDiscreteExpression)
+            return expression;
+        if(expression instanceof ConstantContinuousExpression)
+            return expression;
+        
+        throw new RuntimeException(String.format("Expression '%s' is not supported yet.", expression.getClass().toString()));
+    }
+    
+    private BinaryOperator Not(BinaryOperator operator)
+    {
+        if(operator instanceof GreaterOperator)
+            return new LesserEqualOperator();
+        if(operator instanceof GreaterEqualOperator)
+            return new LesserOperator();
+        
+        throw new RuntimeException(String.format("Operator '%s' is not supported yet.", operator.getClass().toString()));
     }
 }

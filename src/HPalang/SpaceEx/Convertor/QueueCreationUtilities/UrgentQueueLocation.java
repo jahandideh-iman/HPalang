@@ -7,6 +7,7 @@ package HPalang.SpaceEx.Convertor.QueueCreationUtilities;
 
 import HPalang.SpaceEx.Convertor.ActorModelData;
 import HPalang.SpaceEx.Core.Flow;
+import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.Invarient;
 import java.util.LinkedList;
 import java.util.Queue;
@@ -33,18 +34,14 @@ public class UrgentQueueLocation extends QueueLocation
     }
 
     @Override
-    public void ProcessInTransition(QueueTransition transition)
+    public void ProcessInLabel(HybridLabel label)
     {
-        transition.label.AddAssignment(actorData.GetUrgentReset());
+        label.AddAssignment(actorData.GetUrgentReset());
     }
 
     @Override
-    public void PrcoessOutTransition(QueueTransition transition)
+    public void ProcessOutLabel(HybridLabel label)
     {
-        if ((transition.destination instanceof WaitingQueueLocation) == false) {
-            transition.label.AddGuard(actorData.GetIsNotBusyGuard());
-        }
-
-        transition.label.AddGuard(actorData.GetUrgentGuard());
+        label.AddGuard(actorData.GetUrgentGuard());
     }
 }

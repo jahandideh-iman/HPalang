@@ -23,9 +23,8 @@ public class DelayLocation extends StatementLocation
 
     public DelayLocation(DelayStatement statement, String name, ActorModelData actorData)
     {
-        super(actorData);
+        super(name+"_delay", actorData);
         this.statement = statement;
-        this.loc = new Location(name);
         this.delayVar = actorData.DelayVar();
         String invarient = actorData.DelayInvarient(statement.GetDelay());
         String flow = actorData.DelayFlow();
@@ -38,14 +37,11 @@ public class DelayLocation extends StatementLocation
     public void ProcessInLabel(HybridLabel label)
     {
         label.AddAssignment(actorData.ResetFor(actorData.DelayVar(), 0));
-        label.AddAssignment(actorData.GetLockReleaseReset());
     }
 
     @Override
     public void ProcessOutLabel(HybridLabel label)
     {
-        label.AddGuard(actorData.GetLockGainGuard());
-        label.AddAssignment(actorData.GetLockGainReset());
         label.AddGuard(delayVar + " == " + String.valueOf(statement.GetDelay()));
     }
 }

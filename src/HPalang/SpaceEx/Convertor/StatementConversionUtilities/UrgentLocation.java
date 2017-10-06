@@ -20,9 +20,9 @@ public abstract class UrgentLocation extends StatementLocation
 
     public UrgentLocation(String name, ActorModelData actorData)
     {
-        super(actorData);
+        super(name ,actorData);
 
-        this.loc = new Location(name);
+
         loc.AddInvarient(new Invarient(actorData.GetUrgentInvarient()));
         loc.AddFlow(new Flow(actorData.GetUrgentFlow()));
     }

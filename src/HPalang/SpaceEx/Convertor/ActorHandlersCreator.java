@@ -37,14 +37,17 @@ public class ActorHandlersCreator
         idleLoc = new Location("idle");
         comp.AddLocation(idleLoc);
         
+        comp.AddParameter(new LabelParameter(actorData.QueueData().TakeMessageLabel(), false));        
         comp.AddParameter(new RealParameter(actorData.DelayVar(), true));
         comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true)); 
-        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
-        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false ));
-        comp.AddParameter(new LabelParameter(actorData.QueueData().TakeMessageLabel(), false));
+        for(Variable variable : actorData.InstanceVariables())
+            comp.AddParameter(new RealParameter(variable.Name(), false));
         
-        for(Variable var: actorData.Variables())
+        for(Variable var: actorData.InstanceVariables())
             comp.AddParameter(new RealParameter(var.Name(), false));
+        
+        for (String var : actorData.MessageParameterNames()) 
+            comp.AddParameter(new RealParameter(var, false));
         
         AddHandlersProcessing();
     }
@@ -76,19 +79,6 @@ public class ActorHandlersCreator
 
     private void CreateHandler(MessageHandler handler, BaseComponent comp, Location startLoc)
     {
-        //String takeLabel =  actorData.TakeLabelFor(handler);
-        //comp.AddParameter(new LabelParameter(takeLabel, false));
-        
-//        Location preLoc = new Location("pre_" + handler.GetID());
-//        //MakeLocationUrgent(preLoc, actorData);
-//        
-//        HybridTransition trans = new HybridTransition(
-//                startLoc, 
-//                new HybridLabel().SetSyncLabel(takeLabel).AddAssignment(actorData.GetUrgentReset()), 
-//                preLoc);
-//        
-//        comp.AddTransition(trans);
-
         StatementToLocationConvertor statementsConvertor = new StatementToLocationConvertor(
                 handler.GetBody(), 
                 actorData, 
@@ -98,12 +88,10 @@ public class ActorHandlersCreator
 
         statementsConvertor.ConvertStatementChain(false);
         
-        statementsConvertor.GetFirstTransition().GetLabel()
-                .AddAssignment(actorData.GetBusyAssignment()).AddGuard(actorData.GetUrgentGuard());
+        statementsConvertor.GetFirstTransition().GetLabel().AddGuard(actorData.GetUrgentGuard());
         
         HybridTransition recursTrans =  new HybridTransition(statementsConvertor.GetLastLocation(), new HybridLabel(), idleLoc);
         statementsConvertor.ProcessLastLocation(recursTrans.GetLabel());
-        recursTrans.GetLabel().AddAssignment(actorData.GetUnBusyAssignment());
         
         comp.AddTransition(recursTrans);
     }

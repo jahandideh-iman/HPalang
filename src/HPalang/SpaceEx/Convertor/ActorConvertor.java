@@ -6,15 +6,11 @@
 package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.MessageHandler;
-import HPalang.Core.Variables.IntegerVariable;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
-import HPalang.SpaceEx.Core.HybridTransition;
 import HPalang.SpaceEx.Core.Invarient;
 import HPalang.SpaceEx.Core.LabelParameter;
 import HPalang.SpaceEx.Core.Location;
@@ -63,10 +59,7 @@ public class ActorConvertor extends Convertor
             actorComponent.AddParameter(new LabelParameter(take, true));
         
         
-        actorComponent.AddParameter(new RealParameter(actorData.GetBusyVar(), true));
-        actorComponent.AddParameter(new RealParameter(actorData.GetLockVar(), true));
-
-        
+ 
         BaseComponent handlers = CreateHandlers();
         BaseComponent queue = CreateQueue();
 
@@ -128,7 +121,7 @@ public class ActorConvertor extends Convertor
         for(String take : actorData.GetHandlerTakeLabels())
             queueInst.SetBinding(take, take);
         
-        queueInst.SetBinding(actorData.GetBusyVar(), actorData.GetBusyVar());
+
         actorComponent.AddInstance(queueInst);
 
        
@@ -268,22 +261,10 @@ public class ActorConvertor extends Convertor
     
     private BaseComponent CreateVars(ActorModelData actorData)
     {
-        BaseComponent comp = new BaseComponent(actorData.GetName() + "_DVars");
-        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false));   
-        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
+        BaseComponent comp = new BaseComponent(actorData.GetName() + "_Vars");
+
         
-        Location location = new Location("loc1");
-        location.AddFlow(new Flow(actorData.GetBusyVar() + "' == 0"));
-        location.AddFlow(new Flow(actorData.GetLockVar() + "' == 0"));        
-       
-        
-        for (IntegerVariable var : actorData.GetDiscreteVaraible()) 
-        {
-            comp.AddParameter(new RealParameter(var.Name(), false));
-            location.AddFlow(new Flow(var.Name() + "' == 0"));
-        }
-        
-        comp.AddLocation(location);
+        new ActorVariablesCreator(comp, actorData).Create();
         
         return comp;
         
@@ -291,18 +272,8 @@ public class ActorConvertor extends Convertor
     
     private BaseComponent CreateQueue()
     {
-        BaseComponent comp = new BaseComponent(actorData.GetName()+"_Queue");
+        BaseComponent comp = new BaseComponent(actorData.GetName()+"_Queue"); 
         
-//        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false));
-//        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));
-//
-//        
-//        for(CommunicationLabel label : actorData.GetReceiveLabels())
-//            comp.AddParameter(new LabelParameter(label.GetLabel(), false));
-//        
-//        for(String label : actorData.MessageHandlers())
-//            comp.AddParameter(new LabelParameter(actorData.TakeLabelFor(label), false));
-//        
         new ActorQueueCreator(comp, actorData).Create();
         
         return comp;
