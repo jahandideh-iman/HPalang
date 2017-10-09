@@ -17,6 +17,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/QueueCreationUtilities/IdleQueueLocation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/ConstantDiscreteExpression.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryOperators/LesserEqualOperator.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/RealParameter.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/ActorTypeModelData.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/ActorQueueCreator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/Utilities/ProcessableLocation.java</file>
@@ -26,14 +27,18 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/CompositioanlConvertionMain.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Expression.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/ActorVariablesCreator.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/VariableExpression.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/StatementConversionUtilities/UrgentLocation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryOperators/AddOperator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryOperators/GreaterOperator.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Variable.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/StatementConversionUtilities/DelayLocation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/StatementConversionUtilities/StatementLocation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/ActorQueueData.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryOperators/SubtractOperator.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HRToHAExample1.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/Transition.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/Component.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/MessageArguments.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/QueueCreationUtilities/UrgentQueueLocation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ModelDefinition.java</file>

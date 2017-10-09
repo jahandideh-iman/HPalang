@@ -43,7 +43,7 @@ public class ActorVariablesCreator
             location.AddFlow(new Flow(actorData.FlowFor(localVariable,0)));
         }
         
-        for(String queueVariable : actorData.QueueData().Variables())
+        for(String queueVariable : actorData.QueueData().AllQueueVariables())
         {
             comp.AddParameter(new RealParameter(queueVariable, false));
             location.AddFlow(new Flow(actorData.FlowFor(queueVariable,0)));

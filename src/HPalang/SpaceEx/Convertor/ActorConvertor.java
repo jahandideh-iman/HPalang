@@ -6,6 +6,7 @@
 package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.ContinuousVariable;
+import HPalang.Core.Variable;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
@@ -39,257 +40,124 @@ public class ActorConvertor extends Convertor
     @Override
     public void Convert()
     {              
-        actorComponent = new NetworkComponent(actorData.GetName()+"_Actor");
+        actorComponent = new NetworkComponent(actorData.Name()+"_Actor");
         
-                
-        for(ContinuousVariable var : actorData.GetContinuousVariables())
-            actorComponent.AddParameter(new RealParameter(var.Name(), true));
+        BaseComponent handlersComp = CreateAndAddHandlersComponent();
+        BaseComponent queueComp = CreateAndAddQueueComponent();
+        BaseComponent varsComp = CreateAndAddVarsComponent();
         
-        for(CommunicationLabel receive : actorData.GetReceiveLabels())
-            actorComponent.AddParameter(new LabelParameter(receive.GetLabel(), receive.IsSelf()));
+        AddComponentParameters();
         
-        for (CommunicationLabel send : actorData.GetSendLables()) 
-            actorComponent.AddParameter(new LabelParameter(send.GetLabel(), send.IsSelf()));
+        CreateVariablesInstance(varsComp);
+        CreateQueueInstance(queueComp);
+        CreateHandlersInstance(handlersComp);
         
-        // NOTE: What is the difference of bellow "for" with about "for"?!!
-        for (CommunicationLabel send : actorData.GetSendLables())
-            actorComponent.AddParameter(new LabelParameter(send.GetLabel(), send.IsSelf()));
-        
-        for (String take : actorData.GetHandlerTakeLabels()) 
-            actorComponent.AddParameter(new LabelParameter(take, true));
-        
-        
- 
-        BaseComponent handlers = CreateHandlers();
-        BaseComponent queue = CreateQueue();
-
-        BaseComponent vars = CreateVars(actorData);
-        
-        ComponentInstance varsInst = new ComponentInstance("vars", vars);
-        for(Parameter param : vars.GetParameters())
-            varsInst.SetBinding(param.GetName(), param.GetName());
-        
-        actorComponent.AddInstance(varsInst);
-        
-//        for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
-//        {
-//            BaseComponent cbComp = CreateContinuousBehavior(cb);
-//            model.AddComponent(cbComp);
-//            
-//            ComponentInstance cbCompInst = new ComponentInstance("CB_" + actorData.GetIDFor(cb), cbComp);
-//            
-//            actorComponent.AddInstance(cbCompInst);
-//            
-//            actorComponent.AddParameter(new LabelParameter(actorData.GetStartLabelFor(cb), true));
-//            cbCompInst.SetBinding("Start", actorData.GetStartLabelFor(cb));
-//            for(Parameter param : cbComp.GetParameters())
-//            {
-//                if(param instanceof LabelParameter 
-//                        && param.GetName().equals("Start") == false)
-//                    cbCompInst.SetBinding(param.GetName(), param.GetName());
-//                else if(param instanceof RealParameter && param.IsLocal() == false)
-//                    cbCompInst.SetBinding(param.GetName(), param.GetName());
-//            }
-//        }
-        
-        Component varLockTempComp = CreateContinuousVariableLockTemplate();
-        model.AddComponent(varLockTempComp);
-        
-        for(ContinuousVariable var : actorData.GetContinuousVariables())
-        {
-            ComponentInstance inst = new ComponentInstance(var.Name() +"_Lock", varLockTempComp);
-            inst.SetBinding("var", var.Name());
-            actorComponent.AddInstance(inst);
-            String acquireLabel ="Acquire_" +  var.Name();
-            String releaseLabel = "Release_"+ var.Name();
-            actorComponent.AddParameter(new LabelParameter(acquireLabel, true));
-            actorComponent.AddParameter(new LabelParameter(releaseLabel, true));
-            
-            inst.SetBinding("Acquire", acquireLabel);
-            inst.SetBinding("Release", releaseLabel);
-        }
-        
-        ComponentInstance queueInst = new ComponentInstance("queue",queue);
-        for(CommunicationLabel receive : actorData.GetReceiveLabels())
-        {
-            if(receive.IsSelf() == false)
-                queueInst.SetBinding(receive.GetLabel(), receive.GetLabel());            
-            else
-                queueInst.SetBinding(receive.GetLabel(), actorData.GetSelfSendLabelFor(receive).GetLabel());
-        }
-        
-        for(String take : actorData.GetHandlerTakeLabels())
-            queueInst.SetBinding(take, take);
-        
-
-        actorComponent.AddInstance(queueInst);
-
-       
-        ComponentInstance handlersInst = new ComponentInstance("handlers", handlers);
-//        handlersInst.SetBinding(actorData.GetBusyVar(), actorData.GetBusyVar());
-//        handlersInst.SetBinding(actorData.GetLockVar(), actorData.GetLockVar());
-        for(Parameter param : handlers.GetParameters())
-        {
-            if(param.IsLocal() == false)
-                handlersInst.SetBinding(param.GetName(), param.GetName());
-            
-        }
-        
-        
-        actorComponent.AddInstance(handlersInst);
-        
-        model.AddComponent(handlers);
-        model.AddComponent(vars);
-        model.AddComponent(queue);
         model.AddComponent(actorComponent);
     }
-    private Component CreateContinuousVariableLockTemplate()
+    
+    private void AddComponentParameters()
     {
-        BaseComponent comp = new BaseComponent(actorData.Actor().Name()+ "_VarLockTemplate");
-        
-        comp.AddParameter(new RealParameter("var", false));
-        
-        comp.AddParameter(new LabelParameter("Acquire", false));        
-        comp.AddParameter(new LabelParameter("Release", false));
+        for (String var : actorData.AllSendVariables()) {
+            actorComponent.AddParameter(new RealParameter(var, false));
+        }
 
-        Location unlock = new Location("unlock");
-        comp.AddLocation(unlock);
-        unlock.AddFlow(new Flow(" var' == 0"));
+        for (Variable var : actorData.InstanceVariables()) {
+            actorComponent.AddParameter(new RealParameter(var.Name(), true));
+        }
 
-        Location lock = new Location("lock");
-        comp.AddLocation(lock);
+        for (String var : actorData.MessageParameterNames()) {
+            actorComponent.AddParameter(new RealParameter(var, true));
+        }
 
-        comp.AddTransition(lock, new HybridLabel().SetSyncLabel("Release"), unlock);       
-        comp.AddTransition(unlock, new HybridLabel().SetSyncLabel("Acquire"), lock);
+        actorComponent.AddParameter(new LabelParameter(actorData.QueueData().TakeMessageLabel(), true));
+        for (String label : actorData.ExecuteMessageLabels()) {
+            actorComponent.AddParameter(new LabelParameter(label, true));
+        }
+
+        for (String var : actorData.QueueData().QueueElementVars()) {
+            actorComponent.AddParameter(new RealParameter(var, true));
+        }
         
-        return comp;
+        for (String var : actorData.QueueData().QueueControlVars()) {
+            actorComponent.AddParameter(new RealParameter(var, true));
+        }
+        
+        for (String var : actorData.QueueData().QueueBufferVars()) {
+            actorComponent.AddParameter(new RealParameter(var, false));
+        }
+
     }
+
+
     
-//    private BaseComponent CreateContinuousBehavior(ContinuousBehavior cb)
-//    {
-//        BaseComponent comp = new BaseComponent(actorData.Actor().Name() +"_CB_" + actorData.GetIDFor(cb));
-//        
-//        String acquireLabel = "Acquire_" + cb.GetEquation().GetVariable().Name();
-//        String releaseLabel = "Release_" + cb.GetEquation().GetVariable().Name();
-//        
-//        comp.AddParameter(new LabelParameter("Start", false));
-//        comp.AddParameter(new LabelParameter(acquireLabel, false));
-//        comp.AddParameter(new LabelParameter(releaseLabel, false));
-//        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));       
-//        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
-//        comp.AddParameter(new RealParameter(cb.GetEquation().GetVariable().Name(), false));
-//        
-//        for(CommunicationLabel send : actorData.GetSendLables())
-//            comp.AddParameter(new LabelParameter(send.GetLabel(), false));
-//        
-//        Location idleLoc = new Location("idle");
-//        comp.AddLocation(idleLoc);
-//
-//        Location acquireLockLoc = new Location("acquireLock");
-//        MakeLocationUrgent(acquireLockLoc, actorData);
-//        comp.AddLocation(acquireLockLoc);
-//        
-//        Location behaviorLoc = new Location("behvaior");        
-//        behaviorLoc.AddFlow(new Flow(cb.GetEquation()));
-//        behaviorLoc.AddInvarient(new Invarient(cb.GetInvarient()));
-//        comp.AddLocation(behaviorLoc);
-//        
-//        Location releaseLockLoc = new Location("releaseLock");
-//        MakeLocationUrgent(releaseLockLoc, actorData);
-//        comp.AddLocation(releaseLockLoc);
-//        
-//        comp.AddTransition(idleLoc, new HybridLabel().SetSyncLabel("Start").AddAssignment(actorData.GetUrgentReset()), acquireLockLoc);
-//        
-//        comp.AddTransition(acquireLockLoc, new HybridLabel().SetSyncLabel(acquireLabel).AddGuard(actorData.GetUrgentGuard()), behaviorLoc);
-//        
-//        comp.AddTransition(
-//                behaviorLoc, 
-//                new HybridLabel()
-//                .SetSyncLabel(releaseLabel)
-//                .AddGuard(cb.GetGuard())
-//                .AddAssignment(actorData.GetUrgentReset()), 
-//                releaseLockLoc);
-//        
-//        StatementToLocationConvertor convertor = new StatementToLocationConvertor(
-//                cb.GetActions(), 
-//                actorData, 
-//                releaseLockLoc, 
-//                comp, 
-//                "s");
-//        convertor.ConvertStatementChain(false);
-//        HybridTransition trans =  convertor.GetFirstTransition();
-//        trans.GetLabel().AddGuard(actorData.GetUrgentGuard());
-//
-//        
-//        HybridTransition recurseTrans = new HybridTransition(convertor.GetLastLocation(), new HybridLabel(), idleLoc);
-//        
-//        convertor.ProcessLastLocation(recurseTrans.GetLabel());
-//        
-//        comp.AddTransition(recurseTrans);
-//
-//        return comp;
-//    }
-    
-    private BaseComponent CreateHandlers()
+    private BaseComponent CreateAndAddHandlersComponent()
     {
-        BaseComponent comp = new BaseComponent(actorData.GetName()+"_Handlers");
-        
+        BaseComponent comp = new BaseComponent(actorData.Name()+"_Handlers");
         new ActorHandlersCreator(comp, actorData).Create();
-        
-//        Location idleLoc = new Location("idle");
-//        comp.AddLocation(idleLoc);
-//        
-//        comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true)); 
-//        comp.AddParameter(new RealParameter(actorData.GetLockVar(), false));
-//        comp.AddParameter(new RealParameter(actorData.DelayVar(), true));
-//        comp.AddParameter(new RealParameter(actorData.GetBusyVar(), false ));
-//        
-//        for(ContinuousVariable var : actorData.GetContinuousVariables())
-//            comp.AddParameter(new RealParameter(var.Name(), false));
-//        
-//        for(ContinuousBehavior cb : actorData.GetContinuousBehaviors())
-//            comp.AddParameter(new LabelParameter(actorData.GetStartLabelFor(cb), false));
-//        
-//        for(CommunicationLabel send : actorData.GetHandlersSendLables())
-//            comp.AddParameter(new LabelParameter(send.GetLabel(), false));
-        
-//        for(MessageHandler handler : actorData.Actor().GetMessageHandlers())
-//            CreateHandler(handler,comp, idleLoc);
-        
+        model.AddComponent(comp);
         return comp;
     }
     
-    private BaseComponent CreateVars(ActorModelData actorData)
+    private BaseComponent CreateAndAddVarsComponent()
     {
-        BaseComponent comp = new BaseComponent(actorData.GetName() + "_Vars");
-
-        
-        new ActorVariablesCreator(comp, actorData).Create();
-        
+        BaseComponent comp = new BaseComponent(actorData.Name() + "_Vars");
+        new ActorVariablesCreator(comp, actorData).Create(); 
+        model.AddComponent(comp);
         return comp;
-        
     }
     
-    private BaseComponent CreateQueue()
+    private BaseComponent CreateAndAddQueueComponent()
     {
-        BaseComponent comp = new BaseComponent(actorData.GetName()+"_Queue"); 
-        
+        BaseComponent comp = new BaseComponent(actorData.Name()+"_Queue");
         new ActorQueueCreator(comp, actorData).Create();
+        model.AddComponent(comp);
         
         return comp;
     }
     
-    
-    private void MakeLocationUrgent(Location location, ActorModelData actorData)
+    private void CreateVariablesInstance(BaseComponent vars)
     {
-        location.AddFlow(new Flow(actorData.GetUrgentFlow()));
-        location.AddInvarient(new Invarient(actorData.GetUrgentInvarient()));
+        ComponentInstance varsInst = new ComponentInstance("Vars", vars);
+        actorComponent.AddInstance(varsInst);
+        for (Parameter param : vars.GetParameters()) {
+            varsInst.SetBinding(param.GetName(), param.GetName());
+        }
+    }
+    
+    private void CreateHandlersInstance(BaseComponent handlersComponent)
+    {
+        ComponentInstance handlersInst = new ComponentInstance("handlers", handlersComponent);
+        actorComponent.AddInstance(handlersInst);
+
+        for (Parameter param : handlersComponent.GetParameters()) {
+            if (param.IsLocal() == false) {
+                handlersInst.SetBinding(param.GetName(), param.GetName());
+            }
+
+        }
     }
 
+    private void CreateQueueInstance(BaseComponent queue)
+    {
+        ComponentInstance queueInst = new ComponentInstance("queue", queue);
+        
+        for(String elementVars : actorData.QueueData().AllQueueVariables())
+            queueInst.SetBinding(elementVars, elementVars);
+        
+        queueInst.SetBinding(actorData.QueueData().TakeMessageLabel(), actorData.QueueData().TakeMessageLabel());
+        
+        for (String label : actorData.ExecuteMessageLabels()) {
+            queueInst.SetBinding(label,label);
+        }
+        
+        for (String param : actorData.MessageParameterNames()) {
+            queueInst.SetBinding(param,param);
+        }
+        actorComponent.AddInstance(queueInst);
+    }
     public NetworkComponent GetActorComponent()
     {
         return actorComponent;
     }
-    
-    
+
 }

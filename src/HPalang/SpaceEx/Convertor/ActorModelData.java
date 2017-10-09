@@ -7,6 +7,7 @@ package HPalang.SpaceEx.Convertor;
 
 import HPalang.Core.ActorLocator;
 import HPalang.Core.ActorLocators.ParametricActorLocator;
+import HPalang.Core.ActorType;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
 import HPalang.Core.InstanceParameter;
@@ -14,12 +15,16 @@ import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.MessageLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
+import HPalang.Core.Messages.NormalMessage;
+import HPalang.Core.Statement;
+import HPalang.Core.Statements.IfStatement;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Variable;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
+import HPalang.SpaceEx.Core.LabelParameter;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -44,11 +49,12 @@ public class ActorModelData
     private final List<String> handlerTakeLabels = new LinkedList<>();
     private final List<ContinuousBehavior> continuousBehaviors = new LinkedList<>();
     private final Map<ContinuousBehavior,String> cBehaviorsID = new HashMap<>();
+    
+    private final Set<SendStatement> sendStatements = new HashSet<>();
 
    
     private Set<CommunicationLabel> sendLabels = new HashSet<>();
-    private Set<CommunicationLabel> handlersSendLabels = new HashSet<>();
-    
+
     private Map<SendStatement, CommunicationLabel> sendLabelsMap = new HashMap<>();
     
     private final Map<InstanceParameter, ActorModelData> instanceBindings = new HashMap<>();
@@ -84,7 +90,31 @@ public class ActorModelData
                         String.format("%s_%s", handler.GetID(), parameter.Name()));
         }
         
+        FindAllSendStatements(actor.Type());
+        
         queueData.Init();
+    }
+    
+    public void FindAllSendStatements(ActorType actorType)
+    {
+        for (MessageHandler handler : actor.Type().MessageHandlers()) 
+            ExtractAllSendStatements(handler.GetBody());
+    }
+    
+    public void ExtractAllSendStatements(Iterable<Statement> statements)
+    {
+        for(Statement statement :statements)
+        {
+            if(statement instanceof SendStatement)
+                sendStatements.add((SendStatement) statement);
+            else if(statement instanceof IfStatement)
+            {
+                IfStatement ifStatement = (IfStatement) statement;
+                
+                ExtractAllSendStatements(ifStatement.TrueStatements());
+                ExtractAllSendStatements(ifStatement.FalseStatements());
+            }
+        }
     }
  
     public SoftwareActor Actor()
@@ -117,26 +147,19 @@ public class ActorModelData
         return "urg";
     }
 
-    public void AddReceiveHandler(String handler, SoftwareActor sender, ContinuousBehavior ownerCB)
-    {    
-        CommunicationLabel label = CreateReceiveLabel(handler, sender,ownerCB);
-        receiveLabels.add(label);
-        handlersReceiveLabelMap.get(handler).add(label);
-    }
-
-    public Collection<CommunicationLabel> GetReceiveLabels()
-    {
-        return receiveLabels;
-    }
-
-    public Collection<CommunicationLabel> GetReceiveLabelsFor(String handler)
-    {
-        return handlersReceiveLabelMap.get(handler);
-    }
-
     public Iterable<MessageHandler> MessageHandlers()
     {
         return actor.Type().MessageHandlers();
+    }
+    
+    public Iterable<String> ExecuteMessageLabels()
+    {
+        List<String> labels = new LinkedList<>();
+        
+        for (MessageHandler m : MessageHandlers())
+            labels.add(ExecuteLabelFor(m));
+        
+        return labels;
     }
     
     public String MessageHandlerName(MessageHandler handler)
@@ -144,24 +167,24 @@ public class ActorModelData
         return handler.GetID();
     }
     
-    public Collection<String> GetHandlerTakeLabels()
-    {
-        return handlerTakeLabels;
-    }
+//    public Collection<String> GetHandlerTakeLabels()
+//    {
+//        return handlerTakeLabels;
+//    }
     
-    void AddSendLabel(SendStatement stat, String handler, SoftwareActor receiver,ContinuousBehavior ownerCB)
-    {
-        CommunicationLabel label = CreateSendLabel(handler, receiver, ownerCB);
-        sendLabels.add(label);
-        sendLabelsMap.put(stat, label);
-        if(ownerCB == null)
-            handlersSendLabels.add(label);
-    }
-    public Collection<CommunicationLabel> GetSendLables()
-    {
-        return sendLabels;
-    }
-    
+//    void AddSendLabel(SendStatement stat, String handler, SoftwareActor receiver,ContinuousBehavior ownerCB)
+//    {
+//        CommunicationLabel label = CreateSendLabel(handler, receiver, ownerCB);
+//        sendLabels.add(label);
+//        sendLabelsMap.put(stat, label);
+//        if(ownerCB == null)
+//            handlersSendLabels.add(label);
+//    }
+//    public Collection<CommunicationLabel> GetSendLables()
+//    {
+//        return sendLabels;
+//    }
+//    
     public CommunicationLabel GetSendLabelFor(SendStatement statement)
     {
         return sendLabelsMap.get(statement);
@@ -214,7 +237,7 @@ public class ActorModelData
         return cBehaviorsID.get(behavior);
     }
 
-    public String GetName()
+    public String Name()
     {
         return actor.Name();
     }
@@ -230,55 +253,55 @@ public class ActorModelData
         return Collections.EMPTY_LIST;
     }
 
-    CommunicationLabel GetSelfSendLabelFor(CommunicationLabel selfReceive)
-    {
-        for(CommunicationLabel label : GetSendLables())
-            if(selfReceive.GetHandler().equals(label.GetHandler())
-            && label.IsSelf())
-                    return label;
-        return null;
-    }
+//    CommunicationLabel GetSelfSendLabelFor(CommunicationLabel selfReceive)
+//    {
+//        for(CommunicationLabel label : GetSendLables())
+//            if(selfReceive.GetHandler().equals(label.GetHandler())
+//            && label.IsSelf())
+//                    return label;
+//        return null;
+//    }
     
-    public CommunicationLabel CreateSendLabel(String handler, SoftwareActor receiver, ContinuousBehavior ownerCB)
-    {
-        String actorName;
-        boolean isSelf = false;
-        
-        actorName = receiver.Name();
-        
-        if(receiver == actor)
-        {
-            isSelf = true;
-            actorName = "self";
-            if(ownerCB != null)
-                actorName+= "_" + GetIDFor(ownerCB);
-        }
-        
-        return new CommunicationLabel("Send_" + actorName + "_" + handler, handler, isSelf);
-    }
+//    public CommunicationLabel CreateSendLabel(String handler, SoftwareActor receiver, ContinuousBehavior ownerCB)
+//    {
+//        String actorName;
+//        boolean isSelf = false;
+//        
+//        actorName = receiver.Name();
+//        
+//        if(receiver == actor)
+//        {
+//            isSelf = true;
+//            actorName = "self";
+//            if(ownerCB != null)
+//                actorName+= "_" + GetIDFor(ownerCB);
+//        }
+//        
+//        return new CommunicationLabel("Send_" + actorName + "_" + handler, handler, isSelf);
+//    }
     
-    public CommunicationLabel CreateReceiveLabel(String handler, SoftwareActor sender,ContinuousBehavior ownerCB)
-    {
-        String actorName;
-        boolean isSelf = false;
-        
-        actorName = sender.Name();
-        
-        if(sender == actor)
-        {
-            isSelf = true;
-            actorName = "self";
-            if(ownerCB != null)
-                actorName+= "_" + GetIDFor(ownerCB);
-        }
-        
-        return new CommunicationLabel("Receive_" + actorName + "_" + handler, handler, isSelf);
-    }
+//    public CommunicationLabel CreateReceiveLabel(String handler, SoftwareActor sender,ContinuousBehavior ownerCB)
+//    {
+//        String actorName;
+//        boolean isSelf = false;
+//        
+//        actorName = sender.Name();
+//        
+//        if(sender == actor)
+//        {
+//            isSelf = true;
+//            actorName = "self";
+//            if(ownerCB != null)
+//                actorName+= "_" + GetIDFor(ownerCB);
+//        }
+//        
+//        return new CommunicationLabel("Receive_" + actorName + "_" + handler, handler, isSelf);
+//    }
 
-    Collection<CommunicationLabel> GetHandlersSendLables()
-    {
-        return handlersSendLabels;
-    }
+//    Collection<CommunicationLabel> GetHandlersSendLables()
+//    {
+//        return handlersSendLabels;
+//    }
 
     public Iterable<Variable> InstanceVariables()
     {
@@ -319,15 +342,25 @@ public class ActorModelData
     {
         ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
         
-        return receiver.queueData.BufferIsEmptyGuard(receiver.actor.Name());   
+        return receiver.queueData.BufferIsEmptyGuard(ReceiverNameIn(statement.ReceiverLocator()));   
     }
 
     public String SetMessageBufferFullAssignment(SendStatement statement)
     {
         ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
 
-        return receiver.queueData.SetBufferFullAssignment(receiver.actor.Name());
+        return receiver.queueData.SetBufferFullAssignment(ReceiverNameIn(statement.ReceiverLocator()));
     }
+    
+    public String SetMessageBufferMessageAssignment(SendStatement statement)
+    {
+        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+        String receiverName = ReceiverNameIn(statement.ReceiverLocator());
+        MessageHandler messageHandler = FindMessageHanlderFor(statement.MessageLocator());
+
+        return receiver.queueData.MessageBufferAssignment(messageHandler, receiverName);
+    }
+
 
     public ActorModelData FindActorDataFor(ActorLocator actorLocator)
     {
@@ -338,7 +371,7 @@ public class ActorModelData
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    private String ReceiverNameIn(ActorLocator actorLocator)
+    public String ReceiverNameIn(ActorLocator actorLocator)
     {
         if (actorLocator instanceof ParametricActorLocator) {
             return ((ParametricActorLocator) actorLocator).InstanceParameter().Name();
@@ -346,11 +379,20 @@ public class ActorModelData
         throw new UnsupportedOperationException("Not supported yet.");
     }
     
-    private Message FindMessageHandlerFor(MessageLocator messageLocator)
+    public Message FindMessageFor(MessageLocator messageLocator)
     {
         if (messageLocator instanceof DirectMessageLocator) {
             return ((DirectMessageLocator)messageLocator).Locate(null);
         }
+        throw new UnsupportedOperationException("Not supported yet."); 
+    }
+    
+    private MessageHandler FindMessageHanlderFor(MessageLocator messageLocator)
+    {
+        Message message = FindMessageFor(messageLocator);
+        if(message instanceof NormalMessage)
+            return ((NormalMessage) message).GetMessageHandler();
+        
         throw new UnsupportedOperationException("Not supported yet."); 
     }
 
@@ -360,7 +402,7 @@ public class ActorModelData
         
         ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
         String recieverName = ReceiverNameIn(statement.ReceiverLocator());
-        Message message = FindMessageHandlerFor(statement.MessageLocator());
+        Message message = FindMessageFor(statement.MessageLocator());
         
         List<VariableArgument> arguments = statement.Arguments().AsList();
         for(int i = 0 ; i< arguments.size(); i++)
@@ -370,7 +412,7 @@ public class ActorModelData
                             message,
                             i,
                             arguments.get(i).Value().toString(),
-                            receiver.actor.Name()));
+                            recieverName));
         }
 
         return assignments;
@@ -385,6 +427,35 @@ public class ActorModelData
     {
         return messageParameterNames.get(parameter);
     }
+
+    public Iterable<String> AllSendVariables()
+    {
+        List<String> variabls = new LinkedList<>();
+        
+        for(SendStatement statement : sendStatements)
+        {
+            ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+            String recieverName = ReceiverNameIn(statement.ReceiverLocator());
+            Message message = FindMessageFor(statement.MessageLocator());
+            
+            variabls.add(receiver.queueData.BufferMessageVar(recieverName));
+            variabls.add(receiver.queueData.BufferIsEmptyVar(recieverName));
+            
+            List<VariableArgument> arguments = statement.Arguments().AsList();
+            for (int i = 0; i < arguments.size(); i++) {
+                VariableParameter parameter =  message.Parameters().AsList().get(i);
+                variabls.add(receiver.queueData.BufferParamaterVarFor(parameter,recieverName));
+            }
+        }
+        
+        return variabls;
+    }
+    
+    public Iterable<SendStatement> SendStatements()
+    {
+        return sendStatements;
+    }
+
 
 
 }

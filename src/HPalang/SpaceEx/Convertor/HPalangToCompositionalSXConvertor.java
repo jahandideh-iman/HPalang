@@ -5,23 +5,25 @@
  */
 package HPalang.SpaceEx.Convertor;
 
-import HPalang.Core.ActorType;
+import HPalang.Core.Message;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ModelDefinition;
-import HPalang.Core.SoftwareActorType;
+import HPalang.Core.Statements.SendStatement;
+import HPalang.Core.VariableParameter;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.Invarient;
-import HPalang.SpaceEx.Core.LabelParameter;
 import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.NetworkComponent;
 import HPalang.SpaceEx.Core.RealParameter;
 import HPalang.SpaceEx.Core.SpaceExModel;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -32,58 +34,56 @@ public class HPalangToCompositionalSXConvertor
     SpaceExModel model = new SpaceExModel();
     HPalangModelData hpalangModelData;
     
-    //private List<NetworkComponent> actorTypeComponents = new LinkedList<>();
-
+    private Map<ActorModelData,ComponentInstance> actorInstances;
+    
+    private NetworkComponent systemComp;
     
     public void Convert(ModelDefinition def)
     {
+        actorInstances = new HashMap<>();
         hpalangModelData = new HPalangModelData(def);
+        systemComp = new NetworkComponent("System");
         
-        NetworkComponent systemComp = new NetworkComponent("System");
+        ConvertAndAddActors(def);
+        AddTimerComponent();
         
-//        for(CommunicationLabel send : hpalangModelData.GetGlobalSendLabels())
-//        {
-//            systemComp.AddParameter(new LabelParameter(send.GetLabel(), true));
-//        }
-//
-//        for(ActorType type : def.ActorTypes())
-//        {
-//            ActorTypeModelData typeData = hpalangModelData.GetActorTypeData(type);
-//            
-//            ActorTypeConvertor convertor = new ActorTypeConvertor(typeData, model);
-//            convertor.Convert();
-//        }
+        AddActorParameters();
+        WireActorInstances();
+        
+        
+        model.AddComponent(systemComp);    
+    } 
+
+    private void AddTimerComponent()
+    {
+        Component timerComponent = CreateTimerComponent();
+        ComponentInstance timerInst = new ComponentInstance("timer", timerComponent);
+        systemComp.AddParameter(new RealParameter("time", false));
+        timerInst.SetBinding("time", "time");
+        timerInst.SetBinding("duration", "15");
+        systemComp.AddInstance(timerInst);
+        model.AddComponent(timerComponent);
+    }
+
+    private void ConvertAndAddActors(ModelDefinition def)
+    {
         for(SoftwareActor actor : def.SoftwareActors())
         {
             ActorModelData actorData = hpalangModelData.ActorModelDataFor(actor);
-            ActorConvertor convertor = new ActorConvertor(actorData, model);
-            convertor.Convert();
-            
-            ComponentInstance actorInst = new ComponentInstance(convertor.GetActorComponent().GetID(), convertor.GetActorComponent());
-            
-            for(CommunicationLabel send : actorData.GetSendLables())
-                if(send.IsSelf() == false)
-                    actorInst.SetBinding(send.GetLabel(), send.GetLabel());
-            
-            for(CommunicationLabel receive : actorData.GetReceiveLabels())
-                if(receive.IsSelf() == false)
-                    actorInst.SetBinding(receive.GetLabel(), hpalangModelData.GetSendLabelFor(receive).GetLabel());
-            systemComp.AddInstance(actorInst);
+            CreateAndAddActorInstance(actorData);
         }
+    }
 
-        Component timerComponent = CreateTimerComponent();
+    private void CreateAndAddActorInstance(ActorModelData actorData)
+    {
+        ActorConvertor convertor = new ActorConvertor(actorData, model);
+        convertor.Convert();
+        NetworkComponent actorComp = convertor.GetActorComponent();
         
-        ComponentInstance timerInst = new ComponentInstance("timer", timerComponent);
+        ComponentInstance actorInst = new ComponentInstance(actorComp.GetID(), actorComp);
+        systemComp.AddInstance(actorInst);
         
-        systemComp.AddParameter(new RealParameter("time", false)); 
-
-        timerInst.SetBinding("time", "time");
-        timerInst.SetBinding("duration", "15");
-        
-        systemComp.AddInstance(timerInst);
-        
-        model.AddComponent(timerComponent);
-        model.AddComponent(systemComp);    
+        actorInstances.put(actorData, actorInst);
     }
     
     private Component CreateTimerComponent()
@@ -110,6 +110,57 @@ public class HPalangToCompositionalSXConvertor
     public SpaceExModel GetConvertedModel()
     {
         return model;
+    }
+
+    private void WireActorInstances()
+    {
+        for(Map.Entry<ActorModelData, ComponentInstance> entry : actorInstances.entrySet())
+        {
+            ActorModelData actorData = entry.getKey();
+            ComponentInstance instance = entry.getValue();
+            
+            for (String var : actorData.QueueData().QueueBufferVars()) {
+                instance.SetBinding(var, AddPrefix(var, actorData.Name()));
+            }
+            
+            for(SendStatement sendStatement : actorData.SendStatements())
+            {
+                
+                ActorModelData receiverData =actorData.FindActorDataFor(sendStatement.ReceiverLocator());
+                Message message = receiverData.FindMessageFor(sendStatement.MessageLocator());
+                String recieverParamName = actorData.ReceiverNameIn(sendStatement.ReceiverLocator());
+                
+                for(VariableParameter parameter : message.Parameters().AsList())
+                {
+                    String formalParam = receiverData.QueueData().BufferParamaterVarFor(parameter, recieverParamName);
+                    String actualParam = receiverData.QueueData().BufferParamaterVarFor(parameter, receiverData.Name());
+                    instance.SetBinding(formalParam, actualParam);
+                }
+                
+                instance.SetBinding(receiverData.QueueData().BufferIsEmptyVar(recieverParamName),
+                        receiverData.QueueData().BufferIsEmptyVar(receiverData.Name()));
+                
+                instance.SetBinding(receiverData.QueueData().BufferMessageVar(recieverParamName),
+                        receiverData.QueueData().BufferMessageVar(receiverData.Name()));
+
+            }
+
+        }
+    }
+    
+    private String AddPrefix(String value, String prefix)
+    {
+        return String.format("%s_%s", prefix, value); 
+    }
+
+    private void AddActorParameters()
+    {
+        for(ActorModelData actorData : hpalangModelData.ActorModelsData())
+        {
+
+            for(String var : actorData.QueueData().QueueBufferVars())
+                systemComp.AddParameter(new RealParameter(AddPrefix(var, actorData.Name()), false));
+        }
     }
 
 }

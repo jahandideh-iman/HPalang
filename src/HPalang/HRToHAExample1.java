@@ -51,8 +51,8 @@ public class HRToHAExample1
         FillFleshForAType(AType);
         FillFleshForBType(BType);
 
-        SoftwareActor a = new SoftwareActor("a", AType, 2);
-        SoftwareActor b = new SoftwareActor("b", BType, 2);
+        SoftwareActor a = new SoftwareActor("a", AType, 1);
+        SoftwareActor b = new SoftwareActor("b", BType, 1);
 
         a.SetInitialValue((IntegerVariable)a.Type().FindVariable(A__c), 10);
         BindInstance(a, A__b_ins_param, b, CommunicationType.Wire);
@@ -94,6 +94,7 @@ public class HRToHAExample1
         IntegerVariable r = (IntegerVariable) X1.Parameters().Find(A__X1_r).Variable();
         
         X1.AddStatement(new AssignmentStatement(c, CreateSubtractExpression(new VariableExpression(c), new VariableExpression(r))));
+        //X1.AddStatement(new AssignmentStatement(c, new ConstantDiscreteExpression(2)));
         X1.AddStatement(new DelayStatement(1f));
         X1.AddStatement(new IfStatement(
                 CreateGreaterExpression(new VariableExpression(c), new ConstantDiscreteExpression(0)), 

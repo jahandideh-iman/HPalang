@@ -49,6 +49,13 @@ public class ActorHandlersCreator
         for (String var : actorData.MessageParameterNames()) 
             comp.AddParameter(new RealParameter(var, false));
         
+        for(String var : actorData.AllSendVariables())
+            comp.AddParameter(new RealParameter(var, false));
+        
+        for (String label : actorData.ExecuteMessageLabels()) {
+            comp.AddParameter(new LabelParameter(label, false));
+        }
+        
         AddHandlersProcessing();
     }
     

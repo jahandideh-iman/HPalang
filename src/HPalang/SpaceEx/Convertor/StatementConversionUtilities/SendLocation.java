@@ -30,6 +30,7 @@ public class SendLocation extends UrgentLocation
     {
         super.ProcessOutLabel(label);
         label.AddGuard(actorData.ReceiverMessageBufferEmptyGuard(statement));
+        label.AddAssignment(actorData.SetMessageBufferMessageAssignment(statement));
         label.AddAssignment(actorData.SetMessageBufferFullAssignment(statement));
         
         for(String parameterAssignemtns :  actorData.BufferParameterAssignmentsFor(statement))

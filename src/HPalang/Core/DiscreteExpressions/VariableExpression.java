@@ -23,6 +23,11 @@ public class VariableExpression extends DiscreteExpressionT<VariableExpression>
     {
         this.variable = variable;
     }
+    
+    public Variable Variable()
+    {
+        return variable;
+    }
 
     @Override
     public int Evaluate(ValuationContainer valuations)

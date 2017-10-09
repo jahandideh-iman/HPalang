@@ -11,6 +11,7 @@ import HPalang.Core.VariableParameter;
 import HPalang.SpaceEx.Convertor.QueueCreationUtilities.*;
 import HPalang.SpaceEx.Convertor.Utilities.ProcessableTransition;
 import HPalang.SpaceEx.Core.BaseComponent;
+import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.Invarient;
 import HPalang.SpaceEx.Core.LabelParameter;
@@ -51,6 +52,7 @@ public class ActorQueueCreator
         AddLocation(initialQueueLocation_1);
 
         comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true));
+        CreateMessageParameters();
         CreateBufferParameters();
         CreateQueueControlParameters();
         CreateQueueElementsParameters();
@@ -64,10 +66,15 @@ public class ActorQueueCreator
             qTran.Process(comp);
     }
     
-    
+    private void CreateMessageParameters()
+    {
+        for (String localVariable : actorData.MessageParameterNames())
+            comp.AddParameter(new RealParameter(localVariable, false));    
+        
+    }
     private void CreateBufferParameters()
     {
-        comp.AddParameter(new RealParameter(queueData.BufferIsEmptyVar(), false));
+        comp.AddParameter(new RealParameter(queueData.BufferIsFullVar(), false));
         comp.AddParameter(new RealParameter(queueData.BufferMessageVar(), false));
         for (VariableParameter parameter : actorData.MessageParameters()) {
             comp.AddParameter(new RealParameter(queueData.BufferParamaterVarFor(parameter), false));
@@ -121,6 +128,7 @@ public class ActorQueueCreator
     {
         ProcessableTransition tran = CreateTransition(previousLocation, currentLocation);
         tran.label.AddGuard(queueData.TailGuard(i));
+        tran.label.AddGuard(queueData.QueueIsNotFullGuard());
         tran.label.AddAssignment(actorData.ResetFor(queueData.ElementMessageVar(i), queueData.BufferMessageVar()));
         tran.label.AddAssignment(queueData.SetBufferEmptyAssignment());
         tran.label.AddAssignment(queueData.TailIncrementAssignment(i));
@@ -135,6 +143,8 @@ public class ActorQueueCreator
     private void CreateMessageProcessingLabels()
     {
         comp.AddParameter(new LabelParameter(queueData.TakeMessageLabel(), false));
+        
+        
         for(MessageHandler m : actorData.MessageHandlers())
             comp.AddParameter(new LabelParameter(actorData.ExecuteLabelFor(m), false));
     }
@@ -145,10 +155,13 @@ public class ActorQueueCreator
         AddLocation(messageLoc_0);
         
         initialQueueLocation_1.GetLoc().AddInvarient(new Invarient(queueData.QueueIsEmptyInvarianet()));
+        
+        
+        
         AddTransition(CreateGuardedTransition(initialQueueLocation_0, queueData.QueueIsEmptyGuard(), initialQueueLocation_1));
 
-        AddTransition(CreateGuardedTransition(initialQueueLocation_0,queueData.QueueIsNotEmptyGuard(), messageLoc_0));
-        AddTransition(CreateGuardedTransition(initialQueueLocation_1,queueData.QueueIsNotEmptyGuard(), messageLoc_0));
+        AddTransition(CreateGuardedAndLabledTransition(initialQueueLocation_0,queueData.QueueIsNotEmptyGuard(), queueData.TakeMessageLabel(), messageLoc_0));
+        AddTransition(CreateGuardedAndLabledTransition(initialQueueLocation_1,queueData.QueueIsNotEmptyGuard(), queueData.TakeMessageLabel(), messageLoc_0));
         
         for (int i = 0; i < actorData.Actor().QueueCapacity(); i++) 
         {
@@ -170,7 +183,7 @@ public class ActorQueueCreator
                         String.format("messageProc_unbox_%d_%s", i, actorData.MessageHandlerName(messageHandler)),
                         actorData);
                 
-                List<String> paramterUnboxingAssignments = queueData.BufferToElementAssignmentsFor(messageHandler, i);
+                List<String> paramterUnboxingAssignments = queueData.ElementsToParametersAssignmentFor(messageHandler, i);
                 
                 AddTransition(new ProcessableTransitionBuilder().
                         SetOrigin(messageLoc_check_m).
@@ -183,6 +196,7 @@ public class ActorQueueCreator
                         .SetDestination(initialQueueLocation_0)
                         .SetSynclabel(actorData.ExecuteLabelFor(messageHandler))
                         .AddAssignment(queueData.HeadDecrementAssignment(i))
+                        .AddAssignment(queueData.SizeDecrementAssignment())
                         .Build());
             }
         }
@@ -200,64 +214,6 @@ public class ActorQueueCreator
     private void AddLocation(QueueLocation location)
     {
         comp.AddLocation(location.GetLoc());
-        //queueLocs.add(location);
-    }
-    
-//    private QueueLocation FindUrgentLocationWith(Queue<String> content)
-//    {
-//        for(QueueLocation qLoc : queueLocs)
-//            if((qLoc instanceof WaitingQueueLocation) == false && content.equals(qLoc.GetContent()))
-//                return qLoc;
-//        return null;
-//    }
-     
-    private void ExpandQueue(int cap, QueueLocation urgOrigin , QueueLocation waitOrigin)
-    {
-//        if(cap == 0)
-//            return;
-//        
-//        for(MessageHandler handler : actorData.MessageHandlers())
-//        {          
-//            Queue<String> content = new LinkedList<>(urgOrigin.GetContent());
-//            content.add(handler.GetID());
-//           
-//            UrgentQueueLocation urgLoc = new UrgentQueueLocation(content, actorData);
-//            WaitingQueueLocation waitLoc = new WaitingQueueLocation(content, actorData);
-//            queueLocs.add(urgLoc);
-//            queueLocs.add(waitLoc);
-//            
-//            queueTrans.add(CreateQueueUnitTransition(urgLoc, waitLoc));
-//            
-//            for(CommunicationLabel receive : actorData.GetReceiveLabelsFor(handler))
-//            {
-//                queueTrans.add(CreateTransition(urgOrigin, receive.GetLabel(), urgLoc));
-//                if(waitOrigin != urgOrigin)
-//                    queueTrans.add(CreateTransition(waitOrigin, receive.GetLabel(), urgLoc));
-//            }
-//            ExpandQueue(cap-1, urgLoc, waitLoc);     
-//        }
-    }
-    
-    private void AddTakeTransition()
-    {
-//        for(QueueLocation qLoc : queueLocs)
-//        {
-//            if(qLoc.content.isEmpty())
-//                continue;
-//            
-//            Queue<String> remaining = new LinkedList<>(qLoc.GetContent());
-//            String head = remaining.poll();
-//            
-//            QueueLocation takeLoc = FindUrgentLocationWith(remaining);
-//            queueTrans.add(CreateTransition(qLoc, actorData.TakeLabelFor(head), takeLoc));   
-//        }
-    }
-    
-    private ProcessableTransition CreateTransition(QueueLocation origin, String syncLabel, QueueLocation destination)
-    {
-        HybridLabel label = new HybridLabel();
-        label.SetSyncLabel(syncLabel);
-        return new ProcessableTransition(origin, label, destination);
     }
     
     private ProcessableTransition CreateTransition(QueueLocation origin , QueueLocation destination)
@@ -272,4 +228,14 @@ public class ActorQueueCreator
         label.AddGuard(guard);
         return new ProcessableTransition(origin, label, destination);
     } 
+    
+    private ProcessableTransition CreateGuardedAndLabledTransition(QueueLocation origin, String guard, String syncLabel, QueueLocation destination)
+    {
+        HybridLabel label = new HybridLabel();
+        label.AddGuard(guard);
+        label.SetSyncLabel(syncLabel);
+        return new ProcessableTransition(origin, label, destination);
+    }
+
+
 }
