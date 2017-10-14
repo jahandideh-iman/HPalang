@@ -5,16 +5,10 @@
  */
 package HPalang.SpaceEx.Convertor;
 
-import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Variable;
 import HPalang.SpaceEx.Core.BaseComponent;
-import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
-import HPalang.SpaceEx.Core.Flow;
-import HPalang.SpaceEx.Core.HybridLabel;
-import HPalang.SpaceEx.Core.Invarient;
 import HPalang.SpaceEx.Core.LabelParameter;
-import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.NetworkComponent;
 import HPalang.SpaceEx.Core.Parameter;
 import HPalang.SpaceEx.Core.RealParameter;
@@ -57,6 +51,8 @@ public class ActorConvertor extends Convertor
     
     private void AddComponentParameters()
     {
+        actorComponent.AddParameter(new RealParameter(actorData.BusyVar(), true));
+        
         for (String var : actorData.AllSendVariables()) {
             actorComponent.AddParameter(new RealParameter(var, false));
         }
@@ -69,7 +65,7 @@ public class ActorConvertor extends Convertor
             actorComponent.AddParameter(new RealParameter(var, true));
         }
 
-        actorComponent.AddParameter(new LabelParameter(actorData.QueueData().TakeMessageLabel(), true));
+        actorComponent.AddParameter(new LabelParameter(actorData.ReadyLabel(), true));
         for (String label : actorData.ExecuteMessageLabels()) {
             actorComponent.AddParameter(new LabelParameter(label, true));
         }
@@ -84,6 +80,13 @@ public class ActorConvertor extends Convertor
         
         for (String var : actorData.QueueData().QueueBufferVars()) {
             actorComponent.AddParameter(new RealParameter(var, false));
+        }
+        
+        for(String label: actorData.QueueData().SendBufferLabels())
+            actorComponent.AddParameter(new LabelParameter(label, false));
+        
+        for (String label : actorData.QueueData().ReceiverBufferLabels()) {
+            actorComponent.AddParameter(new LabelParameter(label, false));
         }
 
     }
@@ -122,6 +125,8 @@ public class ActorConvertor extends Convertor
         for (Parameter param : vars.GetParameters()) {
             varsInst.SetBinding(param.GetName(), param.GetName());
         }
+        
+        varsInst.SetBinding(actorData.BusyVar(), actorData.BusyVar());
     }
     
     private void CreateHandlersInstance(BaseComponent handlersComponent)
@@ -133,8 +138,16 @@ public class ActorConvertor extends Convertor
             if (param.IsLocal() == false) {
                 handlersInst.SetBinding(param.GetName(), param.GetName());
             }
-
         }
+        
+        for (String label : actorData.QueueData().SendBufferLabels()) {
+            handlersInst.SetBinding(label, label);
+        }
+        
+        handlersInst.SetBinding(actorData.ReadyLabel(), actorData.ReadyLabel());
+        handlersInst.SetBinding(actorData.BusyVar(), actorData.BusyVar());
+        
+        
     }
 
     private void CreateQueueInstance(BaseComponent queue)
@@ -144,7 +157,9 @@ public class ActorConvertor extends Convertor
         for(String elementVars : actorData.QueueData().AllQueueVariables())
             queueInst.SetBinding(elementVars, elementVars);
         
-        queueInst.SetBinding(actorData.QueueData().TakeMessageLabel(), actorData.QueueData().TakeMessageLabel());
+        queueInst.SetBinding(actorData.ReadyLabel(), actorData.ReadyLabel());
+        //queueInst.SetBinding(actorData.QueueData().TakeMessageLabel(), actorData.QueueData().TakeMessageLabel());
+        queueInst.SetBinding(actorData.BusyVar(), actorData.BusyVar());
         
         for (String label : actorData.ExecuteMessageLabels()) {
             queueInst.SetBinding(label,label);
@@ -152,6 +167,10 @@ public class ActorConvertor extends Convertor
         
         for (String param : actorData.MessageParameterNames()) {
             queueInst.SetBinding(param,param);
+        }
+        
+        for (String label : actorData.QueueData().ReceiverBufferLabels()) {
+            queueInst.SetBinding(label, label);
         }
         actorComponent.AddInstance(queueInst);
     }

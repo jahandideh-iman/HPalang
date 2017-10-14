@@ -16,6 +16,7 @@ import HPalang.SpaceEx.Core.ComponentInstance;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.Invarient;
+import HPalang.SpaceEx.Core.LabelParameter;
 import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.NetworkComponent;
 import HPalang.SpaceEx.Core.RealParameter;
@@ -123,9 +124,17 @@ public class HPalangToCompositionalSXConvertor
                 instance.SetBinding(var, AddPrefix(var, actorData.Name()));
             }
             
+            for(ActorModelData receiver : actorData.RecieversFromThisActor())
+                instance.SetBinding(receiver.QueueData().SendBufferLabelFor(actorData), receiver.QueueData().SendBufferLabelFor(actorData));
+            
+            for (ActorModelData sender : actorData.SendersToThisActor()) {
+                instance.SetBinding(actorData.QueueData().ReceiveBufferLabelFor(sender), 
+                        actorData.QueueData().SendBufferLabelFor(sender));
+            }
+
+            
             for(SendStatement sendStatement : actorData.SendStatements())
             {
-                
                 ActorModelData receiverData =actorData.FindActorDataFor(sendStatement.ReceiverLocator());
                 Message message = receiverData.FindMessageFor(sendStatement.MessageLocator());
                 String recieverParamName = actorData.ReceiverNameIn(sendStatement.ReceiverLocator());
@@ -136,9 +145,9 @@ public class HPalangToCompositionalSXConvertor
                     String actualParam = receiverData.QueueData().BufferParamaterVarFor(parameter, receiverData.Name());
                     instance.SetBinding(formalParam, actualParam);
                 }
-                
-                instance.SetBinding(receiverData.QueueData().BufferIsEmptyVar(recieverParamName),
-                        receiverData.QueueData().BufferIsEmptyVar(receiverData.Name()));
+
+//                instance.SetBinding(receiverData.QueueData().BufferIsEmptyVar(recieverParamName),
+//                        receiverData.QueueData().BufferProcessingLabelFor(receiverData.Name()));
                 
                 instance.SetBinding(receiverData.QueueData().BufferMessageVar(recieverParamName),
                         receiverData.QueueData().BufferMessageVar(receiverData.Name()));
@@ -160,6 +169,9 @@ public class HPalangToCompositionalSXConvertor
 
             for(String var : actorData.QueueData().QueueBufferVars())
                 systemComp.AddParameter(new RealParameter(AddPrefix(var, actorData.Name()), false));
+            
+            for(String label : actorData.QueueData().SendBufferLabels())
+                systemComp.AddParameter(new LabelParameter(label, true));
         }
     }
 

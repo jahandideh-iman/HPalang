@@ -49,6 +49,8 @@ public class ActorVariablesCreator
             location.AddFlow(new Flow(actorData.FlowFor(queueVariable,0)));
         }
 
+        comp.AddParameter(new RealParameter(actorData.BusyVar(), false));
+        location.AddFlow(new Flow(actorData.FlowFor(actorData.BusyVar(),0)));
         
         comp.AddLocation(location);
     }

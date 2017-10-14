@@ -25,6 +25,7 @@ import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.SpaceEx.Core.LabelParameter;
+import static HPalang.SpaceEx.Convertor.Utilities.MiscUtilities.*;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
@@ -65,6 +66,9 @@ public class ActorModelData
     private ActorQueueData queueData;
     
     private final Map<VariableParameter, String> messageParameterNames = new HashMap<>();
+    
+    private final Set<ActorModelData> receiversFromThisActor = new HashSet<>();
+    private final Set<ActorModelData> sendersToThisActor = new HashSet<>();
 
     public ActorModelData(SoftwareActor actor, HPalangModelData modelData)
     {
@@ -92,6 +96,14 @@ public class ActorModelData
         
         FindAllSendStatements(actor.Type());
         
+        for(SendStatement sendStatement : sendStatements)
+        {
+            ActorModelData receiver = FindActorDataFor(sendStatement.ReceiverLocator());
+            
+            receiversFromThisActor.add(receiver);
+            receiver.AddSender(this);
+            
+        }
         queueData.Init();
     }
     
@@ -337,19 +349,60 @@ public class ActorModelData
     {
         return String.format("%s := %s", variable, value);
     }
+    
+    public String GuardFor(String variable, float value)
+    {
+        return GuardFor(variable, String.valueOf(value));
+    }
+    
+    public String GuardFor(String variable, String value)
+    {
+        return String.format("%s == %s", variable, value);
+    }
+    
+    public String FlowFor(String variable, float value)
+    {
+        return FlowFor(variable, String.valueOf(value));
+    }
+    
+    public String FlowFor(String variable, String value)
+    {
+        return String.format("%s' == %s", variable, value);
+    }
+    
+    public String InvarientFor(String variable, float value)
+    {
+        return InvarientFor(variable, String.valueOf(value));
+    }
+    
+    public String InvarientFor(String variable, String value)
+    {
+        return String.format("%s == %s", variable, value);
+    }
 
-    public String ReceiverMessageBufferEmptyGuard(SendStatement statement)
+//    public String ReceiverMessageBufferEmptyGuard(SendStatement statement)
+//    {
+//        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+//        
+//        return receiver.queueData.BufferIsEmptyGuard(ReceiverNameIn(statement.ReceiverLocator()));   
+//    }
+
+//    public String SetMessageBufferFullAssignment(SendStatement statement)
+//    {
+//        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+//
+//        return receiver.queueData.SetBufferFullAssignment(ReceiverNameIn(statement.ReceiverLocator()));
+//    }
+    
+    public String ReceiverBufferLabel(SendStatement statement)
     {
         ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
         
-        return receiver.queueData.BufferIsEmptyGuard(ReceiverNameIn(statement.ReceiverLocator()));   
-    }
+        assert ( receiversFromThisActor.contains(receiver));
+        
 
-    public String SetMessageBufferFullAssignment(SendStatement statement)
-    {
-        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
-
-        return receiver.queueData.SetBufferFullAssignment(ReceiverNameIn(statement.ReceiverLocator()));
+        
+        return receiver.queueData.SendBufferLabelFor(this);
     }
     
     public String SetMessageBufferMessageAssignment(SendStatement statement)
@@ -418,11 +471,6 @@ public class ActorModelData
         return assignments;
     }
 
-    public String FlowFor(String variableName, float flow)
-    {
-        return String.format("%s' == %s", variableName, flow);
-    } 
-
     public String ParameterNameFor(VariableParameter parameter)
     {
         return messageParameterNames.get(parameter);
@@ -439,7 +487,7 @@ public class ActorModelData
             Message message = FindMessageFor(statement.MessageLocator());
             
             variabls.add(receiver.queueData.BufferMessageVar(recieverName));
-            variabls.add(receiver.queueData.BufferIsEmptyVar(recieverName));
+            //variabls.add(receiver.queueData.BufferIsEmptyVar(recieverName));
             
             List<VariableArgument> arguments = statement.Arguments().AsList();
             for (int i = 0; i < arguments.size(); i++) {
@@ -455,7 +503,49 @@ public class ActorModelData
     {
         return sendStatements;
     }
+    
+    public String BusyVar()
+    {
+        return "isBusy";
+    }
 
+    public String SetNotBusyAssignment()
+    {
+        return ResetFor(BusyVar(), 0);
+    }
+    
+    public String SetBusyAssignment()
+    {
+        return ResetFor(BusyVar(), 1);
+    }
 
+    public String IsBusyGuard()
+    {
+        return GuardFor(BusyVar(), 1);
+    }
 
+    public String IsNotBusyGuard()
+    {
+        return GuardFor(BusyVar(), 0);
+    }
+
+    public String ReadyLabel()
+    {
+        return "Ready";
+    }
+
+    private void AddSender(ActorModelData sender)
+    {
+        sendersToThisActor.add(sender);
+    }
+
+    Iterable<ActorModelData> SendersToThisActor()
+    {
+        return sendersToThisActor;
+    }
+
+    Iterable<ActorModelData> RecieversFromThisActor()
+    {
+        return receiversFromThisActor;
+    }
 }

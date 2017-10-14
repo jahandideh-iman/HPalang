@@ -37,9 +37,10 @@ public class ActorHandlersCreator
         idleLoc = new Location("idle");
         comp.AddLocation(idleLoc);
         
-        comp.AddParameter(new LabelParameter(actorData.QueueData().TakeMessageLabel(), false));        
+        comp.AddParameter(new LabelParameter(actorData.ReadyLabel(), false));        
         comp.AddParameter(new RealParameter(actorData.DelayVar(), true));
         comp.AddParameter(new RealParameter(actorData.GetUrgentVar(), true)); 
+        comp.AddParameter(new RealParameter(actorData.BusyVar(),false));
         for(Variable variable : actorData.InstanceVariables())
             comp.AddParameter(new RealParameter(variable.Name(), false));
         
@@ -56,28 +57,33 @@ public class ActorHandlersCreator
             comp.AddParameter(new LabelParameter(label, false));
         }
         
+        for (String label : actorData.QueueData().SendBufferLabels()) {
+            comp.AddParameter(new LabelParameter(label, false));
+        }
+        
         AddHandlersProcessing();
     }
     
     private void AddHandlersProcessing()
     {
 
-        Location handlerProc_0 = new Location("handlerProc_0");
-        
-        comp.AddTransition(new HybridTransitionBuilder().
-                SetOrigin(idleLoc).
-                SetDestination(handlerProc_0).
-                SetSynclabel(actorData.QueueData().TakeMessageLabel()).
-                Build());
+//        Location handlerProc_0 = new Location("handlerProc_0");
+//        
+//        comp.AddTransition(new HybridTransitionBuilder().
+//                SetOrigin(idleLoc).
+//                SetDestination(handlerProc_0).
+//                SetSynclabel(actorData.QueueData().TakeMessageLabel()).
+//                Build());
         
         for(MessageHandler handler : actorData.MessageHandlers())
         {
             Location handlerProc_h = new Location(String.format("handlerProc_%s", actorData.MessageHandlerName(handler)));
             
             comp.AddTransition(new HybridTransitionBuilder().
-                    SetOrigin(handlerProc_0).
+                    SetOrigin(idleLoc).
                     SetDestination(handlerProc_h).
                     SetSynclabel(actorData.ExecuteLabelFor(handler)).
+//                    AddAssignment(actorData.SetBusyAssignment()).
                     Build());
             
             CreateHandler(handler, comp, handlerProc_h);
@@ -96,8 +102,11 @@ public class ActorHandlersCreator
         statementsConvertor.ConvertStatementChain(false);
         
         statementsConvertor.GetFirstTransition().GetLabel().AddGuard(actorData.GetUrgentGuard());
+
         
-        HybridTransition recursTrans =  new HybridTransition(statementsConvertor.GetLastLocation(), new HybridLabel(), idleLoc);
+        HybridTransition recursTrans  = new HybridTransition(statementsConvertor.GetLastLocation(), new HybridLabel(), idleLoc);
+        //recursTrans.GetLabel().AddAssignment(actorData.SetNotBusyAssignment());
+        recursTrans.GetLabel().SetSyncLabel(actorData.ReadyLabel());
         statementsConvertor.ProcessLastLocation(recursTrans.GetLabel());
         
         comp.AddTransition(recursTrans);

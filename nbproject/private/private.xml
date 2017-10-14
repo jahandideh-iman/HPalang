@@ -13,6 +13,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/HPalangToCompositionalSXConvertor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Pair.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/HybridTransitionBuilder.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/Utilities/TransitionCreationUtilities.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Statements/SendStatement.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/QueueCreationUtilities/IdleQueueLocation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/ConstantDiscreteExpression.java</file>
@@ -42,6 +43,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/MessageArguments.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/QueueCreationUtilities/UrgentQueueLocation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ModelDefinition.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/ComponentInstance.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/StatementToLocationConvertor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ActorLocators/ParametricActorLocator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/VariableArgument.java</file>
@@ -51,6 +53,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/Utilities/ProcessableTransition.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/SpaceExToXMLConvertorVisitor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/MessageLocators/DirectMessageLocator.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/FileWriter.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/StatementConversionUtilities/SendLocation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/QueueCreationUtilities/WaitingQueueLocation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/HPalangModelData.java</file>
