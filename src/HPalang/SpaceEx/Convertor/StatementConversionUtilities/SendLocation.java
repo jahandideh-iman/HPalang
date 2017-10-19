@@ -29,23 +29,27 @@ public class SendLocation extends UrgentLocation
     public void ProcessOutLabel(HybridLabel label)
     {
         super.ProcessOutLabel(label);
-        label.SetSyncLabel(actorData.ReceiverBufferLabel(statement));
-        //label.AddGuard(actorData.ReceiverMessageBufferEmptyGuard(statement));
-        //label.AddAssignment(actorData.SetMessageBufferFullAssignment(statement));
-
- 
-    }
-
-    @Override
-    public void ProcessInLabel(HybridLabel label)
-    {
-        super.ProcessInLabel(label); 
+        //label.SetSyncLabel(actorData.ReceiverBufferLabel(statement));
         label.AddAssignment(actorData.SetMessageBufferMessageAssignment(statement));
+        label.AddGuard(actorData.ReceiverMessageBufferEmptyGuard(statement));
+        label.AddAssignment(actorData.SetMessageBufferFullAssignment(statement));
 
         for (String parameterAssignemtns : actorData.BufferParameterAssignmentsFor(statement)) {
             label.AddAssignment(parameterAssignemtns);
         }
+ 
     }
+
+//    @Override
+//    public void ProcessInLabel(HybridLabel label)
+//    {
+//        super.ProcessInLabel(label); 
+//        label.AddAssignment(actorData.SetMessageBufferMessageAssignment(statement));
+//
+//        for (String parameterAssignemtns : actorData.BufferParameterAssignmentsFor(statement)) {
+//            label.AddAssignment(parameterAssignemtns);
+//        }
+//    }
     
     
 

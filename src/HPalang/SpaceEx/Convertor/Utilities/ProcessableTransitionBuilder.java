@@ -21,7 +21,7 @@ public class ProcessableTransitionBuilder
     private final List<String> guards = new LinkedList<>();
     private final List<String> assignments = new LinkedList<>();
     private String syncLabel = "";
-    
+    private boolean isASAP = false;
     
     public ProcessableTransitionBuilder SetOrigin(ProcessableLocation origin)
     {
@@ -59,6 +59,11 @@ public class ProcessableTransitionBuilder
         return this;
     }
     
+    public ProcessableTransitionBuilder SetASAP(boolean isASAP)
+    {
+        this.isASAP = isASAP;
+        return this;
+    }
     
     public ProcessableTransition Build()
     {
@@ -68,12 +73,8 @@ public class ProcessableTransitionBuilder
         assignments.forEach(a -> label.AddAssignment(a));
         label.SetSyncLabel(syncLabel);
         
-        ProcessableTransition tran = new ProcessableTransition(origin, label, destination);
-        
+        ProcessableTransition tran = new ProcessableTransition(origin, label, destination, isASAP);
         
         return tran;
     }
-
-
-
 }

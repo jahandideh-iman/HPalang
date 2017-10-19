@@ -37,7 +37,7 @@ public class BaseComponent extends Component implements GraphListener<Location>
     
     public void AddTransition(Location origin, HybridLabel label, Location destination)
     {
-        automaton.AddTransition(new HybridTransition(origin, label, destination));
+        automaton.AddTransition(new HybridTransition(origin, label, destination, false));
     }
     
     public void AddTransition(HybridTransition trans)

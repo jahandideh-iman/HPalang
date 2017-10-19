@@ -19,24 +19,26 @@ public class ProcessableTransition
     public final ProcessableLocation origin;
     public final HybridLabel label;
     public final ProcessableLocation destination;
+    public final boolean isASAP;
 
     public ProcessableTransition(ProcessableLocation origin,ProcessableLocation destination)
     {
-        this(origin, new HybridLabel(), destination);
+        this(origin, new HybridLabel(), destination, false);
     }
         
-    public ProcessableTransition(ProcessableLocation origin, HybridLabel label, ProcessableLocation destination)
+    public ProcessableTransition(ProcessableLocation origin, HybridLabel label, ProcessableLocation destination, boolean isASAP)
     {
         this.origin = origin;
         this.label = label;
         this.destination = destination;
+        this.isASAP = isASAP;
     }
 
     public void Process(BaseComponent comp)
     {
         origin.ProcessOutLabel(this.label);
         destination.ProcessInLabel(this.label);
-        HybridTransition firstTrans = new HybridTransition(origin.GetLoc(), label, destination.GetLoc());
+        HybridTransition firstTrans = new HybridTransition(origin.GetLoc(), label, destination.GetLoc(), isASAP);
         comp.AddTransition(firstTrans);
     }
 }

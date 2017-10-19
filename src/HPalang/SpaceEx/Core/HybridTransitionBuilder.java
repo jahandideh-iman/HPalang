@@ -20,6 +20,7 @@ public class HybridTransitionBuilder
     private List<String> guards = new LinkedList<>();
     private List<String> assignments = new LinkedList<>();
     private String syncLabel = "";
+    private boolean isASAP = false;
 
     public HybridTransitionBuilder SetOrigin(Location origin)
     {
@@ -50,6 +51,12 @@ public class HybridTransitionBuilder
         this.syncLabel = syncLabel;
         return this;
     }
+    
+    public HybridTransitionBuilder SetASAP(boolean isASAP)
+    {
+        this.isASAP = isASAP;
+        return this;
+    }
 
     public HybridTransition Build()
     {
@@ -59,7 +66,7 @@ public class HybridTransitionBuilder
         assignments.forEach(a -> label.AddAssignment(a));
         label.SetSyncLabel(syncLabel);
 
-        HybridTransition tran = new HybridTransition(origin, label, destination);
+        HybridTransition tran = new HybridTransition(origin, label, destination, isASAP);
 
         return tran;
     }

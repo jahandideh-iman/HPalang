@@ -8,13 +8,11 @@ package HPalang.SpaceEx.Convertor;
 import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.VariableParameter;
-import static HPalang.SpaceEx.Convertor.Utilities.MiscUtilities.*;
-import HPalang.SpaceEx.Core.Invarient;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.LinkedList;
+
+import static HPalang.SpaceEx.Convertor.Utilities.MiscUtilities.*;
 import java.util.List;
-import java.util.Map;
 
 /**
  *
@@ -64,7 +62,7 @@ public class ActorQueueData
     {
         List<String> variables = new LinkedList<>();
 
-        //variables.add(BufferIsFullVar());
+        variables.add(BufferIsFullVar());
         variables.add(BufferMessageVar());
 
         for (VariableParameter parameter : actorModelData.MessageParameters()) {
@@ -77,7 +75,7 @@ public class ActorQueueData
     {
         List<String> variables = new LinkedList<>();
 
-//        variables.add(BufferIsEmptyVar(prefix));
+        variables.add(BufferIsEmptyVar(prefix));
         variables.add(BufferMessageVar(prefix));
 
         for (VariableParameter parameter : actorModelData.MessageParameters()) {
@@ -116,15 +114,15 @@ public class ActorQueueData
         return "queue_size";
     }
     
-//    public String BufferIsFullVar()
-//    {
-//        return "buffer_isFull";
-//    }
-//    
-//    public String BufferIsEmptyVar(String prefix)
-//    {
-//        return String.format("%s_%s", prefix, BufferIsFullVar());
-//    }
+    public String BufferIsFullVar()
+    {
+        return "buffer_isFull";
+    }
+    
+    public String BufferIsEmptyVar(String prefix)
+    {
+        return String.format("%s_%s", prefix, BufferIsFullVar());
+    }
     
     public String ElementMessageVar(int i)
     {
@@ -174,26 +172,26 @@ public class ActorQueueData
     }
 
 
-//
-//    public String BufferIsFullGuard()
-//    {
-//        return String.format("%s == 1", BufferIsFullVar());
-//    }
-//    
-//    public String BufferIsEmptyInvarient()
-//    {
-//        return String.format("%s == 0", BufferIsFullVar());
-//    }
-//    
-//    public String BufferIsEmptyGuard()
-//    {
-//        return String.format("%s == 0",BufferIsFullVar());
-//    }
-//    
-//    public String BufferIsEmptyGuard(String prefix)
-//    {
-//        return String.format("%s_%s == 0", prefix,BufferIsFullVar());
-//    }
+
+    public String BufferIsFullGuard()
+    {
+        return String.format("%s == 1", BufferIsFullVar());
+    }
+    
+    public String BufferIsEmptyInvarient()
+    {
+        return String.format("%s == 0", BufferIsFullVar());
+    }
+    
+    public String BufferIsEmptyGuard()
+    {
+        return String.format("%s == 0",BufferIsFullVar());
+    }
+    
+    public String BufferIsEmptyGuard(String prefix)
+    {
+        return String.format("%s_%s == 0", prefix,BufferIsFullVar());
+    }
 
     public String TailGuard(int i)
     {
@@ -205,16 +203,18 @@ public class ActorQueueData
         return String.format("%s == %d", QueueHeadVar(), i);
     }
 
-//    public String SetBufferEmptyAssignment()
-//    {
-//        return String.format("%s := 0", BufferIsFullVar());
-//    }
-//    
-//
-//    String SetBufferFullAssignment(String prefix)
-//    {
-//        return String.format("%s_%s := 1", prefix, BufferIsFullVar());
-//    }
+    public String SetBufferEmptyAssignment()
+    {
+        return String.format("%s := 0", BufferIsFullVar());
+    }
+    
+
+
+
+    String SetBufferFullAssignment(String prefix)
+    {
+        return String.format("%s_%s := 1", prefix, BufferIsFullVar());
+    }
 
     public String TailIncrementAssignment(int i)
     {
@@ -261,10 +261,10 @@ public class ActorQueueData
         return String.format("%s >= 1", QueueSizeVar());
     }
 
-    private String TakeMessageLabel()
-    {
-        return "Take_Message";
-    }
+//    public String TakeMessageLabel()
+//    {
+//        return "Take_Message";
+//    }
 
     public String ElementMessageGuard(MessageHandler messageHandler, int i)
     {
@@ -304,42 +304,5 @@ public class ActorQueueData
         return assignments;
     }
 
-    private String BufferLabel()
-    {
-        return "Process_Buffer";
-    }
-    
-    public String ReceiveBufferLabelFor(ActorModelData sender)
-    {
-        return Prefix(BufferLabel(), Prefix("from", sender.Name()));
-    }
-    
-    public String SendBufferLabelFor(ActorModelData sender)
-    {
-        return Prefix(BufferLabel(), 
-                Prefix("from",
-                        Prefix(sender.Name(),
-                                Prefix("to", actorModelData.Name()))));
-    }
 
-    Iterable<String> ReceiverBufferLabels()
-    {
-        List<String> bufferLabels = new LinkedList<>();
-        
-        for(ActorModelData sender : actorModelData.SendersToThisActor())
-            bufferLabels.add(ReceiveBufferLabelFor(sender));
-        
-        return bufferLabels;
-    }
-    
-    Iterable<String> SendBufferLabels()
-    {
-        List<String> bufferLabels = new LinkedList<>();
-
-        for (ActorModelData receiver : actorModelData.RecieversFromThisActor()) {
-            bufferLabels.add(receiver.QueueData().SendBufferLabelFor(this.actorModelData));
-        }
-
-        return bufferLabels;
-    }
 }

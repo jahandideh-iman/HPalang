@@ -124,13 +124,13 @@ public class HPalangToCompositionalSXConvertor
                 instance.SetBinding(var, AddPrefix(var, actorData.Name()));
             }
             
-            for(ActorModelData receiver : actorData.RecieversFromThisActor())
-                instance.SetBinding(receiver.QueueData().SendBufferLabelFor(actorData), receiver.QueueData().SendBufferLabelFor(actorData));
-            
-            for (ActorModelData sender : actorData.SendersToThisActor()) {
-                instance.SetBinding(actorData.QueueData().ReceiveBufferLabelFor(sender), 
-                        actorData.QueueData().SendBufferLabelFor(sender));
-            }
+//            for(ActorModelData receiver : actorData.RecieversFromThisActor())
+//                instance.SetBinding(receiver.QueueData().SendBufferLabelFor(actorData), receiver.QueueData().SendBufferLabelFor(actorData));
+//            
+//            for (ActorModelData sender : actorData.SendersToThisActor()) {
+//                instance.SetBinding(actorData.QueueData().ReceiveBufferLabelFor(sender), 
+//                        actorData.QueueData().SendBufferLabelFor(sender));
+//            }
 
             
             for(SendStatement sendStatement : actorData.SendStatements())
@@ -146,8 +146,8 @@ public class HPalangToCompositionalSXConvertor
                     instance.SetBinding(formalParam, actualParam);
                 }
 
-//                instance.SetBinding(receiverData.QueueData().BufferIsEmptyVar(recieverParamName),
-//                        receiverData.QueueData().BufferProcessingLabelFor(receiverData.Name()));
+                instance.SetBinding(receiverData.QueueData().BufferIsEmptyVar(recieverParamName),
+                        receiverData.QueueData().BufferIsEmptyVar(receiverData.Name()));
                 
                 instance.SetBinding(receiverData.QueueData().BufferMessageVar(recieverParamName),
                         receiverData.QueueData().BufferMessageVar(receiverData.Name()));
@@ -169,9 +169,9 @@ public class HPalangToCompositionalSXConvertor
 
             for(String var : actorData.QueueData().QueueBufferVars())
                 systemComp.AddParameter(new RealParameter(AddPrefix(var, actorData.Name()), false));
-            
-            for(String label : actorData.QueueData().SendBufferLabels())
-                systemComp.AddParameter(new LabelParameter(label, true));
+//            
+//            for(String label : actorData.QueueData().SendBufferLabels())
+//                systemComp.AddParameter(new LabelParameter(label, true));
         }
     }
 

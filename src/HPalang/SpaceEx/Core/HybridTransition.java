@@ -11,9 +11,11 @@ package HPalang.SpaceEx.Core;
  */
 public class HybridTransition extends Transition<Location, HybridLabel> implements Visitable
 {
-    public HybridTransition(Location origin, HybridLabel label, Location destination)
+    private final boolean isASAP;
+    public HybridTransition(Location origin, HybridLabel label, Location destination, boolean isASAP)
     {
         super(origin, label, destination);
+        this.isASAP = isASAP;
     }
 
     @Override
@@ -24,6 +26,11 @@ public class HybridTransition extends Transition<Location, HybridLabel> implemen
     
     static public HybridTransition CreateEmpty(Location origin, Location destination)
     {
-        return new HybridTransition(origin, new HybridLabel(), destination);
+        return new HybridTransition(origin, new HybridLabel(), destination, false);
+    }
+
+    public boolean IsASAP()
+    {
+        return isASAP;
     }
 }

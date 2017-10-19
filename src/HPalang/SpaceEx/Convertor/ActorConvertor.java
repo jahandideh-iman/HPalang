@@ -65,7 +65,7 @@ public class ActorConvertor extends Convertor
             actorComponent.AddParameter(new RealParameter(var, true));
         }
 
-        actorComponent.AddParameter(new LabelParameter(actorData.ReadyLabel(), true));
+        //actorComponent.AddParameter(new LabelParameter(actorData.ReadyLabel(), true));
         for (String label : actorData.ExecuteMessageLabels()) {
             actorComponent.AddParameter(new LabelParameter(label, true));
         }
@@ -82,12 +82,12 @@ public class ActorConvertor extends Convertor
             actorComponent.AddParameter(new RealParameter(var, false));
         }
         
-        for(String label: actorData.QueueData().SendBufferLabels())
-            actorComponent.AddParameter(new LabelParameter(label, false));
-        
-        for (String label : actorData.QueueData().ReceiverBufferLabels()) {
-            actorComponent.AddParameter(new LabelParameter(label, false));
-        }
+//        for(String label: actorData.QueueData().SendBufferLabels())
+//            actorComponent.AddParameter(new LabelParameter(label, false));
+//        
+//        for (String label : actorData.QueueData().ReceiverBufferLabels()) {
+//            actorComponent.AddParameter(new LabelParameter(label, false));
+//        }
 
     }
 
@@ -140,11 +140,11 @@ public class ActorConvertor extends Convertor
             }
         }
         
-        for (String label : actorData.QueueData().SendBufferLabels()) {
-            handlersInst.SetBinding(label, label);
-        }
+//        for (String label : actorData.QueueData().SendBufferLabels()) {
+//            handlersInst.SetBinding(label, label);
+//        }
         
-        handlersInst.SetBinding(actorData.ReadyLabel(), actorData.ReadyLabel());
+        //handlersInst.SetBinding(actorData.ReadyLabel(), actorData.ReadyLabel());
         handlersInst.SetBinding(actorData.BusyVar(), actorData.BusyVar());
         
         
@@ -157,7 +157,7 @@ public class ActorConvertor extends Convertor
         for(String elementVars : actorData.QueueData().AllQueueVariables())
             queueInst.SetBinding(elementVars, elementVars);
         
-        queueInst.SetBinding(actorData.ReadyLabel(), actorData.ReadyLabel());
+        //queueInst.SetBinding(actorData.ReadyLabel(), actorData.ReadyLabel());
         //queueInst.SetBinding(actorData.QueueData().TakeMessageLabel(), actorData.QueueData().TakeMessageLabel());
         queueInst.SetBinding(actorData.BusyVar(), actorData.BusyVar());
         
@@ -169,9 +169,9 @@ public class ActorConvertor extends Convertor
             queueInst.SetBinding(param,param);
         }
         
-        for (String label : actorData.QueueData().ReceiverBufferLabels()) {
-            queueInst.SetBinding(label, label);
-        }
+//        for (String label : actorData.QueueData().ReceiverBufferLabels()) {
+//            queueInst.SetBinding(label, label);
+//        }
         actorComponent.AddInstance(queueInst);
     }
     public NetworkComponent GetActorComponent()

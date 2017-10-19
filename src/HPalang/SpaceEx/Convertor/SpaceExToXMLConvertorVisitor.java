@@ -151,6 +151,8 @@ public class SpaceExToXMLConvertorVisitor implements Visitor
         Element transElem = document.createElement("transition");
         transElem.setAttribute("source", transition.GetOrign().GetId());
         transElem.setAttribute("target", transition.GetDestination().GetId());
+        if(transition.IsASAP())
+            transElem.setAttribute("asap", String.valueOf(transition.IsASAP()));
         
         transElem.appendChild(document.createElement("label"))
                 .appendChild(document.createTextNode(transition.GetLabel().GetSyncLabel()));

@@ -380,30 +380,30 @@ public class ActorModelData
         return String.format("%s == %s", variable, value);
     }
 
-//    public String ReceiverMessageBufferEmptyGuard(SendStatement statement)
-//    {
-//        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
-//        
-//        return receiver.queueData.BufferIsEmptyGuard(ReceiverNameIn(statement.ReceiverLocator()));   
-//    }
-
-//    public String SetMessageBufferFullAssignment(SendStatement statement)
-//    {
-//        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
-//
-//        return receiver.queueData.SetBufferFullAssignment(ReceiverNameIn(statement.ReceiverLocator()));
-//    }
-    
-    public String ReceiverBufferLabel(SendStatement statement)
+    public String ReceiverMessageBufferEmptyGuard(SendStatement statement)
     {
         ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
         
-        assert ( receiversFromThisActor.contains(receiver));
-        
-
-        
-        return receiver.queueData.SendBufferLabelFor(this);
+        return receiver.queueData.BufferIsEmptyGuard(ReceiverNameIn(statement.ReceiverLocator()));   
     }
+
+    public String SetMessageBufferFullAssignment(SendStatement statement)
+    {
+        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+
+        return receiver.queueData.SetBufferFullAssignment(ReceiverNameIn(statement.ReceiverLocator()));
+    }
+    
+//    public String ReceiverBufferLabel(SendStatement statement)
+//    {
+//        ActorModelData receiver = FindActorDataFor(statement.ReceiverLocator());
+//        
+//        assert ( receiversFromThisActor.contains(receiver));
+//        
+//
+//        
+//        return receiver.queueData.SendBufferLabelFor(this);
+//    }
     
     public String SetMessageBufferMessageAssignment(SendStatement statement)
     {
@@ -487,7 +487,7 @@ public class ActorModelData
             Message message = FindMessageFor(statement.MessageLocator());
             
             variabls.add(receiver.queueData.BufferMessageVar(recieverName));
-            //variabls.add(receiver.queueData.BufferIsEmptyVar(recieverName));
+            variabls.add(receiver.queueData.BufferIsEmptyVar(recieverName));
             
             List<VariableArgument> arguments = statement.Arguments().AsList();
             for (int i = 0; i < arguments.size(); i++) {
@@ -529,10 +529,10 @@ public class ActorModelData
         return GuardFor(BusyVar(), 0);
     }
 
-    public String ReadyLabel()
-    {
-        return "Ready";
-    }
+//    public String ReadyLabel()
+//    {
+//        return "Ready";
+//    }
 
     private void AddSender(ActorModelData sender)
     {

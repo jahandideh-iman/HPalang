@@ -75,7 +75,7 @@ public class StatementToLocationConvertor
     public HybridTransition GetFirstTransition()
     {
         HybridLabel label = new HybridLabel();
-        HybridTransition trans = new HybridTransition(startOrigin, label, startLocation.GetLoc());
+        HybridTransition trans = new HybridTransition(startOrigin, label, startLocation.GetLoc(), false);
         
         startLocation.ProcessInLabel(label);
         

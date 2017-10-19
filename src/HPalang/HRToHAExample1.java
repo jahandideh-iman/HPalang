@@ -93,9 +93,10 @@ public class HRToHAExample1
         MessageHandler X1 = AType.FindMessageHandler(A__X1_handler);
         IntegerVariable r = (IntegerVariable) X1.Parameters().Find(A__X1_r).Variable();
         
+        X1.AddStatement(new DelayStatement(1f));
         X1.AddStatement(new AssignmentStatement(c, CreateSubtractExpression(new VariableExpression(c), new VariableExpression(r))));
         //X1.AddStatement(CreateSendStatement(bIns, B__Y1_handler));
-        X1.AddStatement(new DelayStatement(1f));
+
         X1.AddStatement(new IfStatement(
                 CreateGreaterExpression(new VariableExpression(c), new ConstantDiscreteExpression(0)), 
                 Statement.StatementsFrom(CreateSendStatement(bIns, B__Y1_handler)), 
