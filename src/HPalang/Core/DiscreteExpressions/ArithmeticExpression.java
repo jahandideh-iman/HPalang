@@ -9,6 +9,7 @@ import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.AddOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.SubtractOperator;
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
@@ -19,6 +20,7 @@ import HPalang.Core.ValuationContainer;
 @Deprecated // Use Binary Expression instead
 public class ArithmeticExpression extends DiscreteExpressionT<ArithmeticExpression>
 {  
+
     public enum Operator
     {
         Invalid, Add,Subtract
@@ -64,5 +66,12 @@ public class ArithmeticExpression extends DiscreteExpressionT<ArithmeticExpressi
     public Expression PartiallyEvaluate(ValuationContainer valuations)
     {
         return expression.PartiallyEvaluate(valuations);
+    }
+    
+    
+    @Override
+    public void Visit(ExpressionVisitor visitor)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

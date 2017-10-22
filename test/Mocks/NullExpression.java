@@ -7,6 +7,7 @@ package Mocks;
 
 import HPalang.Core.Equalitable;
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
@@ -55,6 +56,12 @@ public class NullExpression extends Equalitable<NullExpression> implements Expre
     protected int InternalHashCode()
     {
         return 0;
+    }
+
+    @Override
+    public void Visit(ExpressionVisitor visitor)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

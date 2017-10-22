@@ -12,7 +12,7 @@ import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.HybridTransition;
 import HPalang.SpaceEx.Core.HybridTransitionBuilder;
-import HPalang.SpaceEx.Core.Invarient;
+import HPalang.Core.Invarient;
 import HPalang.SpaceEx.Core.LabelParameter;
 import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.RealParameter;

@@ -5,14 +5,10 @@
  */
 package HPalang.LTSGeneration;
 
-import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.Core.Equalitable;
 import HPalang.LTSGeneration.Labels.Guard;
-import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Set;
 
 /**

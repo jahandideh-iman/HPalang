@@ -5,6 +5,8 @@
  */
 package HPalang.Core.DiscreteExpressions;
 
+import HPalang.Core.ExpressionVisitor;
+
 /**
  *
  * @author Iman Jahandideh
@@ -16,5 +18,13 @@ public class FalseConst extends ConstantDiscreteExpression
     {
         super(0);
     }
+
+    @Override
+    public void Visit(ExpressionVisitor visitor)
+    {
+        visitor.Visit(this);
+    }
+    
+    
     
 }

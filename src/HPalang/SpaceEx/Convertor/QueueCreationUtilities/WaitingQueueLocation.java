@@ -6,7 +6,7 @@
 package HPalang.SpaceEx.Convertor.QueueCreationUtilities;
 
 import HPalang.SpaceEx.Convertor.ActorModelData;
-import HPalang.SpaceEx.Core.Invarient;
+import HPalang.Core.Invarient;
 import java.util.Queue;
 
 /**

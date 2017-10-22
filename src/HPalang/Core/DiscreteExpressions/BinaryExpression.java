@@ -6,6 +6,7 @@
 package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainer;
 
 /**
@@ -76,5 +77,11 @@ public class BinaryExpression extends DiscreteExpressionT<BinaryExpression>
     public String toString()
     {
         return String.format("(%s %s %s)", operand1.toString(), operator.toString(), operand2.toString());
+    }
+
+    @Override
+    public void Visit(ExpressionVisitor visitor)
+    {
+        visitor.Vist(this);
     }
 }

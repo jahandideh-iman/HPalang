@@ -6,6 +6,7 @@
 package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
@@ -61,6 +62,12 @@ public class ConstantDiscreteExpression extends DiscreteExpressionT<ConstantDisc
     public String toString()
     {
         return String.valueOf(constant);
+    }
+
+    @Override
+    public void Visit(ExpressionVisitor visitor)
+    {
+        visitor.Visit(this);
     }
     
     

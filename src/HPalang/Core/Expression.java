@@ -14,4 +14,5 @@ public interface Expression
     public boolean IsComputable(ValuationContainer valuations);
     public int Evaluate(ValuationContainer valuations);
     public Expression PartiallyEvaluate(ValuationContainer valuations);
+    public void Visit(ExpressionVisitor visitor);
 }

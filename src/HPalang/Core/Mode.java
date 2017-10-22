@@ -19,6 +19,7 @@ import java.util.Set;
 public class Mode extends Equalitable<Mode>
 {
     private final String name;
+    //TODO: Use 'Invarient' class instead of string
     private String invariant;
     private Set<DifferentialEquation> equations = new HashSet<>();
     private Guard guard;

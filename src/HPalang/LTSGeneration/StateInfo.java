@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.Equalitable;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.Collection;
 
@@ -12,7 +13,7 @@ import java.util.Collection;
  *
  * @author Iman Jahandideh
  */
-public class StateInfo
+public class StateInfo extends Equalitable<StateInfo>
 {
     private final GlobalRunTimeState state;
     private final Collection<Transition> ins;
@@ -33,5 +34,19 @@ public class StateInfo
     public Collection<Transition> Outs()
     {
         return outs;
+    }
+
+    @Override
+    protected boolean InternalEquals(StateInfo other)
+    {
+        return this.state.equals(other.state) &&
+                this.outs.equals(other.outs) &&
+                this.ins.equals(other.ins);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return 0;
     }
 }

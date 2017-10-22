@@ -86,7 +86,7 @@ public abstract class ActorType
 
     private void AssertValid(Variable var)
     {
-        assert (validVariableTypes.contains(var.type()));
+        assert (validVariableTypes.contains(var.Type()));
     }
     
     public Variable FindVariable(String variableName)

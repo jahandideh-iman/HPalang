@@ -6,6 +6,7 @@
 package Mocks;
 
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
@@ -35,6 +36,12 @@ public class ComputableExpression implements Expression
 
     @Override
     public Expression PartiallyEvaluate(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void Visit(ExpressionVisitor visitor)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

@@ -5,10 +5,11 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.HybridAutomataGeneration.Mocks.TransitionSOSRuleMonitor;
+import HPalang.HybridAutomataGeneration.Mocks.SOSRuleMonitor;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
 import TestUtilities.CoreUtility;
 import static org.hamcrest.CoreMatchers.*;
@@ -43,13 +44,15 @@ public class HybridAutomatonGeneratorTest
         lts.AddTransition(state1, new SoftwareLabel(), state2);
         lts.AddTransition(state2, new SoftwareLabel(), state1);
         
-        TransitionSOSRuleMonitor rule = new TransitionSOSRuleMonitor();
+        SOSRuleMonitor rule = new SOSRuleMonitor();
         
         generator.AddSOSRule(rule);
         
-        generator.Generate(lts);
+        generator.Generate(lts, null);
         
-        assertThat(rule.appliedTransitions,hasItem(new Transition(state1, new SoftwareLabel(), state2)));
+        StateInfo stateInfo = new StateInfo(state1, lts.GetInTransitionFor(state1), lts.GetOutTransitionsFor(state1));
+        
+        assertThat(rule.appliedStateInfos,hasItem(stateInfo));
     }
   
 }

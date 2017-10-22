@@ -6,25 +6,17 @@
 package HPalang;
 
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
-import HPalang.Core.SoftwareActor;
-import HPalang.Core.ContinuousVariable;
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.MultiplyOperator;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.MainBlock;
-import HPalang.Core.MessageHandler;
-import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Mode;
 import HPalang.Core.ModelDefinition;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
-import HPalang.Core.Statement;
 import HPalang.Core.Statements.AssignmentStatement;
-import HPalang.Core.Statements.SendStatement;
 import HPalang.Core.Variables.RealVariable;
-import HPalang.LTSGeneration.Labels.Guard;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import static HPalang.ModelCreationUtilities.*;
 
 /**
@@ -46,9 +38,11 @@ public class BouncingBallModel
         FillSkeletonForBallType(ballType);
         FillFleshForBallType(ballType);
         
-        PhysicalActor ball = new PhysicalActor("ball", ballType, 10);
+        PhysicalActor ball1 = new PhysicalActor("ball1", ballType, 10);
+        PhysicalActor ball2 = new PhysicalActor("ball2", ballType, 10);
         
-        definition.AddActor(ball);
+        definition.AddActor(ball1);
+        definition.AddActor(ball2);
         
         definition.SetMainBlock(new MainBlock());
 

@@ -6,8 +6,9 @@
 package HPalang.HybridAutomataGeneration.Mocks;
 
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
-import HPalang.HybridAutomataGeneration.SOSRules.TransitionSOSRule;
+import HPalang.HybridAutomataGeneration.SOSRule;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
+import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
 import java.util.LinkedList;
 import java.util.List;
@@ -16,16 +17,20 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
-public class TransitionSOSRuleMonitor implements TransitionSOSRule
+public class SOSRuleMonitor implements SOSRule
 {
+    public List<StateInfo> appliedStateInfos = new LinkedList<>();
 
-    public List<Transition> appliedTransitions = new LinkedList<>();
-
+    @Override
+    public void TryApply(StateInfo globalStateInfo, HybridAutomatonGenerator generator)
+    {
+        appliedStateInfos.add(globalStateInfo);
+    }
 
     @Override
     public void TryApply(Transition transition, HybridAutomatonGenerator generator)
     {
-        appliedTransitions.add(transition);
+        
     }
     
 }

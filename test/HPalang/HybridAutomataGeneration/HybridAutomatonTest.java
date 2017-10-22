@@ -6,6 +6,8 @@
 package HPalang.HybridAutomataGeneration;
 
 import HPalang.Core.DifferentialEquation;
+import HPalang.Core.DiscreteExpressions.TrueConst;
+import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
@@ -41,13 +43,17 @@ public class HybridAutomatonTest
         Location Loc2 = new Location();
         loc1.AddEquation(DifferentialEquation.Empty("eq1"));
         
+        HybridLabel label = new HybridLabel(new Guard(new TrueConst()), false);
+        
         automaton.AddLocation(loc1);
         automaton.AddLocation(Loc2);
         
-        automaton.AddTransition(loc1, new GuardedlLabel("Cond"), Loc2);
-        automaton.AddTransition(loc1, new GuardedlLabel("Cond"), Loc2);
+        automaton.AddTransition(loc1, label, Loc2);
+        automaton.AddTransition(loc1, label, Loc2);
         
         assertThat(automaton.GetTransitions().size(), equalTo(1));
     }
+    
+    
     
 }

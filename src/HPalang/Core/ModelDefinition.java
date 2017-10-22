@@ -99,4 +99,12 @@ public class ModelDefinition
         return types;
     }
 
+    public Iterable<Actor> Actors()
+    {
+        List<Actor> actors = new LinkedList<>();
+        actors.addAll(physicalActors);
+        actors.addAll(softwareActors);
+        return actors;
+    }
+
 }

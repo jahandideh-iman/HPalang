@@ -8,7 +8,7 @@ package HPalang.SpaceEx.Convertor.StatementConversionUtilities;
 import HPalang.SpaceEx.Convertor.ActorModelData;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
-import HPalang.SpaceEx.Core.Invarient;
+import HPalang.Core.Invarient;
 import HPalang.SpaceEx.Core.Location;
 
 /**

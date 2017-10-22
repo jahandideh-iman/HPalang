@@ -5,6 +5,7 @@
  */
 package HPalang.SpaceEx.Core;
 
+import HPalang.Core.Invarient;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;

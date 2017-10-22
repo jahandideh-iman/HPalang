@@ -6,6 +6,7 @@
 package HPalang;
 
 import HPalang.Convertors.HybridAutomatonToDMEConvertor;
+import HPalang.Convertors.HybridAutomatonToSXConvertor;
 import HPalang.Convertors.LTSToAUTConvertor;
 import HPalang.Convertors.LTSToFSMConvertor;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
@@ -57,14 +58,14 @@ public class Main {
     {
         ModelDefinition definition;
         if(args.length ==0)
-            definition = HRToHAExample1.Create();
+            definition = BouncingBallModel.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
         LTSGenerator tierOneLTSGenerator = CreateTierOneLTSGenrator();
         
-        //HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
-        //hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
+        HybridAutomatonGenerator hybridAutomatonGenerator = new HybridAutomatonGenerator();
+        hybridAutomatonGenerator.AddSOSRule(new ConversionRule());
         
          
         ModeDefinitionToGlobalStateConvertor convertor = new ModeDefinitionToGlobalStateConvertor();
@@ -81,10 +82,10 @@ public class Main {
         //LabeledTransitionSystem reduceLTS =  new LTSReducer().Reduce(lts);
         //OutputLTS("ReducedLTS", reduceLTS, writer);
         
-//        HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts);
+        HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts, definition);
 //        
 //        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
-//        writer.Write("output_HA.xml", new HybridAutomatonToDMEConvertor().Convert(automaton));
+        writer.Write("output_HA.xml", new HybridAutomatonToSXConvertor().Convert(automaton));
 //        
 //        System.out.println("LTS(A) Pruning States : " + lts.States().size());
 //        System.out.println("LTS(A) Pruning Transition : " + lts.Transitions().size());

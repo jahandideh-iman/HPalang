@@ -6,6 +6,7 @@
 package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.Variable;
@@ -67,5 +68,10 @@ public class VariableExpression extends DiscreteExpressionT<VariableExpression>
         return variable.Name();
     }
     
+    @Override
+    public void Visit(ExpressionVisitor visitor)
+    {
+        visitor.Visit(this);
+    }
     
 }

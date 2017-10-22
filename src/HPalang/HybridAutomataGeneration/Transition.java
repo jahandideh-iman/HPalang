@@ -5,7 +5,6 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import java.util.Objects;
 
 
@@ -18,9 +17,9 @@ public class Transition
         
     private final Location origin;
     private final Location destination;
-    private final GuardedlLabel label;
+    private final HybridLabel label;
 
-    public Transition(Location origin, GuardedlLabel label, Location destination)
+    public Transition(Location origin, HybridLabel label, Location destination)
     {
         this.origin = origin;
         this.destination = destination;
@@ -37,7 +36,7 @@ public class Transition
         return destination;
     }
 
-    public GuardedlLabel GetLabel()
+    public HybridLabel GetLabel()
     {
         return label;
     }

@@ -71,7 +71,7 @@ public class ModelCreationUtilities
     public static void AddPort(ActorType actorType, String portName, Variable targetVariable)
     {
         MessageHandler port = new MessageHandler(Message.MessageType.Data);
-        Variable localVariable =CreateVariable(targetVariable.type(),"local_" + portName); 
+        Variable localVariable =CreateVariable(targetVariable.Type(),"local_" + portName); 
         port.Parameters().Add(new VariableParameter(localVariable));
         port.AddStatement(new AssignmentStatement(targetVariable, new VariableExpression(localVariable)));
         

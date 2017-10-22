@@ -7,11 +7,12 @@ package HPalang.Core.ContinuousExpressions;
 
 import HPalang.Core.ContinuousExpression;
 import HPalang.Core.Equalitable;
+import HPalang.Core.Expression;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public abstract class ContinuousExpressionT<T> extends Equalitable<T> implements ContinuousExpression
+public abstract class ContinuousExpressionT<T> extends Equalitable<T> implements Expression
 {
 }

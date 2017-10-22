@@ -12,6 +12,7 @@ import HPalang.Core.DiscreteExpressions.BinaryOperators.GreaterOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserEqualOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LesserOperator;
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
@@ -84,4 +85,12 @@ public class ComparisonExpression extends DiscreteExpressionT<ComparisonExpressi
     {
         return expression.PartiallyEvaluate(valuations);
     }
+    
+    
+    @Override
+    public void Visit(ExpressionVisitor visitor)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

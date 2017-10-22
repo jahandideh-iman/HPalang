@@ -30,7 +30,7 @@ public abstract class Variable extends Equalitable<Variable>
         this.type = type;
     }
     
-    public Type type()
+    public Type Type()
     {
         return type;
     }

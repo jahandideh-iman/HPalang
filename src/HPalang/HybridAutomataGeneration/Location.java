@@ -5,24 +5,40 @@
  */
 package HPalang.HybridAutomataGeneration;
 
+import HPalang.Core.Invarient;
 import HPalang.Core.DifferentialEquation;
+import HPalang.Core.Equalitable;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Objects;
 import java.util.Set;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class Location
+public class Location extends Equalitable<Location>
 {
-    private final Set<String> invariants = new HashSet<>();
+    private final Set<Invarient> invariants = new HashSet<>();
     private final Set<DifferentialEquation> equations = new HashSet<>();
+    
+
+    
+//    public Location(GlobalRunTimeState ltsState)
+//    {
+//        this.ltsState = ltsState;
+//        
+//        for(PhysicalActorState actorState : ltsState.ContinuousState().ActorStates())
+//        {
+//            invariants.add(new Invarient(actorState.Mode().GetInvarient()));
+//            equations.addAll(actorState.Mode().GetEquations());
+//        }
+//    }
     
     public void AddInvariant(String invarient)
     {
-        invariants.add(invarient);
+        invariants.add(new Invarient(invarient));
     }
     
     public void AddEquation(DifferentialEquation equation)
@@ -30,30 +46,13 @@ public class Location
         equations.add(equation);
     }
     
-    @Override
-    public boolean equals(Object other)
+    public void AddEquations(Set<DifferentialEquation> newEquations)
     {
-         if(other == null)
-            return false;
-        
-        if (!this.getClass().isAssignableFrom(other.getClass()))
-            return false;
-            
-        Location otherLocation = (Location) other;
-        return this.invariants.equals(otherLocation.invariants)
-                && this.equations.equals(otherLocation.equations);
+        this.equations.addAll(newEquations);
     }
+    
 
-    @Override
-    public int hashCode()
-    {
-        int hash = 7;
-        hash = 97 * hash + Objects.hashCode(this.invariants);
-        hash = 97 * hash + Objects.hashCode(this.equations);
-        return hash;
-    }
-
-    public Set<String> GetInvarients()
+    public Set<Invarient> GetInvarients()
     {
         return Collections.unmodifiableSet(invariants);
     }
@@ -62,4 +61,18 @@ public class Location
     {
         return Collections.unmodifiableSet(equations);
     }
+
+    @Override
+    protected boolean InternalEquals(Location other)
+    {
+        return other.equations.equals(this.equations) &&
+                other.invariants.equals(this.invariants);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return 0;
+    }
+
 }

@@ -14,7 +14,7 @@ import static HPalang.SpaceEx.Convertor.Utilities.TransitionCreationUtilities.*;
 import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
-import HPalang.SpaceEx.Core.Invarient;
+import HPalang.Core.Invarient;
 import HPalang.SpaceEx.Core.LabelParameter;
 import HPalang.SpaceEx.Core.RealParameter;
 import java.util.LinkedList;

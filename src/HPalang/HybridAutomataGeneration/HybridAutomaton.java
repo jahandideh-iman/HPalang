@@ -5,7 +5,6 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -18,10 +17,11 @@ import java.util.Set;
  */
 public class HybridAutomaton
 {
-    private Set<Location> locations = new HashSet<>();
+    private final Set<Location> locations = new HashSet<>();
     private Location initialLocation = null;
     
-    private List<Transition> transitions = new LinkedList<>();
+    private final List<Transition> transitions = new LinkedList<>();
+    private final List<String> variables = new LinkedList<>();
     
     public void SetInitialState(Location location)
     {
@@ -50,7 +50,7 @@ public class HybridAutomaton
         return locations;
     }
     
-    public void AddTransition(Location origin,GuardedlLabel label, Location destination)
+    public void AddTransition(Location origin,HybridLabel label, Location destination)
     {
         Transition transtion = new Transition(origin,label,destination);
         if(transitions.contains(transtion))
@@ -65,7 +65,7 @@ public class HybridAutomaton
         return transitions;
     }
     
-    public boolean HasTransition(Location origin,GuardedlLabel label, Location destination)
+    public boolean HasTransition(Location origin, HybridLabel label, Location destination)
     {
         return transitions.contains(new Transition(origin, label, destination));
     }  
@@ -105,5 +105,15 @@ public class HybridAutomaton
             RemoveTranstion(transition);
         locations.remove(state);
 
+    }
+
+    void AddVariable(String name)
+    {
+        variables.add(name);
+    }
+
+    public Iterable<String> Variables()
+    {
+        return variables;
     }
 }

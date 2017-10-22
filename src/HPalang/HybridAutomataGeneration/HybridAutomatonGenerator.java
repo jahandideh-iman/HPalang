@@ -5,15 +5,17 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.HybridAutomataGeneration.SOSRules.TransitionSOSRule;
-import HPalang.LTSGeneration.Labels.GuardedlLabel;
+import HPalang.Core.Actor;
+import HPalang.Core.ActorType;
+import HPalang.Core.ModelDefinition;
+import HPalang.Core.Variable;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
-import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.Transition;
+import HPalang.LTSGeneration.StateInfo;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  *
@@ -22,69 +24,77 @@ import java.util.List;
 public class HybridAutomatonGenerator 
 {
     private HybridAutomaton hybridAutomaton;
-        
     
-    private List<TransitionSOSRule> sosRules = new ArrayList<>();
+    private final List<SOSRule> sosRules = new ArrayList<>();
+    private final Map<GlobalRunTimeState, Location> processedLocationsMap = new HashMap<>();
     
-    
-    public void AddSOSRule(TransitionSOSRule rule)
+    public void AddSOSRule(SOSRule rule)
     {
         sosRules.add(rule);
     }
 
-    public HybridAutomaton Generate(LabeledTransitionSystem lts)
+    public HybridAutomaton Generate(LabeledTransitionSystem lts, ModelDefinition modelDefinition)
     {
         hybridAutomaton = new HybridAutomaton();
-//        currentGlobalState = initialState;
-//        transitionSystem.SetInitialState(currentGlobalState);
-//        notVisitedStates.add(currentGlobalState);
         
-        for(Transition transition : lts.Transitions())
+        ConvertVariables(modelDefinition);
+
+        for(GlobalRunTimeState globalState : lts.States())
         {
-            for(TransitionSOSRule rule : sosRules)
-                rule.TryApply(transition, this);
+
+            for(SOSRule rule : sosRules)
+                rule.TryApply(
+                        new StateInfo(
+                                globalState.DeepCopy(), 
+                                lts.GetInTransitionFor(globalState),
+                                lts.GetOutTransitionsFor(globalState)),
+                        this);
         }
         
-        hybridAutomaton.SetInitialState(ToLocation(lts.InitialState()));
+        for(HPalang.LTSGeneration.Transition transiton : lts.Transitions())
+        {
+
+            for(SOSRule rule : sosRules)
+                rule.TryApply(
+                        transiton,
+                        this);
+        }
+        
+        //hybridAutomaton.SetInitialState(LocationOf(lts.InitialState()));
             
-//        while (!notVisitedStates.isEmpty()) 
-//        { 
-//            currentGlobalState = notVisitedStates.poll();
-//            
-//            for(SOSRule rule : sosRules)
-//                rule.TryApply(currentGlobalState, this);
-//            
-//        }
         return hybridAutomaton;
     }
     
-//    public void AddTransition(Label label,GlobalRunTimeState destination)
-//    {
-//        if(transitionSystem.HasState(destination) == false)
-//            notVisitedStates.add(destination);
-//                
-//        transitionSystem.AddState(destination);
-//        transitionSystem.AddTransition(currentGlobalState, label, destination);
-//        if(transitionSystem.Transitions().size() == 25)
-//            transitionSystem.Transitions();       
-//    }
-
-    public void AddTransition(Location origin, GuardedlLabel label, Location destination)
+    public void AddLocationFor(Location location,GlobalRunTimeState runTimeState)
+    {
+        hybridAutomaton.AddLocation(location);
+        processedLocationsMap.put(runTimeState, location);
+    }
+    
+    public void AddTransition(Location origin, HybridLabel label, Location destination)
     {
         hybridAutomaton.AddTransition(origin, label, destination);
     }
     
-    public Location ToLocation(GlobalRunTimeState state)
-    {
-        Location location = new Location();
+    public Location LocationOf(GlobalRunTimeState state)
+    {  
+        if(processedLocationsMap.containsKey(state))
+            return processedLocationsMap.get(state);
         
-//        for(SoftwareActorState actorState : state.GetActorStates())
-//            for(ContinuousBehavior behavior : actorState.ContinuousBehaviors())
-//            {
-//                location.AddEquation(behavior.GetEquation());
-//                location.AddInvariant(behavior.GetInvarient());
-//            }
-        
-        return location;
+        throw new RuntimeException("State is not processed before.");
     }
+
+    private void ConvertVariables(ModelDefinition definition)
+    {
+        if(definition == null)
+            return;
+        
+        for(Actor actor : definition.Actors())
+            for(Variable var : actor.Type().Variables())
+                if(var.Type() == Variable.Type.floatingPoint || var.Type() == Variable.Type.real)
+                    hybridAutomaton.AddVariable(var.Name());
+            
+    }
+    
+    
 }

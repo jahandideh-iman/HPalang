@@ -5,9 +5,8 @@
  */
 package HPalang.LTSGeneration.Labels;
 
-import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.Equalitable;
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.Expression;
 
 /**
  *
@@ -15,9 +14,9 @@ import HPalang.LTSGeneration.Label;
  */
 public class Guard extends Equalitable<Guard>
 {
-    private final BinaryExpression guardExpression;
+    private final Expression guardExpression;
     
-    public Guard(BinaryExpression guardExpression)
+    public Guard(Expression guardExpression)
     {
         // TODO: Assert that the guard expression is a comparison expression.
         this.guardExpression = guardExpression;
@@ -35,7 +34,7 @@ public class Guard extends Equalitable<Guard>
         return 0;
     }
 
-    public BinaryExpression Expression()
+    public Expression Expression()
     {
         return guardExpression;
     }

@@ -9,6 +9,7 @@ import HPalang.Core.DiscreteExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalOrOperator;
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 
@@ -72,4 +73,12 @@ public class LogicalExpression extends DiscreteExpressionT<LogicalExpression>
     {
         return expression.PartiallyEvaluate(valuations);
     }
+    
+    
+    @Override
+    public void Visit(ExpressionVisitor visitor)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
 }

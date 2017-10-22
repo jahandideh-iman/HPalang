@@ -31,7 +31,7 @@ public class VariableParameter extends Equalitable<VariableParameter>
     
     public Variable.Type Type()
     {
-        return variable.type();
+        return variable.Type();
     }
 
     @Override
