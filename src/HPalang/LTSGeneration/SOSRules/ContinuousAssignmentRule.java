@@ -15,6 +15,7 @@ import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
  *
  * @author Iman Jahandideh
  */
+@Deprecated // Use AssignmentRule
 public class ContinuousAssignmentRule extends PhysicalStatementRule<ContinuousAssignmentStatement>
 {
     @Override

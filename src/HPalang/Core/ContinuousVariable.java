@@ -17,5 +17,11 @@ public class ContinuousVariable extends Variable
     {
         super(name, Type.real);
     }
+
+    @Override
+    public void Visit(VariableVisitor visitor)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

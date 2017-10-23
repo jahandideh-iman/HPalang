@@ -6,10 +6,12 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionScopeUnwrapper;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Variable;
 import HPalang.LTSGeneration.Labels.Reset;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import Mocks.ComputableExpression;
 import Mocks.EmptyExpression;
@@ -73,11 +75,14 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
         
         ApplyAndVerifyRuleOn(globalState);
         
-        Reset expectedReset = new Reset(variable, partialExpression);
+        Reset expectedReset = new Reset(ConvertToScopedVariable(variable,actorState), partialExpression);
         
         assertThat((Set<Reset>)CollectedLabel().Resets(), hasItem(equalTo(expectedReset)));
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
-    
+    private Variable ConvertToScopedVariable(Variable var, ActorState actorState)
+    {
+        return new ExpressionScopeUnwrapper().Unwrap(var, actorState.Actor().Name());
+    }
 }

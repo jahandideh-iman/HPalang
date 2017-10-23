@@ -6,6 +6,7 @@
 package Mocks;
 
 import HPalang.Core.Variable;
+import HPalang.Core.VariableVisitor;
 
 /**
  *
@@ -17,6 +18,12 @@ public class ComputableVariable extends Variable
     public ComputableVariable(String name)
     {
         super(name);
+    }
+
+    @Override
+    public void Visit(VariableVisitor visitor)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
     
 }

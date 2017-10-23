@@ -5,9 +5,12 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.Actor;
+import HPalang.Core.ExpressionScopeUnwrapper;
 import HPalang.Core.Mode;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
+import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import static HPalang.LTSGeneration.SOSRules.Utilities.NoNetworkActions;
 import static HPalang.LTSGeneration.SOSRules.Utilities.NoSoftwareActions;
@@ -40,6 +43,12 @@ public class ContinuousBehaviorExpirationRule extends PhysicalActorLevelRule
         
         newActorState.ExecutionQueueState().Statements().Enqueue(mode.Actions());
         
-        collector.AddTransition(new ContinuousLabel(mode.Guard()), newGlobalState);
-    }   
+        collector.AddTransition(new ContinuousLabel(UnscopedGuard(mode.Guard(),actorState.Actor())), newGlobalState);
+    }  
+    
+    private Guard UnscopedGuard(Guard guard, Actor owner)
+    {
+        ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
+        return new Guard(unwrapper.Unwrap(guard.Expression(), owner.Name()));
+    }
 }

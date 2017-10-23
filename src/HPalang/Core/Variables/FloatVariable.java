@@ -6,6 +6,7 @@
 package HPalang.Core.Variables;
 
 import HPalang.Core.Variable;
+import HPalang.Core.VariableVisitor;
 
 /**
  *
@@ -17,6 +18,12 @@ public final class FloatVariable extends Variable
     public FloatVariable(String name)
     {
         super(name, Type.floatingPoint);
+    }
+
+    @Override
+    public void Visit(VariableVisitor visitor)
+    {
+        visitor.Visit(this);
     }
     
 }

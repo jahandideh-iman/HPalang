@@ -7,6 +7,7 @@ package HPalang.HybridAutomataGeneration;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ActorType;
+import HPalang.Core.ExpressionScopeUnwrapper;
 import HPalang.Core.ModelDefinition;
 import HPalang.Core.Variable;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
@@ -89,10 +90,11 @@ public class HybridAutomatonGenerator
         if(definition == null)
             return;
         
+        ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
         for(Actor actor : definition.Actors())
             for(Variable var : actor.Type().Variables())
                 if(var.Type() == Variable.Type.floatingPoint || var.Type() == Variable.Type.real)
-                    hybridAutomaton.AddVariable(var.Name());
+                    hybridAutomaton.AddVariable(unwrapper.Unwrap(var, actor.Name()).Name());
             
     }
     

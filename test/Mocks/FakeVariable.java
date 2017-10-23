@@ -6,6 +6,7 @@
 package Mocks;
 
 import HPalang.Core.Variable;
+import HPalang.Core.VariableVisitor;
 
 /**
  *
@@ -22,6 +23,12 @@ public class FakeVariable extends Variable
     public FakeVariable(String name, Variable.Type type)
     {
         super(name, type);
+    }
+
+    @Override
+    public void Visit(VariableVisitor visitor)
+    {
+        visitor.Visit((Variable)this);
     }
     
 }

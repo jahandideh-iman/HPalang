@@ -36,7 +36,7 @@ public class EmptyExpression implements Expression
     @Override
     public void Visit(ExpressionVisitor visitor)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        visitor.Visit((Expression)this);
     }
     
 }

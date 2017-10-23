@@ -5,6 +5,8 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.Expression;
+import HPalang.Core.ExpressionScopeUnwrapper;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.ValuationContainer;
 import HPalang.LTSGeneration.Labels.Reset;
@@ -44,10 +46,15 @@ public class AssignmentStatementRule extends StatementRule<AssignmentStatement>
         if(statement.Expression().IsComputable(actorState.ValuationState().Valuation()) == false)
         {
             
+            ExpressionScopeUnwrapper scopeUnwrapper = new ExpressionScopeUnwrapper();
+            String actorName = actorState.Actor().Name();
+            
             return new SoftwareLabel(Reset.From(
                     new Reset(
-                            statement.Variable(),
-                            statement.Expression().PartiallyEvaluate(valuation)
+                            scopeUnwrapper.Unwrap(statement.Variable(), actorName),
+                            scopeUnwrapper.Unwrap(
+                                    statement.Expression().PartiallyEvaluate(valuation),
+                                    actorName)
                     )));
         }
        

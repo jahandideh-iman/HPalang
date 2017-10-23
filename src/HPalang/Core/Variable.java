@@ -30,6 +30,8 @@ public abstract class Variable extends Equalitable<Variable>
         this.type = type;
     }
     
+    public abstract void Visit(VariableVisitor visitor);
+    
     public Type Type()
     {
         return type;
@@ -58,4 +60,5 @@ public abstract class Variable extends Equalitable<Variable>
     {
         return name;
     }
+    
 }

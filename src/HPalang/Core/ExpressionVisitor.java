@@ -6,6 +6,7 @@
 package HPalang.Core;
 
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
+import HPalang.Core.DiscreteExpressions.ArithmeticExpression;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.ComparisonExpression;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
@@ -23,10 +24,14 @@ public interface ExpressionVisitor
     public void Visit(VariableExpression expr);
     public void Visit(ConstantContinuousExpression expr);
     public void Visit(ConstantDiscreteExpression expr);
-    public void Visit(ArithmeticException expr);
     public void Vist(BinaryExpression expr);
-    public void Visit(ComparisonExpression expr);
     public void Visit(TrueConst expr);
     public void Visit(FalseConst expr);
+    
+    public void Visit(ComparisonExpression expr);
+    public void Visit(ArithmeticExpression expr);
     public void Visit(LogicalExpression expr);
+    
+    // NOTE: This is only for Mock Expressions.
+    public void Visit(Expression expr);
 }

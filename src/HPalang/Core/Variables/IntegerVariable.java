@@ -6,6 +6,7 @@
 package HPalang.Core.Variables;
 
 import HPalang.Core.Variable;
+import HPalang.Core.VariableVisitor;
 
 /**
  *
@@ -18,4 +19,10 @@ public /*final*/ class IntegerVariable extends Variable
     {
         super(name, Type.integer);
     } 
+    
+    @Override
+    public void Visit(VariableVisitor visitor)
+    {
+        visitor.Visit(this);
+    }
 }

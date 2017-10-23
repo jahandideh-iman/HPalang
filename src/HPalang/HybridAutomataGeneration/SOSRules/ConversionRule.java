@@ -7,6 +7,7 @@ package HPalang.HybridAutomataGeneration.SOSRules;
 
 import HPalang.Core.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.TrueConst;
+import HPalang.Core.ExpressionScopeUnwrapper;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.HybridAutomataGeneration.HybridLabel;
@@ -118,6 +119,7 @@ public class ConversionRule implements SOSRule
     {
         Location location = new Location();
         
+        ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
         for(PhysicalActorState actorState : state.ContinuousState().ActorStates())
         {
             

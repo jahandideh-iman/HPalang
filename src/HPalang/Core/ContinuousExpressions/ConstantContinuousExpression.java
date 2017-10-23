@@ -68,7 +68,7 @@ public class ConstantContinuousExpression extends ContinuousExpressionT<Constant
     @Override
     public void Visit(ExpressionVisitor visitor)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        visitor.Visit(this);
     }
     
 }

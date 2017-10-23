@@ -6,6 +6,7 @@
 package HPalang.Core.Variables;
 
 import HPalang.Core.Variable;
+import HPalang.Core.VariableVisitor;
 
 /**
  *
@@ -19,4 +20,9 @@ public final class RealVariable extends Variable
         super(name, Type.real);
     }
     
+    @Override
+    public void Visit(VariableVisitor visitor)
+    {
+        visitor.Visit(this);
+    }
 }
