@@ -8,7 +8,7 @@ package HPalang.SpaceEx.Convertor.StatementConversionUtilities;
 import HPalang.SpaceEx.Convertor.ActorModelData;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
-import HPalang.Core.Invarient;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.SpaceEx.Core.Location;
 
 /**
@@ -23,7 +23,7 @@ public abstract class UrgentLocation extends StatementLocation
         super(name ,actorData);
 
 
-        loc.AddInvarient(new Invarient(actorData.GetUrgentInvarient()));
+        loc.AddInvarient(actorData.GetUrgentInvarient());
         loc.AddFlow(new Flow(actorData.GetUrgentFlow()));
     }
 

@@ -5,12 +5,10 @@
  */
 package HPalang;
 
-import HPalang.Convertors.HybridAutomatonToDMEConvertor;
 import HPalang.Convertors.HybridAutomatonToSXConvertor;
 import HPalang.Convertors.LTSToAUTConvertor;
 import HPalang.Convertors.LTSToFSMConvertor;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
-import HPalang.Convertors.LTSToXMLConvertor;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
 import HPalang.Core.ModelDefinition;
@@ -23,7 +21,6 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Variable;
-import HPalang.LTSGeneration.Labels.GuardedlLabel;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.Guard;
@@ -58,7 +55,7 @@ public class Main {
     {
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BouncingBallModel.Create();
+            definition = HRToHAExample1.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         

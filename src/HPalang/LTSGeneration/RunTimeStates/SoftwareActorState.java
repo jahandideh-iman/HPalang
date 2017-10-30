@@ -14,7 +14,7 @@ import HPalang.LTSGeneration.CompositeStateT;
  */
 public class SoftwareActorState extends ActorState<SoftwareActorState>
 {    
-    private boolean isSuspended = false;
+
    
     public SoftwareActorState(SoftwareActor actor)
     {
@@ -25,17 +25,13 @@ public class SoftwareActorState extends ActorState<SoftwareActorState>
     {
        return (SoftwareActor)Actor();
     }
-       
+    
+    @Override
     public void SetSuspended(boolean suspended)
     {
         isSuspended = suspended;
     }
-    
-    public boolean IsSuspended()
-    {
-        return isSuspended;
-    }
-    
+        
     @Override
     protected SoftwareActorState NewInstance()
     {

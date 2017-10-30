@@ -3,13 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Mocks;
-
-import HPalang.Core.Equalitable;
-import HPalang.Core.Expression;
-import HPalang.Core.ExpressionVisitor;
-import HPalang.Core.ValuationContainers.SimpleValuationContainer;
-import HPalang.Core.ValuationContainer;
+package HPalang.Core;
 
 /**
  *
@@ -59,7 +53,7 @@ public class NullExpression extends Equalitable<NullExpression> implements Expre
     }
 
     @Override
-    public void Visit(ExpressionVisitor visitor)
+    public void Visit(Visitor visitor)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

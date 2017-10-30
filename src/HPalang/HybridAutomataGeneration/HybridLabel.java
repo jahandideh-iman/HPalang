@@ -36,6 +36,11 @@ public class HybridLabel extends Label<HybridLabel>
         this.isASAP = isASAP;
     }
     
+    public boolean IsASAP()
+    {
+        return isASAP;
+    }
+    
     @Override
     protected int InternalHashCode()
     {

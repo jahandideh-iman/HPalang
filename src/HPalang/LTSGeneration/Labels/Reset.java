@@ -7,7 +7,9 @@ package HPalang.LTSGeneration.Labels;
 
 import HPalang.Core.Equalitable;
 import HPalang.Core.Expression;
+import HPalang.Core.ValuationContainer;
 import HPalang.Core.Variable;
+import HPalang.Core.Visitor;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.Set;
@@ -16,7 +18,7 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
-public class Reset extends Equalitable<Reset>
+public class Reset extends  Equalitable<Reset> implements Expression
 {
     private final Variable variable;
     private final Expression expression;
@@ -43,6 +45,11 @@ public class Reset extends Equalitable<Reset>
     {
         return variable;
     }
+    
+    public Expression Expression()
+    {
+        return expression;
+    }
 
     @Override
     public String toString()
@@ -53,6 +60,31 @@ public class Reset extends Equalitable<Reset>
     static public Set<Reset> From(Reset ...resets)
     {
         return new LinkedHashSet<>(Arrays.asList(resets));
+    }
+
+    @Override
+    public boolean IsComputable(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int Evaluate(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Expression PartiallyEvaluate(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void Visit(Visitor visitor)
+    {
+        if(visitor instanceof ResetVisitor)
+            ((ResetVisitor)visitor).Visit(this);
     }
     
 }

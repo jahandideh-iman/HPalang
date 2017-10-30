@@ -6,7 +6,6 @@
 package HPalang.Core;
 
 import HPalang.Core.Variables.IntegerVariable;
-import Mocks.NullExpression;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;

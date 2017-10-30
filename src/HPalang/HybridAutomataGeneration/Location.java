@@ -5,8 +5,8 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.Core.Invarient;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.Invarient;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.Equalitable;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
@@ -22,23 +22,16 @@ public class Location extends Equalitable<Location>
 {
     private final Set<Invarient> invariants = new HashSet<>();
     private final Set<DifferentialEquation> equations = new HashSet<>();
+    private final String name;
     
-
-    
-//    public Location(GlobalRunTimeState ltsState)
-//    {
-//        this.ltsState = ltsState;
-//        
-//        for(PhysicalActorState actorState : ltsState.ContinuousState().ActorStates())
-//        {
-//            invariants.add(new Invarient(actorState.Mode().GetInvarient()));
-//            equations.addAll(actorState.Mode().GetEquations());
-//        }
-//    }
-    
-    public void AddInvariant(String invarient)
+    public Location(String name)
     {
-        invariants.add(new Invarient(invarient));
+        this.name = name;
+    }
+ 
+    public void AddInvariant(Invarient invarient)
+    {
+        invariants.add(invarient);
     }
     
     public void AddEquation(DifferentialEquation equation)
@@ -65,7 +58,8 @@ public class Location extends Equalitable<Location>
     @Override
     protected boolean InternalEquals(Location other)
     {
-        return other.equations.equals(this.equations) &&
+        return other.name.equals(this.name) &&
+                other.equations.equals(this.equations) &&
                 other.invariants.equals(this.invariants);
     }
 
@@ -73,6 +67,11 @@ public class Location extends Equalitable<Location>
     protected int InternalHashCode()
     {
         return 0;
+    }
+
+    public String Name()
+    {
+        return name;
     }
 
 }

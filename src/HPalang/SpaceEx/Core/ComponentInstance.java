@@ -53,7 +53,7 @@ public class ComponentInstance implements Visitable
     }
 
     @Override
-    public void Accept(Visitor visitor)
+    public void Accept(ModelVisitor visitor)
     {
         visitor.Visit(this);
     }

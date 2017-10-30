@@ -5,12 +5,15 @@
  */
 package HPalang.Core.DiscreteExpressions;
 
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.Expression;
 import HPalang.Core.ExpressionVisitor;
+import HPalang.Core.Expressions.Visitors.VariableExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.Variable;
 import HPalang.Core.Variables.IntegerVariable;
+import HPalang.Core.Visitor;
 
 /**
  *
@@ -40,8 +43,10 @@ public class VariableExpression extends DiscreteExpressionT<VariableExpression>
     @Override
     public Expression PartiallyEvaluate(ValuationContainer valuations)
     {
-        assert (! IsComputable(valuations));
-        return this;
+        if(IsComputable(valuations))
+            return new ConstantContinuousExpression(valuations.ValueFor(variable));
+        else
+            return this;
     }
     
     @Override
@@ -69,9 +74,10 @@ public class VariableExpression extends DiscreteExpressionT<VariableExpression>
     }
     
     @Override
-    public void Visit(ExpressionVisitor visitor)
+    public void Visit(Visitor visitor)
     {
-        visitor.Visit(this);
+        if(visitor instanceof VariableExpressionVisitor)
+            ((VariableExpressionVisitor) visitor).Visit(this);
     }
     
 }

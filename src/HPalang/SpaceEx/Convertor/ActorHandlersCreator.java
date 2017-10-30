@@ -12,7 +12,7 @@ import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.SpaceEx.Core.HybridTransition;
 import HPalang.SpaceEx.Core.HybridTransitionBuilder;
-import HPalang.Core.Invarient;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.SpaceEx.Core.LabelParameter;
 import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.RealParameter;
@@ -81,7 +81,7 @@ public class ActorHandlersCreator
         {
             Location handlerProc_h = new Location(String.format("handlerProc_%s", actorData.MessageHandlerName(handler)));
                         handlerProc_h.AddFlow(new Flow(actorData.GetUrgentFlow()));
-            handlerProc_h.AddInvarient(new Invarient(actorData.GetUrgentInvarient()));
+            handlerProc_h.AddInvarient(actorData.GetUrgentInvarient());
             comp.AddTransition(new HybridTransitionBuilder().
                     SetOrigin(idleLoc).
                     SetDestination(handlerProc_h).

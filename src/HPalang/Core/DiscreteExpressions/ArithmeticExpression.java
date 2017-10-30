@@ -12,6 +12,7 @@ import HPalang.Core.Expression;
 import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
+import HPalang.Core.Visitor;
 
 /**
  *
@@ -20,6 +21,8 @@ import HPalang.Core.ValuationContainer;
 @Deprecated // Use Binary Expression instead
 public class ArithmeticExpression extends DiscreteExpressionT<ArithmeticExpression>
 {  
+
+
 
     public enum Operator
     {
@@ -68,9 +71,8 @@ public class ArithmeticExpression extends DiscreteExpressionT<ArithmeticExpressi
         return expression.PartiallyEvaluate(valuations);
     }
     
-    
     @Override
-    public void Visit(ExpressionVisitor visitor)
+    public void Visit(Visitor visitor)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

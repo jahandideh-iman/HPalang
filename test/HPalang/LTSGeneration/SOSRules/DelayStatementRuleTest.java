@@ -5,7 +5,9 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.Statements.DelayStatement;
+import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
@@ -16,6 +18,7 @@ import org.junit.Test;
 import org.junit.Before;
 import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
+import java.util.Set;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.junit.Assert.assertThat;
 
@@ -53,13 +56,21 @@ public class DelayStatementRuleTest extends SOSRuleTestFixture
         RegisterEvent(delayDuration, DelayAction(actorState), expectedGlobalState);
         FindActorState(actorState.SActor(), expectedGlobalState).SetSuspended(true);
         
-        transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        transitionCollectorChecker.ExpectTransition(new SoftwareLabel(ResetsForEvent(delayStatement, globalState)), expectedGlobalState);
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     private ResumeSoftwareActorAction DelayAction(SoftwareActorState actorState)
     {
         return new ResumeSoftwareActorAction(actorState.SActor());
+    }
+    
+    private Set<Reset> ResetsForEvent(DelayStatement statement,GlobalRunTimeState gs)
+    {
+        Event event =  gs.DeepCopy().EventsState().RegisterEvent(statement.GetDelay(),null);
+        
+        Reset reset = new Reset(event.Timer(), new ConstantContinuousExpression(0));
+        return Reset.From(reset);
     }
     
 }

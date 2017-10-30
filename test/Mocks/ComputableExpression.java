@@ -9,6 +9,7 @@ import HPalang.Core.Expression;
 import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
+import HPalang.Core.Visitor;
 
 /**
  *
@@ -41,7 +42,7 @@ public class ComputableExpression implements Expression
     }
 
     @Override
-    public void Visit(ExpressionVisitor visitor)
+    public void Visit(Visitor visitor)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }

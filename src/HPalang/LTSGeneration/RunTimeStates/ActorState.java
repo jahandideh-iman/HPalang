@@ -16,6 +16,8 @@ import HPalang.LTSGeneration.CompositeStateT;
 public abstract class ActorState<T extends ActorState> extends  CompositeStateT<T>
 {
     private final Actor actor;
+    protected boolean isSuspended = false;
+    
     
     public ActorState(Actor actor)
     {
@@ -26,6 +28,13 @@ public abstract class ActorState<T extends ActorState> extends  CompositeStateT<
     {
         return actor;
     }
+    
+    public boolean IsSuspended()
+    {
+        return isSuspended;
+    }
+    
+    public abstract void SetSuspended(boolean suspended);
     
     public ExecutionQueueState ExecutionQueueState()
     {
@@ -45,7 +54,8 @@ public abstract class ActorState<T extends ActorState> extends  CompositeStateT<
     @Override
     protected boolean DataEquals(T other)
     {
-        return this.actor.equals(other.Actor());
+        return this.isSuspended == other.IsSuspended() &&
+                this.actor.equals(other.Actor());
     }
     
     

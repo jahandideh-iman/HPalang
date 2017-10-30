@@ -10,7 +10,7 @@ import HPalang.Parser.SubParsers.Expression.ExpressionHolder;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpression;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpression;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;

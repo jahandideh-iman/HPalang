@@ -5,7 +5,7 @@
  */
 package HPalang;
 
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.MainBlock;
 import HPalang.Core.Mode;
 import HPalang.Core.ModelDefinition;
@@ -13,7 +13,7 @@ import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
 import HPalang.Core.Statements.ModeChangeStatement;
 import HPalang.Core.Variables.RealVariable;
-import static HPalang.ModelCreationUtilities.*;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *
@@ -61,13 +61,15 @@ public class Thermostat
         Mode off = thermostatType.FindMode(Thermostat__off_mode);
 
         
-        on.SetInvarient(String.format("%s <= 25", t.Name()));
-        on.AddDifferentialEquation(new DifferentialEquation(t, String.format("-%s + 100", t.Name())));
+        
+        on.SetInvarient(CreateInvarient(t, "<=", Const(25f)));
+        on.AddDifferentialEquation(new DifferentialEquation(t, 
+                CreateBinaryExpression(t, "+", Const(100f))));
         on.SetGuard(CreateGuard(t, "==", 25));
         on.AddAction(new ModeChangeStatement(off));
         
-        off.SetInvarient(String.format("%s >= 24", t.Name()));
-        off.AddDifferentialEquation(new DifferentialEquation(t, String.format("-%s + 50", t.Name())));
+        off.SetInvarient(CreateInvarient(t, ">=", Const(24f)));
+        off.AddDifferentialEquation(new DifferentialEquation(t, CreateBinaryExpression(t, "+", Const(50f))));
         off.SetGuard(CreateGuard(t, "==", 24));
         off.AddAction(new ModeChangeStatement(on));
         

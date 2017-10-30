@@ -5,7 +5,7 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.TrueConst;
 import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.GuardedlLabel;
@@ -25,8 +25,8 @@ public class HybridAutomatonTest
     @Test
     public void DoesNotAddANewLocationForDuplicateLocation()
     {      
-        Location loc = new Location();
-        Location dupLoc = new Location();
+        Location loc = new Location("Loc");
+        Location dupLoc = new Location("Loc");
         
         automaton.AddLocation(loc);
         automaton.AddLocation(dupLoc);
@@ -38,9 +38,9 @@ public class HybridAutomatonTest
     @Test
     public void DoesNotAddANewTransitionForDuplicateTranstion()
     {
-        Location loc1 = new Location();
+        Location loc1 = new Location("Loc");
         loc1.AddEquation(DifferentialEquation.Empty("eq1"));
-        Location Loc2 = new Location();
+        Location Loc2 = new Location("Loc");
         loc1.AddEquation(DifferentialEquation.Empty("eq1"));
         
         HybridLabel label = new HybridLabel(new Guard(new TrueConst()), false);

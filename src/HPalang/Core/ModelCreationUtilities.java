@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang;
+package HPalang.Core;
 
 import static HPalang.BrakeByWireModel.Clock__callback;
 import HPalang.Core.Actor;
@@ -17,12 +17,14 @@ import HPalang.Core.CommunicationType;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.Delegation;
 import HPalang.Core.DelegationParameter;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.*;
+import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.Expression;
 import HPalang.Core.InstanceParameter;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.Message;
 import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageHandler;
@@ -32,6 +34,7 @@ import HPalang.Core.MessageLocators.DirectMessageLocator;
 import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Mode;
+import HPalang.Core.NullExpression;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
 import HPalang.Core.SoftwareActor;
@@ -92,6 +95,12 @@ public class ModelCreationUtilities
     {
         AddVariable(actorType, new IntegerVariable(name));
     }
+    
+    public static void AddFloatVariable(ActorType actorType, String name)
+    {
+        AddVariable(actorType, new FloatVariable(name));
+    }
+
     public static void SetNetworkPriority(Actor actor, String messageHandlerName, int priority)
     {
         MessageHandler handler = actor.Type().FindMessageHandler(messageHandlerName);
@@ -271,9 +280,9 @@ public class ModelCreationUtilities
         Mode runningMode = new Mode("Running");
         
         runningMode.SetGuard(CreateGuard(timer, "==", 0.01f));
-        runningMode.SetInvarient("timer <= 0.01");
+        runningMode.SetInvarient(CreateInvarient(timer, "<=", Const(0.01f)));
                 
-        runningMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
+        runningMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
         
         runningMode.AddAction(CreateResetFor(timer));
         runningMode.AddAction(ModelCreationUtilities.CreateSendStatement(callback));
@@ -294,6 +303,28 @@ public class ModelCreationUtilities
         return clock;
     }
     
+    public static BinaryExpression CreateBinaryExpression(Expression e1, String operator , Expression e2)
+    {
+        if(operator.equals("<"))
+            return new BinaryExpression(e1, new LesserOperator(), e2);
+        else if(operator.equals("<="))
+            return new BinaryExpression(e1, new LesserEqualOperator(), e2);
+        else if(operator.equals("=="))
+            return new BinaryExpression(e1, new EqualityOperator(), e2);
+        else if(operator.equals(">="))
+            return new BinaryExpression(e1, new GreaterEqualOperator(), e2);
+        else if(operator.equals(">"))
+            return new BinaryExpression(e1, new GreaterOperator(), e2);
+        else if (operator.equals("-"))
+            return new BinaryExpression(e1, new SubtractOperator(), e2);
+        else 
+            throw new RuntimeException("Operator is not supported yet");
+    }
+
+    public static BinaryExpression CreateBinaryExpression(Variable var, String operator , Expression e2)
+    {
+        return CreateBinaryExpression(new VariableExpression(var), operator, e2);
+    }
     public static BinaryExpression CreateEqualityExpression(Expression e1, Expression e2)
     {
         return new BinaryExpression(e1, new EqualityOperator(), e2);
@@ -341,5 +372,40 @@ public class ModelCreationUtilities
     public static Guard CreateGuard(Variable var1, String operator, Variable var2)
     {
         return CreateGuard(new VariableExpression(var1), operator, new VariableExpression(var2));
+    }
+    
+    public static ConstantContinuousExpression Const(float f)
+    {
+        return new ConstantContinuousExpression(f);
+    }
+    
+    public static ConstantDiscreteExpression Const(int i)
+    {
+        return new ConstantDiscreteExpression(i);
+    }
+    
+    public static Invarient CreateInvarient(Variable var1, String operator, Variable var2)
+    {
+        return new Invarient(CreateBinaryExpression(var1, operator, ExpressionFrom(var2)));
+    }
+        
+    public static Invarient CreateInvarient(Variable var, String operator, Expression e2)
+    {
+        return new Invarient(CreateBinaryExpression(var, operator, e2));
+    }
+
+    public static Invarient CreateInvarient(Expression e1, String operator, Expression e2)
+    {
+        return new Invarient(CreateBinaryExpression(e1, operator, e2));
+    }
+    
+    public static VariableExpression ExpressionFrom(Variable var)
+    {
+        return new VariableExpression(var);
+    }
+    
+    public static NullExpression UnknowExpression(String expr)
+    {
+        return new NullExpression(expr);
     }
 }

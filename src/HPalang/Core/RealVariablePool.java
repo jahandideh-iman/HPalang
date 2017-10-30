@@ -18,4 +18,7 @@ public interface RealVariablePool extends DeepClonable<RealVariablePool>
     public boolean HasAnyAvailableVariable();
     public boolean HasAvailableVariable(int number);
     public boolean Has(RealVariable variable);
+
+    public Iterable<RealVariable> AllVariables();
+    public Iterable<RealVariable> AvailableVariables();
 }

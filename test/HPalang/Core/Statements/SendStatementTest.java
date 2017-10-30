@@ -22,7 +22,7 @@ import HPalang.Core.ActorLocators.DirectActorLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
 import Mocks.FakeMessage;
 import Mocks.EmptyMessage;
-import Mocks.NullExpression;
+import HPalang.Core.NullExpression;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;

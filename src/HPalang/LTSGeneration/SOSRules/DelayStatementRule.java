@@ -5,15 +5,12 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import HPalang.Core.SoftwareActor;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.DelayStatement;
-import HPalang.Core.Statements.ResumeStatement;
-import HPalang.Core.Statement;
-import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.Labels.Reset;
+import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.Event.ResumeSoftwareActorAction;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 
@@ -35,6 +32,16 @@ public class DelayStatementRule extends SoftwareStatementRule<DelayStatement>
         newActorState.SetSuspended(true);
         newGlobalState.EventsState().RegisterEvent(statement.GetDelay(),
                 new ResumeSoftwareActorAction(newActorState.SActor()));
+    }
+
+    @Override
+    protected SoftwareLabel CreateTransitionLabel(SoftwareActorState actorState, DelayStatement statement, GlobalRunTimeState globalState)
+    {
+        Event event =  globalState.EventsState().RegisterEvent(statement.GetDelay(),
+                new ResumeSoftwareActorAction(actorState.SActor()));
+        
+        Reset reset = new Reset(event.Timer(), new ConstantContinuousExpression(0));
+        return new SoftwareLabel(Reset.From(reset));
     }
     
     

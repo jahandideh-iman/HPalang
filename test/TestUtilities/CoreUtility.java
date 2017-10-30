@@ -8,12 +8,9 @@ package TestUtilities;
 import HPalang.LTSGeneration.Builders.SoftwareActorStateBuilder;
 import HPalang.LTSGeneration.Builders.GlobalRunTimeStateBuilder;
 import HPalang.LTSGeneration.Builders.PhysicalActorStateBuilder;
-import HPalang.Core.Actor;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.DifferentialEquation;
-import HPalang.Core.Expression;
-import HPalang.Core.Message;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.Mode;
 import static HPalang.Core.Mode.EquationsFrom;
 import HPalang.Core.PhysicalActor;
@@ -22,7 +19,6 @@ import HPalang.Core.SimpleContinuousVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
-import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
@@ -31,16 +27,12 @@ import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.State;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
-import HPalang.Core.ActorLocators.DirectActorLocator;
 import static HPalang.Core.CreationUtilities.CreateTrivialFlaseGuard;
-import HPalang.Core.DiscreteExpressions.BinaryExpression;
-import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
-import HPalang.Core.DiscreteExpressions.FalseConst;
 import HPalang.Core.DiscreteExpressions.TrueConst;
-import HPalang.Core.MessageLocators.DirectMessageLocator;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.SoftwareActorType;
-import HPalang.LTSGeneration.Labels.Guard;
 import Mocks.EmptyStatement;
+import HPalang.Core.NullExpression;
 import java.util.Collections;
 import java.util.Queue;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -231,7 +223,7 @@ public class CoreUtility
     {
         return new Mode(
                 name,
-                "", 
+                TrivialInvarient(), 
                 EquationsFrom(DifferentialEquation.Empty()),
                 CreateTrivialFlaseGuard(), 
                 Statement.EmptyStatements());
@@ -243,4 +235,13 @@ public class CoreUtility
     }
     
 
+    static public Invarient TrivialInvarient()
+    {
+        return new Invarient(new TrueConst());
+    }
+    
+    static public Invarient FakeInvarient(String expr)
+    {
+        return new Invarient(new NullExpression(expr));
+    }
 }

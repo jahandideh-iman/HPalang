@@ -3,57 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/HybridAutomataGeneration/HybridAutomatonGeneratorTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/BouncingBallModel.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/LabeledTransitionSystem.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/HybridAutomaton.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ContinuousExpressions/ConstantContinuousExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/ArithmeticExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/ContinuousBehaviorExpirationRule.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/HPalangToCompositionalSXConvertor.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/ContinuousBehaviorExpirationRuleTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Invarient.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/ConstantDiscreteExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/HybridLabel.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/SOSRuleTestFixture.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Mode.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DifferentialEquation.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Expression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Main.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/VariableExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/FalseConst.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/RunTimeStates/ContinuousBehaviorContainerTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/HybridAutomataGeneration/HybridAutomatonTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Variable.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/Labels/ContinuousLabel.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/Mocks/NullExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/LogicalExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ExpressionVisitor.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRule.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Convertors/HybridAutomatonToSXConvertor.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ModelDefinition.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/Labels/Guard.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/RunTimeStates/EventsStateTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/Mocks/ComputableExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/AssignmentStatementRuleTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/RunTimeStates/NetworkStateTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/HybridAutomataGeneration/Mocks/SOSRuleMonitor.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/Mocks/EmptyExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/Location.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/StateInfo.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/RunTimeStates/GlobalRunTimeStateTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/ComparisonExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/LTSGenerator.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ContinuousExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/HybridAutomatonGenerator.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/HybridAutomataGeneration/LocationTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/Mocks/UncomputableExpression.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/Transition.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/Labels/Reset.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/SOSRules/ConversionRule.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/TrueConst.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/SOSRule.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ContinuousExpressions/ContinuousExpressionT.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/ExpressionConvertor.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/PostorderExpressionCrawler.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/BasicPostorderExpressionCrawler.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/ExpressionScopeUnwrapper.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Convertors/HybridAutomatonToSXConvertor.java</file>
         </group>
     </open-files>
 </project-private>

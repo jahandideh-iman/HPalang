@@ -19,9 +19,10 @@ import HPalang.Core.Statement;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.DelayStatement;
 import HPalang.Core.Statements.IfStatement;
+import HPalang.Core.Variable;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
-import static HPalang.ModelCreationUtilities.*;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *
@@ -54,7 +55,7 @@ public class HRToHAExample1
         SoftwareActor a = new SoftwareActor("a", AType, 1);
         SoftwareActor b = new SoftwareActor("b", BType, 1);
 
-        a.SetInitialValue((IntegerVariable)a.Type().FindVariable(A__c), 10);
+        //a.SetInitialValue((IntegerVariable)a.Type().FindVariable(A__c), 10);
         BindInstance(a, A__b_ins_param, b, CommunicationType.Wire);
         BindInstance(b, B__a_ins_param, a, CommunicationType.Wire);
         
@@ -72,7 +73,7 @@ public class HRToHAExample1
     private static void FillSkeletonForAType(SoftwareActorType AType, SoftwareActorType BType)
     {
         AddInstanceParameter(AType, A__b_ins_param, BType);
-        AddIntegerVariable(AType, A__c);
+        AddFloatVariable(AType, A__c);
         
         
         MessageHandler X1 = AddControlMessageHandler(AType, A__X1_handler);
@@ -88,13 +89,14 @@ public class HRToHAExample1
     private static void FillFleshForAType(SoftwareActorType AType)
     {
         InstanceParameter bIns = AType.FindInstanceParameter(A__b_ins_param);
-        IntegerVariable c = (IntegerVariable) AType.FindVariable(A__c);
+        Variable c = AType.FindVariable(A__c);
         
         MessageHandler X1 = AType.FindMessageHandler(A__X1_handler);
         IntegerVariable r = (IntegerVariable) X1.Parameters().Find(A__X1_r).Variable();
         
         X1.AddStatement(new DelayStatement(1f));
-        X1.AddStatement(new AssignmentStatement(c, CreateSubtractExpression(new VariableExpression(c), new VariableExpression(r))));
+        X1.AddStatement(new AssignmentStatement(c, 
+                CreateBinaryExpression(new VariableExpression(c),"-", new VariableExpression(r))));
         //X1.AddStatement(CreateSendStatement(bIns, B__Y1_handler));
 
         X1.AddStatement(new IfStatement(

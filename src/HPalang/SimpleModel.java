@@ -8,7 +8,7 @@ package HPalang;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.MainBlock;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;

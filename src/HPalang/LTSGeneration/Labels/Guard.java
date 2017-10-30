@@ -7,12 +7,15 @@ package HPalang.LTSGeneration.Labels;
 
 import HPalang.Core.Equalitable;
 import HPalang.Core.Expression;
+import HPalang.Core.ExpressionVisitor;
+import HPalang.Core.ValuationContainer;
+import HPalang.Core.Visitor;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class Guard extends Equalitable<Guard>
+public class Guard extends Equalitable<Guard> implements Expression 
 {
     private final Expression guardExpression;
     
@@ -43,6 +46,31 @@ public class Guard extends Equalitable<Guard>
     public String toString()
     {
         return guardExpression.toString();
+    }
+
+    @Override
+    public boolean IsComputable(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public int Evaluate(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Expression PartiallyEvaluate(ValuationContainer valuations)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public void Visit(Visitor visitor)
+    {
+        if(visitor instanceof GuardVisitor)
+            ((GuardVisitor) visitor).Visit(this);
     }
     
     

@@ -19,7 +19,7 @@ import HPalang.Core.DiscreteExpressions.VariableExpression;
  *
  * @author Iman Jahandideh
  */
-public interface ExpressionVisitor
+public interface ExpressionVisitor 
 {
     public void Visit(VariableExpression expr);
     public void Visit(ConstantContinuousExpression expr);

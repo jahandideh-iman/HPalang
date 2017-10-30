@@ -6,10 +6,11 @@
 package HPalang;
 
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.MultiplyOperator;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.MainBlock;
 import HPalang.Core.Mode;
 import HPalang.Core.ModelDefinition;
@@ -17,7 +18,7 @@ import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Variables.RealVariable;
-import static HPalang.ModelCreationUtilities.*;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *
@@ -65,9 +66,9 @@ public class BouncingBallModel
         RealVariable y = (RealVariable) ballType.FindVariable(Ball__y);
         Mode falling = ballType.FindMode(Ball__falling_mode);
         
-        falling.SetInvarient(String.format("%s >= 0", y.Name()));
-        falling.AddDifferentialEquation(new DifferentialEquation(v, "-9.8"));
-        falling.AddDifferentialEquation(new DifferentialEquation(y, v.Name()));
+        falling.SetInvarient(new Invarient(CreateBinaryExpression(y, ">=", Const(0f))));
+        falling.AddDifferentialEquation(new DifferentialEquation(v, Const(-9.8f)));
+        falling.AddDifferentialEquation(new DifferentialEquation(y, ExpressionFrom(v)));
         
         falling.SetGuard(CreateGuard(y, "==", 0));
         falling.AddAction(

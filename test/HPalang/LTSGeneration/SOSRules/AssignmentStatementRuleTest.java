@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Expression;
-import HPalang.Core.ExpressionScopeUnwrapper;
+import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Variable;
@@ -57,7 +57,6 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
         actorState.ValuationState().SetValuation(valuationMock);
         EnqueueStatement(assignment, actorState);
         
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         ApplyAndVerifyRuleOn(globalState);
         
         assertThat(valuationMock.ValueFor(var), equalTo(value));
@@ -79,6 +78,18 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
         
         assertThat((Set<Reset>)CollectedLabel().Resets(), hasItem(equalTo(expectedReset)));
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
+    }
+    
+    @Test 
+    public void IsNotAppliedWhenActorIsSuspended()
+    {    
+        actorState.SetSuspended(true);
+        Statement assignment = new AssignmentStatement(variable, new ComputableExpression(0));
+        EnqueueStatement(assignment, actorState);
+        
+        ApplyAndVerifyRuleOn(globalState);
+        
+        transitionCollectorChecker.ExpectNoTransition();
     }
     
     private Variable ConvertToScopedVariable(Variable var, ActorState actorState)

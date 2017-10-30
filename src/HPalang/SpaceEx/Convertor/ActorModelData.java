@@ -8,9 +8,14 @@ package HPalang.SpaceEx.Convertor;
 import HPalang.Core.ActorLocator;
 import HPalang.Core.ActorLocators.ParametricActorLocator;
 import HPalang.Core.ActorType;
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousVariable;
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
+import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.InstanceParameter;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.Message;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.MessageLocator;
@@ -23,6 +28,7 @@ import HPalang.Core.Variable;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.IntegerVariable;
+import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.SpaceEx.Core.LabelParameter;
 import static HPalang.SpaceEx.Convertor.Utilities.MiscUtilities.*;
@@ -34,6 +40,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *
@@ -219,9 +226,13 @@ public class ActorModelData
         return Collections.EMPTY_LIST;
     }
 
-    public String GetUrgentInvarient()
+    public Invarient GetUrgentInvarient()
     {
-        return GetUrgentVar() + " == 0";
+        return new Invarient(
+                new BinaryExpression(
+                        new VariableExpression(new RealVariable(GetUrgentVar())),
+                        new EqualityOperator(), 
+                        new ConstantContinuousExpression(0f)));
     }
 
     public String GetUrgentGuard()
@@ -330,9 +341,9 @@ public class ActorModelData
         return messageParameterNames.keySet();
     }
 
-    public String DelayInvarient(float delay)
+    public Invarient DelayInvarient(float delay)
     {
-        return String.format("%s <= %s", DelayVar(), delay);
+        return CreateInvarient(new RealVariable(DelayVar()), "<=", Const(delay));
     }
 
     public String DelayFlow()

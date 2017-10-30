@@ -11,5 +11,5 @@ package HPalang.SpaceEx.Core;
  */
 public interface Visitable
 {
-    public void Accept(Visitor visitor);
+    public void Accept(ModelVisitor visitor);
 }

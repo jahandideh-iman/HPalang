@@ -7,7 +7,9 @@ package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.Expression;
 import HPalang.Core.ExpressionVisitor;
+import HPalang.Core.Expressions.Visitors.BinaryExpressionVisitor;
 import HPalang.Core.ValuationContainer;
+import HPalang.Core.Visitor;
 
 /**
  *
@@ -80,8 +82,9 @@ public class BinaryExpression extends DiscreteExpressionT<BinaryExpression>
     }
 
     @Override
-    public void Visit(ExpressionVisitor visitor)
+    public void Visit(Visitor visitor)
     {
-        visitor.Vist(this);
+        if(visitor instanceof BinaryExpressionVisitor)
+            ((BinaryExpressionVisitor) visitor).Visit(this);
     }
 }

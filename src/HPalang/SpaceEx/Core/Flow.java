@@ -5,7 +5,7 @@
  */
 package HPalang.SpaceEx.Core;
 
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 
 /**
  *

@@ -7,8 +7,10 @@ package HPalang.Core.ContinuousExpressions;
 
 import HPalang.Core.Expression;
 import HPalang.Core.ExpressionVisitor;
+import HPalang.Core.Expressions.Visitors.ConstantContinuousExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
+import HPalang.Core.Visitor;
 
 /**
  *
@@ -66,9 +68,10 @@ public class ConstantContinuousExpression extends ContinuousExpressionT<Constant
     }
 
     @Override
-    public void Visit(ExpressionVisitor visitor)
+    public void Visit(Visitor visitor)
     {
-        visitor.Visit(this);
+        if(visitor instanceof ConstantContinuousExpressionVisitor)
+            ((ConstantContinuousExpressionVisitor) visitor).Visit(this);
     }
     
 }

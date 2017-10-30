@@ -101,4 +101,16 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     {
         return avaiableVariables.size() >= number;
     }
+
+    @Override
+    public Iterable<RealVariable> AllVariables()
+    {
+        return origianlVariables;
+    }
+
+    @Override
+    public Iterable<RealVariable> AvailableVariables()
+    {
+        return avaiableVariables;
+    }
 }

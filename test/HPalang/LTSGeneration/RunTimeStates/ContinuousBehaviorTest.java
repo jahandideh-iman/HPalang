@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.Statement;
 import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Test;

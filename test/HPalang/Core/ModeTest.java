@@ -5,7 +5,9 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import static HPalang.Core.CreationUtilities.CreateTrivialFlaseGuard;
+import HPalang.Core.DiscreteExpressions.TrueConst;
 import static HPalang.Core.Statement.StatementsFrom;
 import HPalang.LTSGeneration.Labels.Guard;
 import Mocks.EmptyStatement;
@@ -32,10 +34,12 @@ public class ModeTest
         Guard guard = CreateTrivialFlaseGuard();
         Queue<Statement> actions = StatementsFrom(new EmptyStatement());
         
-        Mode mode1 = new Mode("mode","inv", equations , guard, actions);
-        Mode mode2 = new Mode("mode","inv", equations , guard, actions);
+        Mode mode1 = new Mode("mode",TrivialInvarient(), equations , guard, actions);
+        Mode mode2 = new Mode("mode",TrivialInvarient(), equations , guard, actions);
         
         assertThat(mode1, is(equalTo(mode2)));
     }
+    
+
     
 }

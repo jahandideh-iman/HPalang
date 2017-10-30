@@ -57,7 +57,7 @@ public class BaseComponent extends Component implements GraphListener<Location>
     }
 
     @Override
-    public void Accept(Visitor visitor)
+    public void Accept(ModelVisitor visitor)
     {
         visitor.Visit(this);
     }

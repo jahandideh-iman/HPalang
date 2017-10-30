@@ -28,7 +28,7 @@ import Mocks.ComputableVariable;
 import HPalang.Core.ActorLocators.DirectActorLocator;
 import Mocks.FakeVariable;
 import Mocks.FakeMessage;
-import Mocks.NullExpression;
+import HPalang.Core.NullExpression;
 import Mocks.SingleRealVariablePoolMock;
 import Mocks.TransitionCollectorMock;
 import Mocks.UncomputableExpression;

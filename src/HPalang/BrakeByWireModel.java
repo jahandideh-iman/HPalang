@@ -11,7 +11,7 @@ import HPalang.Core.ActorType;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.DelegationParameter;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.*;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
@@ -22,6 +22,7 @@ import HPalang.Core.MessageHandler;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Mode;
 import HPalang.Core.ActorLocators.ParametricActorLocator;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.MainBlock;
 import HPalang.Core.Message;
 import HPalang.Core.PhysicalActor;
@@ -39,7 +40,7 @@ import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.Labels.Guard;
-import static HPalang.ModelCreationUtilities.*;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *
@@ -235,19 +236,19 @@ public class BrakeByWireModel
         Mode noBrakeMode = wheelType.FindMode("NoBrake");
         Mode brakeMode = wheelType.FindMode("Break");
         
-        noBrakeMode.SetInvarient("timer <= 0.01");
+        noBrakeMode.SetInvarient(new Invarient(CreateBinaryExpression(timer, "<=", Const(0.01f))));
         noBrakeMode.SetGuard(CreateGuard(timer, "==", 0.01f));
-        noBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
-        noBrakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, "?!!!"));
+        noBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
+        noBrakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, UnknowExpression("?!!!")));
         
         noBrakeMode.AddAction(CreateResetFor(timer));
         noBrakeMode.AddAction(CreateSendStatement(controllerInstance, wheel_rpm_port, VariableExpression(rpm)));
         noBrakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation, VariableExpression(rpm)));
         
-        brakeMode.SetInvarient("timer <= 0.01");
+        brakeMode.SetInvarient(new Invarient(CreateBinaryExpression(timer, "<=", Const(0.01f))));
         brakeMode.SetGuard(CreateGuard(timer, "==", 0.01f));
-        brakeMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
-        brakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, "?!!!"));
+        brakeMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
+        brakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, UnknowExpression("?!!!")));
         
         brakeMode.AddAction(CreateResetFor(timer));
         brakeMode.AddAction(CreateSendStatement(controllerInstance, wheel_rpm_port, VariableExpression(rpm)));
@@ -320,11 +321,11 @@ public class BrakeByWireModel
         RealVariable timer = (RealVariable) brakeType.FindVariable("timer");
         
         Mode brakingMode = brakeType.FindMode("Braking");
-        brakingMode.SetInvarient("timer <= 0.01");
+        brakingMode.SetInvarient(new Invarient(CreateBinaryExpression(timer, "<=", Const(0.01f))));
         brakingMode.SetGuard(CreateGuard(timer, "==", 0.01f));
         
-        brakingMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
-        brakingMode.AddDifferentialEquation(new DifferentialEquation(brake_percent, "?!!!"));
+        brakingMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
+        brakingMode.AddDifferentialEquation(new DifferentialEquation(brake_percent, UnknowExpression("?!!!")));
         brakingMode.AddAction(CreateResetFor(timer)); 
         brakingMode.AddAction(CreateSendStatement(controller, brakePercentPort, VariableExpression(brake_percent)));
     }
@@ -390,10 +391,10 @@ public class BrakeByWireModel
         
         Mode runningMode = new Mode("Running");
         
-        runningMode.SetInvarient("timer <= 0.01");
+        runningMode.SetInvarient(new Invarient(CreateBinaryExpression(timer, "<=", Const(0.01f))));
         runningMode.SetGuard(CreateGuard(timer, "==", 0.01f));
                 
-        runningMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
+        runningMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
         
         runningMode.AddAction(CreateResetFor(timer));
         runningMode.AddAction(CreateSendStatement(callback));

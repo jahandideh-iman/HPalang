@@ -26,7 +26,7 @@ import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
 import Mocks.EmptyStatement;
 import Mocks.FakeMessage;
-import Mocks.NullExpression;
+import HPalang.Core.NullExpression;
 import static TestUtilities.CoreUtility.SimpleStateInfo;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.*;

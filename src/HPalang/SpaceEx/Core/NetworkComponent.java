@@ -34,7 +34,7 @@ public class NetworkComponent extends Component
     }
 
     @Override
-    public void Accept(Visitor visitor)
+    public void Accept(ModelVisitor visitor)
     {
         visitor.Visit(this);
     }

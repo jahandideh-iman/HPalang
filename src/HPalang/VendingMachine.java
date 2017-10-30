@@ -8,7 +8,7 @@ package HPalang;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.InstanceParameter;
 import HPalang.Core.MainBlock;
@@ -23,7 +23,7 @@ import HPalang.Core.Statements.*;
 import HPalang.Core.Variable;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
-import static HPalang.ModelCreationUtilities.*;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *
@@ -167,9 +167,10 @@ public class VendingMachine
         RealVariable volume = (RealVariable) pourerType.FindVariable(Pourer__volume);
         Variable targetVolume = pourerType.FindVariable(Pourer__target_volume);
         
-        on.SetInvarient(String.format("%s <= %s", volume.Name(), targetVolume.Name()));
         
-        on.AddDifferentialEquation(new DifferentialEquation(volume, "20"));
+        on.SetInvarient(CreateInvarient(ExpressionFrom(volume), "<=", ExpressionFrom(targetVolume)));
+        
+        on.AddDifferentialEquation(new DifferentialEquation(volume, Const(20f)));
         
         on.SetGuard(CreateGuard(volume, "==" , targetVolume));
         
@@ -185,9 +186,9 @@ public class VendingMachine
         RealVariable temp = (RealVariable) heaterType.FindVariable(Heater__temp);
         Variable targetTemp = heaterType.FindVariable(Heater__target_temp);
         
-        on.SetInvarient(String.format("%s <= %s", temp.Name(), targetTemp.Name()));
+        on.SetInvarient(CreateInvarient(ExpressionFrom(temp), "<=", ExpressionFrom(targetTemp)));
         
-        on.AddDifferentialEquation(new DifferentialEquation(temp, "10"));
+        on.AddDifferentialEquation(new DifferentialEquation(temp, Const(10f)));
         
         on.SetGuard(CreateGuard(temp, "==", targetTemp));
         

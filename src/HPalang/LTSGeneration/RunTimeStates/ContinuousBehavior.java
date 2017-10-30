@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.Equalitable;
 import HPalang.Core.Statement;
 import java.util.LinkedList;

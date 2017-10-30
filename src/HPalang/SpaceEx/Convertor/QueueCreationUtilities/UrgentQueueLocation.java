@@ -8,7 +8,7 @@ package HPalang.SpaceEx.Convertor.QueueCreationUtilities;
 import HPalang.SpaceEx.Convertor.ActorModelData;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
-import HPalang.Core.Invarient;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -23,14 +23,14 @@ public class UrgentQueueLocation extends QueueLocation
     {
         super(String.join("_", content) + "_1", content, actorData);
         loc.AddFlow(new Flow(actorData.GetUrgentFlow()));
-        loc.AddInvarient(new Invarient(actorData.GetUrgentInvarient()));
+        loc.AddInvarient(actorData.GetUrgentInvarient());
     }
 
     public UrgentQueueLocation(String name, ActorModelData actorData)
     {
         super(name, new LinkedList<>(), actorData);
         loc.AddFlow(new Flow(actorData.GetUrgentFlow()));
-        loc.AddInvarient(new Invarient(actorData.GetUrgentInvarient()));
+        loc.AddInvarient(actorData.GetUrgentInvarient());
     }
 
     @Override

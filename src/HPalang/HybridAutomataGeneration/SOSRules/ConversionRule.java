@@ -5,9 +5,15 @@
  */
 package HPalang.HybridAutomataGeneration.SOSRules;
 
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
 import HPalang.Core.DiscreteExpressions.TrueConst;
-import HPalang.Core.ExpressionScopeUnwrapper;
+import HPalang.Core.DiscreteExpressions.VariableExpression;
+import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
+import HPalang.Core.ContinuousExpressions.Invarient;
+import HPalang.Core.ModelCreationUtilities;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.HybridAutomataGeneration.HybridLabel;
@@ -18,11 +24,15 @@ import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
+import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
 import java.util.Collection;
+import static HPalang.Core.ModelCreationUtilities.*;
+import HPalang.Core.Variable;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 
 /**
  *
@@ -39,10 +49,10 @@ public class ConversionRule implements SOSRule
         Location location;
         
         if(AllAreSoftware(globalStateInfo.Outs()) || AllIsNetwork(globalStateInfo.Outs()))
-            location =  CreateInstantaneousLocation();
+            location =  CreateInstantaneousLocation(globalStateInfo.State(),generator.CreateAUniqueLocationName(globalStateInfo.State()));
         
         else if (AllArePhysical(globalStateInfo.Outs()))
-            location = CreatePhyscialLocationFrom(globalStateInfo.State());
+            location = CreatePhyscialLocationFrom(globalStateInfo.State(),generator.CreateAUniqueLocationName(globalStateInfo.State()));
         
         else 
             throw new RuntimeException("State info is invalid");
@@ -70,9 +80,12 @@ public class ConversionRule implements SOSRule
         generator.AddTransition(origin, label, destination);
     }
     
-    private String EqualityInvarientFor(RealVariable var, float value)
+    private Invarient EqualityInvarientFor(RealVariable var, float value)
     {
-        return String.format("%s == %s", var.Name(), value);
+        return new Invarient(new BinaryExpression(
+                new VariableExpression(urgVariable), 
+                new EqualityOperator(),
+                new ConstantContinuousExpression(value)));
     }
 
     // TODO: Merge these to a signle generic method.
@@ -103,37 +116,61 @@ public class ConversionRule implements SOSRule
         return true;
     }
 
-    private Location CreateInstantaneousLocation()
+    private Location CreateInstantaneousLocation(GlobalRunTimeState gs, String locName)
     {
-        Location location = new Location();
+        Location location = new Location(locName+"_I");
 
-        location.AddEquation(new DifferentialEquation(urgVariable, "1"));
-        location.AddInvariant(EqualityInvarientFor(urgVariable, 0));
+        AddConstantODEs(location, gs);
         
+        for (RealVariable var : gs.EventsState().PoolState().Pool().AllVariables()) {
+            location.AddEquation(new DifferentialEquation(var, Const(0f)));
+        }
+
         return location;
     }
 
 
 
-    private Location CreatePhyscialLocationFrom(GlobalRunTimeState state)
+    private Location CreatePhyscialLocationFrom(GlobalRunTimeState gs, String locName)
     {
-        Location location = new Location();
+        Location location = new Location(locName+"_P");
         
         ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
-        for(PhysicalActorState actorState : state.ContinuousState().ActorStates())
+        for(PhysicalActorState actorState : gs.ContinuousState().ActorStates())
         {
+            String actorName = actorState.Actor().Name();
+            Invarient convertedInvarient = 
+                    (Invarient) unwrapper.Unwrap(actorState.Mode().GetInvarient(), actorName);
             
-            location.AddInvariant(actorState.Mode().GetInvarient());
-            location.AddEquations(actorState.Mode().GetEquations());
+            location.AddInvariant(convertedInvarient);
+            for(DifferentialEquation equation : actorState.Mode().GetEquations())
+                location.AddEquation((DifferentialEquation) unwrapper.Unwrap(equation, actorName));
         }
+        
+        for(Event event : gs.EventsState().Events())
+        {
+            location.AddInvariant(CreateInvarient(event.Timer(), "<=", Const(event.Delay())));
+            
+            location.AddEquation(new DifferentialEquation(event.Timer(),Const(1f)));
+        }
+        
+        for(RealVariable var: gs.EventsState().PoolState().Pool().AvailableVariables())
+            location.AddEquation(new DifferentialEquation(var,Const(0f)));
+        
+        AddConstantODEs(location, gs);
         
         return location;
     }
 
     private HybridLabel CreateInstantaneousLabel(Transition transition)
     {
+        Guard guard;
+        if(transition.GetLabel().IsGuarded())
+            guard = transition.GetLabel().Guard();
+        else 
+            guard =  new Guard(new TrueConst()); 
         return new HybridLabel(
-                new Guard(new TrueConst()),
+                guard,
                 transition.GetLabel().Resets(),
                 true);
     }
@@ -143,5 +180,18 @@ public class ConversionRule implements SOSRule
         return new HybridLabel(
                     transition.GetLabel().Guard(),
                     transition.GetLabel().Resets());
+    }
+
+    private void AddConstantODEs(Location location, GlobalRunTimeState gs)
+    {
+        ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
+        for(ActorState actorState : gs.DiscreteState().ActorStates())
+            for(Variable var : actorState.Actor().Type().Variables())
+                if(var.Type() == Variable.Type.floatingPoint)
+                    location.AddEquation(
+                            new DifferentialEquation(
+                                    unwrapper.Unwrap(var, actorState.Actor().Name()), 
+                                    Const(0f)));
+        
     }
 }

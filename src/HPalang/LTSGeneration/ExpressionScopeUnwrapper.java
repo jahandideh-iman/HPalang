@@ -3,29 +3,36 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.Core;
+package HPalang.LTSGeneration;
 
+import HPalang.LTSGeneration.PostorderExpressionCrawler;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.FalseConst;
 import HPalang.Core.DiscreteExpressions.TrueConst;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
+import HPalang.Core.Expression;
+import HPalang.Core.ContinuousExpressions.Invarient;
+import HPalang.Core.Variable;
+import HPalang.Core.VariableVisitor;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.Labels.Guard;
+import HPalang.LTSGeneration.Labels.Reset;
 import java.util.Stack;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class ExpressionScopeUnwrapper extends PostorderExpressionCrawler
+public class ExpressionScopeUnwrapper  extends PostorderExpressionCrawler
 {
     private String scopeName;
     
     private Stack<Expression> expressoins;
-
 
     private class VariableScopeChanger implements VariableVisitor
     {
@@ -132,6 +139,37 @@ public class ExpressionScopeUnwrapper extends PostorderExpressionCrawler
     protected void Process(Expression expr)
     {
         expressoins.push(expr);
+    }
+   
+    @Override
+    protected void Process(Invarient expr)
+    {
+        Expression expression = expressoins.pop();
+        expressoins.push(new Invarient(expression));
+    }
+    
+    @Override
+    protected void Process(Guard expr)
+    {
+        Expression expression = expressoins.pop();
+        expressoins.push(new Guard(expression));
+    }
+
+    @Override
+    protected void Process(DifferentialEquation expr)
+    {
+        Expression expression = expressoins.pop();
+        expressoins.push(new DifferentialEquation(
+                (RealVariable)Unwrap(
+                        expr.GetVariable(), 
+                        scopeName)
+                ,expression));
+    }
+    
+    @Override
+    protected void Process(Reset expr)
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

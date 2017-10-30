@@ -5,7 +5,7 @@
  */
 package HPalang.SpaceEx.Core;
 
-import HPalang.Core.Invarient;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -62,7 +62,7 @@ public class Location extends Node implements Visitable
     }
 
     @Override
-    public void Accept(Visitor visitor)
+    public void Accept(ModelVisitor visitor)
     {
         visitor.Visit(this);
     }

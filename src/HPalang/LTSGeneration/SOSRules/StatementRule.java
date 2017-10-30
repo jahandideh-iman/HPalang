@@ -22,7 +22,8 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
     protected final boolean IsRuleSatisfied(ActorState actorState, GlobalRunTimeState globalState)
     {
         
-        return actorState.ExecutionQueueState().Statements().IsEmpty() == false &&
+        return actorState.IsSuspended() == false &&
+                actorState.ExecutionQueueState().Statements().IsEmpty() == false &&
                 actorState.ExecutionQueueState().Statements().Head().Is(StatementType()) &&
                 InternalIsRuleSatisfied(actorState);
     }

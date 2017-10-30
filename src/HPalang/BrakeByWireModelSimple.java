@@ -8,7 +8,8 @@ package HPalang;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.DelegationParameter;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Mode;
 import HPalang.Core.MainBlock;
@@ -21,7 +22,7 @@ import HPalang.Core.Variable;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.RealVariable;
-import static HPalang.ModelCreationUtilities.*;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *
@@ -116,10 +117,10 @@ public class BrakeByWireModelSimple
         Mode noBrakeMode = wheelType.FindMode("NoBrake");
 
         
-        noBrakeMode.SetInvarient("timer <= 0.01");
+        noBrakeMode.SetInvarient(new Invarient(CreateBinaryExpression(timer, "<=", Const(0.01f))));
         noBrakeMode.SetGuard(CreateGuard(timer, "==", 0.01f));
-        noBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
-        noBrakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, "?!!!"));
+        noBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
+        noBrakeMode.AddDifferentialEquation(new DifferentialEquation(rpm, UnknowExpression("?!!!")));
         
         noBrakeMode.AddAction(CreateResetFor(timer));
         noBrakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation, VariableExpression(rpm)));

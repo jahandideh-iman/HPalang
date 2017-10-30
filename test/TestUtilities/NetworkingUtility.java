@@ -27,7 +27,7 @@ import HPalang.Core.Variable;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import Mocks.EmptyMessage;
 import Mocks.FakeVariable;
-import Mocks.NullExpression;
+import HPalang.Core.NullExpression;
 
 /**
  *

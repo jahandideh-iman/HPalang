@@ -53,8 +53,8 @@ public class PhysicalActorStateTest
     {
         PhysicalActor actor = CreatePhysicalActor("Actor");
         
-        Mode mode1 = new ModeBuilder().WithInvarient("inv1").WithName("mode1").Build();    
-        Mode mode2 = new ModeBuilder().WithInvarient("inv2").WithName("mode2").Build();
+        Mode mode1 = new ModeBuilder().WithInvarient(FakeInvarient("inv1")).WithName("mode1").Build();    
+        Mode mode2 = new ModeBuilder().WithInvarient(FakeInvarient("inv2")).WithName("mode2").Build();
         
         PhysicalActorState state1 = new PhysicalActorState(actor);
         state1.SetMode(mode1);

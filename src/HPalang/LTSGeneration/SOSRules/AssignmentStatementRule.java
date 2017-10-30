@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Expression;
-import HPalang.Core.ExpressionScopeUnwrapper;
+import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.ValuationContainer;
 import HPalang.LTSGeneration.Labels.Reset;

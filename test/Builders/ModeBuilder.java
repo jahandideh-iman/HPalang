@@ -6,7 +6,9 @@
 package Builders;
 
 import static HPalang.Core.CreationUtilities.CreateTrivialFlaseGuard;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
+import HPalang.Core.DiscreteExpressions.TrueConst;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.Mode;
 import HPalang.Core.Statement;
 import static HPalang.Core.Statement.StatementsFrom;
@@ -19,7 +21,7 @@ import Mocks.EmptyStatement;
  */
 public class ModeBuilder
 {
-    private String inv = "inv";
+    private Invarient inv = new Invarient(new TrueConst());
     private String name = "mode";
     
     public Mode Build()
@@ -33,7 +35,7 @@ public class ModeBuilder
         return this;
     }
     
-    public ModeBuilder WithInvarient(String inv)
+    public ModeBuilder WithInvarient(Invarient inv)
     {
         this.inv = inv;
         return this;

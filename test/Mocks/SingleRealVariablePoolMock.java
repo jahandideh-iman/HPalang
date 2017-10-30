@@ -73,5 +73,17 @@ public class SingleRealVariablePoolMock extends Equalitable<SingleRealVariablePo
     {
         return 0;
     }
+
+    @Override
+    public Iterable<RealVariable> AllVariables()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Iterable<RealVariable> AvailableVariables()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
     
 }

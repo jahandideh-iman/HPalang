@@ -15,16 +15,14 @@ import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
-import HPalang.Core.Invarient;
-import HPalang.SpaceEx.Core.LabelParameter;
+import HPalang.Core.Variables.RealVariable;
 import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.NetworkComponent;
 import HPalang.SpaceEx.Core.RealParameter;
 import HPalang.SpaceEx.Core.SpaceExModel;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *
@@ -97,7 +95,7 @@ public class HPalangToCompositionalSXConvertor
         Location loc1 = new Location("loc1");
         Location loc2 = new Location("loc2");
         
-        loc1.AddInvarient(new Invarient("time <= duration"));
+        loc1.AddInvarient(CreateInvarient(new RealVariable("time"), "<=", new RealVariable("duration")));
         loc1.AddFlow(new Flow("time' == 1"));
         
         loc2.AddFlow(new Flow("time' == 0"));

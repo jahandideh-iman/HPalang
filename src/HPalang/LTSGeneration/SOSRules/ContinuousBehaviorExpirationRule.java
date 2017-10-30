@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Actor;
-import HPalang.Core.ExpressionScopeUnwrapper;
+import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
 import HPalang.Core.Mode;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
@@ -49,6 +49,6 @@ public class ContinuousBehaviorExpirationRule extends PhysicalActorLevelRule
     private Guard UnscopedGuard(Guard guard, Actor owner)
     {
         ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
-        return new Guard(unwrapper.Unwrap(guard.Expression(), owner.Name()));
+        return (Guard) unwrapper.Unwrap(guard, owner.Name());
     }
 }

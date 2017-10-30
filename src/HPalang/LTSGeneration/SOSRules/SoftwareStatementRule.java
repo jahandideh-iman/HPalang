@@ -46,13 +46,13 @@ public abstract class SoftwareStatementRule<T extends Statement> extends Softwar
         newActorState.ExecutionQueueState().Statements().Dequeue();
         ApplyStatement(newActorState, statement, newGlobalState);
         
-        SoftwareLabel label = CreateTransitionLabel(actorState, statement);
+        SoftwareLabel label = CreateTransitionLabel(actorState.DeepCopy(), statement, globalState.DeepCopy());
         
         collector.AddTransition(label, newGlobalState);
     }
     
     protected abstract void ApplyStatement(SoftwareActorState newActorState, T statement, GlobalRunTimeState newGlobalState);
-    protected SoftwareLabel CreateTransitionLabel(SoftwareActorState actorState, T statement)
+    protected SoftwareLabel CreateTransitionLabel(SoftwareActorState actorState, T statement, GlobalRunTimeState globalState)
     {
         return new SoftwareLabel();
     }

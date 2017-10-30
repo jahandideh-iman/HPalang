@@ -9,7 +9,7 @@ package HPalang.SpaceEx.Core;
  *
  * @author Iman Jahandideh
  */
-public interface Visitor
+public interface ModelVisitor
 {
     public void Visit(SpaceExModel model);
     public void Visit(NetworkComponent component);

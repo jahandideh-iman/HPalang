@@ -5,6 +5,7 @@
  */
 package HPalang.Core;
 
+import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.AddOperator;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;

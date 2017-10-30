@@ -7,7 +7,7 @@ package HPalang.Parser;
 
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.Statements.ContinuousAssignmentStatement;
 import HPalang.Core.Statements.SendStatement;

@@ -10,14 +10,13 @@ import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridTransition;
-import HPalang.Core.Invarient;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.SpaceEx.Core.LabelParameter;
 import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.NetworkComponent;
 import HPalang.SpaceEx.Core.Parameter;
 import HPalang.SpaceEx.Core.RealParameter;
 import HPalang.SpaceEx.Core.SpaceExModel;
-import HPalang.SpaceEx.Core.Visitor;
 import java.util.Collection;
 import java.util.List;
 import java.util.logging.Level;
@@ -28,16 +27,19 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.ParserConfigurationException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
+import HPalang.SpaceEx.Core.ModelVisitor;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class SpaceExToXMLConvertorVisitor implements Visitor
+public class SpaceExToXMLConvertorVisitor implements ModelVisitor
 {
     private Element rootElement;
     private Document document;
     private Element currentComElem;
+    
+    private ExpressionConvertor expressionConvertor = new ExpressionConvertor();
     
     public SpaceExToXMLConvertorVisitor()
     {
@@ -177,7 +179,7 @@ public class SpaceExToXMLConvertorVisitor implements Visitor
     {
         Element invElem = document.createElement("invariant");
         
-        List invsStr = invs.stream().map((Invarient i) -> i.toString()).collect(Collectors.toList());
+        List invsStr = invs.stream().map((Invarient i) -> expressionConvertor.Convert(i)).collect(Collectors.toList());
          
         invElem.appendChild(document.createTextNode(String.join("&&", invsStr)));
         return invElem;

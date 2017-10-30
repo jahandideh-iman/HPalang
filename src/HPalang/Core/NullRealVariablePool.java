@@ -13,7 +13,6 @@ import HPalang.Core.Variables.RealVariable;
  */
 public class NullRealVariablePool implements RealVariablePool
 {
-
     @Override
     public RealVariable Acquire()
     {
@@ -49,5 +48,18 @@ public class NullRealVariablePool implements RealVariablePool
     {
         return number == 0;
     }
+
+    @Override
+    public Iterable<RealVariable> AllVariables()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public Iterable<RealVariable> AvailableVariables()
+    {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
     
 }

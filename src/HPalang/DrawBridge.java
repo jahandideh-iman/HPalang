@@ -10,7 +10,7 @@ import HPalang.Core.CommunicationType;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.DelegationParameter;
-import HPalang.Core.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.*;
 import HPalang.Core.InstanceParameter;
 import HPalang.Core.MainBlock;
@@ -23,7 +23,7 @@ import HPalang.Core.SoftwareActorType;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.*;
 import HPalang.Core.Variables.*;
-import static HPalang.ModelCreationUtilities.*;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *
@@ -163,8 +163,9 @@ public class DrawBridge
         RealVariable timer = (RealVariable) clockType.FindVariable(Clock__timer);
         DelegationParameter callback = clockType.FindDelegationParameter(Clock__callback_param);
         
-        on.SetInvarient(String.format("%s <= 5", timer.Name()));
-        on.AddDifferentialEquation(new DifferentialEquation(timer, "1"));
+        
+        on.SetInvarient(CreateInvarient(timer, "<=", Const(5f)));
+        on.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
         on.SetGuard(CreateGuard(timer, "==", 5f));
         on.AddAction(CreateResetFor(timer));
         on.AddAction(CreateSendStatement(callback));
@@ -254,14 +255,15 @@ public class DrawBridge
         Mode loweringMode = drawBridgeType.FindMode(Draw_Bridge__lowering_mode);
         Mode raisingMode = drawBridgeType.FindMode(Draw_Bridge__raising_mode);
         
-        loweringMode.SetInvarient(String.format("%s >= 0", degree.Name()));
-        loweringMode.AddDifferentialEquation(new DifferentialEquation(degree, "-10"));
+        
+        loweringMode.SetInvarient(CreateInvarient(degree, ">=", Const(0f)));
+        loweringMode.AddDifferentialEquation(new DifferentialEquation(degree,Const(-10f)));
         loweringMode.SetGuard(CreateGuard(degree, "==", 0f));
         loweringMode.AddAction(new ModeChangeStatement(Mode.None()));
         loweringMode.AddAction(CreateSendStatement(controller, DBC__bridge_lowered_handler));
         
-        raisingMode.SetInvarient(String.format("%s <= 90", degree.Name()));
-        raisingMode.AddDifferentialEquation(new DifferentialEquation(degree, String.format("$s / 100", degree.Name())));
+        raisingMode.SetInvarient(CreateInvarient(degree, "<=", Const(90f)));
+        raisingMode.AddDifferentialEquation(new DifferentialEquation(degree, CreateBinaryExpression(degree, "/", Const(100f))));
         raisingMode.SetGuard(CreateGuard(degree, "==", 90));
         raisingMode.AddAction(new ModeChangeStatement(Mode.None()));
         raisingMode.AddAction(CreateSendStatement(controller, DBC__bridge_raised_handler));   

@@ -32,7 +32,7 @@ import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.IntegerVariable;
-import static HPalang.ModelCreationUtilities.*;
+import static HPalang.Core.ModelCreationUtilities.*;
 
 /**
  *

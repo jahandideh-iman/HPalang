@@ -7,7 +7,9 @@ package Mocks;
 
 import HPalang.Core.Expression;
 import HPalang.Core.ExpressionVisitor;
+import HPalang.Core.Expressions.Visitors.GeneralExpressionVisitor;
 import HPalang.Core.ValuationContainer;
+import HPalang.Core.Visitor;
 
 /**
  *
@@ -34,9 +36,10 @@ public class EmptyExpression implements Expression
     }
 
     @Override
-    public void Visit(ExpressionVisitor visitor)
+    public void Visit(Visitor visitor)
     {
-        visitor.Visit((Expression)this);
+        if(visitor instanceof GeneralExpressionVisitor)
+            ((GeneralExpressionVisitor)visitor).Visit(this);
     }
     
 }

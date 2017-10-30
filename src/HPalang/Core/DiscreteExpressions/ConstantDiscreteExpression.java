@@ -7,8 +7,10 @@ package HPalang.Core.DiscreteExpressions;
 
 import HPalang.Core.Expression;
 import HPalang.Core.ExpressionVisitor;
+import HPalang.Core.Expressions.Visitors.ConstantDiscreteExpressionVisitor;
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
+import HPalang.Core.Visitor;
 
 /**
  *
@@ -63,12 +65,16 @@ public class ConstantDiscreteExpression extends DiscreteExpressionT<ConstantDisc
     {
         return String.valueOf(constant);
     }
+    
+    public int Value()
+    {
+        return constant;
+    }
 
     @Override
-    public void Visit(ExpressionVisitor visitor)
+    public void Visit(Visitor visitor)
     {
-        visitor.Visit(this);
+        if(visitor instanceof ConstantDiscreteExpressionVisitor)
+            ((ConstantDiscreteExpressionVisitor) visitor).Visit(this);
     }
-    
-    
 }

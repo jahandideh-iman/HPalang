@@ -58,4 +58,10 @@ public class PhysicalActorState extends ActorState<PhysicalActorState>
                 this.mode.equals(other.mode);
     }
 
+    @Override
+    public void SetSuspended(boolean suspended)
+    {
+        throw new RuntimeException("A physical actor can not be suspended");
+    }
+
 }

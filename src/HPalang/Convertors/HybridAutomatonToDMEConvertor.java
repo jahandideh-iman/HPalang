@@ -5,8 +5,8 @@
  */
 package HPalang.Convertors;
 
-import HPalang.Core.DifferentialEquation;
-import HPalang.Core.Invarient;
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.HybridAutomataGeneration.Location;
 import HPalang.HybridAutomataGeneration.Transition;

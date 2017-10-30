@@ -9,8 +9,7 @@ import HPalang.Core.Statements.DelayStatement;
 import HPalang.SpaceEx.Convertor.ActorModelData;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
-import HPalang.Core.Invarient;
-import HPalang.SpaceEx.Core.Location;
+import HPalang.Core.ContinuousExpressions.Invarient;
 
 /**
  *
@@ -26,10 +25,10 @@ public class DelayLocation extends StatementLocation
         super(name+"_delay", actorData);
         this.statement = statement;
         this.delayVar = actorData.DelayVar();
-        String invarient = actorData.DelayInvarient(statement.GetDelay());
+        Invarient invarient = actorData.DelayInvarient(statement.GetDelay());
         String flow = actorData.DelayFlow();
 
-        loc.AddInvarient(new Invarient(invarient));
+        loc.AddInvarient(invarient);
         loc.AddFlow(new Flow(flow));
     }
 

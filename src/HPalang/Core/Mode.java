@@ -5,6 +5,9 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.ContinuousExpressions.DifferentialEquation;
+import HPalang.Core.ContinuousExpressions.Invarient;
+import HPalang.Core.DiscreteExpressions.FalseConst;
 import HPalang.LTSGeneration.Labels.Guard;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -19,8 +22,7 @@ import java.util.Set;
 public class Mode extends Equalitable<Mode>
 {
     private final String name;
-    //TODO: Use 'Invarient' class instead of string
-    private String invariant;
+    private Invarient invariant;
     private Set<DifferentialEquation> equations = new HashSet<>();
     private Guard guard;
     private Queue<Statement> actions = new LinkedList<>();
@@ -29,7 +31,7 @@ public class Mode extends Equalitable<Mode>
     {
         this.name = name;
     }
-    public Mode(String name, String inv, Set<DifferentialEquation> odes, Guard guard, Queue<Statement> actions )
+    public Mode(String name, Invarient inv, Set<DifferentialEquation> odes, Guard guard, Queue<Statement> actions )
     {
         this.name = name;
         this.invariant = inv;
@@ -38,7 +40,7 @@ public class Mode extends Equalitable<Mode>
         this.actions = actions;
     }
     
-    public void SetInvarient(String invariant)
+    public void SetInvarient(Invarient invariant)
     {
         this.invariant = invariant;
     }
@@ -73,7 +75,7 @@ public class Mode extends Equalitable<Mode>
         return equations;
     }
 
-    public String GetInvarient()
+    public Invarient GetInvarient()
     {
         return invariant;
     }
@@ -96,7 +98,7 @@ public class Mode extends Equalitable<Mode>
     
     public static Mode None()
     {
-        return new Mode("None","", EquationsFrom(DifferentialEquation.Empty()), CreationUtilities.CreateTrivialFlaseGuard(), Statement.EmptyStatements());
+        return new Mode("None",new Invarient(new FalseConst()), EquationsFrom(DifferentialEquation.Empty()), CreationUtilities.CreateTrivialFlaseGuard(), Statement.EmptyStatements());
     }
     
     static public Set<DifferentialEquation> EquationsFrom(DifferentialEquation ...equations)
