@@ -12,9 +12,6 @@ import HPalang.LTSGeneration.Transition;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
-import static HPalang.Convertors.StringConversionUtilities.StringForCommonActorState;
-import static HPalang.Convertors.StringConversionUtilities.StringForSoftwareActorState;
-import static HPalang.Convertors.StringConversionUtilities.StringForDiscreteState;
 import static HPalang.Convertors.StringConversionUtilities.StringFor;
 
 /**
@@ -23,13 +20,13 @@ import static HPalang.Convertors.StringConversionUtilities.StringFor;
  */
 public class LTSToFSMConvertor
 {
-    private String output;
+    private StringBuilder output;
     
     private Map<GlobalRunTimeState, Integer> indexes;
     
     public String Convert(LabeledTransitionSystem lts)
     {
-        output = "";
+        output = new StringBuilder();
         indexes = new HashMap<>();
         
         int i =1;
@@ -58,22 +55,22 @@ public class LTSToFSMConvertor
                     ));
         }
         
-        return output;
+        return output.toString();
     }
     
     private String CreateStatesValues(Set<GlobalRunTimeState> globalStates)
     {
-        String values = "";
+        StringBuilder values = new StringBuilder();
         
         for(GlobalRunTimeState gs : globalStates)
-            values = values.concat(" " + Qoute(StringFor(gs)));
+            values = values.append(" ").append(Qoute(StringFor(gs)));
 
-        return values;
+        return values.toString();
     }
     
     private void ConcatLine(String line)
     {
-        output =  output.concat(line + "\n");
+        output =  output.append(line).append("\n");
     }
     
     private int IndexFor(GlobalRunTimeState state)

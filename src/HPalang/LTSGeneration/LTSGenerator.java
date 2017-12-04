@@ -44,7 +44,7 @@ public class LTSGenerator implements TransitionCollector
                 rule.TryApply(
                         new StateInfo(
                                 currentGlobalState.DeepCopy(), 
-                                transitionSystem.GetInTransitionFor(currentGlobalState),
+                                transitionSystem.GetInTransitionsFor(currentGlobalState),
                                 transitionSystem.GetOutTransitionsFor(currentGlobalState)),
                         this);
             

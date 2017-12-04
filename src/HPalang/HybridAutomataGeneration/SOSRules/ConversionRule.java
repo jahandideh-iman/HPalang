@@ -125,6 +125,9 @@ public class ConversionRule implements SOSRule
         for (RealVariable var : gs.EventsState().PoolState().Pool().AllVariables()) {
             location.AddEquation(new DifferentialEquation(var, Const(0f)));
         }
+        
+        location.AddEquation(new DifferentialEquation(urgVariable, Const(1f)));
+        location.AddInvariant(new Invarient(CreateBinaryExpression(urgVariable,"==", Const(0))));
 
         return location;
     }
@@ -158,11 +161,32 @@ public class ConversionRule implements SOSRule
             location.AddEquation(new DifferentialEquation(var,Const(0f)));
         
         AddConstantODEs(location, gs);
+        location.AddEquation(new DifferentialEquation(urgVariable, Const(0f)));
+               
         
         return location;
     }
-
+    
     private HybridLabel CreateInstantaneousLabel(Transition transition)
+    {
+        return CreateUrgentInstantaneousLabel(transition);
+    }
+    
+    private HybridLabel CreateUrgentInstantaneousLabel(Transition transition)
+    {
+        Guard guard;
+        
+        if(transition.GetLabel().IsGuarded())
+            guard = transition.GetLabel().Guard();
+        else 
+            guard =  new Guard(CreateBinaryExpression(urgVariable, "==", Const(0))); 
+        return new HybridLabel(
+                guard,
+                transition.GetLabel().Resets(),
+                false);
+    }
+
+    private HybridLabel CreateASAPInstantaneousLabel(Transition transition)
     {
         Guard guard;
         if(transition.GetLabel().IsGuarded())
@@ -174,6 +198,7 @@ public class ConversionRule implements SOSRule
                 transition.GetLabel().Resets(),
                 true);
     }
+    
 
     private HybridLabel CreateGuardedLabelFrom(Transition transition)
     {
@@ -184,6 +209,7 @@ public class ConversionRule implements SOSRule
 
     private void AddConstantODEs(Location location, GlobalRunTimeState gs)
     {
+ 
         ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
         for(ActorState actorState : gs.DiscreteState().ActorStates())
             for(Variable var : actorState.Actor().Type().Variables())

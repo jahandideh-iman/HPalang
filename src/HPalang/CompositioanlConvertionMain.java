@@ -18,7 +18,7 @@ public class CompositioanlConvertionMain
 {
     public static void main(String[] args) 
     {
-        ModelDefinition definition = HRToHAExample1.Create();
+        ModelDefinition definition = HRToHAExample2.Create();
         
         HPalangToCompositionalSXConvertor spaceExConvertor = new HPalangToCompositionalSXConvertor();
         SpaceExToXMLConvertor xmlConvertor = new SpaceExToXMLConvertor();
@@ -29,6 +29,6 @@ public class CompositioanlConvertionMain
  
         
         
-        writer.Write("output_SpaceEx.xml", xmlConvertor.Convert(spaceExModel));
+        writer.Write("output/CompostionalSpaceEx.xml", xmlConvertor.Convert(spaceExModel));
     }
 }

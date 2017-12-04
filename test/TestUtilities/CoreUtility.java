@@ -33,6 +33,7 @@ import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.SoftwareActorType;
 import Mocks.EmptyStatement;
 import HPalang.Core.NullExpression;
+import Mocks.LabelMock;
 import java.util.Collections;
 import java.util.Queue;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -243,5 +244,18 @@ public class CoreUtility
     static public Invarient FakeInvarient(String expr)
     {
         return new Invarient(new NullExpression(expr));
+    }
+    
+    static public GlobalRunTimeState CreateUniqueGlobalState(String id)
+    {
+        GlobalRunTimeState state = CreateGlobalState();
+        state.AddSubstate(CreateSoftwareActorState(id));
+        
+        return state;
+    }
+    
+    static public Label CreateLabel(String id)
+    {
+        return new LabelMock(id);
     }
 }

@@ -22,10 +22,11 @@ import static HPalang.Convertors.StringConversionUtilities.*;
 public class LTSToAUTConvertor
 {
     private Map<GlobalRunTimeState, Integer> indexes;
-    private String output = "";
+    private StringBuilder output;
+    
     public String Convert(LabeledTransitionSystem lts)
     {
-        output = "";
+        output = new StringBuilder();
         
         indexes = new HashMap<>();
         
@@ -58,7 +59,7 @@ public class LTSToAUTConvertor
         }
         
         
-        return output;
+        return output.toString();
     }
     
     private int IndexFor(GlobalRunTimeState state)
@@ -75,6 +76,6 @@ public class LTSToAUTConvertor
     
     private void ConcatLine(String line)
     {
-        output =  output.concat(line + "\n");
+        output =  output.append(line).append("\n");
     }
 }

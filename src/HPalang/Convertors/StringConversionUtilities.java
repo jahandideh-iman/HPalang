@@ -35,8 +35,11 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
+
+// TODO: Write eqquivilant StringBuilder conversion for all
 public class StringConversionUtilities
 {
+    
     static public String StringFor(Label label)
     {
         String labelDes;
@@ -84,13 +87,13 @@ public class StringConversionUtilities
     
     static public String StringFor(GlobalRunTimeState gs)
     {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         
-        output = output.concat(String.format("DS:(%s), ", StringForDiscreteState(gs.DiscreteState())));
+        output = output.append(String.format("DS:(%s), ", StringForDiscreteState(gs.DiscreteState())));
         
-        output = output.concat(String.format("CS:(%s), ", StringForContinuousState(gs.ContinuousState())));
+        output = output.append(String.format("CS:(%s), ", StringForContinuousState(gs.ContinuousState())));
         
-        return output;
+        return output.toString();
     }
     
     static public String StringForContinuousState(ContinuousState continuousState)
@@ -107,13 +110,13 @@ public class StringConversionUtilities
     }
     static public String StringForPhysicalActorState(PhysicalActorState actorState)
     {
-        String output = "";
+        StringBuilder output = new StringBuilder();
         
-        output = output.concat(String.format("Mode=%s,", actorState.Mode().Name()));
+        output = output.append(String.format("Mode=%s,", actorState.Mode().Name()));
         
-        output = output.concat(StringForCommonActorState((ActorState)actorState));
+        output = output.append(StringForCommonActorState((ActorState)actorState));
 
-        return  String.format("%s:(%s)", actorState.Actor().Name() ,output);
+        return  String.format("%s:(%s)", actorState.Actor().Name() ,output.toString());
     }
         
     static public String StringForDiscreteState(DiscreteState ds)
@@ -142,14 +145,14 @@ public class StringConversionUtilities
     
     static public String StringForCommonActorState(ActorState actorState)
     {
-        String output = "";
-        output = output.concat(String.format("val:(%s),",StringFor(actorState.ValuationState())));
+        StringBuilder output = new StringBuilder();
+        output = output.append(String.format("val:(%s),",StringFor(actorState.ValuationState())));
         
-        output = output.concat(String.format("exe:(%s),",StringFor(actorState.ExecutionQueueState())));
+        output = output.append(String.format("exe:(%s),",StringFor(actorState.ExecutionQueueState())));
         
-        output = output.concat(String.format("mes:(%s)",StringFor(actorState.MessageQueueState())));
+        output = output.append(String.format("mes:(%s)",StringFor(actorState.MessageQueueState())));
         
-        return output;
+        return output.toString();
     }
     
     static public String StringFor(ValuationState valutationState)

@@ -35,8 +35,8 @@ public abstract class Equalitable<T>
     @Override
     public final int hashCode()
     {
-        //return InternalHashCode();
-        return 0;
+        return InternalHashCode();
+        //return 0;
     }
 
     abstract protected boolean InternalEquals(T other);

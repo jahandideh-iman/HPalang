@@ -53,7 +53,7 @@ public class HybridAutomatonGenerator
                 rule.TryApply(
                         new StateInfo(
                                 globalState.DeepCopy(), 
-                                lts.GetInTransitionFor(globalState),
+                                lts.GetInTransitionsFor(globalState),
                                 lts.GetOutTransitionsFor(globalState)),
                         this);
         }
@@ -110,6 +110,8 @@ public class HybridAutomatonGenerator
             hybridAutomaton.AddVariable(var.Name());
         hybridAutomaton.AddVariable("urg");
     }
+    
+    
     
     public String CreateAUniqueLocationName(GlobalRunTimeState state)
     {

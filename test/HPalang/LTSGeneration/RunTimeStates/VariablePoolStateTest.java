@@ -9,6 +9,7 @@ import HPalang.Core.ContinuousVariable;
 import HPalang.Core.SimpleContinuousVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import Mocks.EmptyAction;
+import java.util.LinkedList;
 import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.is;
 import org.junit.Test;
@@ -20,7 +21,6 @@ import static org.junit.Assert.*;
  */
 public class VariablePoolStateTest
 {
-    
     @Test
     public void EventsStateWithEqualDataAreEqual()
     {

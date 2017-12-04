@@ -5,15 +5,15 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.Equalitable;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class Transition
+public class Transition extends Equalitable<Transition>
 {
-    
     private GlobalRunTimeState origin;
     private GlobalRunTimeState destination;
     private Label label;
@@ -41,16 +41,17 @@ public class Transition
     }
 
     @Override
-    public boolean equals(Object other)
+    protected boolean InternalEquals(Transition other)
     {
-        if (other == null) {
-            return false;
-        }
-        if (!Transition.class.isAssignableFrom(other.getClass())) {
-            return false;
-        }
-        Transition otherTransition = (Transition) other;
-        return otherTransition.destination.equals(destination) && otherTransition.origin.equals(origin) && otherTransition.label.equals(label);
+        return other.destination.equals(this.destination)
+                && other.origin.equals(this.origin)
+                && other.label.equals(this.label);
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return origin.hashCode() + destination.hashCode() + label.hashCode();
     }
     
 }

@@ -48,14 +48,11 @@ public class Main {
 
     
     // TODO: ------------------------- REFACTOR THIS -------------------------------
-    /**
-     * @param args the command line arguments
-     */
     public static void main(String[] args) throws FileNotFoundException, IOException 
     {
         ModelDefinition definition;
         if(args.length ==0)
-            definition = HRToHAExample1.Create();
+            definition = BrakeByWireModelSingleWheel.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
@@ -79,10 +76,10 @@ public class Main {
         //LabeledTransitionSystem reduceLTS =  new LTSReducer().Reduce(lts);
         //OutputLTS("ReducedLTS", reduceLTS, writer);
         
-        HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts, definition);
+        //HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts, definition);
 //        
 //        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
-        writer.Write("output_HA.xml", new HybridAutomatonToSXConvertor().Convert(automaton));
+        //writer.Write("output_HA.xml", new HybridAutomatonToSXConvertor().Convert(automaton));
 //        
 //        System.out.println("LTS(A) Pruning States : " + lts.States().size());
 //        System.out.println("LTS(A) Pruning Transition : " + lts.Transitions().size());
@@ -167,7 +164,7 @@ public class Main {
             for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
             {
                 List<Transition> outTrans = lts.GetOutTransitionsFor(state);
-                List<Transition> inTrans = lts.GetInTransitionFor(state);
+                List<Transition> inTrans = lts.GetInTransitionsFor(state);
                 
                 if(inTrans.size() == 1 && outTrans.size() == 1
                         && inTrans.get(0).GetLabel() instanceof SoftwareLabel
@@ -212,7 +209,7 @@ public class Main {
 //        for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
 //        {
 //            List<LabeledTransitionSystem.Transition> fromTrans = lts.GetOutTransitionsFor(state);
-//            List<LabeledTransitionSystem.Transition> toTrans = lts.GetInTransitionFor(state);
+//            List<LabeledTransitionSystem.Transition> toTrans = lts.GetInTransitionsFor(state);
 //            
 //            if(toTrans.size() == 0 && fromTrans.size() == 0)
 //                lts.RemoveState(state);
@@ -259,7 +256,7 @@ public class Main {
                     continue;
                 
                 List<Transition> outTrans = lts.GetOutTransitionsFor(state);
-                List<Transition> inTrans = lts.GetInTransitionFor(state);
+                List<Transition> inTrans = lts.GetInTransitionsFor(state);
                 
                 
                 boolean allTauLabled = true && outTrans.size() > 0;

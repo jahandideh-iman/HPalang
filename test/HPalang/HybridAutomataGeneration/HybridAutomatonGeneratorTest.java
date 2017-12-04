@@ -50,7 +50,7 @@ public class HybridAutomatonGeneratorTest
         
         generator.Generate(lts, null);
         
-        StateInfo stateInfo = new StateInfo(state1, lts.GetInTransitionFor(state1), lts.GetOutTransitionsFor(state1));
+        StateInfo stateInfo = new StateInfo(state1, lts.GetInTransitionsFor(state1), lts.GetOutTransitionsFor(state1));
         
         assertThat(rule.appliedStateInfos,hasItem(stateInfo));
     }
