@@ -21,7 +21,7 @@ import java.util.Set;
  */
 public class LabeledTransitionSystem
 {    
-    private Set<GlobalRunTimeState> states = new HashSet<>();
+    private Map<GlobalRunTimeState, GlobalRunTimeState> states = new HashMap<>();
     private GlobalRunTimeState initialState = null;
     
     private Set<Transition> transitions = new HashSet<>();
@@ -32,8 +32,8 @@ public class LabeledTransitionSystem
     public void SetInitialState(GlobalRunTimeState state)
     {
         initialState = state;
-        if(states.contains(state) == false)
-            states.add(state);
+        if(states.containsKey(state) == false)
+            states.put(state,state);
     }
     
     public GlobalRunTimeState InitialState()
@@ -43,30 +43,35 @@ public class LabeledTransitionSystem
     
     public void AddState(GlobalRunTimeState state)
     {
-        states.add(state);
+        states.put(state ,state);
     }
     
     public boolean HasState(GlobalRunTimeState state)
     {
-        return states.contains(state);
+        return states.containsKey(state);
     }
     
     public Set<GlobalRunTimeState> States()
     {
-        return states;
+        return states.keySet();
     }
     
     public void AddTransition(GlobalRunTimeState origin,Label label, GlobalRunTimeState destination)
     {
-        Transition transtion = new Transition(origin,label,destination);
+        Transition transtion = new Transition(StateFor(origin),label,StateFor(destination));
         if(transitions.contains(transtion))
             return;
         assert(HasState(origin));
         //AddState(origin);
         transitions.add(transtion);
-        AddState(destination);
+        AddState(transtion.GetDestination());
         
         CacheTransitionOutputInput(transtion);
+    }
+    
+    private GlobalRunTimeState StateFor(GlobalRunTimeState state)
+    {
+        return states.getOrDefault(state, state);
     }
     
     public List<Transition> Transitions()

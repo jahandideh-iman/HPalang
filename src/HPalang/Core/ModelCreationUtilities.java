@@ -5,52 +5,30 @@
  */
 package HPalang.Core;
 
-import static HPalang.BrakeByWireModel.Clock__callback;
-import HPalang.Core.Actor;
-import HPalang.Core.ActorLocator;
 import HPalang.Core.ActorLocators.DelegationActorLocator;
 import HPalang.Core.ActorLocators.DirectActorLocator;
 import HPalang.Core.ActorLocators.ParametricActorLocator;
 import HPalang.Core.ActorLocators.SelfActorLocator;
-import HPalang.Core.ActorType;
-import HPalang.Core.CommunicationType;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
-import HPalang.Core.Delegation;
-import HPalang.Core.DelegationParameter;
 import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.*;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
-import HPalang.Core.Expression;
-import HPalang.Core.InstanceParameter;
 import HPalang.Core.ContinuousExpressions.Invarient;
-import HPalang.Core.Message;
-import HPalang.Core.MessageArguments;
-import HPalang.Core.MessageHandler;
-import HPalang.Core.MessageLocator;
 import HPalang.Core.MessageLocators.DelegationMessageLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
 import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.Messages.NormalMessage;
-import HPalang.Core.Mode;
-import HPalang.Core.NullExpression;
-import HPalang.Core.PhysicalActor;
-import HPalang.Core.PhysicalActorType;
-import HPalang.Core.SoftwareActor;
-import HPalang.Core.SoftwareActorType;
-import HPalang.Core.Statement;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.ModeChangeStatement;
 import HPalang.Core.Statements.SendStatement;
-import HPalang.Core.Variable;
-import HPalang.Core.VariableArgument;
-import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.Labels.Guard;
 import java.lang.reflect.InvocationTargetException;
+import javafx.scene.control.SplitPane;
 
 /**
  *
@@ -317,6 +295,8 @@ public class ModelCreationUtilities
             return new BinaryExpression(e1, new GreaterOperator(), e2);
         else if (operator.equals("-"))
             return new BinaryExpression(e1, new SubtractOperator(), e2);
+        else if (operator.equals("/"))
+            return new BinaryExpression(e1, new DivisionOperator(), e2);
         else 
             throw new RuntimeException("Operator is not supported yet");
     }

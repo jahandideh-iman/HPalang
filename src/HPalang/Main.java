@@ -52,7 +52,7 @@ public class Main {
     {
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BrakeByWireModelSingleWheel.Create();
+            definition = BrakeByWireModel.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
@@ -64,10 +64,13 @@ public class Main {
          
         ModeDefinitionToGlobalStateConvertor convertor = new ModeDefinitionToGlobalStateConvertor();
         LabeledTransitionSystem lts =  tierOneLTSGenerator.Generate(convertor.Convert(definition));
-        
+           
         FileWriter writer = new FileWriter("output/");
         
         OutputLTS("FineLTS",lts, writer);
+        OutputLTS("ReducedLTS",new LTSReducer().Reduce(lts), writer);
+        
+        
         
         //PrioritizeTauActions(lts);
         //RemoveUnreachableStates(lts);
@@ -239,7 +242,7 @@ public class Main {
                     notVisitedStates.add(t.GetDestination());
         }
         
-        for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
+        for(GlobalRunTimeState state : new ArrayList<>(lts.States()))
             if(reachableStates.contains(state) == false)
                 lts.RemoveState(state);
         
