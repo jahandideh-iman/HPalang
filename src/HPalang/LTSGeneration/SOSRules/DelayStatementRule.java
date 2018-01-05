@@ -43,6 +43,12 @@ public class DelayStatementRule extends SoftwareStatementRule<DelayStatement>
         Reset reset = new Reset(event.Timer(), new ConstantContinuousExpression(0));
         return new SoftwareLabel(Reset.From(reset));
     }
+
+    @Override
+    protected boolean MustGoToDeadlock(GlobalRunTimeState globalState, DelayStatement statement)
+    {
+        return globalState.EventsState().PoolState().Pool().HasAnyAvailableVariable() == false;
+    }
     
     
 }

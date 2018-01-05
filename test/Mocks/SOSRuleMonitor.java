@@ -5,10 +5,7 @@
  */
 package Mocks;
 
-import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.SOSRule;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.TransitionCollector;

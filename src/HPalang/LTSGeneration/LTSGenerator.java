@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.LTSGeneration.RunTimeStates.DeadlockState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -40,6 +41,10 @@ public class LTSGenerator implements TransitionCollector
         while (!notVisitedStates.isEmpty()) 
         { 
             currentGlobalState = notVisitedStates.poll();
+            
+            if(IsDeadlock(currentGlobalState))
+                continue;
+            
             for(SOSRule rule : sosRules)
                 rule.TryApply(
                         new StateInfo(
@@ -68,5 +73,11 @@ public class LTSGenerator implements TransitionCollector
             System.out.println("Transitions so far: " + transitionSystem.Transitions().size());
             System.out.println("------------------------------------------");
         }
+    }
+
+    private boolean IsDeadlock(GlobalRunTimeState globalRunTimeState)
+    {
+        //return false;
+        return globalRunTimeState.FindSubState(DeadlockState.class) != null;
     }
 }

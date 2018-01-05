@@ -70,8 +70,7 @@ public abstract class MessageSendRule extends ActorLevelRule
         
         
         return  IsCommunicationTypeSatisfied( actorState.Actor().CommunicationTypeFor(receiverState.Actor())) &&
-                InternalIsRuleSatisfied(globalState, sendStatement, message, receiverState) &&
-                PoolHasEnoughAvaialbeVariables(globalState, actorState , sendStatement);
+                InternalIsRuleSatisfied(globalState, sendStatement, message, receiverState);
     }
 
     private boolean IsCommunicationTypeSatisfied(CommunicationType communicationType)
@@ -82,13 +81,22 @@ public abstract class MessageSendRule extends ActorLevelRule
     abstract protected CommunicationType RuleCommunicationType();
     abstract protected boolean InternalIsRuleSatisfied(GlobalRunTimeState globalState, SendStatement sendStatement, Message message, ActorState receiverState);
         
+    // TODO: Refactor this crap.
     @Override
     protected void ApplyToActorState(ActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
     {          
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
 
+
         ActorState senderState = newGlobalState.FindActorState(actorState.Actor());
         SendStatement sendStatement = (SendStatement)senderState.ExecutionQueueState().Statements().Dequeue();
+        
+
+        if(PoolHasEnoughAvaialbeVariables(globalState, actorState , sendStatement) == false)
+        {
+            collector.AddTransition(CreationUtility.CreateDeadlockTransition(), CreationUtility.CreateDeadlockState());
+            return;
+        }
         
         Actor receiver = sendStatement.ReceiverLocator().Locate(actorState);
         ActorState receiverState = newGlobalState.FindActorState(receiver);
@@ -115,14 +123,14 @@ public abstract class MessageSendRule extends ActorLevelRule
         
         InternalApply(newGlobalState, reciverMessageQueueState, packet);
 
-        if(ShouldGoToDeadlock(globalState, packet))
-            collector.AddTransition(new SoftwareLabel(), CreationUtility.CreateDeadlockState());
+        if(InternalMustGoToDeadlock(globalState, packet))
+            collector.AddTransition(CreationUtility.CreateDeadlockTransition(), CreationUtility.CreateDeadlockState());
         
         else
             collector.AddTransition(new SoftwareLabel(maximalEvaluatoionResult.resets), newGlobalState);
     }
     
-    abstract protected boolean ShouldGoToDeadlock(GlobalRunTimeState globalState, MessagePacket packet);
+    abstract protected boolean InternalMustGoToDeadlock(GlobalRunTimeState globalState, MessagePacket packet);
 
     abstract protected void InternalApply(GlobalRunTimeState newGlobalState, MessageQueueState newRecieverMessageQueueState, MessagePacket packet);
     

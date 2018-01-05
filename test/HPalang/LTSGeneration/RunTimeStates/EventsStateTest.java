@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.SimpleContinuousVariablePool;
+import HPalang.Core.SimpleRealVariablePool;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.RunTimeStates.Event.Action;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
@@ -25,8 +25,8 @@ public class EventsStateTest
     @Test
     public void EventsStateWithEqualDataAreEqual()
     {
-        VariablePoolState poolState1 = new VariablePoolState(new SimpleContinuousVariablePool(2));
-        VariablePoolState poolState2 = new VariablePoolState(new SimpleContinuousVariablePool(2));
+        VariablePoolState poolState1 = new VariablePoolState(new SimpleRealVariablePool(2));
+        VariablePoolState poolState2 = new VariablePoolState(new SimpleRealVariablePool(2));
         assertThat(poolState1, equalTo(poolState2));
         
         EventsState state1 = new EventsState();

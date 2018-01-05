@@ -13,18 +13,18 @@ import java.util.Set;
  *
  * @author Iman Jahandideh
  */
-public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVariablePool> implements RealVariablePool
+public class SimpleRealVariablePool extends Equalitable<SimpleRealVariablePool> implements RealVariablePool
 {
     private final Set<RealVariable> avaiableVariables = new HashSet<>();
     private final Set<RealVariable> origianlVariables = new HashSet<>();
     private final String prefix;
     
-    public SimpleContinuousVariablePool(int size)
+    public SimpleRealVariablePool(int size)
     {
         this("reserved_",size);
     }
     
-    public SimpleContinuousVariablePool(String prefix,int size)
+    public SimpleRealVariablePool(String prefix,int size)
     {
         this.prefix = prefix;
         
@@ -34,7 +34,7 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
         avaiableVariables.addAll(origianlVariables);
     }
     
-    public SimpleContinuousVariablePool(SimpleContinuousVariablePool other)
+    public SimpleRealVariablePool(SimpleRealVariablePool other)
     {
         this.prefix = other.prefix;
         origianlVariables.addAll(other.origianlVariables);
@@ -74,7 +74,7 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     }
     
     @Override
-    protected boolean InternalEquals(SimpleContinuousVariablePool other)
+    protected boolean InternalEquals(SimpleRealVariablePool other)
     {
         return avaiableVariables.equals(other.avaiableVariables) &&
                 origianlVariables.equals(other.origianlVariables);
@@ -89,7 +89,7 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     @Override
     public RealVariablePool DeepCopy()
     {
-        return new SimpleContinuousVariablePool(this);
+        return new SimpleRealVariablePool(this);
     }
 
     @Override

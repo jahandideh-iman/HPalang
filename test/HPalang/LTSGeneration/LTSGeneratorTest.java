@@ -9,6 +9,7 @@ import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.Core.SoftwareActor;
+import HPalang.LTSGeneration.Utilities.CreationUtility;
 import Mocks.SOSRuleMock;
 import Mocks.SOSRuleMonitor;
 import static org.hamcrest.CoreMatchers.*;
@@ -39,6 +40,23 @@ public class LTSGeneratorTest
         
         assertThat(rule1.appliedStates,hasItem(equalTo(lts.InitialState())));
         assertThat(rule2.appliedStates,hasItem(equalTo(lts.InitialState())));
+    }
+    
+    @Test
+    public void DoesNotGiveDeadlockStateToRules()
+    {
+        GlobalRunTimeState initialState = CreationUtility.CreateDeadlockState();
+        
+        SOSRuleMonitor rule1 = new SOSRuleMonitor();        
+        SOSRuleMonitor rule2 = new SOSRuleMonitor();
+        
+        ltsGenerator.AddSOSRule(rule1);
+        ltsGenerator.AddSOSRule(rule2);
+        
+        LabeledTransitionSystem lts = ltsGenerator.Generate(initialState);
+        
+        assertThat(rule1.appliedStates,not(hasItem(equalTo(lts.InitialState()))));
+        assertThat(rule2.appliedStates,not(hasItem(equalTo(lts.InitialState()))));
     }
     
     @Test

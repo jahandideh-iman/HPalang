@@ -11,6 +11,7 @@ import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
+import static HPalang.LTSGeneration.Utilities.QueryUtilities.MessageQueueIsFull;
 
 /**
  *
@@ -32,7 +33,8 @@ public class SendPacketAndResetNetworkAction extends Equalitable<SendPacketAndRe
         
         ActorState receiverState = globalState.FindActorState(packet.Receiver());
         
-        receiverState.MessageQueueState().Messages().Enqueue(packet);
+        if(MessageQueueIsFull(receiverState) == false)
+            receiverState.MessageQueueState().Messages().Enqueue(packet);
     }
     
     @Override

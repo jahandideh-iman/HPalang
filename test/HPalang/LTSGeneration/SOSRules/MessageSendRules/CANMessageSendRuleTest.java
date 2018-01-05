@@ -15,6 +15,7 @@ import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.SOSRules.MessageSendRuleTestFixture;
 import HPalang.LTSGeneration.Utilities.CreationUtility;
 import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockState;
+import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockTransition;
 import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
 import java.util.List;
@@ -64,7 +65,6 @@ public class CANMessageSendRuleTest extends MessageSendRuleTestFixture
     @Test
     public void GoesToDeadlockIfAnotherInstanceOfMessageIsAlreadyBuffered()
     {
-
         SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
         senderState.SActor().SetCommunicationType(receiver, CAN); 
         EnqueueStatement(sendStatement, senderState);
@@ -76,10 +76,11 @@ public class CANMessageSendRuleTest extends MessageSendRuleTestFixture
 
         GlobalRunTimeState expectedGlobalState = CreateDeadlockState();
         
-        transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        transitionCollectorChecker.ExpectTransition(CreateDeadlockTransition(), expectedGlobalState);
         
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
+    
     
     private MessagePacket CreateDuplicatePacketFrom(ActorState senderState, SendStatement sendStatement)
     {

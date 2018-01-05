@@ -15,7 +15,7 @@ import HPalang.Core.Mode;
 import static HPalang.Core.Mode.EquationsFrom;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
-import HPalang.Core.SimpleContinuousVariablePool;
+import HPalang.Core.SimpleRealVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
@@ -192,12 +192,17 @@ public class CoreUtility
     
     static public void ResetEventStatePool(GlobalRunTimeState globalState, int capacity)
     {
-        globalState.EventsState().PoolState().SetPool(new SimpleContinuousVariablePool(capacity));
+        globalState.EventsState().PoolState().SetPool(new SimpleRealVariablePool(capacity));
     }
 
     static public void ResetEventStatePool(GlobalRunTimeState globalState)
     {
         ResetEventStatePool(globalState, 1);
+    }
+        
+    static public void ResetGlobalVariablePoolState(GlobalRunTimeState globalState, int capacity)
+    {
+        globalState.VariablePoolState().SetPool(new SimpleRealVariablePool(capacity));
     }
     
     static public Transition SelfTransition(GlobalRunTimeState globalState, Label label)

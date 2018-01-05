@@ -16,6 +16,7 @@ import HPalang.LTSGeneration.RunTimeStates.*;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.Event.SendPacketAndResetNetworkAction;
 import HPalang.LTSGeneration.StateInfo;
+import HPalang.LTSGeneration.Utilities.CreationUtility;
 import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
 import Mocks.EmptyMessage;
@@ -72,7 +73,6 @@ public class CANScheduleRuleTest extends SOSRuleTestFixture
         SetNetworkStateIdle(false, globalState);
         
         ApplyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
@@ -87,10 +87,22 @@ public class CANScheduleRuleTest extends SOSRuleTestFixture
                 Build();
         
         ApplyAndVerifyRuleOn(stateInfoWithSoftwareAction);
-        //rule.TryApply(stateInfoWithSoftwareAction, transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
         VerifyEqualOutputForMultipleApply(stateInfoWithSoftwareAction);
+    }
+    
+    @Test
+    public void GoesToDeadlockWhenNoRealVariableIsAvailable()
+    {
+        ResetEventStatePool(globalState, 0);
+        
+        ApplyRuleOn(globalState);
+
+        GlobalRunTimeState expectedGlobalState = CreationUtility.CreateDeadlockState();
+        
+        transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
     @Test
@@ -111,7 +123,6 @@ public class CANScheduleRuleTest extends SOSRuleTestFixture
     public void MakeNetworkStateNotIdleWhenApplied()
     {
         ApplyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         NetworkState generatedNetworkState =  CollectedGlobalState().NetworkState();
         
@@ -123,7 +134,6 @@ public class CANScheduleRuleTest extends SOSRuleTestFixture
     public void Inegration()
     {
         ApplyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
 
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         DebufferFromNetworkState(highPriorityPacket, nextGlobalState);

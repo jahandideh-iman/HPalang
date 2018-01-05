@@ -7,6 +7,7 @@ package HPalang.LTSGeneration.RunTimeStates.Event;
 
 import HPalang.Core.MessagePacket;
 import HPalang.Core.SoftwareActor;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import static TestUtilities.CoreUtility.*;
@@ -24,7 +25,7 @@ public class SendPacketAndResetNetworkActionTest
 {
     
     GlobalRunTimeState globalState = CreateGlobalState();
-    SoftwareActorState receiverState = CreateSoftwareActorState("Receiver");
+    SoftwareActorState receiverState = CreateSoftwareActorState("Receiver", 1);
     
     SendPacketAndResetNetworkAction action;
     MessagePacket packet;
@@ -32,7 +33,7 @@ public class SendPacketAndResetNetworkActionTest
     @Before
     public void Setup()
     {
-        packet = EmptySelfMessagePacketFor(receiverState.SActor());
+        packet = EmptySelfMessagePacketFor(receiverState.SActor(),"Packet");
         
         globalState.DiscreteState().AddSoftwareActorState(receiverState);
         
@@ -59,4 +60,23 @@ public class SendPacketAndResetNetworkActionTest
         assertThat(expectedState.MessageQueueState().Messages(), hasItem(packet));
     }
     
+    @Test 
+    public void DoesNotSendThePacketToDestinationWhenMessageQueueIsFull()
+    {
+        
+        FillActorsMessageQueue(receiverState);
+        
+        action.Execute(globalState);
+        
+        SoftwareActorState expectedState = FindActorState(receiverState.SActor(), globalState);
+        
+        assertThat(expectedState.MessageQueueState().Messages(), not(hasItem(packet)));
+    }
+    
+    public void FillActorsMessageQueue(ActorState actorState)
+    {
+        
+        while(actorState.MessageQueueState().Messages().Size() < actorState.Actor().QueueCapacity())
+            actorState.MessageQueueState().Messages().Enqueue(EmptySelfMessagePacketFor(actorState.Actor(), "Temp"));
+    }
 }

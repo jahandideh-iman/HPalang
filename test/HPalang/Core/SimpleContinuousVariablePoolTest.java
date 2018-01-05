@@ -20,8 +20,8 @@ public class SimpleContinuousVariablePoolTest
     @Test
     public void PoolsWithEqualDataAreEqual()
     {
-        SimpleContinuousVariablePool pool1 = new SimpleContinuousVariablePool(5);      
-        SimpleContinuousVariablePool pool2 = new SimpleContinuousVariablePool(5);
+        SimpleRealVariablePool pool1 = new SimpleRealVariablePool(5);      
+        SimpleRealVariablePool pool2 = new SimpleRealVariablePool(5);
         
         assertThat(pool1,is(equalTo(pool2)));
     }
@@ -29,8 +29,8 @@ public class SimpleContinuousVariablePoolTest
     @Test
     public void PoolsWithNotEqualDataAreEqual()
     {
-        SimpleContinuousVariablePool pool1 = new SimpleContinuousVariablePool(5);      
-        SimpleContinuousVariablePool pool2 = new SimpleContinuousVariablePool(13);
+        SimpleRealVariablePool pool1 = new SimpleRealVariablePool(5);      
+        SimpleRealVariablePool pool2 = new SimpleRealVariablePool(13);
         
         assertThat(pool1,is(not(equalTo(pool2))));
     }
@@ -39,7 +39,7 @@ public class SimpleContinuousVariablePoolTest
     @Test(expected = RuntimeException.class)
     public void IfPoolIsEmptyWhenAcquiredThenThrowsExpection()
     {
-        SimpleContinuousVariablePool pool = new SimpleContinuousVariablePool(0);      
+        SimpleRealVariablePool pool = new SimpleRealVariablePool(0);      
 
         RealVariable var = pool.Acquire();
         
@@ -48,7 +48,7 @@ public class SimpleContinuousVariablePoolTest
     @Test
     public void IfPoolIsNotEmptyWhenAcquiredThenReturnAndRemovesAVariable()
     {
-        SimpleContinuousVariablePool pool = new SimpleContinuousVariablePool(5);      
+        SimpleRealVariablePool pool = new SimpleRealVariablePool(5);      
 
         RealVariable var = pool.Acquire();
         
@@ -60,7 +60,7 @@ public class SimpleContinuousVariablePoolTest
     @Test
     public void WhenAVariableIsReleasedThenAddsItTooThePool()
     {
-        SimpleContinuousVariablePool pool = new SimpleContinuousVariablePool(5);
+        SimpleRealVariablePool pool = new SimpleRealVariablePool(5);
         RealVariable var = pool.Acquire();
         
         pool.Release(var);

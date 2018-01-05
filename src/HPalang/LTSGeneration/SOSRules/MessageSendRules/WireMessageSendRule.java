@@ -42,7 +42,7 @@ public class WireMessageSendRule extends MessageSendRule
     }
     
     @Override
-    protected boolean ShouldGoToDeadlock(GlobalRunTimeState globalState, MessagePacket packet)
+    protected boolean InternalMustGoToDeadlock(GlobalRunTimeState globalState, MessagePacket packet)
     {
         return false;
     }

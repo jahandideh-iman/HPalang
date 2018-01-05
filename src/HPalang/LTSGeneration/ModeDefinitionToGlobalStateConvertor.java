@@ -10,13 +10,10 @@ import HPalang.Core.ActorLocators.DirectActorLocator;
 import HPalang.Core.Message;
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.Core.SoftwareActor;
 import HPalang.Core.ModelDefinition;
-import HPalang.Core.SimpleContinuousVariablePool;
-import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
+import HPalang.Core.SimpleRealVariablePool;
 import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
-import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
 import static HPalang.LTSGeneration.Utilities.CreationUtility.*;
 import static HPalang.LTSGeneration.Utilities.FillerUtility.*;
 
@@ -34,10 +31,8 @@ public class ModeDefinitionToGlobalStateConvertor
         FillDiscreteState(globalState, model.SoftwareActors());
         FillContinuousState(globalState, model.PhysicalActors());
         
-        globalState.EventsState().PoolState().SetPool(
-                new SimpleContinuousVariablePool("EventStatePool",model.EventSystemVariablePoolSize()));
-        globalState.VariablePoolState().SetPool(
-                new SimpleContinuousVariablePool("GlobalPool",model.GlobalVariablePoolSize()));
+        globalState.EventsState().PoolState().SetPool(new SimpleRealVariablePool("EventStatePool",model.EventSystemVariablePoolSize()));
+        globalState.VariablePoolState().SetPool(new SimpleRealVariablePool("GlobalPool",model.GlobalVariablePoolSize()));
         
         
         for(SendStatement sendStatement : model.GetInitialSends())

@@ -101,21 +101,27 @@ public class NetworkingUtility
     {
         globalState.NetworkState().SetIdle(idle);
     } 
-    static public MessagePacket EmptySelfMessagePacketFor(SoftwareActor actor)
+    
+    static public MessagePacket EmptySelfMessagePacketFor(Actor actor)
     {
         return NetworkingUtility.MessagePacket(actor, actor, new EmptyMessage(), MessageArguments.Empty());
     }
     
-    static public MessagePacket EmptySelfMessagePacket(SoftwareActor actor, int priority)
+    static public MessagePacket EmptySelfMessagePacketFor(Actor actor , String messageId)
+    {
+        return NetworkingUtility.MessagePacket(actor, actor, new EmptyMessage(messageId), MessageArguments.Empty());
+    }
+    
+    static public MessagePacket EmptySelfMessagePacket(Actor actor, int priority)
     {
         return NetworkingUtility.MessagePacket(actor, actor, new EmptyMessage(priority), MessageArguments.Empty());
     }
     
-    static public MessagePacket MessagePacket(Actor sender, SoftwareActor receiver, Message message)
+    static public MessagePacket MessagePacket(Actor sender, Actor receiver, Message message)
     {
         return NetworkingUtility.MessagePacket(sender, receiver, message, MessageArguments.Empty());
     }
-    static public MessagePacket MessagePacket(Actor sender, SoftwareActor receiver , Message message, MessageArguments arguments)
+    static public MessagePacket MessagePacket(Actor sender, Actor receiver , Message message, MessageArguments arguments)
     {
         MessagePacket packet = new MessagePacket(
                 sender,

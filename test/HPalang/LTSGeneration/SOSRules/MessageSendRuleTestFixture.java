@@ -30,6 +30,8 @@ import org.junit.Before;
 import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
 import HPalang.Core.Variables.RealVariable;
+import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockState;
+import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockTransition;
 
 /**
  *
@@ -121,9 +123,31 @@ public abstract class MessageSendRuleTestFixture extends SOSRuleTestFixture
         
         assertThat(generatedArgument.Value(), equalTo(new VariableExpression(pooledVariable)));
         assertThat(transitionCollectorMock.GetLabel(0), equalTo(expectedLabel));
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
+    @Test
+    public void GoesToDeadlockIfNotEnoughRealVariableIsAvaiableForArguments()
+    {
+        Expression partialValue = new NullExpression("exp");
+        VariableParameter parameter = new VariableParameter(new FakeVariable("param"));
+        VariableArgument argument = new VariableArgument(parameter.Type(), new UncomputableExpression(partialValue));
         
+        Message message = new FakeMessage(Statement.EmptyStatements(),MessageParameters.From(parameter));
+                
+        SendStatement sendStatement = CreateSendStatement(receiverState.SActor(), message, MessageArguments.From(argument));
+        
+        sender.SetCommunicationType(receiver, communicationType);
+        senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);
+        
+        ResetGlobalVariablePoolState(globalState, 0);
+       
+        ApplyRuleOn(globalState);
+           
+        transitionCollectorChecker.ExpectTransition(CreateDeadlockTransition(), CreateDeadlockState());
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
+    }
+      
     protected abstract MessagePacket FindSentLastPacket(Actor actor, GlobalRunTimeState globalState);
         
 }

@@ -6,7 +6,7 @@
 package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.ContinuousVariable;
-import HPalang.Core.SimpleContinuousVariablePool;
+import HPalang.Core.SimpleRealVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import Mocks.EmptyAction;
 import java.util.LinkedList;
@@ -24,7 +24,7 @@ public class VariablePoolStateTest
     @Test
     public void EventsStateWithEqualDataAreEqual()
     {
-        SimpleContinuousVariablePool pool = new SimpleContinuousVariablePool(5);
+        SimpleRealVariablePool pool = new SimpleRealVariablePool(5);
 
         VariablePoolState state1 = new VariablePoolState(pool);      
         VariablePoolState state2= new VariablePoolState(pool);

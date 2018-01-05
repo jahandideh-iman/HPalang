@@ -41,7 +41,7 @@ public class CANMessageSendRule extends MessageSendRule
     } 
 
     @Override
-    protected boolean ShouldGoToDeadlock(GlobalRunTimeState globalState, MessagePacket packet)
+    protected boolean InternalMustGoToDeadlock(GlobalRunTimeState globalState, MessagePacket packet)
     {
         return globalState.NetworkState().HasPacketWithMessage(packet.Message());
     }

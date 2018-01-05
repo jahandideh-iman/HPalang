@@ -9,6 +9,8 @@ import HPalang.Core.Actor;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.Builders.GlobalRunTimeStateBuilder;
 import HPalang.LTSGeneration.Builders.SoftwareActorStateBuilder;
+import HPalang.LTSGeneration.Label;
+import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.DeadlockState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
@@ -33,6 +35,11 @@ public class CreationUtility
         globalState.AddSubstate(new DeadlockState());
         
         return globalState;
+    }
+    
+    static public Label CreateDeadlockTransition()
+    {
+        return new SoftwareLabel();
     }
     
     static public SoftwareActorState CreateSoftwareState(SoftwareActor actor)

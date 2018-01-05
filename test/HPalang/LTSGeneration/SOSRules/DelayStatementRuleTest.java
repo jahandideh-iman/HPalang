@@ -14,6 +14,9 @@ import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.Event.ResumeSoftwareActorAction;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
+import HPalang.LTSGeneration.Utilities.CreationUtility;
+import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockState;
+import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockTransition;
 import org.junit.Test;
 import org.junit.Before;
 import static TestUtilities.CoreUtility.*;
@@ -46,10 +49,9 @@ public class DelayStatementRuleTest extends SOSRuleTestFixture
         
         EnqueueStatement(delayStatement, actorState);
         AddActorState(actorState, globalState);
-        ResetEventStatePool(globalState);
+        ResetEventStatePool(globalState,1);
         
         ApplyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
         ClearStatementsFor(actorState.SActor(), expectedGlobalState);
@@ -57,6 +59,26 @@ public class DelayStatementRuleTest extends SOSRuleTestFixture
         FindActorState(actorState.SActor(), expectedGlobalState).SetSuspended(true);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(ResetsForEvent(delayStatement, globalState)), expectedGlobalState);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
+    }
+    
+    @Test
+    public void GoesToDeadlockWhenNoRealVariableIsAvailable()
+    {
+        SoftwareActorState actorState = CreateSoftwareActorState("actor");
+        
+        float delayDuration = 3;
+        DelayStatement delayStatement = new DelayStatement(delayDuration);
+        
+        EnqueueStatement(delayStatement, actorState);
+        AddActorState(actorState, globalState);
+        ResetEventStatePool(globalState, 0);
+        
+        ApplyRuleOn(globalState);
+        
+
+       
+        transitionCollectorChecker.ExpectTransition(CreateDeadlockTransition(), CreateDeadlockState());
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
