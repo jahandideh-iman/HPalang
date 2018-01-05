@@ -29,7 +29,8 @@ public class IfStatementRule extends SoftwareActorLevelRule
     @Override
     protected boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
     {
-        return actorState.ExecutionQueueState().Statements().IsEmpty() == false
+        return actorState.IsSuspended() == false &&
+                actorState.ExecutionQueueState().Statements().IsEmpty() == false
                 && actorState.ExecutionQueueState().Statements().Head().Is(IfStatement.class);
     }
 

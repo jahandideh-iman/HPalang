@@ -19,11 +19,5 @@ public class NetworkLabel extends Label<NetworkLabel>
     {
         return true;
     }
-
-    @Override
-    protected int InternalHashCode()
-    {
-        return 13;
-    }
-   
+  
 }

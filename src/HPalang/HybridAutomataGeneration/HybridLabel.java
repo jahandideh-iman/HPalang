@@ -40,11 +40,5 @@ public class HybridLabel extends Label<HybridLabel>
     {
         return isASAP;
     }
-    
-    @Override
-    protected int InternalHashCode()
-    {
-       return super.hashCode();
-    }
-    
+        
 }

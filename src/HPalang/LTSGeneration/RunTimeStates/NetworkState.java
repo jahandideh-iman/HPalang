@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.Message;
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.CompositeStateT;
 import java.util.Collection;
@@ -68,9 +69,17 @@ public class NetworkState extends CompositeStateT<NetworkState>
         buffer.remove(networkPacket);
     } 
     
-    public Collection<MessagePacket> Buffer()
+    public List<MessagePacket> Buffer()
     {
         return buffer;
+    }
+
+    public boolean HasPacketWithMessage(Message message)
+    {
+        for(MessagePacket packet : buffer)
+            if(packet.Message().equals(message))
+                return true;
+        return false;
     }
 
 }

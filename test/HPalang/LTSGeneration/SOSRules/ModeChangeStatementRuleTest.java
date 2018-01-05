@@ -42,7 +42,7 @@ public class ModeChangeStatementRuleTest extends SOSRuleTestFixture
         AddActorState(actorState, globalState);
         
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();

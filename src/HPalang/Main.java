@@ -26,6 +26,8 @@ import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.SOSRules.*;
+import HPalang.LTSGeneration.SOSRules.MessageSendRules.CANMessageSendRule;
+import HPalang.LTSGeneration.SOSRules.MessageSendRules.WireMessageSendRule;
 import HPalang.Parser.Parser;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -52,7 +54,7 @@ public class Main {
     {
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BrakeByWireModel.Create();
+            definition = BrakeByWireModelTwoWheel.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
@@ -68,8 +70,9 @@ public class Main {
         FileWriter writer = new FileWriter("output/");
         
         OutputLTS("FineLTS",lts, writer);
-        OutputLTS("ReducedLTS",new LTSReducer().Reduce(lts), writer);
+        //OutputLTS("ReducedLTS",new LTSReducer().Reduce(lts), writer);
         
+        //CheckForDuplicateStates(lts);
         
         
         //PrioritizeTauActions(lts);
@@ -96,8 +99,8 @@ public class Main {
         System.out.println(prefix + " States  : " + lts.States().size());
         System.out.println(prefix+ " Transition : " + lts.Transitions().size());
         
-        writer.Write(prefix +"_aut.aut", new LTSToAUTConvertor().Convert(lts));
-        writer.Write(prefix +"_fsm.fsm", new LTSToFSMConvertor().Convert(lts));
+        //writer.Write(prefix +"_aut.aut", new LTSToAUTConvertor().Convert(lts));
+        //writer.Write(prefix +"_fsm.fsm", new LTSToFSMConvertor().Convert(lts));
     }
     
     private static InputStream Read(String filePath) throws FileNotFoundException
@@ -116,11 +119,12 @@ public class Main {
         genetator.AddSOSRule(new DelayStatementRule());
         genetator.AddSOSRule(new AssignmentStatementRule());
         genetator.AddSOSRule(new IfStatementRule());
-        genetator.AddSOSRule(new MessageSendRule());
+        genetator.AddSOSRule(new CANMessageSendRule());       
+        genetator.AddSOSRule(new WireMessageSendRule());
         genetator.AddSOSRule(new ModeChangeStatementRule());
 
         // Network 
-        genetator.AddSOSRule(new NetwrokCommunicationRule());
+        genetator.AddSOSRule(new CANScheduleRule());
         
         // Phyiscal
         genetator.AddSOSRule(new ContinuousBehaviorExpirationRule());
@@ -128,169 +132,7 @@ public class Main {
         
         return genetator;
     }
-    
-    private static void PrioritizeTauActions(LabeledTransitionSystem lts)
-    {
-        while(true)
-        {
-            boolean change = false;
-            for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
-            {
-                List<Transition> outTrans = lts.GetOutTransitionsFor(state);
-                boolean hasTauLabled = false;
-                for(Transition t : outTrans)
-                    if(t.GetLabel() instanceof SoftwareLabel)
-                    {
-                        hasTauLabled = true;
-                        break;
-                    }
-                
-                if(hasTauLabled)
-                {
-                    for(Transition t : outTrans)
-                        if(t.GetLabel() instanceof  SoftwareLabel == false)
-                            lts.RemoveTranstion(t);
-                }
-            }
-            
-            if(change == false)
-                break;
-        }
-    }
-    
-    private static void Prune(LabeledTransitionSystem lts)
-    {
 
-        while(true)
-        {
-            boolean change = false;
-            for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
-            {
-                List<Transition> outTrans = lts.GetOutTransitionsFor(state);
-                List<Transition> inTrans = lts.GetInTransitionsFor(state);
-                
-                if(inTrans.size() == 1 && outTrans.size() == 1
-                        && inTrans.get(0).GetLabel() instanceof SoftwareLabel
-                        && state.equals(lts.InitialState()) == false)
-                {
-                    lts.RemoveTranstion(inTrans.get(0));
-                    lts.RemoveTranstion(outTrans.get(0));
-                    lts.RemoveState(state);
-                    
-                    lts.AddTransition(inTrans.get(0).GetOrign(), outTrans.get(0).GetLabel() , outTrans.get(0).GetDestination());
-                    change = true;
-                }
-            }
-            
-            if(change == false)
-                break;
-        }
-//        for(GlobalRunTimeState state : lts.States())
-//        {
-//            List<LabeledTransitionSystem.Transition> trans = lts.GetOutTransitionsFor(state);
-//            
-//            boolean hasTauLabel = false;
-//            for(LabeledTransitionSystem.Transition t : trans)
-//            {
-//                if(t.GetLabel() instanceof SoftwareLabel)
-//                {
-//                    hasTauLabel = true;
-//                    break;
-//                }
-//            }
-//            if(hasTauLabel)
-//            {
-//                for(LabeledTransitionSystem.Transition t : trans)
-//                {
-//                    if(t.GetLabel() instanceof SoftwareLabel == false)
-//                         lts.RemoveTranstion(t);
-//                }
-//            }
-//        }
-        
-//        
-//        for(GlobalRunTimeState state : new ArrayList<GlobalRunTimeState>(lts.States()))
-//        {
-//            List<LabeledTransitionSystem.Transition> fromTrans = lts.GetOutTransitionsFor(state);
-//            List<LabeledTransitionSystem.Transition> toTrans = lts.GetInTransitionsFor(state);
-//            
-//            if(toTrans.size() == 0 && fromTrans.size() == 0)
-//                lts.RemoveState(state);
-//           
-//        }
-//        
-    }
-
-
-    private static void RemoveUnreachableStates(LabeledTransitionSystem lts)
-    {
-        List<GlobalRunTimeState> reachableStates = new LinkedList<>();
-        Queue<GlobalRunTimeState> notVisitedStates = new LinkedList<>();
-        Queue<GlobalRunTimeState> visitedStates = new LinkedList<>();
-        
-        notVisitedStates.add(lts.InitialState());
-        
-        while(notVisitedStates.isEmpty() == false)
-        {
-            GlobalRunTimeState state = notVisitedStates.poll();
-            reachableStates.add(state);
-            visitedStates.add(state);
-            
-            for(Transition t : lts.GetOutTransitionsFor(state))
-                if(visitedStates.contains(t.GetDestination()) == false
-                        && notVisitedStates.contains(t.GetDestination()) == false)
-                    notVisitedStates.add(t.GetDestination());
-        }
-        
-        for(GlobalRunTimeState state : new ArrayList<>(lts.States()))
-            if(reachableStates.contains(state) == false)
-                lts.RemoveState(state);
-        
-    }
-
-    private static void RemoveTauLabels(LabeledTransitionSystem lts)
-    {
-        while(true)
-        {
-            boolean change = false;
-            for(GlobalRunTimeState state : new ArrayList<>(lts.States()))
-            {
-                if(state.equals(lts.InitialState()))
-                    continue;
-                
-                List<Transition> outTrans = lts.GetOutTransitionsFor(state);
-                List<Transition> inTrans = lts.GetInTransitionsFor(state);
-                
-                
-                boolean allTauLabled = true && outTrans.size() > 0;
-
-                for(Transition outT : outTrans)
-                    if(outT.GetLabel() instanceof SoftwareLabel == false)
-                    {
-                        allTauLabled = false;
-                        break;
-                    }
-                
-                if(allTauLabled)
-                {
-                    for(Transition outT: outTrans)
-                        for(Transition inT : inTrans)
-                        {
-                            Label label = CreateLabelFor(inT.GetLabel(), outT.GetLabel());
-                            lts.AddTransition(inT.GetOrign(), label, outT.GetDestination() );
-                            change = true;
-                        }
-                    lts.RemoveState(state);
-                    break;
-
-                }
-            }
-            
-            if(change == false)
-                break;
-        }
-    }
-    
     static public Label CreateLabelFor(Label firstLabel, Label secondLabel)
     {
         Map<Variable, Reset> resets = new HashMap<>();
@@ -309,6 +151,16 @@ public class Main {
             return new SoftwareLabel(newGuard ,new LinkedHashSet<>(resets.values()));
         else
           return new ContinuousLabel(newGuard ,new LinkedHashSet<>(resets.values()));  
+    }
+
+    private static void CheckForDuplicateStates(LabeledTransitionSystem lts)
+    {
+        ArrayList<GlobalRunTimeState> states = new ArrayList<>(lts.States());
+        
+        for(int i = 0 ; i< states.size(); i++)
+            for(int j = i+1 ; j< states.size(); j++)
+                if(states.get(i).equals(states.get(j)))
+                    throw new RuntimeException("Duplicate state in final LTS.");
     }
 }
 

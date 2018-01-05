@@ -48,11 +48,33 @@ public class MessageTeardownStatementRuleTest extends SOSRuleTestFixture
         Statement teardownStatemeent = new MessageTeardownStatement(messageParamters, Collections.EMPTY_LIST);
         EnqueueStatement(teardownStatemeent, actorState);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         assertThat(valuationMock.removedVariables, hasItem(parameter.Variable()));
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
-    
+        
+    @Test
+    public void IsNotAppliedWhenActorIsSuspended()
+    {
+        ValuationContainerMock valuationMock = new ValuationContainerMock();
+        SoftwareActorState actorState = CreateSoftwareActorState("actor");
+        actorState.ValuationState().SetValuation(valuationMock);
+        actorState.SetSuspended(true);
+        AddActorState(actorState, globalState);
+        
+        
+        VariableParameter parameter = ParameterFor("param");
+        MessageParameters messageParamters  = MessageParameters.From(parameter);
+        
+        Statement teardownStatemeent = new MessageTeardownStatement(messageParamters, Collections.EMPTY_LIST);
+        EnqueueStatement(teardownStatemeent, actorState);
+        
+        ApplyRuleOn(globalState);
+        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        
+        transitionCollectorChecker.ExpectNoTransition();
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
+    }
 }

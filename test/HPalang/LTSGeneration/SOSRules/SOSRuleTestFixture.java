@@ -39,8 +39,8 @@ public class SOSRuleTestFixture
     protected LabeledTransitionSystem generatedLTS;
     protected GlobalRunTimeState globalState = CreateGlobalState();
     
-    SOSRule rule;
-    TransitionCollectorChecker transitionCollectorChecker = new TransitionCollectorChecker();
+    protected SOSRule rule;
+    protected TransitionCollectorChecker transitionCollectorChecker = new TransitionCollectorChecker();
     
 
 
@@ -78,7 +78,7 @@ public class SOSRuleTestFixture
         assertThat(" The initial global state is modified. ",stateInfo.State(), equalTo(orignalState));
     }
     
-    public void ApplyAndVerifyRuleOn(GlobalRunTimeState globalState)
+    public void ApplyRuleOn(GlobalRunTimeState globalState)
     {
         ApplyAndVerifyRuleOn(CoreUtility.SimpleStateInfo(globalState));
     }

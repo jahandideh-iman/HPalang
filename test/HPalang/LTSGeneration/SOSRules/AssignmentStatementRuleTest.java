@@ -41,8 +41,6 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
     public void Setup()
     {
         rule = new AssignmentStatementRule();
-        
-                
         AddActorState(actorState, globalState);
     }
     
@@ -57,7 +55,7 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
         actorState.ValuationState().SetValuation(valuationMock);
         EnqueueStatement(assignment, actorState);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         
         assertThat(valuationMock.ValueFor(var), equalTo(value));
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
@@ -72,7 +70,7 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
         Statement assignment = new AssignmentStatement(variable, expr);
         EnqueueStatement(assignment, actorState);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         
         Reset expectedReset = new Reset(ConvertToScopedVariable(variable,actorState), partialExpression);
         
@@ -87,7 +85,7 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
         Statement assignment = new AssignmentStatement(variable, new ComputableExpression(0));
         EnqueueStatement(assignment, actorState);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         
         transitionCollectorChecker.ExpectNoTransition();
     }

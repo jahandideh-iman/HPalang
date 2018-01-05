@@ -35,6 +35,7 @@ public class Guard extends Equalitable<Guard> implements Expression
     protected int InternalHashCode()
     {
         return 0;
+        //return guardExpression.hashCode();
     }
 
     public Expression Expression()
@@ -72,8 +73,5 @@ public class Guard extends Equalitable<Guard> implements Expression
         if(visitor instanceof GuardVisitor)
             ((GuardVisitor) visitor).Visit(this);
     }
-    
-    
-    
-    
+
 }

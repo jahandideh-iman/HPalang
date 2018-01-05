@@ -25,6 +25,7 @@ import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.TransitionCollector;
+import HPalang.LTSGeneration.Utilities.CreationUtility;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
@@ -35,8 +36,9 @@ import org.antlr.v4.runtime.misc.Pair;
  *
  * @author Iman Jahandideh
  */
-public class MessageSendRule extends ActorLevelRule
+public abstract class MessageSendRule extends ActorLevelRule
 {
+
     private class MaximalEvaluatedArgumentsResult
     {
         public final MessageArguments messageArguments;
@@ -50,9 +52,13 @@ public class MessageSendRule extends ActorLevelRule
             this.pooledVariables = pooledVariables;
         }
     }
+    
     @Override
     protected boolean IsRuleSatisfied(ActorState actorState, GlobalRunTimeState globalState)
     {
+        if(actorState.IsSuspended() == true)
+            return false;
+        
         if((actorState.ExecutionQueueState().Statements().Head() instanceof SendStatement) == false)
             return false;
         
@@ -60,15 +66,25 @@ public class MessageSendRule extends ActorLevelRule
         
         Actor receiver = sendStatement.ReceiverLocator().Locate(actorState);
         ActorState receiverState = globalState.FindActorState(receiver);
+        Message message = sendStatement.MessageLocator().Locate(actorState.Actor());
         
-        MessageQueueState queueState = receiverState.MessageQueueState();
-        return  queueState.Messages().Size() < receiver.QueueCapacity() &&
+        
+        return  IsCommunicationTypeSatisfied( actorState.Actor().CommunicationTypeFor(receiverState.Actor())) &&
+                InternalIsRuleSatisfied(globalState, sendStatement, message, receiverState) &&
                 PoolHasEnoughAvaialbeVariables(globalState, actorState , sendStatement);
     }
 
+    private boolean IsCommunicationTypeSatisfied(CommunicationType communicationType)
+    {
+        return communicationType == RuleCommunicationType();
+    }
+   
+    abstract protected CommunicationType RuleCommunicationType();
+    abstract protected boolean InternalIsRuleSatisfied(GlobalRunTimeState globalState, SendStatement sendStatement, Message message, ActorState receiverState);
+        
     @Override
     protected void ApplyToActorState(ActorState actorState, GlobalRunTimeState globalState, TransitionCollector collector)
-    {
+    {          
         GlobalRunTimeState newGlobalState = globalState.DeepCopy();
 
         ActorState senderState = newGlobalState.FindActorState(actorState.Actor());
@@ -89,7 +105,6 @@ public class MessageSendRule extends ActorLevelRule
                         pool
                 );
         
-        
         MessagePacket packet = new MessagePacket(
                 senderState.Actor(), 
                 receiverState.Actor(), 
@@ -98,21 +113,18 @@ public class MessageSendRule extends ActorLevelRule
                 maximalEvaluatoionResult.pooledVariables
         );
         
-        CommunicationType communicationType = senderState.Actor().CommunicationTypeFor(receiverState.Actor());
+        InternalApply(newGlobalState, reciverMessageQueueState, packet);
+
+        if(ShouldGoToDeadlock(globalState, packet))
+            collector.AddTransition(new SoftwareLabel(), CreationUtility.CreateDeadlockState());
         
-        switch (communicationType) {
-            case CAN:
-                newGlobalState.NetworkState().Buffer(packet);
-                break;
-            case Wire:
-                reciverMessageQueueState.Messages().Enqueue(packet);
-                break;
-            default:
-                throw new RuntimeException("Invalid Communication Type.");
-        }
-        
-        collector.AddTransition(new SoftwareLabel(maximalEvaluatoionResult.resets), newGlobalState);
+        else
+            collector.AddTransition(new SoftwareLabel(maximalEvaluatoionResult.resets), newGlobalState);
     }
+    
+    abstract protected boolean ShouldGoToDeadlock(GlobalRunTimeState globalState, MessagePacket packet);
+
+    abstract protected void InternalApply(GlobalRunTimeState newGlobalState, MessageQueueState newRecieverMessageQueueState, MessagePacket packet);
     
     // TODO: Refactor this crap.
     private MaximalEvaluatedArgumentsResult  CreateMaximalEvaluatedArguments(Message message, MessageArguments unEvaluatedArguments, ValuationContainer valuations, RealVariablePool pool)

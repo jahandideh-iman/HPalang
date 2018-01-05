@@ -48,9 +48,4 @@ public class GuardedlLabel extends Label<GuardedlLabel>
                 && other.Resets().equals(this.resets);
     }
 
-    @Override
-    protected int InternalHashCode()
-    {
-        return guard.hashCode();
-    }
 }

@@ -73,4 +73,15 @@ public abstract class Label<T extends Label> extends Equalitable<T>
                     
         return guard.equals(otherGuard);
     }
+    
+    @Override
+    protected final int InternalHashCode()
+    {
+        //return 0;
+        int hash = resets.hashCode();
+        
+        if(IsGuarded())
+            hash += guard.hashCode();
+        return hash;
+    }
 }

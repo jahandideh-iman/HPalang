@@ -30,11 +30,4 @@ public class ContinuousLabel extends Label<ContinuousLabel>
     {
         return super.InternalEquals(other) && guard.equals(other.guard);
     }
-
-    @Override
-    protected int InternalHashCode()
-    {
-        return guard.hashCode();
-    }
-    
 }

@@ -73,13 +73,31 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         GlobalRunTimeState expectedGlobalState = 
                 ExpectedGlobalStateWhenMessageIsTaken(globalState, receiverState, message);
         
-        ApplyAndVerifyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyRuleOn(globalState);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
+    @Test
+    public void IsNotAppliedWhenActorIsSuspended()
+    {
+        Message message = new FakeMessage(StatementsFrom(new EmptyStatement("s1"), new EmptyStatement("s2")));
+        
+        receiverState.SetSuspended(true);
+        MessagePacket messagePacket = MessagePacket(
+                arbitrarySender,
+                receiver,
+                message);
+        
+       
+        PutMessagePacketInActor(messagePacket, receiverState);
+        
+        ApplyRuleOn(globalState);
+     
+        transitionCollectorChecker.ExpectNoTransition();
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
+    }
     // TODO: Refactor the assertion.
     @Test
     public void AddsAnAssignmentStatementAtTheBeginingForEachArgument()
@@ -106,7 +124,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         
         GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, receiverState, message);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
@@ -138,7 +156,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
 
         GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, receiverState, message);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
@@ -165,7 +183,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
 
         GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, receiverState, message);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
@@ -191,7 +209,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         
         globalState.DiscreteState().AddSoftwareActorState(actorState);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         MessageQueueState expectedMessageQueue = FindActorState(actorState.SActor() , globalState.DeepCopy()).MessageQueueState();

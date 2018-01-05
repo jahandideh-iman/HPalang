@@ -59,6 +59,6 @@ public class VariablePoolState extends SimpleState<VariablePoolState>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return pool.hashCode();
     }
 }

@@ -6,9 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Statement;
-import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.TransitionCollector;
@@ -23,8 +21,8 @@ public abstract class SoftwareStatementRule<T extends Statement> extends Softwar
     @Override
     protected final boolean IsRuleSatisfied(SoftwareActorState actorState, GlobalRunTimeState globalState)
     {
-        
-        return actorState.ExecutionQueueState().Statements().IsEmpty() == false &&
+        return  actorState.IsSuspended() == false &&
+                actorState.ExecutionQueueState().Statements().IsEmpty() == false &&
                 actorState.ExecutionQueueState().Statements().Head().Is(StatementType()) &&
                 InternalIsRuleSatisfied(actorState);
     }

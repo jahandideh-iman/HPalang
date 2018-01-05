@@ -5,6 +5,7 @@
  */
 package HPalang.Utilities;
 
+import java.util.TreeSet;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -30,5 +31,4 @@ public class QueueTest
         assertThat(q1,is(equalTo(q2)));
         assertThat(q1.hashCode(),is(equalTo(q2.hashCode())));
     }
-    
 }

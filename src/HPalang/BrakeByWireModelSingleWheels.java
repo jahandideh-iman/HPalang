@@ -45,7 +45,7 @@ import static HPalang.Core.ModelCreationUtilities.*;
  *
  * @author Iman Jahandideh
  */
-public class BrakeByWireModelSingleWheel
+public class BrakeByWireModelSingleWheels
 {
     public static final float arbitrartDelay = 13.0f;
     public static final String Wheel__controller_instance = "controller";
@@ -157,7 +157,7 @@ public class BrakeByWireModelSingleWheel
         SetNetworkDelay(global_brake_controller, wheel_controller_FR, Wheel_Controller__apply_torque_handler, 4.0f);
         
         definition.SetEventSystemVariablePoolSize(2);
-        definition.SetGlobalVariablePoolSize(3);
+        definition.SetGlobalVariablePoolSize(2);
         
         return definition;
     }

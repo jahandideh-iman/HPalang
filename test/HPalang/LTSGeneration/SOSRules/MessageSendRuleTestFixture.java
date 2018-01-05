@@ -7,19 +7,10 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
-import HPalang.Core.Expression;
-import HPalang.Core.SoftwareActor;
-import HPalang.Core.Message;
-import HPalang.Core.MessageArguments;
-import HPalang.Core.MessagePacket;
-import HPalang.Core.MessageParameters;
-import HPalang.Core.Statement;
+import HPalang.Core.*;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
-import HPalang.Core.VariableArgument;
-import HPalang.Core.VariableParameter;
-import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
@@ -38,91 +29,47 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import org.junit.Before;
 import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
-import static HPalang.Core.CommunicationType.*;
+import HPalang.Core.Variables.RealVariable;
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class MessageSendRuleTest extends SOSRuleTestFixture
+public abstract class MessageSendRuleTestFixture extends SOSRuleTestFixture
 {
-    TransitionCollectorMock transitionCollectorMock = new TransitionCollectorMock();
+    protected TransitionCollectorMock transitionCollectorMock = new TransitionCollectorMock();
     
-    SoftwareActorState receiverState = CreateSoftwareActorState("receiver");
-    SoftwareActorState senderState = CreateSoftwareActorState("sender");
+    protected SoftwareActorState receiverState = CreateSoftwareActorState("receiver");
+    protected SoftwareActorState senderState = CreateSoftwareActorState("sender");
     
-    SoftwareActor receiver;
-    SoftwareActor sender;
+    protected SoftwareActor receiver;
+    protected SoftwareActor sender;
     
-    @Before
-    public void Setup()
+    protected CommunicationType communicationType;
+    
+    public void SetupSenderAndReceiver()
     {
-        rule = new MessageSendRule();
-        
         receiver = receiverState.SActor();
         sender = senderState.SActor();
         
         globalState.DiscreteState().AddSoftwareActorState(senderState);
         globalState.DiscreteState().AddSoftwareActorState(receiverState);
     }
-    
+        
     @Test
-    public void SendsMessagePacketToReceiverIfCommunicationTypeIsWired()
+    public void IsNotAppliedWhenActorIsSuspended()
     {  
         SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
-        
-        senderState.Actor().SetCommunicationType(receiver, Wire); 
+        senderState.SetSuspended(true);
+        senderState.Actor().SetCommunicationType(receiver, communicationType); 
         EnqueueStatement(sendStatement, senderState);
         
-        ApplyAndVerifyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
+        ApplyRuleOn(globalState);
 
-        GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
-        MessagePacket expectedPacket = MessagePacket(senderState, sendStatement);
-        ClearStatementsFor(FindActorState(sender, expectedGlobalState));
-        PutMessagePacketInActor(expectedPacket, FindActorState(receiver, expectedGlobalState));
-        
-        transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
-        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
-    } 
-
-    
-    @Test
-    public void SendsMessagePacketToCanNetworkIfCommunicationTypeIsCAN()
-    {
-        SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
-        
-        senderState.SActor().SetCommunicationType(receiver, CAN); 
-        EnqueueStatement(sendStatement, senderState);
-        
-        ApplyAndVerifyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
-
-        GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
-        MessagePacket expectedPacket = MessagePacket(senderState, sendStatement);
-        ClearStatementsFor(FindActorState(sender, expectedGlobalState));
-        PutMessagePacketInNetworkState(expectedPacket, expectedGlobalState);
-        
-        transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
-        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
-    } 
-    
-    @Test
-    public void DoesNotSendTheMessageIfTheRecieverMessageQueueIsFull()
-    {
-        SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
-        
-        senderState.SActor().SetCommunicationType(receiver, CAN); 
-        EnqueueStatement(sendStatement, senderState);
-        FillActorsQeueue(receiverState);
-        
-        ApplyAndVerifyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
-        
         transitionCollectorChecker.ExpectNoTransition();
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
-    }
-    
+    } 
+            
     @Test
     public void AddsArgumentsValuesToMessageIfArgumentsAreComputable()
     {
@@ -134,19 +81,19 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         
         SendStatement sendStatement = CreateSendStatement(receiverState.SActor(), message, MessageArguments.From(argument));
 
-        sender.SetCommunicationType(receiver, Wire);
+        sender.SetCommunicationType(receiver, communicationType);
         senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);
 
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         rule.TryApply(SimpleStateInfo(globalState), transitionCollectorMock);
         
-        VariableArgument expectedArgument =  FindLastPacket(receiverState.SActor(),transitionCollectorMock.GetState(0)).
+        VariableArgument expectedArgument =  FindSentLastPacket(receiverState.SActor(),transitionCollectorMock.GetState(0)).
                 Arguments().AsList().get(0);
         
         assertThat(expectedArgument.Value(), equalTo(new ConstantDiscreteExpression(value)));
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
-    
+
     @Test
     public void AddsArgumentsPartialValuesToMessageIfArgumentsAreComputable()
     {
@@ -160,15 +107,14 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         SendStatement sendStatement = CreateSendStatement(receiverState.SActor(), message, MessageArguments.From(argument));
 
         
-        sender.SetCommunicationType(receiver, Wire);
+        sender.SetCommunicationType(receiver, communicationType);
         senderState.ExecutionQueueState().Statements().Enqueue(sendStatement);
         
         globalState.VariablePoolState().SetPool(new SingleRealVariablePoolMock(pooledVariable));
 
         ApplyAndVerifyRuleOn(globalState, transitionCollectorMock);
-        //rule.TryApply(SimpleStateInfo(globalState.DeepCopy()), transitionCollectorMock);
         
-        VariableArgument generatedArgument =  FindLastPacket(receiverState.Actor(),transitionCollectorMock.GetState(0)).
+        VariableArgument generatedArgument =  FindSentLastPacket(receiverState.Actor(),transitionCollectorMock.GetState(0)).
                 Arguments().AsList().get(0);
         
         Label expectedLabel = new SoftwareLabel(Reset.From(new Reset(pooledVariable, partialValue)));
@@ -177,6 +123,7 @@ public class MessageSendRuleTest extends SOSRuleTestFixture
         assertThat(transitionCollectorMock.GetLabel(0), equalTo(expectedLabel));
     }
     
-    
-
+        
+    protected abstract MessagePacket FindSentLastPacket(Actor actor, GlobalRunTimeState globalState);
+        
 }

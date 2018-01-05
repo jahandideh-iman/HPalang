@@ -22,7 +22,7 @@ import java.util.Collection;
  *
  * @author Iman Jahandideh
  */
-public class NetwrokCommunicationRule implements SOSRule
+public class CANScheduleRule implements SOSRule
 {
 
     @Override

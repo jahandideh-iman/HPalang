@@ -95,6 +95,12 @@ public abstract class CompositeStateT<T extends CompositeStateT> extends Equalit
         for(State state : substates)
             hash += state.hashCode();
         
+        hash += DataHashCode();
         return hash;
     } 
+    
+    protected int DataHashCode()
+    {
+        return  0;
+    }
 }

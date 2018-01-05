@@ -7,6 +7,7 @@ package HPalang.LTSGeneration;
 
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,12 +72,13 @@ public class LabeledTransitionSystem
     
     private GlobalRunTimeState StateFor(GlobalRunTimeState state)
     {
-        return states.getOrDefault(state, state);
+        return state;
+        //return states.getOrDefault(state, state);
     }
     
-    public List<Transition> Transitions()
+    public Set<Transition> Transitions()
     {
-        return new ArrayList<>(transitions);
+        return transitions;
     }
     
     public boolean HasTransition(GlobalRunTimeState origin,Label label, GlobalRunTimeState destination)
@@ -86,10 +88,7 @@ public class LabeledTransitionSystem
     
     public List<Transition> GetOutTransitionsFor(GlobalRunTimeState state)
     {
-        List<Transition> trans = outTransitionsCache.get(state);
-        if(trans == null)
-            trans = new LinkedList<>();
-        return trans;
+        return outTransitionsCache.getOrDefault(state,Collections.EMPTY_LIST);
         
 //        List<Transition> trans = new LinkedList<>();
 //
@@ -102,10 +101,7 @@ public class LabeledTransitionSystem
     
     public List<Transition> GetInTransitionsFor(GlobalRunTimeState state)
     {
-        List<Transition> trans = inTransitionsCache.get(state);
-        if(trans == null)
-            trans = new LinkedList<>();
-        return trans;
+        return inTransitionsCache.getOrDefault(state,Collections.EMPTY_LIST);
         
 //        List<Transition> trans = new LinkedList<>();
 //        for(Transition t : transitions)
@@ -136,7 +132,7 @@ public class LabeledTransitionSystem
         GlobalRunTimeState origin = transtion.GetOrign();
         GlobalRunTimeState destination = transtion.GetDestination();
         
-        List<Transition> cachedTrs;
+        List<Transition> cachedTrs = new LinkedList<>();
         
         cachedTrs = outTransitionsCache.get(origin);
         if(cachedTrs == null)
@@ -155,5 +151,9 @@ public class LabeledTransitionSystem
         }
         cachedTrs.add(transtion);
     }
-    
+
+    public int TransitionsSize()
+    {
+        return transitions.size();
+    }
 }

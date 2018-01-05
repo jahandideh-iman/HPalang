@@ -11,7 +11,7 @@ import HPalang.Core.Variables.RealVariable;
  *
  * @author Iman Jahandideh
  */
-public class NullRealVariablePool implements RealVariablePool
+public class NullRealVariablePool extends Equalitable<NullRealVariablePool> implements RealVariablePool
 {
     @Override
     public RealVariable Acquire()
@@ -59,6 +59,18 @@ public class NullRealVariablePool implements RealVariablePool
     public Iterable<RealVariable> AvailableVariables()
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    protected boolean InternalEquals(NullRealVariablePool other)
+    {
+        return true;
+    }
+
+    @Override
+    protected int InternalHashCode()
+    {
+        return 13;
     }
 
     

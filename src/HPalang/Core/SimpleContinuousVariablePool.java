@@ -48,7 +48,9 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
             throw new RuntimeException("The is no real variable to acquire");
         else
         {
-            RealVariable var = avaiableVariables.iterator().next();
+            RealVariable var = avaiableVariables.iterator().next(); 
+            //RealVariable var = FindSmallest();
+
             avaiableVariables.remove(var);
             return var;
         }
@@ -81,7 +83,7 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return avaiableVariables.hashCode() + origianlVariables.hashCode();
     }
 
     @Override
@@ -112,5 +114,17 @@ public class SimpleContinuousVariablePool extends Equalitable<SimpleContinuousVa
     public Iterable<RealVariable> AvailableVariables()
     {
         return avaiableVariables;
+    }
+
+    private RealVariable FindSmallest()
+    {
+        RealVariable smallest = avaiableVariables.iterator().next();
+        for(RealVariable var : avaiableVariables)
+        {
+            if(var.Name().compareTo(smallest.Name())<0)
+                smallest = var;
+        }
+        
+        return  smallest;
     }
 }

@@ -136,7 +136,7 @@ public class NetworkingUtility
 
     }
     
-    static public MessagePacket FindLastPacket(Actor actor, GlobalRunTimeState globalState)
+    static public MessagePacket FindLastPacketInMessageQueue(Actor actor, GlobalRunTimeState globalState)
     {
         return globalState.FindActorState(actor).MessageQueueState().Messages().Head();
     }

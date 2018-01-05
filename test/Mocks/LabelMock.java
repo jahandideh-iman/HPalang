@@ -26,10 +26,4 @@ public class LabelMock extends Label<LabelMock>
         return this.id.equals(other.id);
     }
     
-    @Override
-    protected int InternalHashCode()
-    {
-        return this.id.hashCode();
-    }
-    
 }

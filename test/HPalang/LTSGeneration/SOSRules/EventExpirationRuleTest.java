@@ -43,7 +43,7 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         nextGlobalState.EventsState().UnregisterEvent(event);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectTransition(EventTransitionLabel(event), nextGlobalState);

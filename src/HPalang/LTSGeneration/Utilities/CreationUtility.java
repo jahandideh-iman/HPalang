@@ -9,6 +9,7 @@ import HPalang.Core.Actor;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.Builders.GlobalRunTimeStateBuilder;
 import HPalang.LTSGeneration.Builders.SoftwareActorStateBuilder;
+import HPalang.LTSGeneration.RunTimeStates.DeadlockState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 
@@ -23,6 +24,15 @@ public class CreationUtility
         GlobalRunTimeStateBuilder builder = new GlobalRunTimeStateBuilder();
         
         return builder.Build();
+    }
+    
+    static public GlobalRunTimeState CreateDeadlockState()
+    {
+        GlobalRunTimeState globalState = CreateEmptyGlobalState();
+        
+        globalState.AddSubstate(new DeadlockState());
+        
+        return globalState;
     }
     
     static public SoftwareActorState CreateSoftwareState(SoftwareActor actor)

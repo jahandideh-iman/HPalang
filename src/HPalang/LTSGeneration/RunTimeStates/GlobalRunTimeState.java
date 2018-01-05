@@ -9,10 +9,6 @@ import HPalang.Core.Actor;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.CompositeStateT;
-import HPalang.Core.Statements.SendStatement;
-import java.util.Collection;
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  *

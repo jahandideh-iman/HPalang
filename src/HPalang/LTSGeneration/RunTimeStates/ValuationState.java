@@ -7,7 +7,6 @@ package HPalang.LTSGeneration.RunTimeStates;
 
 import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
-import HPalang.Core.Variable;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.SimpleState;
 import java.util.Map;
@@ -69,7 +68,7 @@ public class ValuationState extends SimpleState<ValuationState>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return valuation.hashCode();
     }
     
 }

@@ -48,10 +48,4 @@ public class SoftwareLabel extends Label<SoftwareLabel>
         return super.InternalEquals(other);
     }
 
-    @Override
-    protected int InternalHashCode()
-    {
-        int hash = 17;
-        return hash;
-    }
 }

@@ -47,7 +47,6 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
     public void Setup()
     {
         rule = new IfStatementRule();
-        ltsGenerator.AddSOSRule(new IfStatementRule());
         actor = actorState.SActor();
         
         AddActorState(actorState, globalState);
@@ -59,7 +58,7 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         IfStatement ifStatement = CreateTrueIfStatement();
         EnqueueStatement(ifStatement, actorState); 
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
@@ -72,14 +71,25 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
-    
+    @Test
+    public void IsNotAppliedIfActorIsSuspended()
+    {
+        IfStatement ifStatement = CreateTrueIfStatement();
+        actorState.SetSuspended(true);
+        EnqueueStatement(ifStatement, actorState); 
+        
+        ApplyRuleOn(globalState);
+        
+        transitionCollectorChecker.ExpectNoTransition();
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
+    }
     @Test
     public void IfConditionIsFalseThenAddFalseStatementsToHeadOfStatementQueue()
     {
         IfStatement ifStatement = CreateFalseIfStatement();
         EnqueueStatement(ifStatement, actorState); 
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
@@ -98,7 +108,7 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         
         transitionCollectorChecker.SetAllowedTransitions(2);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState falsePathGlobalState = globalState.DeepCopy();

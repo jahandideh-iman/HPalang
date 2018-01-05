@@ -12,12 +12,9 @@ import HPalang.Core.MessageArguments;
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
-import HPalang.LTSGeneration.RunTimeStates.Event.Action;
+import HPalang.LTSGeneration.RunTimeStates.*;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.Event.SendPacketAndResetNetworkAction;
-import HPalang.LTSGeneration.RunTimeStates.EventsState;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.StateInfo;
 import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
@@ -31,7 +28,7 @@ import org.junit.Test;
  *
  * @author Iman Jahandideh
  */
-public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
+public class CANScheduleRuleTest extends SOSRuleTestFixture
 {
     SoftwareActor receiver = CreateSofwareActor("receiver");
     SoftwareActor sender = CreateSofwareActor("sender");
@@ -51,7 +48,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
     @Before
     public void Setup()
     {
-        rule = new NetwrokCommunicationRule();
+        rule = new CANScheduleRule();
         
         lowPriorityMessage = new EmptyMessage("lowPriority", lowPriority);
         highPriorityMessage = new EmptyMessage("highPriority", highPriority);
@@ -74,14 +71,14 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
     {
         SetNetworkStateIdle(false, globalState);
         
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         transitionCollectorChecker.ExpectNoTransition();
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
-        @Test
+    @Test
     public void IsNotAppliedWhenThereIsSoftwareAction()
     {
         StateInfo stateInfoWithSoftwareAction = new StateInfoBuilder().
@@ -99,7 +96,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
     @Test
     public void RegistersTheHighestPriorityMessageInTheEventsState()
     {
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         EventsState generatedEventState = CollectedGlobalState().EventsState();
@@ -113,7 +110,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
     @Test
     public void MakeNetworkStateNotIdleWhenApplied()
     {
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         NetworkState generatedNetworkState =  CollectedGlobalState().NetworkState();
@@ -125,7 +122,7 @@ public class NetwrokCommunicationRuleTest extends SOSRuleTestFixture
     @Test
     public void Inegration()
     {
-        ApplyAndVerifyRuleOn(globalState);
+        ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
 
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
