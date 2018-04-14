@@ -21,7 +21,6 @@ import HPalang.Core.VariableArgument;
 public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
 {
     private final String id;
-    private int priority;
     private final MessageType type;
     
     public EmptyMessage()
@@ -29,32 +28,17 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
         this("empty");
     }
     
-    public EmptyMessage(int priority)
+ 
+    
+    public EmptyMessage(String id)
     {
-        this("empty", 0);
+        this(id, MessageType.Control);
     }
     
     public EmptyMessage(String id, MessageType type)
     {
-        this(id, 0, type);
-        
-    }
-    
-    public EmptyMessage(String id, int priority)
-    {
-        this(id,priority, MessageType.Control);
-    }
-    
-    public EmptyMessage(String id, int priority, MessageType type)
-    {
         this.id = id;
-        this.priority = priority;
         this.type = type;
-    }
-    
-    public EmptyMessage(String id)
-    {
-        this(id, 0);
     }
     
     @Override
@@ -76,11 +60,6 @@ public class EmptyMessage extends Equalitable<EmptyMessage> implements Message
        return 1;
     }
 
-    @Override
-    public int Priority()
-    {
-        return priority;
-    }
 
     @Override
     public MessageParameters Parameters()

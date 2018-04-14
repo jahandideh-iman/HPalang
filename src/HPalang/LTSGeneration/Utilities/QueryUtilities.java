@@ -6,6 +6,8 @@
 package HPalang.LTSGeneration.Utilities;
 
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
+import HPalang.LTSGeneration.RunTimeStates.DeadlockState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 
 /**
  *
@@ -16,5 +18,11 @@ public class QueryUtilities
     static public boolean MessageQueueIsFull(ActorState actorState)
     {
         return actorState.MessageQueueState().Messages().Size() >= actorState.Actor().QueueCapacity();
+    }
+    
+    static public boolean IsDeadlock(GlobalRunTimeState globalRunTimeState)
+    {
+        //return false;
+        return globalRunTimeState.FindSubState(DeadlockState.class) != null;
     }
 }

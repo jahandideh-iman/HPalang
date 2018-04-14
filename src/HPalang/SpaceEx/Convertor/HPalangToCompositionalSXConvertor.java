@@ -44,6 +44,7 @@ public class HPalangToCompositionalSXConvertor
         systemComp = new NetworkComponent("System");
         
         ConvertAndAddActors(def);
+        AddCANComponent();
         AddTimerComponent();
         
         AddActorParameters();
@@ -52,6 +53,11 @@ public class HPalangToCompositionalSXConvertor
         
         model.AddComponent(systemComp);    
     } 
+    
+    private void AddCANComponent()
+    {
+        Component networkComponent;
+    }
 
     private void AddTimerComponent()
     {
@@ -84,7 +90,7 @@ public class HPalangToCompositionalSXConvertor
         
         actorInstances.put(actorData, actorInst);
     }
-    
+
     private Component CreateTimerComponent()
     {
         BaseComponent timerComp = new BaseComponent("Timer");
@@ -121,16 +127,7 @@ public class HPalangToCompositionalSXConvertor
             for (String var : actorData.QueueData().QueueBufferVars()) {
                 instance.SetBinding(var, AddPrefix(var, actorData.Name()));
             }
-            
-//            for(ActorModelData receiver : actorData.RecieversFromThisActor())
-//                instance.SetBinding(receiver.QueueData().SendBufferLabelFor(actorData), receiver.QueueData().SendBufferLabelFor(actorData));
-//            
-//            for (ActorModelData sender : actorData.SendersToThisActor()) {
-//                instance.SetBinding(actorData.QueueData().ReceiveBufferLabelFor(sender), 
-//                        actorData.QueueData().SendBufferLabelFor(sender));
-//            }
-
-            
+                        
             for(SendStatement sendStatement : actorData.SendStatements())
             {
                 ActorModelData receiverData =actorData.FindActorDataFor(sendStatement.ReceiverLocator());

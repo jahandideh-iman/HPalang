@@ -87,7 +87,7 @@ public class CANMessageSendRuleTest extends MessageSendRuleTestFixture
         Actor arbitraryActor = CreateSofwareActor("arbitrary");
 
         
-        return new MessagePacket(
+        return MessagePacket(
                 arbitraryActor, 
                 arbitraryActor, 
                 sendStatement.MessageLocator().Locate(senderState.Actor()), 

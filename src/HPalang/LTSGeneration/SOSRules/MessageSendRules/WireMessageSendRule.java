@@ -24,9 +24,10 @@ public class WireMessageSendRule extends MessageSendRule
     @Override
     protected boolean InternalIsRuleSatisfied(GlobalRunTimeState globalState, SendStatement sendStatement, Message message, ActorState receiverState)
     {
-        MessageQueueState queueState = receiverState.MessageQueueState();
+        return true;
+        //MessageQueueState queueState = receiverState.MessageQueueState();
 
-        return queueState.Messages().Size() < receiverState.Actor().QueueCapacity();
+        //return queueState.Messages().Size() < receiverState.Actor().QueueCapacity();
     }
 
     @Override
@@ -44,7 +45,9 @@ public class WireMessageSendRule extends MessageSendRule
     @Override
     protected boolean InternalMustGoToDeadlock(GlobalRunTimeState globalState, MessagePacket packet)
     {
-        return false;
+        ActorState receiverState = globalState.FindActorState(packet.Receiver());
+        MessageQueueState queueState = receiverState.MessageQueueState();
+        return queueState.Messages().Size() >= receiverState.Actor().QueueCapacity();
     }
 
     

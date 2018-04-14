@@ -44,12 +44,6 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
     }
 
     @Override
-    public int Priority()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-    
-    @Override
     protected boolean InternalEquals(NormalMessage other)
     {
         return this.messageHandler.equals(other.messageHandler);

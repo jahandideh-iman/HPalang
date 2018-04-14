@@ -22,9 +22,12 @@ import java.util.Set;
  */
 public class LabeledTransitionSystem
 {    
-    private Map<GlobalRunTimeState, GlobalRunTimeState> states = new HashMap<>();
-    private GlobalRunTimeState initialState = null;
     
+    private static final boolean APPLY_MEMORY_OPTIMIZATION = true;
+    private GlobalRunTimeState initialState = null;
+        
+        
+    private Set<GlobalRunTimeState> states = new HashSet<>();
     private Set<Transition> transitions = new HashSet<>();
     
     private Map<GlobalRunTimeState, List<Transition>> outTransitionsCache = new HashMap<>();
@@ -33,8 +36,7 @@ public class LabeledTransitionSystem
     public void SetInitialState(GlobalRunTimeState state)
     {
         initialState = state;
-        if(states.containsKey(state) == false)
-            states.put(state,state);
+        AddState(state);
     }
     
     public GlobalRunTimeState InitialState()
@@ -44,25 +46,34 @@ public class LabeledTransitionSystem
     
     public void AddState(GlobalRunTimeState state)
     {
-        states.put(state ,state);
+        if(APPLY_MEMORY_OPTIMIZATION)
+        {
+            if(states.contains(state))
+                return;
+        }
+        states.add(state);
     }
     
     public boolean HasState(GlobalRunTimeState state)
     {
-        return states.containsKey(state);
+        return states.contains(state);
     }
     
     public Set<GlobalRunTimeState> States()
     {
-        return states.keySet();
+        return states;
     }
     
     public void AddTransition(GlobalRunTimeState origin,Label label, GlobalRunTimeState destination)
     {
         Transition transtion = new Transition(StateFor(origin),label,StateFor(destination));
-        if(transitions.contains(transtion))
-            return;
-        assert(HasState(origin));
+        
+        if(APPLY_MEMORY_OPTIMIZATION)
+        {
+            if(transitions.contains(transtion))
+                return;
+        }
+        //assert(HasState(origin));
         //AddState(origin);
         transitions.add(transtion);
         AddState(transtion.GetDestination());
@@ -89,33 +100,17 @@ public class LabeledTransitionSystem
     public List<Transition> GetOutTransitionsFor(GlobalRunTimeState state)
     {
         return outTransitionsCache.getOrDefault(state,Collections.EMPTY_LIST);
-        
-//        List<Transition> trans = new LinkedList<>();
-//
-//        for(Transition t : transitions)
-//            if(t.GetOrign().equals(state))
-//                trans.add(t);
-//        
-//        return trans;
     }
     
     public List<Transition> GetInTransitionsFor(GlobalRunTimeState state)
     {
         return inTransitionsCache.getOrDefault(state,Collections.EMPTY_LIST);
-        
-//        List<Transition> trans = new LinkedList<>();
-//        for(Transition t : transitions)
-//            if(t.GetDestination().equals(state))
-//                trans.add(t);
-//        
-//        return trans;
     }
     
     public void RemoveTranstion(Transition t)
     {
         transitions.remove(t);
     }
-    
     
     public void RemoveState(GlobalRunTimeState state)
     {
@@ -132,7 +127,7 @@ public class LabeledTransitionSystem
         GlobalRunTimeState origin = transtion.GetOrign();
         GlobalRunTimeState destination = transtion.GetDestination();
         
-        List<Transition> cachedTrs = new LinkedList<>();
+        List<Transition> cachedTrs;
         
         cachedTrs = outTransitionsCache.get(origin);
         if(cachedTrs == null)
@@ -141,7 +136,7 @@ public class LabeledTransitionSystem
             outTransitionsCache.put(origin, cachedTrs);
         }
         cachedTrs.add(transtion);
-       
+                       
         
         cachedTrs = inTransitionsCache.get(destination);
         if(cachedTrs == null)

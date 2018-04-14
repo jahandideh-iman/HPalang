@@ -18,5 +18,4 @@ public interface Message
     public Queue<Statement> GetMessageBody();
     public MessageParameters Parameters();
     public MessageType MessageType();
-    public int Priority();
 }

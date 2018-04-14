@@ -155,47 +155,47 @@ public class BrakeByWireModel
         
         definition.SetMainBlock(new MainBlock());
         
-        SetNetworkPriority(wheel_FR, Wheel__torque_port, 100);
-        SetNetworkPriority(wheel_FL, Wheel__torque_port, 101);
-        SetNetworkPriority(wheel_RR, Wheel__torque_port, 102);
-        SetNetworkPriority(wheel_RL, Wheel__torque_port, 103);
+        SetNetworkPriority(definition, wheel_FR, Wheel__torque_port, 100);
+        SetNetworkPriority(definition, wheel_FL, Wheel__torque_port, 101);
+        SetNetworkPriority(definition, wheel_RR, Wheel__torque_port, 102);
+        SetNetworkPriority(definition, wheel_RL, Wheel__torque_port, 103);
 
         //SetNetworkPriority(wheel_FR, ?!!!, 100); Mode Change
         
-        SetNetworkPriority(wheel_controller_FR, Wheel__torque_port, 200);
-        SetNetworkPriority(wheel_controller_FL, Wheel__torque_port, 201);
-        SetNetworkPriority(wheel_controller_RR, Wheel__torque_port, 202);
-        SetNetworkPriority(wheel_controller_RL, Wheel__torque_port, 203);
+        SetNetworkPriority(definition, wheel_controller_FR, Wheel__torque_port, 200);
+        SetNetworkPriority(definition, wheel_controller_FL, Wheel__torque_port, 201);
+        SetNetworkPriority(definition, wheel_controller_RR, Wheel__torque_port, 202);
+        SetNetworkPriority(definition, wheel_controller_RL, Wheel__torque_port, 203);
         
-        SetNetworkPriority(wheel_controller_FR, Wheel_Controller__apply_torque_handler, 300);
-        SetNetworkPriority(wheel_controller_FL, Wheel_Controller__apply_torque_handler, 301);
-        SetNetworkPriority(wheel_controller_RR, Wheel_Controller__apply_torque_handler, 302);
-        SetNetworkPriority(wheel_controller_RL, Wheel_Controller__apply_torque_handler, 303);
+        SetNetworkPriority(definition, wheel_controller_FR, Wheel_Controller__apply_torque_handler, 300);
+        SetNetworkPriority(definition, wheel_controller_FL, Wheel_Controller__apply_torque_handler, 301);
+        SetNetworkPriority(definition, wheel_controller_RR, Wheel_Controller__apply_torque_handler, 302);
+        SetNetworkPriority(definition, wheel_controller_RL, Wheel_Controller__apply_torque_handler, 303);
         
-        SetNetworkPriority(global_brake_controller, Global_Brake_Controller__wheel_rpm_FR_port, 340);
-        SetNetworkPriority(global_brake_controller, Global_Brake_Controller__wheel_rpm_FL_port, 401);
-        SetNetworkPriority(global_brake_controller, Global_Brake_Controller__wheel_rpm_RR_port, 402);
-        SetNetworkPriority(global_brake_controller, Global_Brake_Controller__wheel_rpm_RL_port, 403);
+        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__wheel_rpm_FR_port, 340);
+        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__wheel_rpm_FL_port, 401);
+        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__wheel_rpm_RR_port, 402);
+        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__wheel_rpm_RL_port, 403);
         
-        SetNetworkPriority(global_brake_controller, Global_Brake_Controller__brake_percent_port, 503);
-        SetNetworkPriority(global_brake_controller, Global_Brake_Controller__control_handler, 603);
+        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__brake_percent_port, 503);
+        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__control_handler, 603);
         
 //        SetNetworkDelay(wheel_FR, wheel_controller_FR, Wheel_Controller__wheel_rmp_port, arbitrartDelay);
 //        SetNetworkDelay(wheel_FL, wheel_controller_FL, Wheel_Controller__wheel_rmp_port, arbitrartDelay);
 //        SetNetworkDelay(wheel_RR, wheel_controller_RR, Wheel_Controller__wheel_rmp_port, arbitrartDelay);
 //        SetNetworkDelay(wheel_RL, wheel_controller_RL, Wheel_Controller__wheel_rmp_port, arbitrartDelay);
         
-        SetNetworkDelay(wheel_FR, global_brake_controller, Global_Brake_Controller__wheel_rpm_FR_port, 2.0f);
-        SetNetworkDelay(wheel_FL, global_brake_controller, Global_Brake_Controller__wheel_rpm_FL_port, 2.0f);
-        SetNetworkDelay(wheel_RR, global_brake_controller, Global_Brake_Controller__wheel_rpm_RR_port, 2.0f);
-        SetNetworkDelay(wheel_RL, global_brake_controller, Global_Brake_Controller__wheel_rpm_RL_port, 2.0f);
+        SetNetworkDelay(definition, wheel_FR, global_brake_controller, Global_Brake_Controller__wheel_rpm_FR_port, 2.0f);
+        SetNetworkDelay(definition, wheel_FL, global_brake_controller, Global_Brake_Controller__wheel_rpm_FL_port, 2.0f);
+        SetNetworkDelay(definition, wheel_RR, global_brake_controller, Global_Brake_Controller__wheel_rpm_RR_port, 2.0f);
+        SetNetworkDelay(definition, wheel_RL, global_brake_controller, Global_Brake_Controller__wheel_rpm_RL_port, 2.0f);
         
-        SetNetworkDelay(brake_pedal, global_brake_controller, Global_Brake_Controller__brake_percent_port, 3.0f);
+        SetNetworkDelay(definition, brake_pedal, global_brake_controller, Global_Brake_Controller__brake_percent_port, 3.0f);
         
-        SetNetworkDelay(global_brake_controller, wheel_controller_FR, Wheel_Controller__apply_torque_handler, 4.0f);
-        SetNetworkDelay(global_brake_controller, wheel_controller_FL, Wheel_Controller__apply_torque_handler, 4.0f);
-        SetNetworkDelay(global_brake_controller, wheel_controller_RR, Wheel_Controller__apply_torque_handler, 4.0f);
-        SetNetworkDelay(global_brake_controller, wheel_controller_RL, Wheel_Controller__apply_torque_handler, 4.0f);
+        SetNetworkDelay(definition, global_brake_controller, wheel_controller_FR, Wheel_Controller__apply_torque_handler, 4.0f);
+        SetNetworkDelay(definition, global_brake_controller, wheel_controller_FL, Wheel_Controller__apply_torque_handler, 4.0f);
+        SetNetworkDelay(definition, global_brake_controller, wheel_controller_RR, Wheel_Controller__apply_torque_handler, 4.0f);
+        SetNetworkDelay(definition, global_brake_controller, wheel_controller_RL, Wheel_Controller__apply_torque_handler, 4.0f);
         
         definition.SetEventSystemVariablePoolSize(2);
         definition.SetGlobalVariablePoolSize(3);
@@ -298,8 +298,8 @@ public class BrakeByWireModel
                                 new VariableExpression(requested_torque),
                                 new EqualityOperator(),
                                 new ConstantDiscreteExpression(2))),
-                Statement.StatementsFrom(CreateModeChangeRequest(noBrakeMode, new ParametricActorLocator(wheel))), 
-                Statement.StatementsFrom(CreateModeChangeRequest(brakeMode, new ParametricActorLocator(wheel)))
+                Statement.StatementsFrom(CreateModeChangeSendStatement(noBrakeMode, new ParametricActorLocator(wheel))), 
+                Statement.StatementsFrom(CreateModeChangeSendStatement(brakeMode, new ParametricActorLocator(wheel)))
         ));
         
         AddPort(wheelControllerType, Wheel_Controller__wheel_rmp_port, wheel_rpm);

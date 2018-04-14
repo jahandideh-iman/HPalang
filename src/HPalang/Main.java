@@ -6,21 +6,18 @@
 package HPalang;
 
 import HPalang.Convertors.HybridAutomatonToSXConvertor;
-import HPalang.Convertors.LTSToAUTConvertor;
-import HPalang.Convertors.LTSToFSMConvertor;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
 import HPalang.Core.ModelDefinition;
-import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.HybridAutomataGeneration.SOSRules.ConversionRule;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.LabeledTransitionSystem;
 import HPalang.LTSGeneration.ModeDefinitionToGlobalStateConvertor;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
-import HPalang.LTSGeneration.Transition;
 import HPalang.Core.Variable;
+import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.LTSGeneration.Label;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.Guard;
@@ -36,10 +33,7 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Queue;
 import java.util.Set;
 
 /**
@@ -54,7 +48,7 @@ public class Main {
     {
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BrakeByWireModelTwoWheel.Create();
+            definition = BrakeByWireModelSingleWheel.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
@@ -72,26 +66,17 @@ public class Main {
         OutputLTS("FineLTS",lts, writer);
         //OutputLTS("ReducedLTS",new LTSReducer().Reduce(lts), writer);
         
-        //CheckForDuplicateStates(lts);
-        
-        
-        //PrioritizeTauActions(lts);
-        //RemoveUnreachableStates(lts);
-        //RemoveTauLabels(lts);
-        
+
         //LabeledTransitionSystem reduceLTS =  new LTSReducer().Reduce(lts);
         //OutputLTS("ReducedLTS", reduceLTS, writer);
         
-        //HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts, definition);
+        HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts, definition);
+        
+        OutputHA("HA", automaton, writer);
 //        
 //        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
-        //writer.Write("output_HA.xml", new HybridAutomatonToSXConvertor().Convert(automaton));
-//        
-//        System.out.println("LTS(A) Pruning States : " + lts.States().size());
-//        System.out.println("LTS(A) Pruning Transition : " + lts.Transitions().size());
-//        
-//        System.out.println("HA Locations : " + automaton.GetLocations().size());
-//        System.out.println("HA Transition : " + automaton.Transitions().size());
+        writer.Write("output_HA.xml", new HybridAutomatonToSXConvertor().Convert(automaton));
+        
     }
 
     private static void OutputLTS(String prefix, LabeledTransitionSystem lts, FileWriter writer)
@@ -103,6 +88,16 @@ public class Main {
         //writer.Write(prefix +"_fsm.fsm", new LTSToFSMConvertor().Convert(lts));
     }
     
+    private static void OutputHA(String prefix, HybridAutomaton automaton, FileWriter writer)
+    {
+        System.out.println(prefix + " Locations  : " + automaton.GetLocations().size());
+        System.out.println(prefix+ " Transition : " + automaton.GetTransitions().size());
+        
+        //writer.Write(prefix +"_aut.aut", new LTSToAUTConvertor().Convert(lts));
+        //writer.Write(prefix +"_fsm.fsm", new LTSToFSMConvertor().Convert(lts));
+    }
+    
+    
     private static InputStream Read(String filePath) throws FileNotFoundException
     {
         return new FileInputStream(filePath);
@@ -113,7 +108,7 @@ public class Main {
         LTSGenerator genetator = new LTSGenerator();
         
         // Software
-        genetator.AddSOSRule(new FIFOMessageTakeRule());
+        genetator.AddSOSRule(new SoftwareActorFIFOMessageTakeRule());
         genetator.AddSOSRule(new PhysicalActorFIFOMessageTake());
         genetator.AddSOSRule(new MessageTeardownStatementRule());
         genetator.AddSOSRule(new DelayStatementRule());

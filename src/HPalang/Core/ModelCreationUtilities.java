@@ -79,18 +79,24 @@ public class ModelCreationUtilities
         AddVariable(actorType, new FloatVariable(name));
     }
 
-    public static void SetNetworkPriority(Actor actor, String messageHandlerName, int priority)
+    public static void SetNetworkPriority(ModelDefinition definition, Actor actor, String messageHandlerName, int priority)
     {
         MessageHandler handler = actor.Type().FindMessageHandler(messageHandlerName);
-        actor.SetMessageHandlerPriority(handler ,priority);
+        definition.CANSpecification().SetNetworkPriority(actor, new NormalMessage(handler), priority);
     }
     
-    public static void SetNetworkDelay(Actor sender, Actor reciever, String messageHandler, float delay)
+    public static void SetNetworkDelay(ModelDefinition definition, Actor sender, Actor reciever, String messageHandler, float delay)
     {
-        sender.SetNetworkDelay(reciever,  new NormalMessage(reciever.Type().FindMessageHandler(messageHandler)), delay);
+        Message message = new NormalMessage(reciever.Type().FindMessageHandler(messageHandler));
+        definition.CANSpecification().SetNetworkDelay(sender, reciever, message , delay);
+    }
+    
+    public static Statement CreateModeChangeStatement(Mode mode)
+    {
+        return new ModeChangeStatement(mode);
     }
    
-    public static SendStatement CreateModeChangeRequest(Mode mode, ActorLocator actorLocator)
+    public static SendStatement CreateModeChangeSendStatement(Mode mode, ActorLocator actorLocator)
     {
         return ModelCreationUtilities.CreateSendStatement(
                 actorLocator, 
@@ -100,16 +106,16 @@ public class ModelCreationUtilities
         );
     }
     
-    public static SendStatement CreateModeChangeRequest(String mode, InstanceParameter instance)
+    public static SendStatement CreateModeChangeSendStatement(String mode, InstanceParameter instance)
     {
-        return CreateModeChangeRequest(
+        return ModelCreationUtilities.CreateModeChangeSendStatement(
                 ((PhysicalActorType) instance.Type()).FindMode(mode), 
                 new ParametricActorLocator(instance));
     }
     
     public static SendStatement CreateDeactiveModeRequest(InstanceParameter instance)
     {
-        return CreateModeChangeRequest(
+        return ModelCreationUtilities.CreateModeChangeSendStatement(
                 Mode.None(), 
                 new ParametricActorLocator(instance));
     }
@@ -283,20 +289,28 @@ public class ModelCreationUtilities
     
     public static BinaryExpression CreateBinaryExpression(Expression e1, String operator , Expression e2)
     {
-        if(operator.equals("<"))
+        if (operator.equals("<"))
             return new BinaryExpression(e1, new LesserOperator(), e2);
-        else if(operator.equals("<="))
+        else if (operator.equals("<="))
             return new BinaryExpression(e1, new LesserEqualOperator(), e2);
-        else if(operator.equals("=="))
+        else if (operator.equals("=="))
             return new BinaryExpression(e1, new EqualityOperator(), e2);
-        else if(operator.equals(">="))
+        else if (operator.equals(">="))
             return new BinaryExpression(e1, new GreaterEqualOperator(), e2);
-        else if(operator.equals(">"))
+        else if (operator.equals(">"))
             return new BinaryExpression(e1, new GreaterOperator(), e2);
+        else if (operator.equals("+"))
+            return new BinaryExpression(e1, new AddOperator(), e2);
         else if (operator.equals("-"))
             return new BinaryExpression(e1, new SubtractOperator(), e2);
         else if (operator.equals("/"))
             return new BinaryExpression(e1, new DivisionOperator(), e2);
+        else if (operator.equals("*"))
+            return new BinaryExpression(e1, new MultiplyOperator(), e2);
+        else if (operator.equals("&&"))
+            return new BinaryExpression(e1, new LogicalAndOperator(), e2);
+        else if (operator.equals("||"))
+            return new BinaryExpression(e1, new LogicalOrOperator(), e2);
         else 
             throw new RuntimeException("Operator is not supported yet");
     }

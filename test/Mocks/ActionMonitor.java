@@ -16,6 +16,9 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 public class ActionMonitor extends Equalitable<ActionMonitor> implements Action 
 {
     public boolean isExecuted = false;
+
+    private boolean isDeadlock = false;
+    
     @Override
     public void Execute(GlobalRunTimeState globalState)
     {
@@ -32,6 +35,17 @@ public class ActionMonitor extends Equalitable<ActionMonitor> implements Action
     protected int InternalHashCode()
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    }
+
+    @Override
+    public boolean IsDeadlock(GlobalRunTimeState State)
+    {
+        return isDeadlock;
+    }
+
+    public void SetDeadlocked(boolean b)
+    {
+        this.isDeadlock = b;
     }
     
 }

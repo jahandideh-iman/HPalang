@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.CANSpecification;
 import HPalang.Core.MessageArguments;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.MessagePacket;
@@ -21,6 +22,7 @@ import static TestUtilities.CoreUtility.*;
  */
 public class NetworkStateTest
 {
+    CANSpecification canSpecification = new CANSpecification();
    
     @Test
     public void StatesWithEqualDataAreEqual()
@@ -28,8 +30,8 @@ public class NetworkStateTest
         SoftwareActor arbitraryActor = CreateSofwareActor("actor");
         MessagePacket packet = EmptySelfMessagePacketFor(arbitraryActor);
         
-        NetworkState networkState1 = new NetworkState(5);
-        NetworkState networkState2 = new NetworkState(5);
+        NetworkState networkState1 = new NetworkState(canSpecification, 5);
+        NetworkState networkState2 = new NetworkState(canSpecification, 5);
         
         networkState1.Buffer(packet);
         networkState1.SetIdle(true);
@@ -43,13 +45,13 @@ public class NetworkStateTest
     @Test
     public void HasTheBufferedPackets()
     {
-        NetworkState networkState = new NetworkState(10);
+        NetworkState networkState = new NetworkState(canSpecification, 10);
         SoftwareActor actor1 = CreateSofwareActor("actor1");
         SoftwareActor actor2 = CreateSofwareActor("actor2");
         MessageArguments emptyArguments = new MessageArguments();
         
-        MessagePacket packet1 = new MessagePacket(actor1, actor2,  new EmptyMessage("1to2"), emptyArguments);
-        MessagePacket packet2 = new MessagePacket(actor1, actor2, new EmptyMessage("2to1"), emptyArguments);
+        MessagePacket packet1 = new MessagePacket(actor1, actor2,  new EmptyMessage("1to2"), emptyArguments, 1);
+        MessagePacket packet2 = new MessagePacket(actor1, actor2, new EmptyMessage("2to1"), emptyArguments, 2);
         
         networkState.Buffer(packet1);
         networkState.Buffer(packet2);
@@ -62,13 +64,13 @@ public class NetworkStateTest
     public void RaisesErrorWhenBufferingIfBufferSizeIsMaxed()
     {
         int bufferSize = 1;
-        NetworkState networkState = new NetworkState(bufferSize);
+        NetworkState networkState = new NetworkState(canSpecification, bufferSize);
         SoftwareActor actor1 = CreateSofwareActor("actor1");
         SoftwareActor actor2 = CreateSofwareActor("actor2");
         MessageArguments emptyArguments = new MessageArguments();
         
-        MessagePacket packet1 = new MessagePacket(actor1, actor2,  new EmptyMessage("1to2"), emptyArguments);
-        MessagePacket packet2 = new MessagePacket(actor1, actor2, new EmptyMessage("2to1"), emptyArguments);
+        MessagePacket packet1 = new MessagePacket(actor1, actor2,  new EmptyMessage("1to2"), emptyArguments, 1);
+        MessagePacket packet2 = new MessagePacket(actor1, actor2, new EmptyMessage("2to1"), emptyArguments, 2);
         
         networkState.Buffer(packet1);
         networkState.Buffer(packet2);

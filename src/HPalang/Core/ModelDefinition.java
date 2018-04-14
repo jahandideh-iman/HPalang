@@ -24,6 +24,7 @@ public class ModelDefinition
 
     private Set<ActorType> types = new HashSet<>();
     private MainBlock mainBlock;
+    private CANSpecification canSpecification = new CANSpecification();
     
     private int eventSystemVariablePoolSize = 1;
     private int globalVariablePoolSize = 1;
@@ -105,6 +106,11 @@ public class ModelDefinition
         actors.addAll(physicalActors);
         actors.addAll(softwareActors);
         return actors;
+    }
+    
+    public CANSpecification CANSpecification()
+    {
+        return canSpecification;
     }
 
 }

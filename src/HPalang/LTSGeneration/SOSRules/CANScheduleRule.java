@@ -32,7 +32,7 @@ public class CANScheduleRule implements SOSRule
     {
         GlobalRunTimeState newGlobalState = stateInfo.State().DeepCopy();
         NetworkState networkState = newGlobalState.FindSubState(NetworkState.class);
-        
+              
         if( !networkState.IsIdle() ||networkState.Buffer().isEmpty() || HasSoftwareActions(stateInfo.Outs()))
             return;
         
@@ -42,24 +42,24 @@ public class CANScheduleRule implements SOSRule
             generator.AddTransition(CreationUtility.CreateDeadlockTransition(), CreationUtility.CreateDeadlockState()); 
         else
         {
-            float networkDelay = packet.Sender().NetworkDelayFor(packet.Message(), packet.Receiver());
+            float networkDelay = networkState.CANSpecification().NetworkDelayFor(packet.Sender(), packet.Receiver(), packet.Message());
             networkState.SetIdle(false);
             newGlobalState.EventsState().RegisterEvent(networkDelay, new SendPacketAndResetNetworkAction(packet));
             networkState.Debuffer(packet);
 
-            generator.AddTransition(new NetworkLabel(), newGlobalState); 
+            generator.AddTransition(new NetworkLabel(), newGlobalState);
         }
     }
 
     private MessagePacket FindHighestPriority(Collection<MessagePacket> buffer)
     {
         MessagePacket maxPacket = buffer.iterator().next();
+        
         for(MessagePacket packet : buffer)
         {
-            if(packet.Message().Priority() > maxPacket.Message().Priority())
+            if(packet.Priority() < maxPacket.Priority())
                 maxPacket = packet;
         }      
         return maxPacket;
     }
-    
 }

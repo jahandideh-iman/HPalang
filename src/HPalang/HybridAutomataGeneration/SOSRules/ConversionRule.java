@@ -33,6 +33,7 @@ import java.util.Collection;
 import static HPalang.Core.ModelCreationUtilities.*;
 import HPalang.Core.Variable;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
+import static HPalang.LTSGeneration.Utilities.QueryUtilities.IsDeadlock;
 
 /**
  *
@@ -120,6 +121,9 @@ public class ConversionRule implements SOSRule
     {
         Location location = new Location(locName+"_I");
 
+        if(IsDeadlock(gs))
+            return location;
+        
         AddConstantODEs(location, gs);
         
         for (RealVariable var : gs.EventsState().PoolState().Pool().AllVariables()) {
@@ -137,6 +141,9 @@ public class ConversionRule implements SOSRule
     private Location CreatePhyscialLocationFrom(GlobalRunTimeState gs, String locName)
     {
         Location location = new Location(locName+"_P");
+        
+        if(IsDeadlock(gs))
+            return location;
         
         ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
         for(PhysicalActorState actorState : gs.ContinuousState().ActorStates())

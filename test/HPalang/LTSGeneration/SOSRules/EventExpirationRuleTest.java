@@ -7,6 +7,7 @@ package HPalang.LTSGeneration.SOSRules;
 
 import Builders.StateInfoBuilder;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
+import HPalang.Core.CreationUtilities;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
@@ -15,6 +16,8 @@ import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.Transition;
+import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockState;
+import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockTransition;
 import Mocks.ActionMonitor;
 import static TestUtilities.CoreUtility.*;
 import org.junit.Test;
@@ -28,17 +31,19 @@ import org.junit.Before;
 public class EventExpirationRuleTest extends SOSRuleTestFixture
 {
     float arbiraryDelay = 1f;
+    ActionMonitor actionMonitor;
     @Before
     public void Setup()
     {
         rule = new EventExpirationRule();
+        actionMonitor = new ActionMonitor();
     }
     
     @Test
     public void IfThereIsNoSoftwareAndNetworkTransitionExpiratesEvents()
     {
         ResetEventStatePool(globalState);
-        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, new ActionMonitor());
+        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, actionMonitor);
         
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         nextGlobalState.EventsState().UnregisterEvent(event);
@@ -52,10 +57,25 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
     }
     
     @Test
+    public void GoesToDeadlockForADeadlockedEvent()
+    {
+        ResetEventStatePool(globalState);
+        
+        actionMonitor.SetDeadlocked(true);
+        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, actionMonitor);
+        
+        ApplyRuleOn(globalState);
+
+        transitionCollectorChecker.ExpectTransition(CreateDeadlockTransition(), CreateDeadlockState());
+        assertFalse(actionMonitor.isExecuted);
+        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
+    }
+    
+    @Test
     public void DoesNotExpiresEventsIfThereIsSoftwareAction()
     {
         ResetEventStatePool(globalState);
-        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, new ActionMonitor());
+        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, actionMonitor);
         
         StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
                 WithState(globalState).
@@ -72,10 +92,10 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
     }
     
     @Test
-    public void DoesNotExpiresEventsIfThereIsNetworkAction()
+    public void DoesNotExpireEventsIfThereIsNetworkAction()
     {
         ResetEventStatePool(globalState);
-        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, new ActionMonitor());
+        Event event = globalState.EventsState().RegisterEvent(arbiraryDelay, actionMonitor);
         
         StateInfo stateInfoWithNetworkTransition = new StateInfoBuilder().
                 WithState(globalState).

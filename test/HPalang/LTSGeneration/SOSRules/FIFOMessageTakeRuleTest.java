@@ -50,7 +50,7 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
     @Before
     public void Setup()
     {
-        rule = new FIFOMessageTakeRule();
+        rule = new SoftwareActorFIFOMessageTakeRule();
         
         receiver = receiverState.SActor();
         

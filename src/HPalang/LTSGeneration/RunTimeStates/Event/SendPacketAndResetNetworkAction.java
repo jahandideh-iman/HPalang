@@ -32,9 +32,7 @@ public class SendPacketAndResetNetworkAction extends Equalitable<SendPacketAndRe
         globalState.NetworkState().SetIdle(true);
         
         ActorState receiverState = globalState.FindActorState(packet.Receiver());
-        
-        if(MessageQueueIsFull(receiverState) == false)
-            receiverState.MessageQueueState().Messages().Enqueue(packet);
+        receiverState.MessageQueueState().Messages().Enqueue(packet);         
     }
     
     @Override
@@ -47,6 +45,12 @@ public class SendPacketAndResetNetworkAction extends Equalitable<SendPacketAndRe
     protected int InternalHashCode()
     {
         return 0;
+    }
+
+    @Override
+    public boolean IsDeadlock(GlobalRunTimeState globalState)
+    {
+        return MessageQueueIsFull(globalState.FindActorState(packet.Receiver()));
     }
     
 }

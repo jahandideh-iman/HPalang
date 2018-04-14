@@ -12,6 +12,8 @@ import HPalang.Core.Statements.SendStatement;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.SOSRules.MessageSendRuleTestFixture;
+import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockState;
+import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockTransition;
 import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
 import org.junit.Test;
@@ -58,17 +60,17 @@ public class WireMessageSendRuleTest extends MessageSendRuleTestFixture
     } 
     
     @Test
-    public void DoesNotSendTheMessageIfTheRecieverMessageQueueIsFull()
+    public void GoesToDeadlockTheRecieverMessageQueueIsFull()
     {
         SendStatement sendStatement = CreateEmptySendStatementTo(receiver);
 
         senderState.SActor().SetCommunicationType(receiver, Wire);
         EnqueueStatement(sendStatement, senderState);
-        FillActorsQeueue(receiverState);
+        FillUpActorsQeueue(receiverState);
 
         ApplyRuleOn(globalState);
 
-        transitionCollectorChecker.ExpectNoTransition();
+        transitionCollectorChecker.ExpectTransition(CreateDeadlockTransition(), CreateDeadlockState());
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
 

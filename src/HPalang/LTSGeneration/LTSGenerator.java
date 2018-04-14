@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
-import HPalang.LTSGeneration.RunTimeStates.DeadlockState;
+import static HPalang.LTSGeneration.Utilities.QueryUtilities.IsDeadlock;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.ArrayList;
 import java.util.LinkedList;
@@ -73,11 +73,5 @@ public class LTSGenerator implements TransitionCollector
             System.out.println("Transitions so far: " + transitionSystem.Transitions().size());
             System.out.println("------------------------------------------");
         }
-    }
-
-    private boolean IsDeadlock(GlobalRunTimeState globalRunTimeState)
-    {
-        //return false;
-        return globalRunTimeState.FindSubState(DeadlockState.class) != null;
     }
 }

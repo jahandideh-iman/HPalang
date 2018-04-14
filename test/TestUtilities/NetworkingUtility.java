@@ -114,7 +114,12 @@ public class NetworkingUtility
     
     static public MessagePacket EmptySelfMessagePacket(Actor actor, int priority)
     {
-        return NetworkingUtility.MessagePacket(actor, actor, new EmptyMessage(priority), MessageArguments.Empty());
+        return NetworkingUtility.MessagePacket(actor, actor, new EmptyMessage(), MessageArguments.Empty(), priority);
+    }
+    
+    static public MessagePacket SelfMessagePacket(Actor actor , Message message, int priority)
+    {
+        return NetworkingUtility.MessagePacket(actor, actor, message, MessageArguments.Empty(), priority);
     }
     
     static public MessagePacket MessagePacket(Actor sender, Actor receiver, Message message)
@@ -123,14 +128,21 @@ public class NetworkingUtility
     }
     static public MessagePacket MessagePacket(Actor sender, Actor receiver , Message message, MessageArguments arguments)
     {
+        return NetworkingUtility.MessagePacket(sender, receiver, message, arguments, 0);
+    }
+    static public MessagePacket MessagePacket(Actor sender, Actor receiver , Message message, MessageArguments arguments, int priority)
+    {
         MessagePacket packet = new MessagePacket(
                 sender,
                 receiver,
                 message, 
-                arguments);
+                arguments,
+                priority);
         
         return packet;
     }
+    
+    
     
     static public MessagePacket MessagePacket(ActorState senderState,SendStatement sendStatement)
     {
@@ -147,7 +159,7 @@ public class NetworkingUtility
         return globalState.FindActorState(actor).MessageQueueState().Messages().Head();
     }
     
-    static public void FillActorsQeueue(SoftwareActorState receiverState)
+    static public void FillUpActorsQeueue(SoftwareActorState receiverState)
     {
         for(int i = 0 ; i < receiverState.Actor().QueueCapacity(); i++)
         {

@@ -2,13 +2,16 @@
 <!DOCTYPE properties SYSTEM "http://java.sun.com/dtd/properties.dtd">
 <properties>
 <comment/>
-<entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_MODE_FLAG">AllClassesMode</entry>
+<entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_MODE_FLAG">SelectedMethodsMode</entry>
+<entry key="SINGLE_FEATURE">false</entry>
 <entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_SelectedClassesMode_SELECTION_FLAG">HPalang.LTSGeneration.SOSRules.TierOne.LowPriorityMessageTakeRuleTest,*, </entry>
-<entry key="ACTIVATED_FEATURES">#org.netbeans.modules.profiler.v2.features.MethodsFeature@</entry>
-<entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_SelectedMethodsMode_SELECTION_FLAG">Builders.GlobalRunTimeStateBuilder,Build,()LHPalang/LTSGeneration/RunTimeStates/GlobalRunTimeState; </entry>
+<entry key="ACTIVATED_FEATURES">#org.netbeans.modules.profiler.v2.features.MethodsFeature@#org.netbeans.modules.profiler.v2.features.MonitorFeature@</entry>
+<entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_SelectedMethodsMode_SELECTION_FLAG">Builders.GlobalRunTimeStateBuilder,Build,()LHPalang/LTSGeneration/RunTimeStates/GlobalRunTimeState; HPalang.LTSGeneration.LabeledTransitionSystem,GetOutTransitionsFor,(LHPalang/LTSGeneration/RunTimeStates/GlobalRunTimeState;)Ljava/util/List; </entry>
 <entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_SETTINGS_FLAG">true</entry>
+<entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_MODE_FLAG">SelectedClassesMode</entry>
+<entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_SelectedClassesMode_SELECTION_FLAG">java.util.ArrayList$ListItr,*, java.util.LinkedList$Node,*, </entry>
 <entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_SelectedClassesMode_OUTGOING_CALLS_FLAG">10</entry>
+<entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_SETTINGS_FLAG">true</entry>
 <entry key="PROFILING_POINTS">false</entry>
-<entry key="org.netbeans.modules.profiler.v2.features.MonitorFeature_UI_THCL_GRAPH_FLAG">false</entry>
-<entry key="org.netbeans.modules.profiler.v2.features.MonitorFeature_UI_MEM_GRAPH_FLAG">false</entry>
+<entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_SelectedClassesMode_LIMIT_ALLOCATIONS_FLAG">10</entry>
 </properties>

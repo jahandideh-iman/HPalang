@@ -79,8 +79,8 @@ public class BrakeByWireModelSimple
 
         definition.SetMainBlock(new MainBlock());
 
-        SetNetworkPriority(global_brake_controller, Global_Brake_Controller__wheel_rpm_FR_port, 340);
-        SetNetworkPriority(global_brake_controller, Global_Brake_Controller__control_handler, 603);
+        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__wheel_rpm_FR_port, 340);
+        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__control_handler, 603);
         
         
         return definition;

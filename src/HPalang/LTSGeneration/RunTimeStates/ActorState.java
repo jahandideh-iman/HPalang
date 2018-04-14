@@ -57,7 +57,4 @@ public abstract class ActorState<T extends ActorState> extends  CompositeStateT<
         return this.isSuspended == other.IsSuspended() &&
                 this.actor.equals(other.Actor());
     }
-    
-    
-    
 }

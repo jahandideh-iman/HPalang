@@ -227,6 +227,15 @@ public class StatementToLocationConvertor
         if(operator instanceof GreaterEqualOperator)
             return new LesserOperator();
         
+        //!!!!!!!!!!!!!!!!!!!!!!! WARNING!!!!!!!!!!!!!!!!!!
+        //These are temporary. Remove or fix them.
+        if(operator instanceof LogicalOrOperator)
+            return new LogicalAndOperator();
+        
+        if(operator instanceof EqualityOperator)
+            return new EqualityOperator();
+        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
         throw new RuntimeException(String.format("Operator '%s' is not supported yet.", operator.getClass().toString()));
     }
 }

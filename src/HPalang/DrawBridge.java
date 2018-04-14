@@ -104,7 +104,7 @@ public class DrawBridge
         MainBlock main = new MainBlock();
         
         main.AddSendStatement(
-                CreateModeChangeRequest(
+                CreateModeChangeSendStatement(
                         clockType.FindMode(Clock__on_mode),
                         new DirectActorLocator(carDispatcherClock)));
         
@@ -204,7 +204,7 @@ public class DrawBridge
         enqueueCar.AddStatement(new IfStatement(
                         CreateEqualityExpression(new VariableExpression(bridgeStatus), new ConstantDiscreteExpression(0)), 
                         Statement.StatementsFrom(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(1)),
-                                CreateModeChangeRequest(Draw_Bridge__lowering_mode, drawBridge)),
+                                CreateModeChangeSendStatement(Draw_Bridge__lowering_mode, drawBridge)),
                         Statement.EmptyStatements()
                         
                 )
@@ -216,8 +216,8 @@ public class DrawBridge
         bridgeLowred.AddStatement(new IfStatement(
                         CreateLesserEqualExpression(new VariableExpression(cars), new ConstantContinuousExpression(0)), 
                         Statement.StatementsFrom(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(1)),
-                                CreateModeChangeRequest(Draw_Bridge__raising_mode, drawBridge)),
-                        Statement.StatementsFrom(CreateModeChangeRequest(Clock__on_mode, clock))));
+                                CreateModeChangeSendStatement(Draw_Bridge__raising_mode, drawBridge)),
+                        Statement.StatementsFrom(CreateModeChangeSendStatement(Clock__on_mode, clock))));
         
         MessageHandler bridgeRaised = DBCType.FindMessageHandler(DBC__bridge_raised_handler);
         
@@ -225,7 +225,7 @@ public class DrawBridge
         bridgeRaised.AddStatement(new IfStatement(
                         CreateGreaterExpression(new VariableExpression(cars), new ConstantContinuousExpression(0)), 
                         Statement.StatementsFrom(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(1)),
-                                CreateModeChangeRequest(Draw_Bridge__lowering_mode, drawBridge)
+                                CreateModeChangeSendStatement(Draw_Bridge__lowering_mode, drawBridge)
                         ),
                         Statement.StatementsFrom()
                 )
@@ -237,11 +237,11 @@ public class DrawBridge
         carPassedHandler.AddStatement(new IfStatement(
                         CreateLesserEqualExpression(new VariableExpression(cars), new ConstantDiscreteExpression(0)), 
                         Statement.StatementsFrom(new AssignmentStatement(bridgeStatus, new ConstantDiscreteExpression(1)),
-                                CreateModeChangeRequest(Draw_Bridge__raising_mode, drawBridge),
+                                CreateModeChangeSendStatement(Draw_Bridge__raising_mode, drawBridge),
                                 CreateDeactiveModeRequest(drawBridge)
                         ), 
                         Statement.StatementsFrom(
-                                CreateModeChangeRequest(Clock__on_mode, clock))
+                                CreateModeChangeSendStatement(Clock__on_mode, clock))
                 )
         );
 

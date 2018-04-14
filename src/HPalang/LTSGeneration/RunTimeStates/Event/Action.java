@@ -14,4 +14,6 @@ import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 public interface Action
 {
     void Execute(GlobalRunTimeState globalState);
+
+    public boolean IsDeadlock(GlobalRunTimeState globalState);
 }

@@ -26,7 +26,7 @@ public class ModeDefinitionToGlobalStateConvertor
     public GlobalRunTimeState Convert(ModelDefinition model)
     {
         
-        GlobalRunTimeState globalState = CreateEmptyGlobalState();
+        GlobalRunTimeState globalState = CreateEmptyGlobalState(model.CANSpecification());
         
         FillDiscreteState(globalState, model.SoftwareActors());
         FillContinuousState(globalState, model.PhysicalActors());
@@ -46,9 +46,11 @@ public class ModeDefinitionToGlobalStateConvertor
             ActorState actorState =  globalState.FindActorState(actor);
             
             actorState.MessageQueueState().Messages().Enqueue(
-                    new MessagePacket(actor, actor, message, sendStatement.Arguments()));
+                    new MessagePacket(actor, actor, message, sendStatement.Arguments(),0));
             
         }
+        
+        globalState.NetworkState().SetIdle(true);
         
         return globalState;
     }

@@ -33,5 +33,11 @@ public class EmptyAction extends Equalitable<EmptyAction> implements Action
     {
         return 0;
     }
+
+    @Override
+    public boolean IsDeadlock(GlobalRunTimeState State)
+    {
+        return false;
+    }
     
 }

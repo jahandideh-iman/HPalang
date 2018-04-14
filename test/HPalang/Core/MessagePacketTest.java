@@ -25,10 +25,11 @@ public class MessagePacketTest
         SoftwareActor receiver = CoreUtility.CreateSofwareActor("receiver");
         Message message = new EmptyMessage("Message");
         MessageArguments arguments = new MessageArguments();
+        int priority = 2;
 
         
-        MessagePacket packet1 = new MessagePacket(sender, receiver, message, arguments);
-        MessagePacket packet2 = new MessagePacket(sender, receiver, message, arguments);
+        MessagePacket packet1 = new MessagePacket(sender, receiver, message, arguments, priority);
+        MessagePacket packet2 = new MessagePacket(sender, receiver, message, arguments, priority);
         
         assertThat(packet1, equalTo(packet2));
     }

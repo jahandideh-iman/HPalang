@@ -70,7 +70,7 @@ public class PriorityBasedMessageTakeRule extends SoftwareActorLevelRule
         MessagePacket highetPriortyPacket = packets.Head();
         
         for(MessagePacket packet : packets)
-            if(packet.Message().Priority() > highetPriortyPacket.Message().Priority())
+            if(packet.Priority() < highetPriortyPacket.Priority())
                 highetPriortyPacket = packet;
         
         packets.Remove(highetPriortyPacket);

@@ -31,7 +31,7 @@ public class HPalangModelData
     private final Map<ActorType, ActorTypeModelData> actorTypesData = new HashMap<>();
     
     private final Map<MessageHandler, Integer> messageHandlersGUID = new HashMap<>();
-    
+     
     
     public HPalangModelData(ModelDefinition hpalangModel)
     {

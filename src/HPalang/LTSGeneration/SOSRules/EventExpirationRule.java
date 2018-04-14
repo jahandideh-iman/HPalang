@@ -22,6 +22,7 @@ import static HPalang.LTSGeneration.SOSRules.Utilities.HasSoftwareActions;
 import static HPalang.LTSGeneration.SOSRules.Utilities.NoSoftwareActions;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.LTSGeneration.TransitionCollector;
+import HPalang.LTSGeneration.Utilities.CreationUtility;
 import java.util.Collection;
 
 /**
@@ -41,13 +42,20 @@ public class EventExpirationRule implements SOSRule
         
         for(Event event : events)
         {
-            GlobalRunTimeState newGlobalState = globalStateInfo.State().DeepCopy();
-            EventsState newEventsState = newGlobalState.EventsState();
-            
-            newEventsState.UnregisterEvent(event);
-            event.Action().Execute(newGlobalState);
-            
-            generator.AddTransition(CreateEventTransitionLabel(event), newGlobalState); 
+            if(event.Action().IsDeadlock(globalStateInfo.State()))
+            {
+                generator.AddTransition(CreationUtility.CreateDeadlockTransition(), CreationUtility.CreateDeadlockState());
+            }
+            else
+            {
+                GlobalRunTimeState newGlobalState = globalStateInfo.State().DeepCopy();
+                EventsState newEventsState = newGlobalState.EventsState();
+
+                newEventsState.UnregisterEvent(event);
+                event.Action().Execute(newGlobalState);
+
+                generator.AddTransition(CreateEventTransitionLabel(event), newGlobalState); 
+            }
         }
     }
     

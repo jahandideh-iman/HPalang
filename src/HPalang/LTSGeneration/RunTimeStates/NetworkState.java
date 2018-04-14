@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.Core.CANSpecification;
 import HPalang.Core.Message;
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.CompositeStateT;
@@ -21,16 +22,18 @@ public class NetworkState extends CompositeStateT<NetworkState>
     private final int bufferLimit;
     private final List<MessagePacket> buffer = new LinkedList<>();
     private boolean isIdle;
+    private final CANSpecification canSpecifiation;
 
-    public NetworkState(int bufferLimit)
+    public NetworkState(CANSpecification canSpecifiation, int bufferLimit)
     {
         this.bufferLimit = bufferLimit;
+        this.canSpecifiation = canSpecifiation;
     }
     
     @Override
     protected NetworkState NewInstance()
     {
-        return new NetworkState(bufferLimit);
+        return new NetworkState(canSpecifiation,bufferLimit);
     }
 
     @Override
@@ -80,6 +83,11 @@ public class NetworkState extends CompositeStateT<NetworkState>
             if(packet.Message().equals(message))
                 return true;
         return false;
+    }
+
+    public CANSpecification CANSpecification()
+    {
+        return canSpecifiation;
     }
 
 }

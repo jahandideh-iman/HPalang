@@ -19,21 +19,23 @@ public class MessagePacket extends Equalitable<MessagePacket>
     private final Actor receiver;
     private final Message message;
     private final MessageArguments arguments;
+    private final int priority;
     
     // TODO: Remove this crap.
     private final List<RealVariable> pooledVaraibles;
 
-    public MessagePacket(Actor sender, Actor receiver, Message message, MessageArguments arguments)
+    public MessagePacket(Actor sender, Actor receiver, Message message, MessageArguments arguments, int priority)
     {
-        this(sender,receiver,message,arguments, Collections.EMPTY_LIST);
+        this(sender,receiver,message,arguments, priority, Collections.EMPTY_LIST);
     }
 
-    public MessagePacket(Actor sender, Actor receiver, Message message, MessageArguments arguments, List<RealVariable> pooledVariables)
+    public MessagePacket(Actor sender, Actor receiver, Message message, MessageArguments arguments, int priority, List<RealVariable> pooledVariables)
     {
         this.sender = sender;
         this.receiver = receiver;
         this.message = message;
         this.arguments = arguments;
+        this.priority = priority;
         this.pooledVaraibles = pooledVariables;
     }
     
@@ -69,6 +71,7 @@ public class MessagePacket extends Equalitable<MessagePacket>
                 receiver.equals(other.receiver) &&
                 message.equals(other.message) &&
                 arguments.equals(other.arguments) &&
+                priority == other.priority &&
                 pooledVaraibles.equals(other.pooledVaraibles);
                 
     }
@@ -78,5 +81,10 @@ public class MessagePacket extends Equalitable<MessagePacket>
     {
         return 0;
     }   
+
+    public int Priority()
+    {
+        return priority;
+    }
    
 }

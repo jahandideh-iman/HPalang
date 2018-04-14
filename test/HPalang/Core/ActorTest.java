@@ -28,18 +28,6 @@ public class ActorTest
         }
     }
     
-    @Test
-    public void HasTheAddedNetworkDelay()
-    {
-        Actor sender = new Actor("sender",null);
-        Actor receiver = new Actor("receiver",null);
-        
-        Message message = new EmptyMessage();
-        
-        sender.SetNetworkDelay(receiver, message, 2f);
-        
-        assertThat(sender.NetworkDelayFor(message, receiver), equalTo(2f));
-    }
     
     @Test
     public void HasTheBoundedInstances()

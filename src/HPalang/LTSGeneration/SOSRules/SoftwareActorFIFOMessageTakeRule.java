@@ -25,7 +25,7 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
-public class FIFOMessageTakeRule extends SoftwareActorLevelRule
+public class SoftwareActorFIFOMessageTakeRule extends SoftwareActorLevelRule
 {
 
     @Override

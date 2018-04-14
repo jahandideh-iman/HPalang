@@ -53,12 +53,6 @@ public class FakeMessage extends Equalitable<FakeMessage> implements Message
     {
         return other.statements.equals(this.statements);
     }
-    
-    @Override
-    public int Priority()
-    {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
 
     @Override
     protected int InternalHashCode()

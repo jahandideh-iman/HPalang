@@ -18,7 +18,7 @@ public class CompositioanlConvertionMain
 {
     public static void main(String[] args) 
     {
-        ModelDefinition definition = HRToHAExample2.Create();
+        ModelDefinition definition = BrakeByWireModelTwoWheelAbstractedPhysics.Create();
         
         HPalangToCompositionalSXConvertor spaceExConvertor = new HPalangToCompositionalSXConvertor();
         SpaceExToXMLConvertor xmlConvertor = new SpaceExToXMLConvertor();

@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration.Builders;
 
+import HPalang.Core.CANSpecification;
 import HPalang.Core.NullRealVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
 import HPalang.LTSGeneration.RunTimeStates.DiscreteState;
@@ -23,6 +24,8 @@ import java.util.List;
 public class GlobalRunTimeStateBuilder
 {
     private final List<SoftwareActorState> softwareActorStates = new LinkedList<>();
+    
+    private CANSpecification canSpecification = CreateEmptyCANSpecification();
  
     public GlobalRunTimeStateBuilder AddSoftwareActorState(SoftwareActorState SoftwareActorState)
     {
@@ -42,13 +45,24 @@ public class GlobalRunTimeStateBuilder
         globalState.AddSubstate(discreteState);
         globalState.AddSubstate(continuosState);
         globalState.AddSubstate(new VariablePoolState(new NullRealVariablePool()));
-        globalState.AddSubstate(new NetworkState(10));
+        globalState.AddSubstate(new NetworkState(canSpecification, 10));
         globalState.AddSubstate(eventState);
         
         for(SoftwareActorState state : softwareActorStates)
             discreteState.AddSoftwareActorState(state);
 
         return globalState;
+    }
+    
+    private CANSpecification CreateEmptyCANSpecification()
+    {
+        return new CANSpecification();
+    }
+
+    public GlobalRunTimeStateBuilder With(CANSpecification canSpecification)
+    {
+        this.canSpecification = canSpecification;
+        return this;
     }
 
 }

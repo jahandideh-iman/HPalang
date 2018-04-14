@@ -24,8 +24,6 @@ public class Actor<T extends ActorType>
     
     private final Map<Actor, CommunicationType> communicationTypes = new HashMap<>();
     
-    private final Map<Pair<Actor, Message>, Float > networkDelays = new HashMap<>();
-    private final Map<MessageHandler, Integer> messageHandlersPriority = new HashMap<>();
     private final Map<InstanceParameter, Actor> instanceArguments = new HashMap<>();
     private final Map<DelegationParameter, Delegation> delegationArguments = new HashMap<>();
        
@@ -93,24 +91,5 @@ public class Actor<T extends ActorType>
         if(communicationTypes.containsKey(actor))
             return communicationTypes.get(actor);
         return CommunicationType.Invalid;
-    }
-    
-    public void SetNetworkDelay(Actor receiver, Message message, float delay)
-    {
-        Pair<Actor, Message> pair = new Pair<>(receiver,message);
-        
-        networkDelays.put(pair, delay);
-    }
-    
-    public float NetworkDelayFor(Message message, Actor receiver)
-    {
-        Pair<Actor, Message> pair = new Pair<>(receiver,message);
-        return networkDelays.get(pair);
-    }
-
-    public void SetMessageHandlerPriority(MessageHandler handler, int priority)
-    {
-        assert (type.FindMessageHandler(handler.GetID()) != null);
-        messageHandlersPriority.put(handler, priority);
     }
 }

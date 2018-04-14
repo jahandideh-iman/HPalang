@@ -216,11 +216,11 @@ public class VendingMachine
         
         
         prepareTea.AddStatement(CreateSendStatement(heater, Heater__target_temp_port, new ConstantContinuousExpression(100)));
-        prepareTea.AddStatement(CreateModeChangeRequest("On", heater));
+        prepareTea.AddStatement(CreateModeChangeSendStatement("On", heater));
         prepareTea.AddStatement(new AssignmentStatement(orderType, new ConstantDiscreteExpression(1)));
         
         prepareCoffee.AddStatement(CreateSendStatement(heater, Heater__target_temp_port, new ConstantContinuousExpression(90)));
-        prepareCoffee.AddStatement(CreateModeChangeRequest("On", heater));
+        prepareCoffee.AddStatement(CreateModeChangeSendStatement("On", heater));
         prepareCoffee.AddStatement(new AssignmentStatement(orderType, new ConstantDiscreteExpression(2)));
         
         drinkHeated.AddStatement(
@@ -229,7 +229,7 @@ public class VendingMachine
                         Statement.StatementsFrom(CreateSendStatement(pourer, Pourer__target_volume_port, new ConstantContinuousExpression(30))), 
                         Statement.StatementsFrom(CreateSendStatement(pourer, Pourer__target_volume_port, new ConstantContinuousExpression(20)))));
         
-        drinkHeated.AddStatement(CreateModeChangeRequest("On", pourer));
+        drinkHeated.AddStatement(CreateModeChangeSendStatement("On", pourer));
         
         cupFilled.AddStatement(CreateSendStatement(user, User__drink_ready_handler));   
     }

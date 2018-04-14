@@ -5,19 +5,14 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
-import Builders.SoftwareActorBuilder;
-import HPalang.LTSGeneration.Builders.SoftwareActorStateBuilder;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
 import HPalang.Core.SoftwareActor;
-import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.FalseConst;
 import HPalang.Core.DiscreteExpressions.TrueConst;
 import HPalang.Core.Statement;
 import HPalang.Core.Statements.IfStatement;
 import HPalang.LTSGeneration.Labels.Guard;
-import HPalang.LTSGeneration.Labels.Reset;
-import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
@@ -25,8 +20,6 @@ import static HPalang.LTSGeneration.SOSRules.Utilities.PartivalValuation;
 import Mocks.EmptyExpression;
 import Mocks.EmptyStatement;
 import Mocks.UncomputableExpression;
-import static org.hamcrest.CoreMatchers.is;
-import org.hamcrest.core.IsEqual;
 import org.junit.Test;
 import static org.junit.Assert.*;
 import static TestUtilities.CoreUtility.*;
@@ -90,7 +83,6 @@ public class IfStatementRuleTest extends SOSRuleTestFixture
         EnqueueStatement(ifStatement, actorState); 
         
         ApplyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         GlobalRunTimeState expectedGlobalState = globalState.DeepCopy();
         DequeueOneStatemenet(actor, expectedGlobalState);

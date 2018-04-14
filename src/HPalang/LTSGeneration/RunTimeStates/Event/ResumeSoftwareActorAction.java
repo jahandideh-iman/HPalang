@@ -38,5 +38,11 @@ public class ResumeSoftwareActorAction extends Equalitable<ResumeSoftwareActorAc
     {
         globalState.DiscreteState().FindActorState(actor).SetSuspended(false);
     }
+
+    @Override
+    public boolean IsDeadlock(GlobalRunTimeState State)
+    {
+        return false;
+    }
     
 }

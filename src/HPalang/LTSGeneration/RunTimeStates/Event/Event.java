@@ -7,6 +7,7 @@ package HPalang.LTSGeneration.RunTimeStates.Event;
 
 import HPalang.Core.Equalitable;
 import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 
 /**
  *
@@ -54,5 +55,4 @@ public class Event extends Equalitable<Event>
     {
         return Float.hashCode(delay) + timer.hashCode() + action.hashCode();
     }
-
 }

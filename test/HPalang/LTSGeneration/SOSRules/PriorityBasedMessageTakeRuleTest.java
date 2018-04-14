@@ -45,10 +45,14 @@ public class PriorityBasedMessageTakeRuleTest extends SOSRuleTestFixture
     @Test @Ignore
     public void TakesTheHighestPriorityMessageIfIsNotSuspendedAndExecutionQueueIsEmpty()
     {
-        Message lowPriotiyMessage = new EmptyMessage("lowPriority",0);
-        Message highPriorityMessage = new EmptyMessage("highPriority",1);
+        Message lowPriotiyMessage = new EmptyMessage("lowPriority");
+        Message highPriorityMessage = new EmptyMessage("highPriority");
         
-        SoftwareActorState actorState =  CreateBlankActorStateWith(lowPriotiyMessage,highPriorityMessage);      
+        SoftwareActorState actorState = CreateSoftwareActorState("actor");
+        actorState.SetSuspended(false);
+        actorState.MessageQueueState().Messages().Enqueue(SelfMessagePacket(actorState.Actor(), lowPriotiyMessage, 1));
+        actorState.MessageQueueState().Messages().Enqueue(SelfMessagePacket(actorState.Actor(), highPriorityMessage, 2));
+        
         globalState.DiscreteState().AddSoftwareActorState(actorState);
         
         generatedLTS = ltsGenerator.Generate(globalState);
@@ -86,24 +90,7 @@ public class PriorityBasedMessageTakeRuleTest extends SOSRuleTestFixture
         return expectedGlobalState;
     }
     
-     private SoftwareActorState CreateBlankActorStateWith(Message ... messages)
-    {
-        SoftwareActorState actorState =  TestUtilities.CoreUtility.CreateSoftwareActorState("actor");
-        actorState.SetSuspended(false);
-        actorState.ExecutionQueueState().Statements().Clear();
-        
-        for(Message message : messages)
-        {
-        MessagePacket packet = new MessagePacket(
-                actorState.SActor(),
-                actorState.SActor(),
-                message, 
-                new MessageArguments());
-        
-        actorState.MessageQueueState().Messages().Enqueue(packet);
-        }
-        return actorState;
-    }
+
      
      private MessagePacket FindFirstPacketForMessage(Queue<MessagePacket> packets, Message message)
      {

@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration.Utilities;
 
 import HPalang.Core.Actor;
+import HPalang.Core.CANSpecification;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.Builders.GlobalRunTimeStateBuilder;
 import HPalang.LTSGeneration.Builders.SoftwareActorStateBuilder;
@@ -28,12 +29,18 @@ public class CreationUtility
         return builder.Build();
     }
     
+    static public GlobalRunTimeState CreateEmptyGlobalState(CANSpecification canSpecification)
+    {
+        GlobalRunTimeStateBuilder builder = new GlobalRunTimeStateBuilder().With(canSpecification);
+        
+        return builder.Build();
+    }
+    
     static public GlobalRunTimeState CreateDeadlockState()
     {
         GlobalRunTimeState globalState = CreateEmptyGlobalState();
         
         globalState.AddSubstate(new DeadlockState());
-        
         return globalState;
     }
     

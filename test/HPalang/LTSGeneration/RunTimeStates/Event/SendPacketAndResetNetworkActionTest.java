@@ -61,22 +61,30 @@ public class SendPacketAndResetNetworkActionTest
     }
     
     @Test 
-    public void DoesNotSendThePacketToDestinationWhenMessageQueueIsFull()
-    {
+    public void IsNotDeadlockWhenMessageQueueIsNotFull()
+    {      
+        AssertActorQueueIsNotFull(receiverState);
         
-        FillActorsMessageQueue(receiverState);
-        
-        action.Execute(globalState);
-        
-        SoftwareActorState expectedState = FindActorState(receiverState.SActor(), globalState);
-        
-        assertThat(expectedState.MessageQueueState().Messages(), not(hasItem(packet)));
+        assertThat(action.IsDeadlock(globalState), is(false));
     }
     
-    public void FillActorsMessageQueue(ActorState actorState)
+    @Test 
+    public void IsDeadlockWhenMessageQueueIsFull()
+    {      
+        FillUpActorsMessageQueue(receiverState);
+        
+        assertThat(action.IsDeadlock(globalState), is(true));
+    }
+    
+    public void FillUpActorsMessageQueue(ActorState actorState)
     {
         
         while(actorState.MessageQueueState().Messages().Size() < actorState.Actor().QueueCapacity())
             actorState.MessageQueueState().Messages().Enqueue(EmptySelfMessagePacketFor(actorState.Actor(), "Temp"));
+    }
+
+    private void AssertActorQueueIsNotFull(SoftwareActorState actorState)
+    {
+        assertTrue(actorState.MessageQueueState().Messages().Size() < actorState.Actor().QueueCapacity());
     }
 }

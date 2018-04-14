@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Actor;
+import HPalang.Core.CANSpecification;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
@@ -113,11 +114,15 @@ public abstract class MessageSendRule extends ActorLevelRule
                         pool
                 );
         
+        Message message = sendStatement.MessageLocator().Locate(actorState.Actor());
+        int prioriy = MessagePriorityFor(receiverState.Actor(),message, globalState.NetworkState().CANSpecification());
+        
         MessagePacket packet = new MessagePacket(
                 senderState.Actor(), 
                 receiverState.Actor(), 
-                sendStatement.MessageLocator().Locate(actorState.Actor()), 
+                message, 
                 maximalEvaluatoionResult.messageArguments,
+                prioriy,
                 maximalEvaluatoionResult.pooledVariables
         );
         
@@ -186,6 +191,14 @@ public abstract class MessageSendRule extends ActorLevelRule
         //System.out.println("Number of needed:" + numberOfNeededVariables);
         return globalState.VariablePoolState().Pool().HasAvailableVariable(numberOfNeededVariables);
                 
+    }
+
+    
+    private int MessagePriorityFor(Actor actor, Message message, CANSpecification canSpecification)
+    {
+        if(canSpecification.HasNetworkPriorityFor(actor, message))
+            return canSpecification.NetworkPriorityFor(actor, message);
+        return 0;
     }
 
 }

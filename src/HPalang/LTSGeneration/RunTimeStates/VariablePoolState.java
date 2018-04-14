@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
-import HPalang.Core.NullRealVariablePool;
 import HPalang.Core.RealVariablePool;
 import HPalang.LTSGeneration.SimpleState;
 

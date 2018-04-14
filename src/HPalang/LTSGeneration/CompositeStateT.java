@@ -7,6 +7,7 @@ package HPalang.LTSGeneration;
 
 import HPalang.Core.Equalitable;
 import HPalang.LTSGeneration.State;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
  */
 public abstract class CompositeStateT<T extends CompositeStateT> extends Equalitable<T> implements CompositeState
 {
-    private final List<State> substates = new LinkedList<>();
+    private List<State> substates = new LinkedList<>();
         
     @Override
     public CompositeState AddSubstate(State substate)
@@ -72,8 +73,14 @@ public abstract class CompositeStateT<T extends CompositeStateT> extends Equalit
     
     private void CloneSubStates(T copy)
     {
+        copy.InitSubstatesSize(copy.Substates().size());
         for(State substate : substates)
             copy.AddSubstate(substate.DeepCopy());
+    }
+    
+    protected void InitSubstatesSize(int size)
+    {
+        substates = new ArrayList<>(size);
     }
     
     abstract protected void CloneData(T copy);

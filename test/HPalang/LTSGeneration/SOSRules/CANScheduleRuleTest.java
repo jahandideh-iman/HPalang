@@ -40,8 +40,8 @@ public class CANScheduleRuleTest extends SOSRuleTestFixture
     MessagePacket lowPriorityPacket;
     MessagePacket highPriorityPacket;
     
-    int lowPriority = 0;
-    int highPriority = 1;
+    int lowPriority = 1;
+    int highPriority = 0;
     
     float lowPriorityDelay = 1f;
     float highPriorityDelay = 2f;
@@ -51,14 +51,16 @@ public class CANScheduleRuleTest extends SOSRuleTestFixture
     {
         rule = new CANScheduleRule();
         
-        lowPriorityMessage = new EmptyMessage("lowPriority", lowPriority);
-        highPriorityMessage = new EmptyMessage("highPriority", highPriority);
         
-        lowPriorityPacket = MessagePacket(sender, receiver, lowPriorityMessage, MessageArguments.Empty());
-        highPriorityPacket = MessagePacket(sender, receiver, highPriorityMessage, MessageArguments.Empty());
+        lowPriorityMessage = new EmptyMessage("lowPriority");
+        highPriorityMessage = new EmptyMessage("highPriority");
+        
+        lowPriorityPacket = MessagePacket(sender, receiver, lowPriorityMessage, MessageArguments.Empty(), lowPriority);
+        highPriorityPacket = MessagePacket(sender, receiver, highPriorityMessage, MessageArguments.Empty(), highPriority);
 
-        sender.SetNetworkDelay(receiver,lowPriorityMessage, lowPriorityDelay);
-        sender.SetNetworkDelay(receiver,highPriorityMessage, highPriorityDelay);
+        globalState.NetworkState().CANSpecification().SetNetworkDelay(sender, receiver, lowPriorityMessage, lowPriorityDelay);
+        globalState.NetworkState().CANSpecification().SetNetworkDelay(sender, receiver, highPriorityMessage, highPriorityDelay);
+
         
         PutMessagePacketInNetworkState(lowPriorityPacket, globalState);
         PutMessagePacketInNetworkState(highPriorityPacket, globalState);
@@ -109,7 +111,6 @@ public class CANScheduleRuleTest extends SOSRuleTestFixture
     public void RegistersTheHighestPriorityMessageInTheEventsState()
     {
         ApplyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
         EventsState generatedEventState = CollectedGlobalState().EventsState();
         
