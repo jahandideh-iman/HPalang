@@ -6,7 +6,6 @@
 package HPalang.LTSGeneration;
 
 import HPalang.Core.Equalitable;
-import HPalang.LTSGeneration.State;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedList;

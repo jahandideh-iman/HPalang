@@ -5,6 +5,10 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.TransitionSystem.LTSState;
+import HPalang.Core.TransitionSystem.Label;
+import HPalang.Core.TransitionSystem.Transition;
+import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import Mocks.LabelMock;
@@ -36,7 +40,7 @@ public class LabeledTransitionSystemTest
     {
         GlobalRunTimeState state = new GlobalRunTimeState();
         
-        transitionSystem.AddState(state);
+        transitionSystem.TryAddState(state);
 
         assertThat(transitionSystem.States().size(),is(1));
         assertTrue(transitionSystem.HasState(state));
@@ -47,8 +51,8 @@ public class LabeledTransitionSystemTest
     {
         GlobalRunTimeState state = new GlobalRunTimeState();
         
-        transitionSystem.AddState(state);
-        transitionSystem.AddState(state.DeepCopy());
+        transitionSystem.TryAddState(state);
+        transitionSystem.TryAddState(state.DeepCopy());
         
         assertThat(transitionSystem.States().size(),is(1));
     }
@@ -56,12 +60,12 @@ public class LabeledTransitionSystemTest
     @Test
     public void HasTheAddedTransition()
     {
-        GlobalRunTimeState originState = new GlobalRunTimeState();
+        GlobalRunTimeState originGS = new GlobalRunTimeState();
         Label labled = new SoftwareLabel();
-        GlobalRunTimeState destinatioState = new GlobalRunTimeState();
+        GlobalRunTimeState destinationGS = new GlobalRunTimeState();
         
-        transitionSystem.AddState(originState);
-        transitionSystem.AddState(destinatioState);
+        LTSState<GlobalRunTimeState> originState = transitionSystem.TryAddState(originGS);
+        LTSState<GlobalRunTimeState> destinatioState = transitionSystem.TryAddState(destinationGS);
         
         transitionSystem.AddTransition(originState, labled, destinatioState);
         
@@ -71,12 +75,12 @@ public class LabeledTransitionSystemTest
         @Test
     public void DoesNotAddDuplicateTransition()
     {
-        GlobalRunTimeState originState = new GlobalRunTimeState();
+        GlobalRunTimeState originGS = new GlobalRunTimeState();
         Label label = new SoftwareLabel();
-        GlobalRunTimeState destinatioState = new GlobalRunTimeState();
+        GlobalRunTimeState destinationGS = new GlobalRunTimeState();
         
-        transitionSystem.AddState(originState);
-        transitionSystem.AddState(destinatioState);
+        LTSState<GlobalRunTimeState> originState = transitionSystem.TryAddState(originGS);
+        LTSState<GlobalRunTimeState> destinatioState = transitionSystem.TryAddState(destinationGS);
         
         transitionSystem.AddTransition(originState, label, destinatioState);
         transitionSystem.AddTransition(originState, label, destinatioState);
@@ -87,18 +91,15 @@ public class LabeledTransitionSystemTest
     @Test
     public void ComputesOutTransitionsCorrectly()
     {
-        GlobalRunTimeState gs1 = CreateUniqueGlobalState("gs1");      
-        GlobalRunTimeState gs2 = CreateUniqueGlobalState("gs2");
-        GlobalRunTimeState gs3 = CreateUniqueGlobalState("gs3");
+        LTSState<GlobalRunTimeState> gs1 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs1"));      
+        LTSState<GlobalRunTimeState> gs2 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs2"));
+        LTSState<GlobalRunTimeState> gs3 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs3"));
 
-        transitionSystem.AddState(gs1);
-        transitionSystem.AddState(gs2);
-        transitionSystem.AddState(gs3);
         
         transitionSystem.AddTransition(gs1, CreateLabel("1-2"), gs2);   
         transitionSystem.AddTransition(gs1, CreateLabel("1-3"), gs3);
 
-        List<Transition> outs = transitionSystem.GetOutTransitionsFor(gs1);
+        List<Transition<GlobalRunTimeState>> outs = gs1.OutTransitions();
         
         assertThat(outs.size(), equalTo(2));
         assertThat(outs, hasItem(equalTo(new Transition(gs1,  CreateLabel("1-2"), gs2))));
@@ -108,18 +109,18 @@ public class LabeledTransitionSystemTest
     @Test
     public void ComputesInTransitionsCorrectly()
     {
-        GlobalRunTimeState gs1 = CreateUniqueGlobalState("gs1");      
-        GlobalRunTimeState gs2 = CreateUniqueGlobalState("gs2");
-        GlobalRunTimeState gs3 = CreateUniqueGlobalState("gs3");
+        LTSState<GlobalRunTimeState> gs1 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs1"));      
+        LTSState<GlobalRunTimeState> gs2 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs2"));
+        LTSState<GlobalRunTimeState> gs3 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs3"));
 
-        transitionSystem.AddState(gs1);
-        transitionSystem.AddState(gs2);
-        transitionSystem.AddState(gs3);
+        transitionSystem.TryAddState(gs1);
+        transitionSystem.TryAddState(gs2);
+        transitionSystem.TryAddState(gs3);
         
         transitionSystem.AddTransition(gs2, CreateLabel("2-1"), gs1);   
         transitionSystem.AddTransition(gs3, CreateLabel("3-1"), gs1);
 
-        List<Transition> ins = transitionSystem.GetInTransitionsFor(gs1);
+        List<Transition<GlobalRunTimeState>> ins = gs1.InTransitions();
         
         assertThat(ins.size(), equalTo(2));
         assertThat(ins, hasItem(equalTo(new Transition(gs2,  CreateLabel("2-1"), gs1))));

@@ -5,9 +5,9 @@
  */
 package HPalang.LTSGeneration.RunTimeStates;
 
+import HPalang.LTSGeneration.State;
 import HPalang.Core.PhysicalActor;
 import HPalang.LTSGeneration.CompositeStateT;
-import HPalang.LTSGeneration.State;
 import java.util.LinkedList;
 import java.util.List;
 

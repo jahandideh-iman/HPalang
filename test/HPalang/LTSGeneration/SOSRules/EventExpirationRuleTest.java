@@ -15,7 +15,7 @@ import HPalang.LTSGeneration.Labels.*;
 import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.StateInfo;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockState;
 import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockTransition;
 import Mocks.ActionMonitor;
@@ -79,7 +79,7 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         
         StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
                 WithState(globalState).
-                AddOutTransition(new Transition(globalState, new SoftwareLabel(), globalState)).
+                AddOutTransition(CreateTransition(globalState, new SoftwareLabel(), globalState)).
                 Build();
            
 
@@ -99,7 +99,7 @@ public class EventExpirationRuleTest extends SOSRuleTestFixture
         
         StateInfo stateInfoWithNetworkTransition = new StateInfoBuilder().
                 WithState(globalState).
-                AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
+                AddOutTransition(CreateTransition(globalState, new NetworkLabel(), globalState)).
                 Build();
         
         ApplyAndVerifyRuleOn(stateInfoWithNetworkTransition);

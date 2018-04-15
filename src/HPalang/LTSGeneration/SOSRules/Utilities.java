@@ -14,7 +14,7 @@ import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import java.util.Collection;
 import java.util.Queue;
 
@@ -24,11 +24,11 @@ import java.util.Queue;
  */
 public class Utilities
 {
-    public static boolean HasSoftwareActions(Collection<Transition> transitions)
+    public static boolean HasSoftwareActions(Collection<Transition<GlobalRunTimeState>> transitions)
     {
         return ! NoSoftwareActions(transitions);
     }
-    public static boolean NoSoftwareActions(Collection<Transition> transitions)
+    public static boolean NoSoftwareActions(Collection<Transition<GlobalRunTimeState>> transitions)
     {
         for(Transition tr : transitions)
             if(tr.GetLabel() instanceof SoftwareLabel)
@@ -36,12 +36,12 @@ public class Utilities
         return true;
     }
 
-    public static boolean HasNetworkActions(Collection<Transition> transitions)
+    public static boolean HasNetworkActions(Collection<Transition<GlobalRunTimeState>> transitions)
     {
         return ! NoNetworkActions(transitions);
     }
         
-    public static boolean NoNetworkActions(Collection<Transition> transitions)
+    public static boolean NoNetworkActions(Collection<Transition<GlobalRunTimeState>> transitions)
     {
         for(Transition tr : transitions)
             if(tr.GetLabel() instanceof NetworkLabel)

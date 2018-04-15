@@ -5,6 +5,7 @@
  */
 package HPalang.HybridAutomataGeneration;
 
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.StateInfo;
 
 /**
@@ -14,5 +15,5 @@ import HPalang.LTSGeneration.StateInfo;
 public interface SOSRule
 {
     public void TryApply(StateInfo globalStateInfo,  HybridAutomatonGenerator generator); 
-    public void TryApply(HPalang.LTSGeneration.Transition transition, HybridAutomatonGenerator generator);
+    public void TryApply(HPalang.Core.TransitionSystem.Transition<GlobalRunTimeState> transition, HybridAutomatonGenerator generator);
 }

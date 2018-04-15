@@ -5,15 +5,15 @@
  */
 package HPalang.Convertors;
 
-import HPalang.LTSGeneration.Label;
-import HPalang.LTSGeneration.LabeledTransitionSystem;
+import HPalang.Core.TransitionSystem.Label;
+import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.State;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 import static HPalang.Convertors.StringConversionUtilities.*;
+import HPalang.Core.TransitionSystem.LTSState;
 
 /**
  *
@@ -24,20 +24,20 @@ public class LTSToAUTConvertor
     private Map<GlobalRunTimeState, Integer> indexes;
     private StringBuilder output;
     
-    public String Convert(LabeledTransitionSystem lts)
+    public String Convert(LabeledTransitionSystem<GlobalRunTimeState> lts)
     {
         output = new StringBuilder();
         
         indexes = new HashMap<>();
         
-        indexes.put(lts.InitialState(), 0);
+        indexes.put(lts.InitialState().InnerState(), 0);
         
         int i =1;
-        for(GlobalRunTimeState state : lts.States())
+        for(LTSState<GlobalRunTimeState> state : lts.LTSStates())
         {
             if(state != lts.InitialState())
             {
-                indexes.put(state,i);
+                indexes.put(state.InnerState(),i);
                 i++;
             }
         }
@@ -49,13 +49,13 @@ public class LTSToAUTConvertor
         ));
         
         
-        for(Transition transition : lts.Transitions())
+        for(Transition<GlobalRunTimeState> transition : lts.Transitions())
         {
             ConcatLine(String.format(
                     "(%d, %s, %d)",
-                    IndexFor(transition.GetOrign()),
+                    IndexFor(transition.GetOrign().InnerState()),
                     LabelFor(transition.GetLabel()),
-                    IndexFor(transition.GetDestination())));
+                    IndexFor(transition.GetDestination().InnerState())));
         }
         
         

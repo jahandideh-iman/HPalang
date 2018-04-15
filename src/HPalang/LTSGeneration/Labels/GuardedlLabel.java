@@ -5,7 +5,7 @@
  */
 package HPalang.LTSGeneration.Labels;
 
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.Labels.Reset;
 import java.util.Set;
 

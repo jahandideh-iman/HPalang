@@ -11,7 +11,7 @@ import HPalang.Core.*;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import Mocks.ComputableExpression;

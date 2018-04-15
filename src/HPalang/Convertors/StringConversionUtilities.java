@@ -10,7 +10,7 @@ import HPalang.Core.Message;
 import HPalang.Core.MessagePacket;
 import HPalang.Core.Statement;
 import HPalang.Core.Variables.IntegerVariable;
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.NetworkLabel;

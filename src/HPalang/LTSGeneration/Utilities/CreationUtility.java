@@ -10,7 +10,7 @@ import HPalang.Core.CANSpecification;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.Builders.GlobalRunTimeStateBuilder;
 import HPalang.LTSGeneration.Builders.SoftwareActorStateBuilder;
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.DeadlockState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;

@@ -5,6 +5,10 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.TransitionSystem.LTSState;
+import HPalang.Core.TransitionSystem.Label;
+import HPalang.Core.TransitionSystem.SimpleLTSState;
+import HPalang.Core.TransitionSystem.Transition;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import static TestUtilities.CoreUtility.*;
 import static org.hamcrest.CoreMatchers.equalTo;
@@ -21,8 +25,8 @@ public class TransitionTest
     @Test
     public void TransitionsWithEqualDataAreEqual()
     {
-        GlobalRunTimeState origin = CreateUniqueGlobalState("origin");
-        GlobalRunTimeState destination = CreateUniqueGlobalState("destination");
+        LTSState<GlobalRunTimeState> origin = new SimpleLTSState<>(CreateUniqueGlobalState("origin"));
+        LTSState<GlobalRunTimeState> destination = new SimpleLTSState<>(CreateUniqueGlobalState("destination"));
         Label label = CreateLabel("label");
 
         Transition tr1 = new Transition(origin, label, destination);  

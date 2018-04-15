@@ -5,11 +5,11 @@
  */
 package HPalang.Convertors;
 
-import HPalang.LTSGeneration.LabeledTransitionSystem;
+import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import HPalang.Core.Statement;
 import HPalang.Core.Variables.IntegerVariable;
 import HPalang.LTSGeneration.RunTimeStates.ExecutionQueueState;
@@ -22,7 +22,7 @@ import java.util.Map.Entry;
  */
 public class LTSToXMLConvertor
 {
-    public String Convert(LabeledTransitionSystem lts)
+    public String Convert(LabeledTransitionSystem<GlobalRunTimeState> lts)
     {
         String output = "";
         output += "<DMEComponent type=\"FiniteStateMachine\" >";
@@ -39,12 +39,12 @@ public class LTSToXMLConvertor
         
         output += "<Transitions>\n";
         
-        for(Transition transition : lts.Transitions())
+        for(Transition<GlobalRunTimeState> transition : lts.Transitions())
         {
             String transitionStr = "\t<Transition>\n";
             
-            String orignStr = StateToString(transition.GetOrign());
-            String destinationStr = StateToString(transition.GetDestination());
+            String orignStr = StateToString(transition.GetOrign().InnerState());
+            String destinationStr = StateToString(transition.GetDestination().InnerState());
             String labelStr = transition.GetLabel().toString();
             
             transitionStr+=("\t\t<From>" + orignStr+"</From>\n");
@@ -57,7 +57,7 @@ public class LTSToXMLConvertor
         }
         
         output += "</Transitions>\n";
-        output +="<InitialState>" + StateToString(lts.InitialState())+"</InitialState>";
+        output +="<InitialState>" + StateToString(lts.InitialState().InnerState())+"</InitialState>";
         output += "</DMEComponent>";
         return output;
     }

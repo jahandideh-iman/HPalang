@@ -5,7 +5,7 @@
  */
 package Mocks;
 
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 
 /**
  *

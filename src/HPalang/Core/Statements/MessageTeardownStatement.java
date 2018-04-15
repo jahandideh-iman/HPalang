@@ -5,12 +5,9 @@
  */
 package HPalang.Core.Statements;
 
-import HPalang.Core.MessageArguments;
 import HPalang.Core.MessageParameters;
-import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.RealVariable;
 import java.util.List;
-import java.util.Set;
 
 /**
  *

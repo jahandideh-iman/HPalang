@@ -16,9 +16,10 @@ import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.StateInfo;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import static TestUtilities.CoreUtility.CreateGlobalState;
 import static TestUtilities.CoreUtility.CreatePhysicalActor;
+import static TestUtilities.CoreUtility.CreateTransition;
 import static TestUtilities.CoreUtility.SimpleStateInfo;
 import org.junit.Test;
 import org.junit.Before;
@@ -67,7 +68,7 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         
         StateInfo stateInfoWithSoftwareTransition = new StateInfoBuilder().
                 WithState(globalState).
-                AddOutTransition(new Transition(globalState, new SoftwareLabel(), globalState)).
+                AddOutTransition(CreateTransition(globalState, new SoftwareLabel(), globalState)).
                 Build();
         
         ApplyAndVerifyRuleOn(stateInfoWithSoftwareTransition);
@@ -84,7 +85,7 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         
         StateInfo stateWithNetworkTransition = new StateInfoBuilder().
                 WithState(globalState).
-                AddOutTransition(new Transition(globalState, new NetworkLabel(), globalState)).
+                AddOutTransition(CreateTransition(globalState, new NetworkLabel(), globalState)).
                 Build();
         
         ApplyAndVerifyRuleOn(stateWithNetworkTransition);

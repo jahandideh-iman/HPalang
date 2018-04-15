@@ -5,7 +5,7 @@
  */
 package Mocks;
 
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.TransitionCollector;
 import java.util.LinkedList;

@@ -10,7 +10,7 @@ import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.StateInfo;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import HPalang.LTSGeneration.TransitionCollector;
 import java.util.Collection;
 

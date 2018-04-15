@@ -12,13 +12,13 @@ import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
 import HPalang.Core.ModelDefinition;
 import HPalang.HybridAutomataGeneration.SOSRules.ConversionRule;
 import HPalang.LTSGeneration.LTSGenerator;
-import HPalang.LTSGeneration.LabeledTransitionSystem;
+import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import HPalang.LTSGeneration.ModeDefinitionToGlobalStateConvertor;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Variable;
 import HPalang.HybridAutomataGeneration.HybridAutomaton;
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.Reset;
@@ -148,15 +148,7 @@ public class Main {
           return new ContinuousLabel(newGuard ,new LinkedHashSet<>(resets.values()));  
     }
 
-    private static void CheckForDuplicateStates(LabeledTransitionSystem lts)
-    {
-        ArrayList<GlobalRunTimeState> states = new ArrayList<>(lts.States());
-        
-        for(int i = 0 ; i< states.size(); i++)
-            for(int j = i+1 ; j< states.size(); j++)
-                if(states.get(i).equals(states.get(j)))
-                    throw new RuntimeException("Duplicate state in final LTS.");
-    }
+
 }
 
   

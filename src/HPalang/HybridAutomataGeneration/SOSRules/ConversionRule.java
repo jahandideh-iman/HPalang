@@ -19,7 +19,7 @@ import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.HybridAutomataGeneration.HybridLabel;
 import HPalang.HybridAutomataGeneration.Location;
 import HPalang.HybridAutomataGeneration.SOSRule;
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
@@ -28,7 +28,7 @@ import HPalang.LTSGeneration.RunTimeStates.Event.Event;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.StateInfo;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import java.util.Collection;
 import static HPalang.Core.ModelCreationUtilities.*;
 import HPalang.Core.Variable;
@@ -62,10 +62,10 @@ public class ConversionRule implements SOSRule
     }
 
     @Override
-    public void TryApply(Transition transition, HybridAutomatonGenerator generator)
+    public void TryApply(Transition<GlobalRunTimeState> transition, HybridAutomatonGenerator generator)
     {
-        Location origin = generator.LocationOf(transition.GetOrign());
-        Location destination = generator.LocationOf(transition.GetDestination());
+        Location origin = generator.LocationOf(transition.GetOrign().InnerState());
+        Location destination = generator.LocationOf(transition.GetDestination().InnerState());
       
         HybridLabel label;
         
@@ -90,7 +90,7 @@ public class ConversionRule implements SOSRule
     }
 
     // TODO: Merge these to a signle generic method.
-    private boolean AllAreSoftware(Collection<Transition> trans)
+    private boolean AllAreSoftware(Collection<Transition<GlobalRunTimeState>> trans)
     {
         for(Transition tran : trans)
             if(tran.GetLabel() instanceof SoftwareLabel == false)
@@ -98,7 +98,7 @@ public class ConversionRule implements SOSRule
         return true;
     }
 
-    private boolean AllIsNetwork(Collection<Transition> trans)
+    private boolean AllIsNetwork(Collection<Transition<GlobalRunTimeState>> trans)
     {
         for (Transition tran : trans) {
             if (tran.GetLabel() instanceof NetworkLabel == false) {
@@ -109,7 +109,7 @@ public class ConversionRule implements SOSRule
 
     }
     
-    private boolean AllArePhysical(Collection<Transition> trans)
+    private boolean AllArePhysical(Collection<Transition<GlobalRunTimeState>> trans)
     {
         for(Transition tran : trans)
             if(tran.GetLabel() instanceof ContinuousLabel == false)

@@ -7,7 +7,7 @@ package Builders;
 
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.StateInfo;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
@@ -19,14 +19,14 @@ import java.util.List;
 public class StateInfoBuilder
 {
     private GlobalRunTimeState globalState;
-    private List<Transition> outTransitions = new LinkedList<>();
+    private List<Transition<GlobalRunTimeState>> outTransitions = new LinkedList<>();
     public StateInfoBuilder WithState(GlobalRunTimeState globalState)
     {
         this.globalState = globalState;
         return this;
     }
     
-    public StateInfoBuilder AddOutTransition(Transition tranistion)
+    public StateInfoBuilder AddOutTransition(Transition<GlobalRunTimeState> tranistion)
     {
         outTransitions.add(tranistion);
         return this;

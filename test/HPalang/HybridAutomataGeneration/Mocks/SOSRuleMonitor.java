@@ -7,9 +7,9 @@ package HPalang.HybridAutomataGeneration.Mocks;
 
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.HybridAutomataGeneration.SOSRule;
-import HPalang.LTSGeneration.LabeledTransitionSystem;
+import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import HPalang.LTSGeneration.StateInfo;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import java.util.LinkedList;
 import java.util.List;
 

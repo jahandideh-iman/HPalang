@@ -5,10 +5,10 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.Utilities.CreationUtility;
 import Mocks.SOSRuleMock;
 import Mocks.SOSRuleMonitor;
@@ -38,8 +38,8 @@ public class LTSGeneratorTest
         
         LabeledTransitionSystem lts = ltsGenerator.Generate(initialState);
         
-        assertThat(rule1.appliedStates,hasItem(equalTo(lts.InitialState())));
-        assertThat(rule2.appliedStates,hasItem(equalTo(lts.InitialState())));
+        assertThat(rule1.appliedStates,hasItem(equalTo(lts.InitialState().InnerState())));
+        assertThat(rule2.appliedStates,hasItem(equalTo(lts.InitialState().InnerState())));
     }
     
     @Test
@@ -73,7 +73,7 @@ public class LTSGeneratorTest
 
         LabeledTransitionSystem lts = ltsGenerator.Generate(initialState);
         
-        assertTrue(lts.HasTransition(lts.InitialState(),rule.transitonLabel,rule.transitionState));
+        assertTrue(lts.HasTransition(lts.InitialState(),rule.transitonLabel,lts.TryAddState(rule.transitionState)));
     }
     
 }

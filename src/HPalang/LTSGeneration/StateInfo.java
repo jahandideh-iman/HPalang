@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.TransitionSystem.Transition;
 import HPalang.Core.Equalitable;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.Collection;
@@ -16,10 +17,12 @@ import java.util.Collection;
 public class StateInfo extends Equalitable<StateInfo>
 {
     private final GlobalRunTimeState state;
-    private final Collection<Transition> ins;
-    private final Collection<Transition> outs;
+    private final Collection<Transition<GlobalRunTimeState>> ins;
+    private final Collection<Transition<GlobalRunTimeState>> outs;
     
-    public StateInfo(GlobalRunTimeState state, Collection<Transition> ins, Collection<Transition> outs)
+    public StateInfo(GlobalRunTimeState state, 
+            Collection<Transition<GlobalRunTimeState>> ins, 
+            Collection<Transition<GlobalRunTimeState>> outs)
     {
         this.state = state;
         this.ins = ins;
@@ -31,7 +34,7 @@ public class StateInfo extends Equalitable<StateInfo>
         return state;
     }
 
-    public Collection<Transition> Outs()
+    public Collection<Transition<GlobalRunTimeState>> Outs()
     {
         return outs;
     }

@@ -19,20 +19,22 @@ import HPalang.Core.SimpleRealVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 import HPalang.Core.Statement;
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.ContinuousState;
 import HPalang.LTSGeneration.RunTimeStates.Event.Action;
 import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import HPalang.LTSGeneration.State;
 import HPalang.LTSGeneration.StateInfo;
-import HPalang.LTSGeneration.Transition;
+import HPalang.Core.TransitionSystem.Transition;
 import static HPalang.Core.CreationUtilities.CreateTrivialFlaseGuard;
 import HPalang.Core.DiscreteExpressions.TrueConst;
 import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.SoftwareActorType;
 import Mocks.EmptyStatement;
 import HPalang.Core.NullExpression;
+import HPalang.Core.TransitionSystem.LTSState;
+import HPalang.Core.TransitionSystem.SimpleLTSState;
 import Mocks.LabelMock;
 import java.util.Collections;
 import java.util.Queue;
@@ -207,7 +209,12 @@ public class CoreUtility
     
     static public Transition SelfTransition(GlobalRunTimeState globalState, Label label)
     {
-        return new Transition(globalState, label, globalState);
+        return CreateTransition(globalState, label, globalState);
+    }
+    
+    static public <T> Transition CreateTransition(T origin, Label label, T destination)
+    {
+        return new Transition<>(new SimpleLTSState<>(origin), label, new SimpleLTSState<>(destination));
     }
     
     static public void RegisterEvent(float delay, Action action, GlobalRunTimeState globalState)

@@ -7,6 +7,8 @@ package HPalang.Utilities;
 
 import HPalang.Core.EqualitableAndClonable;
 import HPalang.Core.EqualitableAndClonable;
+import java.util.ArrayDeque;
+import java.util.Collections;
 import java.util.Deque;
 import java.util.Iterator;
 import java.util.LinkedList;

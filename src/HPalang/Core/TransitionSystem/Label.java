@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package HPalang.Core.TransitionSystem;
 
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.Core.Equalitable;

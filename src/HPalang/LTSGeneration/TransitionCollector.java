@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 
 /**

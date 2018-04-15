@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.TransitionSystem.Transition;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.LinkedList;
 import java.util.List;

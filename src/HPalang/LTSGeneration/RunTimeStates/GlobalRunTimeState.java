@@ -14,8 +14,9 @@ import HPalang.LTSGeneration.CompositeStateT;
  *
  * @author Iman Jahandideh
  */
-public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
+public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState> 
 {
+
     public ContinuousState ContinuousState()
     {
         return FindSubState(ContinuousState.class);

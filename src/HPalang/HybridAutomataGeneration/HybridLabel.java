@@ -5,7 +5,7 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.LTSGeneration.Label;
+import HPalang.Core.TransitionSystem.Label;
 import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.Reset;
 import java.util.Set;

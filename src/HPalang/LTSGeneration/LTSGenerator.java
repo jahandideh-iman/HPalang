@@ -5,6 +5,8 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Core.TransitionSystem.Label;
+import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import static HPalang.LTSGeneration.Utilities.QueryUtilities.IsDeadlock;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.ArrayList;
@@ -18,13 +20,13 @@ import java.util.Queue;
  */
 public class LTSGenerator implements TransitionCollector
 {
-    private LabeledTransitionSystem transitionSystem;
+    private LabeledTransitionSystem<GlobalRunTimeState> transitionSystem;
         
-    private final Queue<GlobalRunTimeState> notVisitedStates = new LinkedList<>();
+    private final Queue<HPalang.Core.TransitionSystem.LTSState<GlobalRunTimeState>> notVisitedStates = new LinkedList<>();
     
     private final List<SOSRule> sosRules = new ArrayList<>();
     
-    private GlobalRunTimeState currentGlobalState;
+    private HPalang.Core.TransitionSystem.LTSState<GlobalRunTimeState> currentGlobalState;
     
     public void AddSOSRule(SOSRule rule)
     {
@@ -33,24 +35,26 @@ public class LTSGenerator implements TransitionCollector
 
     public LabeledTransitionSystem Generate(GlobalRunTimeState initialState)
     {
-        transitionSystem = new LabeledTransitionSystem();
-        currentGlobalState = initialState;
-        transitionSystem.SetInitialState(currentGlobalState);
+        //TransitionSystemGlobalRunTimeState transitionInitalState = new TransitionSystemGlobalRunTimeState<Glo>(initialState);
+        transitionSystem = new LabeledTransitionSystem<>();
+        
+        currentGlobalState = transitionSystem.TryAddState(initialState);
+        transitionSystem.SetInitialState(initialState);
         notVisitedStates.add(currentGlobalState);
         
         while (!notVisitedStates.isEmpty()) 
         { 
             currentGlobalState = notVisitedStates.poll();
             
-            if(IsDeadlock(currentGlobalState))
+            if(IsDeadlock(currentGlobalState.InnerState()))
                 continue;
             
             for(SOSRule rule : sosRules)
                 rule.TryApply(
                         new StateInfo(
-                                currentGlobalState.DeepCopy(), 
-                                transitionSystem.GetInTransitionsFor(currentGlobalState),
-                                transitionSystem.GetOutTransitionsFor(currentGlobalState)),
+                                currentGlobalState.InnerState().DeepCopy(), 
+                                currentGlobalState.InTransitions(),
+                                currentGlobalState.OutTransitions()),
                         this);
             
             
@@ -62,10 +66,10 @@ public class LTSGenerator implements TransitionCollector
     public void AddTransition(Label label,GlobalRunTimeState destination)
     {
         if(transitionSystem.HasState(destination) == false)
-            notVisitedStates.add(destination);
-                
-        transitionSystem.AddState(destination);
-        transitionSystem.AddTransition(currentGlobalState, label, destination);
+            notVisitedStates.add(transitionSystem.TryAddState(destination));
+        
+        
+        transitionSystem.AddTransition(currentGlobalState, label, transitionSystem.TryAddState(destination));
         
         if (transitionSystem.TransitionsSize() % 1000 == 0) 
         {

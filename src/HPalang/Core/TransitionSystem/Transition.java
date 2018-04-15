@@ -3,34 +3,34 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package HPalang.LTSGeneration;
+package HPalang.Core.TransitionSystem;
 
 import HPalang.Core.Equalitable;
-import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
+
 
 /**
  *
  * @author Iman Jahandideh
  */
-public class Transition extends Equalitable<Transition>
+public class Transition<T> extends Equalitable<Transition>
 {
-    private GlobalRunTimeState origin;
-    private GlobalRunTimeState destination;
+    private LTSState<T> origin;
+    private LTSState<T> destination;
     private Label label;
 
-    public Transition(GlobalRunTimeState origin, Label label, GlobalRunTimeState destination)
+    public Transition(LTSState<T> origin, Label label, LTSState<T> destination)
     {
         this.origin = origin;
         this.destination = destination;
         this.label = label;
     }
 
-    public GlobalRunTimeState GetOrign()
+    public LTSState<T> GetOrign()
     {
         return origin;
     }
 
-    public GlobalRunTimeState GetDestination()
+    public LTSState<T> GetDestination()
     {
         return destination;
     }
