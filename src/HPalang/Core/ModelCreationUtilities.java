@@ -36,14 +36,14 @@ import javafx.scene.control.SplitPane;
  */
 public class ModelCreationUtilities
 {
-    public static MessageHandler AddMessageHandler(SoftwareActorType type, String handlerName, Message.MessageType messageType )
+    public static MessageHandler AddMessageHandler(ActorType type, String handlerName, Message.MessageType messageType )
     {
         type.AddMessageHandler(handlerName, new MessageHandler(messageType));
         
         return type.FindMessageHandler(handlerName);
     }
     
-    public static MessageHandler AddControlMessageHandler(SoftwareActorType type, String handlerName)
+    public static MessageHandler AddControlMessageHandler(ActorType type, String handlerName)
     {
         return AddMessageHandler(type, handlerName, Message.MessageType.Control);
     }

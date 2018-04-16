@@ -48,7 +48,7 @@ public class Main {
     {
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BrakeByWireModelSingleWheel.Create();
+            definition = BrakeByWireModelTwoWheel.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
@@ -75,7 +75,7 @@ public class Main {
         OutputHA("HA", automaton, writer);
 //        
 //        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
-        writer.Write("output_HA.xml", new HybridAutomatonToSXConvertor().Convert(automaton));
+        //writer.Write("output_HA.xml", new HybridAutomatonToSXConvertor().Convert(automaton));
         
     }
 

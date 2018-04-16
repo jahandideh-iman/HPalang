@@ -38,14 +38,14 @@ import HPalang.LTSGeneration.Labels.Guard;
  *
  * @author Iman Jahandideh
  */
-public class BrakeByWireModelSingleWheel
+public class BrakeByWireModelSingleWheelNoParam
 {
     public static final float arbitrartDelay = 13.0f;
     public static final String Wheel__controller_instance = "controller";
     public static final String Wheel__speed_delegation = "wheel_speed_delegation";
     public static final String Wheel__torque_port = "torque_port";
     public static final String Wheel__speed = "speed";
-    public static final String Wheel__torque = "torque";
+    public static final String Wheel__torque = "speed";
     public static final String Wheel__timer = "timer";
     public static final float Wheel__period_const = 0.05f;
     
@@ -159,7 +159,7 @@ public class BrakeByWireModelSingleWheel
        
 
         definition.SetEventSystemVariablePoolSize(1);
-        definition.SetGlobalVariablePoolSize(4);
+        definition.SetGlobalVariablePoolSize(10);
         
         
         return definition;
@@ -170,18 +170,19 @@ public class BrakeByWireModelSingleWheel
         wheelType.AddInstanceParameter(new InstanceParameter(Wheel__controller_instance, wheelControllerType));
         wheelType.AddDelegationParameter(new DelegationParameter(
                         Wheel__speed_delegation, 
-                        DelegationParameter.TypesFrom(Variable.Type.floatingPoint)
+                        DelegationParameter.TypesFrom()
                 )
         ); 
                 
         wheelType.AddVariable(new RealVariable(Wheel__timer));
         wheelType.AddVariable(new RealVariable(Wheel__speed));
-        wheelType.AddVariable(new FloatVariable(Wheel__torque));
+        wheelType.AddVariable(new RealVariable(Wheel__torque));
 
         wheelType.AddMode(new Mode("NoBrake"));
         wheelType.AddMode(new Mode("Break"));
         
         wheelType.SetInitialMode(wheelType.FindMode("NoBrake"));
+        
         
         AddPort(wheelType, Wheel__torque_port, wheelType.FindVariable(Wheel__torque));
     }
@@ -194,7 +195,7 @@ public class BrakeByWireModelSingleWheel
         
         RealVariable timer = (RealVariable) wheelType.FindVariable(Wheel__timer); 
         RealVariable speed = (RealVariable) wheelType.FindVariable(Wheel__speed);
-        FloatVariable torque = (FloatVariable) wheelType.FindVariable(Wheel__torque);
+        RealVariable torque = (RealVariable) wheelType.FindVariable(Wheel__torque);
 
         
         Mode noBrakeMode = wheelType.FindMode("NoBrake");
@@ -206,8 +207,8 @@ public class BrakeByWireModelSingleWheel
         noBrakeMode.AddDifferentialEquation(new DifferentialEquation(speed, Const(-0.1f)));
         
         noBrakeMode.AddAction(CreateResetFor(timer));
-        noBrakeMode.AddAction(CreateSendStatement(controllerInstance, wheel_speed_port, VariableExpression(speed)));
-        noBrakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation, VariableExpression(speed)));
+        noBrakeMode.AddAction(CreateSendStatement(controllerInstance, wheel_speed_port));
+        noBrakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation));
         noBrakeMode.AddAction(CreateModeChangeStatement(noBrakeMode));
         
         brakeMode.SetInvarient(new Invarient(CreateBinaryExpression(timer, "<=", Const(Wheel__period_const))));
@@ -216,8 +217,8 @@ public class BrakeByWireModelSingleWheel
         brakeMode.AddDifferentialEquation(new DifferentialEquation(speed, CreateBinaryExpression(Const(-0.1f),"-", ExpressionFrom(torque))));
         
         brakeMode.AddAction(CreateResetFor(timer));
-        brakeMode.AddAction(CreateSendStatement(controllerInstance, wheel_speed_port, VariableExpression(speed)));
-        brakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation, VariableExpression(speed)));
+        brakeMode.AddAction(CreateSendStatement(controllerInstance, wheel_speed_port));
+        brakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation));
         noBrakeMode.AddAction(CreateModeChangeStatement(brakeMode));
     }
     
@@ -230,11 +231,12 @@ public class BrakeByWireModelSingleWheel
         
         MessageHandler applyTorque = new MessageHandler(Message.MessageType.Control);
         
+        
         AddParameter(applyTorque, "requested_torque", FloatVariable.class);
-        AddParameter(applyTorque, "vehicle_speed", FloatVariable.class);
+        //AddParameter(applyTorque, "vehicle_speed", FloatVariable.class);
         wheelControllerType.AddMessageHandler(Wheel_Controller__apply_torque_handler, applyTorque);
         
-        AddPort(wheelControllerType, Wheel_Controller__wheel_rmp_port, Wheel_Controller__wheel_speed);        
+        AddMessageHandler(wheelControllerType, Wheel_Controller__wheel_rmp_port, Message.MessageType.Data);        
     }
     
     private static void FillFleshForWheelControllerType(SoftwareActorType wheelControllerType, Mode brakeMode, Mode noBrakeMode, MessageHandler wheel_torque_port)
@@ -245,39 +247,22 @@ public class BrakeByWireModelSingleWheel
         
         MessageHandler applyTorque = wheelControllerType.FindMessageHandler(Wheel_Controller__apply_torque_handler);
         FloatVariable requested_torque = (FloatVariable) applyTorque.Parameters().Find("requested_torque").Variable();
-        FloatVariable vehicle_speed = (FloatVariable) applyTorque.Parameters().Find("vehicle_speed").Variable();
         
-        applyTorque.AddStatement(new AssignmentStatement(slip_rate, 
-                CreateBinaryExpression(
-                        CreateBinaryExpression(
-                                vehicle_speed, 
-                                "-", 
-                                CreateBinaryExpression(
-                                        wheel_speed,
-                                        "*", 
-                                        Const(Wheel_Controller__wheel_radius_const))),
-                        "/", 
-                        VariableExpression(vehicle_speed))));
+        applyTorque.AddStatement(new AssignmentStatement(slip_rate,Const(1.0f)));
         
         
-        applyTorque.AddStatement(new IfStatement(
-                 new BinaryExpression(
-                        new BinaryExpression(
-                                new VariableExpression(slip_rate),
-                                new GreaterOperator(),
-                                new ConstantDiscreteExpression(2)),
-                        new LogicalOrOperator(),
-                        new BinaryExpression(
-                                new VariableExpression(requested_torque),
-                                new EqualityOperator(),
-                                new ConstantDiscreteExpression(2))),
-                Statement.StatementsFrom(CreateModeChangeSendStatement(noBrakeMode, new ParametricActorLocator(wheel))), 
-                Statement.StatementsFrom(
-                        CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)),
-                        CreateModeChangeSendStatement(brakeMode, new ParametricActorLocator(wheel)))
-        ));
+        applyTorque.AddStatement(CreateSendStatement(wheel, wheel_torque_port , Const(2f)));
+//        applyTorque.AddStatement(new IfStatement(
+//                 new BinaryExpression(
+//                                new VariableExpression(slip_rate),
+//                                new GreaterOperator(),
+//                                new ConstantDiscreteExpression(2)),
+//                Statement.StatementsFrom(CreateModeChangeSendStatement(noBrakeMode, new ParametricActorLocator(wheel))), 
+//                Statement.StatementsFrom(
+//                        CreateSendStatement(wheel, wheel_torque_port , Const(2f)),
+//                        CreateModeChangeSendStatement(brakeMode, new ParametricActorLocator(wheel)))
+//        ));
         
-        AddPort(wheelControllerType, Wheel_Controller__wheel_rmp_port, wheel_speed);
     }
 
     private static void FillSkeletonForBrakeType(PhysicalActorType brakeType, SoftwareActorType globalBrakeControllerType)
@@ -318,7 +303,7 @@ public class BrakeByWireModelSingleWheel
         increasingBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
         increasingBrakeMode.AddDifferentialEquation(new DifferentialEquation(brake_percent, Const(Brake__brake_rate_const)));
         increasingBrakeMode.AddAction(CreateResetFor(timer)); 
-        increasingBrakeMode.AddAction(CreateSendStatement(controller, brakePercentPort, VariableExpression(brake_percent)));
+        increasingBrakeMode.AddAction(CreateSendStatement(controller, brakePercentPort));
         increasingBrakeMode.AddAction(new IfStatement(
                 CreateBinaryExpression(brake_percent,"<",Const(100)),
                 Statement.StatementsFrom(CreateModeChangeStatement(increasingBrakeMode)), 
@@ -332,7 +317,7 @@ public class BrakeByWireModelSingleWheel
         constantBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
         constantBrakeMode.AddDifferentialEquation(new DifferentialEquation(brake_percent, Const(0)));
         constantBrakeMode.AddAction(CreateResetFor(timer)); 
-        constantBrakeMode.AddAction(CreateSendStatement(controller, brakePercentPort, VariableExpression(brake_percent)));
+        constantBrakeMode.AddAction(CreateSendStatement(controller, brakePercentPort));
         constantBrakeMode.AddAction(CreateModeChangeStatement(constantBrakeMode));
     }
 
@@ -346,9 +331,10 @@ public class BrakeByWireModelSingleWheel
         globalBrakeControllerType.AddVariable(new FloatVariable(Global_Brake_Controller__estimated_speed));
         globalBrakeControllerType.AddVariable(new FloatVariable(Global_Brake_Controller__global_torque));
         
-        AddPort(globalBrakeControllerType, Global_Brake_Controller__wheel_rpm_FR_port, globalBrakeControllerType.FindVariable(Global_Brake_Controller__wheel_speed_FR));
+        AddMessageHandler(globalBrakeControllerType, Global_Brake_Controller__wheel_rpm_FR_port, Message.MessageType.Data);
         
-        AddPort(globalBrakeControllerType, Global_Brake_Controller__brake_percent_port, globalBrakeControllerType.FindVariable(Global_Brake_Controller__brake_percent));
+        //AddPort(globalBrakeControllerType, Global_Brake_Controller__brake_percent_port, globalBrakeControllerType.FindVariable(Global_Brake_Controller__brake_percent));
+        AddMessageHandler(globalBrakeControllerType, Global_Brake_Controller__brake_percent_port, Message.MessageType.Data);
         
         globalBrakeControllerType.AddMessageHandler(Global_Brake_Controller__control_handler, new MessageHandler(Message.MessageType.Control));
     }
@@ -373,8 +359,7 @@ public class BrakeByWireModelSingleWheel
         
         control.AddStatement(new AssignmentStatement(global_torque, new VariableExpression(brake_percent)));
         
-        control.AddStatement(CreateSendStatement(wheel_controller_FR, wheelControllerApply, VariableExpression(global_torque), VariableExpression(estimated_speed)));
-        
+        control.AddStatement(CreateSendStatement(wheel_controller_FR, wheelControllerApply, VariableExpression(global_torque)));     
     }
     
     private static void FillClockType(PhysicalActorType clockType)

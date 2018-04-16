@@ -5,13 +5,13 @@
 <entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_MODE_FLAG">AllClassesMode</entry>
 <entry key="SINGLE_FEATURE">false</entry>
 <entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_SelectedClassesMode_SELECTION_FLAG">HPalang.LTSGeneration.SOSRules.TierOne.LowPriorityMessageTakeRuleTest,*, </entry>
-<entry key="ACTIVATED_FEATURES">#org.netbeans.modules.profiler.v2.features.ObjectsFeature@#org.netbeans.modules.profiler.v2.features.MonitorFeature@</entry>
+<entry key="ACTIVATED_FEATURES">#org.netbeans.modules.profiler.v2.features.MonitorFeature@#org.netbeans.modules.profiler.v2.features.MethodsFeature@</entry>
 <entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_SelectedMethodsMode_SELECTION_FLAG">HPalang.LTSGeneration.LTSGenerator,AddTransition,(LHPalang/Core/TransitionSystem/Label;LHPalang/LTSGeneration/RunTimeStates/GlobalRunTimeState;)V Builders.GlobalRunTimeStateBuilder,Build,()LHPalang/LTSGeneration/RunTimeStates/GlobalRunTimeState; HPalang.LTSGeneration.LabeledTransitionSystem,GetOutTransitionsFor,(LHPalang/LTSGeneration/RunTimeStates/GlobalRunTimeState;)Ljava/util/List; </entry>
 <entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_SETTINGS_FLAG">true</entry>
 <entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_MODE_FLAG">SelectedClassesMode</entry>
-<entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_SelectedClassesMode_SELECTION_FLAG">java.util.LinkedList,*, java.util.ArrayList$ListItr,*, java.util.LinkedList$ListItr,*, java.util.LinkedList$Node,*, </entry>
 <entry key="org.netbeans.modules.profiler.v2.features.MethodsFeature_SelectedClassesMode_OUTGOING_CALLS_FLAG">10</entry>
-<entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_SETTINGS_FLAG">true</entry>
+<entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_SelectedClassesMode_SELECTION_FLAG">java.util.LinkedList,*, java.util.ArrayList$ListItr,*, java.util.LinkedList$ListItr,*, java.util.LinkedList$Node,*, </entry>
 <entry key="PROFILING_POINTS">false</entry>
+<entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_SETTINGS_FLAG">true</entry>
 <entry key="org.netbeans.modules.profiler.v2.features.ObjectsFeature_SelectedClassesMode_LIMIT_ALLOCATIONS_FLAG">10</entry>
 </properties>

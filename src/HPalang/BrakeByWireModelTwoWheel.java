@@ -45,7 +45,7 @@ public class BrakeByWireModelTwoWheel
     public static final String Wheel__speed_delegation = "wheel_speed_delegation";
     public static final String Wheel__torque_port = "torque_port";
     public static final String Wheel__speed = "speed";
-    public static final String Wheel__torque = "speed";
+    public static final String Wheel__torque = "torque";
     public static final String Wheel__timer = "timer";
     public static final float Wheel__period_const = 0.05f;
     
@@ -186,7 +186,7 @@ public class BrakeByWireModelTwoWheel
                 
         wheelType.AddVariable(new RealVariable(Wheel__timer));
         wheelType.AddVariable(new RealVariable(Wheel__speed));
-        wheelType.AddVariable(new RealVariable(Wheel__torque));
+        wheelType.AddVariable(new FloatVariable(Wheel__torque));
 
         wheelType.AddMode(new Mode("NoBrake"));
         wheelType.AddMode(new Mode("Break"));
@@ -204,7 +204,7 @@ public class BrakeByWireModelTwoWheel
         
         RealVariable timer = (RealVariable) wheelType.FindVariable(Wheel__timer); 
         RealVariable speed = (RealVariable) wheelType.FindVariable(Wheel__speed);
-        RealVariable torque = (RealVariable) wheelType.FindVariable(Wheel__torque);
+        FloatVariable torque = (FloatVariable) wheelType.FindVariable(Wheel__torque);
 
         
         Mode noBrakeMode = wheelType.FindMode("NoBrake");
@@ -275,19 +275,19 @@ public class BrakeByWireModelTwoWheel
                         new BinaryExpression(
                                 new VariableExpression(slip_rate),
                                 new GreaterOperator(),
-                                new ConstantDiscreteExpression(2)),
+                                Const(0.2f)),
                         new LogicalOrOperator(),
                         new BinaryExpression(
                                 new VariableExpression(requested_torque),
                                 new EqualityOperator(),
-                                new ConstantDiscreteExpression(2))),
+                                Const(0.0f))),
                 Statement.StatementsFrom(CreateModeChangeSendStatement(noBrakeMode, new ParametricActorLocator(wheel))), 
                 Statement.StatementsFrom(
                         CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)),
                         CreateModeChangeSendStatement(brakeMode, new ParametricActorLocator(wheel)))
         ));
         
-        AddPort(wheelControllerType, Wheel_Controller__wheel_rmp_port, wheel_speed);
+        
     }
 
     private static void FillSkeletonForBrakeType(PhysicalActorType brakeType, SoftwareActorType globalBrakeControllerType)

@@ -114,6 +114,9 @@ public abstract class MessageSendRule extends ActorLevelRule
                         pool
                 );
         
+        if(maximalEvaluatoionResult.resets.size()>0)
+            System.out.println(maximalEvaluatoionResult.resets);
+        
         Message message = sendStatement.MessageLocator().Locate(actorState.Actor());
         int prioriy = MessagePriorityFor(receiverState.Actor(),message, globalState.NetworkState().CANSpecification());
         
