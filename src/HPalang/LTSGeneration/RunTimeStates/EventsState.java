@@ -81,4 +81,11 @@ public class EventsState extends CompositeStateT<EventsState>
         return events.equals(other.events);
     }
 
+    @Override
+    protected int DataHashCode()
+    {
+        return events.hashCode();
+    }
+    
+    
 }

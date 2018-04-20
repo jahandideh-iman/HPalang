@@ -9,8 +9,6 @@ import HPalang.Core.CANSpecification;
 import HPalang.Core.Message;
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.CompositeStateT;
-import java.util.Collection;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -58,6 +56,14 @@ public class NetworkState extends CompositeStateT<NetworkState>
         return buffer.equals(other.buffer) &&
                 this.isIdle == other.isIdle;
     }
+
+    @Override
+    protected int DataHashCode()
+    {
+        return buffer.hashCode() + Boolean.hashCode(isIdle);
+    }
+    
+    
 
     public void SetIdle(boolean idle)
     {

@@ -41,7 +41,7 @@ public class MessageWithBody extends Equalitable<MessageWithBody> implements Mes
     @Override
     protected int InternalHashCode()
     {
-        return 1;
+        return statements.hashCode();
     }
     
     @Override

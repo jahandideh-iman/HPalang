@@ -44,11 +44,18 @@ public class SoftwareActorState extends ActorState<SoftwareActorState>
         copy.isSuspended = isSuspended;
     }
 
-    @Override
-    protected boolean DataEquals(SoftwareActorState other)
-    {
-        return super.DataEquals(other) && 
-                isSuspended == other.isSuspended;
-    }
+//    @Override
+//    protected boolean DataEquals(SoftwareActorState other)
+//    {
+//        return super.DataEquals(other) && 
+//                isSuspended == other.isSuspended;
+//    }
+//
+//    @Override
+//    protected int DataHashCode()
+//    {
+//        return super.DataHashCode() + Boolean.hashCode(isSuspended);
+//    }
+//    
 
 }

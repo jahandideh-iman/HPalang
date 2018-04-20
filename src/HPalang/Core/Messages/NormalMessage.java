@@ -52,7 +52,7 @@ public class NormalMessage extends Equalitable<NormalMessage> implements Message
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return messageHandler.hashCode();
     }
     
     @Override

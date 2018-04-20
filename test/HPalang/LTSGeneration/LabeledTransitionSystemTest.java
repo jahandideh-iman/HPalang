@@ -13,6 +13,7 @@ import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import Mocks.LabelMock;
 import static TestUtilities.CoreUtility.*;
+import java.util.Collection;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
@@ -99,7 +100,7 @@ public class LabeledTransitionSystemTest
         transitionSystem.AddTransition(gs1, CreateLabel("1-2"), gs2);   
         transitionSystem.AddTransition(gs1, CreateLabel("1-3"), gs3);
 
-        List<Transition<GlobalRunTimeState>> outs = gs1.OutTransitions();
+        Collection<Transition<GlobalRunTimeState>> outs = gs1.OutTransitions();
         
         assertThat(outs.size(), equalTo(2));
         assertThat(outs, hasItem(equalTo(new Transition(gs1,  CreateLabel("1-2"), gs2))));
@@ -120,7 +121,7 @@ public class LabeledTransitionSystemTest
         transitionSystem.AddTransition(gs2, CreateLabel("2-1"), gs1);   
         transitionSystem.AddTransition(gs3, CreateLabel("3-1"), gs1);
 
-        List<Transition<GlobalRunTimeState>> ins = gs1.InTransitions();
+        Collection<Transition<GlobalRunTimeState>> ins = gs1.InTransitions();
         
         assertThat(ins.size(), equalTo(2));
         assertThat(ins, hasItem(equalTo(new Transition(gs2,  CreateLabel("2-1"), gs1))));

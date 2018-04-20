@@ -52,7 +52,7 @@ public abstract class Variable extends Equalitable<Variable>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return name.hashCode() + type.hashCode();
     }
         
     @Override

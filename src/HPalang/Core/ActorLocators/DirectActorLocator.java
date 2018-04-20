@@ -37,7 +37,7 @@ public class DirectActorLocator extends ActorLocator<DirectActorLocator>
     @Override
     protected int InternalHashCode()
     {
-       return 0;
+       return actor.hashCode();
     }
     
 }

@@ -52,7 +52,7 @@ public class DelegationParameter extends Equalitable<DelegationParameter>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return name.hashCode();
     }
 
     public MessageParameters Parameters()

@@ -57,4 +57,11 @@ public abstract class ActorState<T extends ActorState> extends  CompositeStateT<
         return this.isSuspended == other.IsSuspended() &&
                 this.actor.equals(other.Actor());
     }
+
+    @Override
+    protected int DataHashCode()
+    {
+        return actor.hashCode() + Boolean.hashCode(isSuspended);
+    }
+  
 }

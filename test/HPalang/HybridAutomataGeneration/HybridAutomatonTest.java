@@ -51,7 +51,7 @@ public class HybridAutomatonTest
         automaton.AddTransition(loc1, label, Loc2);
         automaton.AddTransition(loc1, label, Loc2);
         
-        assertThat(automaton.GetTransitions().size(), equalTo(1));
+        assertThat(automaton.Transitions().size(), equalTo(1));
     }
     
     

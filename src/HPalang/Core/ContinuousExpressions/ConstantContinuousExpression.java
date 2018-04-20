@@ -6,9 +6,7 @@
 package HPalang.Core.ContinuousExpressions;
 
 import HPalang.Core.Expression;
-import HPalang.Core.ExpressionVisitor;
 import HPalang.Core.Expressions.Visitors.ConstantContinuousExpressionVisitor;
-import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.Visitor;
 

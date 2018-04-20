@@ -34,7 +34,7 @@ public class MessageTeardownStatement extends AbstractStatement<MessageTeardownS
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return parametersToRemove.hashCode() + variablesToRelease.hashCode();
     }
 
     public MessageParameters ParametersToRemove()

@@ -7,10 +7,8 @@ package HPalang.LTSGeneration.RunTimeStates.Event;
 
 import HPalang.Core.Equalitable;
 import HPalang.Core.MessagePacket;
-import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import static HPalang.LTSGeneration.Utilities.QueryUtilities.MessageQueueIsFull;
 
 /**
@@ -44,7 +42,7 @@ public class SendPacketAndResetNetworkAction extends Equalitable<SendPacketAndRe
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return packet.hashCode();
     }
 
     @Override

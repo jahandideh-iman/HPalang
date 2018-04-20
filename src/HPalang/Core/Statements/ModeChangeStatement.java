@@ -35,9 +35,6 @@ public class ModeChangeStatement extends AbstractStatement<ModeChangeStatement>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
-    }
-
-
-    
+        return mode.hashCode();
+    }   
 }

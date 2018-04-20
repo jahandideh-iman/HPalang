@@ -5,8 +5,6 @@
  */
 package HPalang.Core.Statements;
 
-import HPalang.Core.ContinuousExpression;
-import HPalang.Core.ContinuousVariable;
 import HPalang.Core.Expression;
 import HPalang.Core.Variable;
 
@@ -45,6 +43,6 @@ public class AssignmentStatement extends AbstractStatement<AssignmentStatement>
     @Override
     protected int InternalHashCode()
     {
-        return 1;
+        return var.hashCode() + expr.hashCode();
     }
 }

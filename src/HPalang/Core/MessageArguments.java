@@ -5,10 +5,9 @@
  */
 package HPalang.Core;
 
-import java.util.HashSet;
+import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Set;
 
 /**
  *
@@ -16,7 +15,7 @@ import java.util.Set;
  */
 public class MessageArguments extends Equalitable<MessageArguments>
 {
-    private final List<VariableArgument> arguments = new LinkedList<>();
+    private final List<VariableArgument> arguments = new ArrayList<>();
     
     public void Add(VariableArgument argument)
     {
@@ -58,7 +57,7 @@ public class MessageArguments extends Equalitable<MessageArguments>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return arguments.hashCode();
     }
     
     public List<VariableArgument> AsList()

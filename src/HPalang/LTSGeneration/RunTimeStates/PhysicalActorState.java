@@ -59,6 +59,13 @@ public class PhysicalActorState extends ActorState<PhysicalActorState>
     }
 
     @Override
+    protected int DataHashCode()
+    {
+        return super.DataHashCode() + mode.hashCode();
+    }
+
+    
+    @Override
     public void SetSuspended(boolean suspended)
     {
         throw new RuntimeException("A physical actor can not be suspended");

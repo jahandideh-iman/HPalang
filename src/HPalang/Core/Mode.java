@@ -93,7 +93,7 @@ public class Mode extends Equalitable<Mode>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return name.hashCode() + invariant.hashCode() + equations.hashCode() + guard.hashCode();
     }
     
     public static Mode None()

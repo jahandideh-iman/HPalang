@@ -39,7 +39,7 @@ public class InstanceParameter extends Equalitable<InstanceParameter>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return name.hashCode();
     }
 
     public String Name()

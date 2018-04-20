@@ -283,16 +283,10 @@ public class BrakeByWireModelTwoWheelSimplified
         
         //applyTorque.AddStatement(CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)));
         applyTorque.AddStatement(new IfStatement(
-                 new BinaryExpression(
-                        new BinaryExpression(
+                  new BinaryExpression(
                                 new VariableExpression(slip_rate),
                                 new GreaterOperator(),
                                 Const(0.2f)),
-                        new LogicalOrOperator(),
-                        new BinaryExpression(
-                                new VariableExpression(requested_torque),
-                                new EqualityOperator(),
-                                Const(0.0f))),
                 Statement.StatementsFrom(CreateSendStatement(wheel, wheel_torque_port , Const(0.0f))), 
                 Statement.StatementsFrom(
                         CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)))

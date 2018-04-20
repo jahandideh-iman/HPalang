@@ -43,6 +43,6 @@ public class ParametricActorLocator extends ActorLocator<ParametricActorLocator>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return instanceParameter.hashCode();
     }
 }

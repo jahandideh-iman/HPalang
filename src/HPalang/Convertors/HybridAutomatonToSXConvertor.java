@@ -13,6 +13,7 @@ import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.Core.ContinuousExpressions.Invarient;
 import static HPalang.Core.ModelCreationUtilities.CreateInvarient;
+import HPalang.Core.TransitionSystem.Transition;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.SpaceEx.Convertor.ExpressionConvertor;
 import HPalang.SpaceEx.Core.Component;
@@ -82,9 +83,9 @@ public class HybridAutomatonToSXConvertor
             
             locationsMap.put(hybridLocation, spaceExLocation);
         }
-        for(HPalang.HybridAutomataGeneration.Transition hybridTransition : automaton.GetTransitions())
+        for(Transition<HPalang.HybridAutomataGeneration.Location> hybridTransition : automaton.Transitions())
         {
-            HPalang.HybridAutomataGeneration.HybridLabel hybridLabel = hybridTransition.GetLabel();
+            HPalang.HybridAutomataGeneration.HybridLabel hybridLabel = (HPalang.HybridAutomataGeneration.HybridLabel)hybridTransition.GetLabel();
             
             HPalang.SpaceEx.Core.HybridLabel spaceExLabel = new HybridLabel();
             
@@ -95,9 +96,9 @@ public class HybridAutomatonToSXConvertor
             
             model.AddTransition(
                     new HybridTransition(
-                            locationsMap.get(hybridTransition.GetOrign()),
+                            locationsMap.get(hybridTransition.GetOrign().InnerState()),
                             spaceExLabel,
-                            locationsMap.get(hybridTransition.GetDestination()),
+                            locationsMap.get(hybridTransition.GetDestination().InnerState()),
                             hybridLabel.IsASAP()
                     ));
        

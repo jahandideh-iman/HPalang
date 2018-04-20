@@ -40,6 +40,6 @@ public class Delegation extends Equalitable<Delegation>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return actor.hashCode() + messageHandler.hashCode();
     }
 }

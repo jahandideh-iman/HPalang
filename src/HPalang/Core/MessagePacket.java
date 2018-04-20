@@ -79,7 +79,7 @@ public class MessagePacket extends Equalitable<MessagePacket>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return sender.hashCode() + message.hashCode() + receiver.hashCode();
     }   
 
     public int Priority()

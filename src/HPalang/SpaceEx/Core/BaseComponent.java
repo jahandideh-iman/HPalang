@@ -31,8 +31,15 @@ public class BaseComponent extends Component implements GraphListener<Location>
     @Override
     public void OnNodeAdded(Location loc)
     {
-        loc.SetId(String.valueOf(locCounter));
-        locCounter++;
+        try {
+                loc.SetId(String.valueOf(locCounter));
+                locCounter++;
+        } catch (Exception e) {
+            
+            System.out.println("HPalang.SpaceEx.Core.BaseComponent.OnNodeAdded()");
+            throw  e;
+        }
+
     }
     
     public void AddTransition(Location origin, HybridLabel label, Location destination)

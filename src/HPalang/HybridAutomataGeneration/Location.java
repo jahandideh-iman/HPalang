@@ -66,7 +66,7 @@ public class Location extends Equalitable<Location>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return name.hashCode() + equations.hashCode();
     }
 
     public String Name()

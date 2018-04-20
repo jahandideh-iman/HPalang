@@ -5,8 +5,6 @@
  */
 package HPalang.Core.DiscreteExpressions.BinaryOperators;
 
-import HPalang.Core.DiscreteExpression;
-import HPalang.Core.ValuationContainers.SimpleValuationContainer;
 import HPalang.Core.ValuationContainer;
 import HPalang.Core.Expression;
 
@@ -21,4 +19,10 @@ public class LogicalOrOperator extends BinaryOperatorT<LogicalOrOperator>
     {
         return ((operand1.Evaluate(valuations)>0) || (operand2.Evaluate(valuations)>0))? 1:0;
     } 
+
+    @Override
+    public String toString()
+    {
+        return "||";
+    }
 }

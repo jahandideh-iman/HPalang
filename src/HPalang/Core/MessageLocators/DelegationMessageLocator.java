@@ -45,7 +45,7 @@ public class DelegationMessageLocator extends MessageLocatorT<DelegationMessageL
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return delegationParameter.hashCode();
     }
   
 }

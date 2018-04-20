@@ -34,8 +34,7 @@ public class Guard extends Equalitable<Guard> implements Expression
     @Override
     protected int InternalHashCode()
     {
-        return 0;
-        //return guardExpression.hashCode();
+        return guardExpression.hashCode();
     }
 
     public Expression Expression()

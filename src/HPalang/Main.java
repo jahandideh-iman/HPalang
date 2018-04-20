@@ -26,6 +26,7 @@ import HPalang.LTSGeneration.SOSRules.*;
 import HPalang.LTSGeneration.SOSRules.MessageSendRules.CANMessageSendRule;
 import HPalang.LTSGeneration.SOSRules.MessageSendRules.WireMessageSendRule;
 import HPalang.Parser.Parser;
+import HPalang.Utilities.StopWatch;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -46,6 +47,9 @@ public class Main {
     // TODO: ------------------------- REFACTOR THIS -------------------------------
     public static void main(String[] args) throws FileNotFoundException, IOException 
     {
+        StopWatch stopWatch = new StopWatch();
+        stopWatch.Start();
+        
         ModelDefinition definition;
         if(args.length ==0)
             definition = BrakeByWireModelTwoWheelSimplified.Create();
@@ -64,18 +68,28 @@ public class Main {
         FileWriter writer = new FileWriter("output/");
         
         OutputLTS("FineLTS",lts, writer);
+        System.out.println("LTS Generation duration: " + stopWatch.ElaspedTimeSeconds());
+        stopWatch.Reset();
+        
         //OutputLTS("ReducedLTS",new LTSReducer().Reduce(lts), writer);
         
 
         //LabeledTransitionSystem reduceLTS =  new LTSReducer().Reduce(lts);
         //OutputLTS("ReducedLTS", reduceLTS, writer);
         
-        //HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts, definition);
+        HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts, definition);
+        OutputHA("HA", automaton, writer);
+        System.out.println("HA Generation duration: " + stopWatch.ElaspedTimeSeconds());
+        stopWatch.Reset();
         
-        //OutputHA("HA", automaton, writer);
+
 //        
 //        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
-        //writer.Write("output_HA.xml", new HybridAutomatonToSXConvertor().Convert(automaton));
+        
+
+        writer.Write("output_HA.xml", new HybridAutomatonToSXConvertor().Convert(automaton));
+        System.out.println("SX Generation duration: " + stopWatch.ElaspedTimeSeconds());
+        stopWatch.Reset();
         
     }
 
@@ -91,7 +105,7 @@ public class Main {
     private static void OutputHA(String prefix, HybridAutomaton automaton, FileWriter writer)
     {
         System.out.println(prefix + " Locations  : " + automaton.GetLocations().size());
-        System.out.println(prefix+ " Transition : " + automaton.GetTransitions().size());
+        System.out.println(prefix+ " Transition : " + automaton.Transitions().size());
         
         //writer.Write(prefix +"_aut.aut", new LTSToAUTConvertor().Convert(lts));
         //writer.Write(prefix +"_fsm.fsm", new LTSToFSMConvertor().Convert(lts));

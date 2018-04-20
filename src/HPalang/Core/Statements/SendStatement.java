@@ -64,7 +64,7 @@ public class SendStatement extends AbstractStatement<SendStatement>
     @Override
     protected int InternalHashCode()
     {
-        return 1;
+        return messageLocator.hashCode() + receiverLocator.hashCode();
     }
     
     @Override

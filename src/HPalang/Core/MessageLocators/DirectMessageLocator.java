@@ -43,7 +43,7 @@ public class DirectMessageLocator extends MessageLocatorT<DirectMessageLocator>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return message.hashCode();
     }
 
 

@@ -57,7 +57,7 @@ public class IfStatement extends AbstractStatement<IfStatement>
     @Override
     protected int InternalHashCode()
     {
-        return 1;
+        return expression.hashCode() + trueStatements.hashCode() + falseStatements.hashCode();
     }
     
     @Override

@@ -7,9 +7,9 @@ package HPalang.Convertors;
 
 import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.ContinuousExpressions.Invarient;
+import HPalang.Core.TransitionSystem.Transition;
 import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.HybridAutomataGeneration.Location;
-import HPalang.HybridAutomataGeneration.Transition;
 
 /**
  *
@@ -34,12 +34,12 @@ public class HybridAutomatonToDMEConvertor
         
         output += "<Transitions>\n";
         
-        for(Transition transition : hybridAutomaton.GetTransitions())
+        for(Transition<Location> transition : hybridAutomaton.Transitions())
         {
             String transitionStr = "\t<Transition>\n";
             
-            String orignStr = LocationToString(transition.GetOrign());
-            String destinationStr = LocationToString(transition.GetDestination());
+            String orignStr = LocationToString(transition.GetOrign().InnerState());
+            String destinationStr = LocationToString(transition.GetDestination().InnerState());
             String labelStr = transition.GetLabel().toString();
             
             transitionStr+=("\t\t<From>" + orignStr+"</From>\n");

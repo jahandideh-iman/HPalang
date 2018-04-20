@@ -39,7 +39,7 @@ public class DelegationActorLocator extends ActorLocator<DelegationActorLocator>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return delegationParameter.hashCode();
     }
     
 }

@@ -18,35 +18,35 @@ import HPalang.Core.Visitor;
  */
 public class Invarient extends Equalitable<Invarient> implements Expression 
 {
-    private final Expression invariendExpression;
+    private final Expression invariantExpression;
     
     // TODO: Check expression is Comparision experssion or True/False Expression
     public Invarient(Expression expression)
     {
-        this.invariendExpression = expression;
+        this.invariantExpression = expression;
     }
     
     @Override
     public String toString()
     {
-        return invariendExpression.toString();
+        return invariantExpression.toString();
     }
 
     @Override
     protected boolean InternalEquals(Invarient other)
     {
-        return this.invariendExpression.equals(other.invariendExpression);
+        return this.invariantExpression.equals(other.invariantExpression);
     }
 
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return invariantExpression.hashCode();
     }
 
     public Expression Expression()
     {
-        return invariendExpression;
+        return invariantExpression;
     }
 
     @Override

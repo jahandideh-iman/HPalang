@@ -56,7 +56,7 @@ public class MessageParameters extends Equalitable<MessageParameters>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return parameters.hashCode();
     }
     
     public static MessageParameters From(VariableParameter ... params)

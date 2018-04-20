@@ -30,7 +30,7 @@ public class ResumeSoftwareActorAction extends Equalitable<ResumeSoftwareActorAc
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return actor.hashCode();
     }
 
     @Override

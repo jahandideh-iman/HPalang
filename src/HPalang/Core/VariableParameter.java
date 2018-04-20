@@ -37,7 +37,7 @@ public class VariableParameter extends Equalitable<VariableParameter>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return variable.hashCode();
     }
 
     public String Name()

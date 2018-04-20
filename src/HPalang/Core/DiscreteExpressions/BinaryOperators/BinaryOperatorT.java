@@ -24,7 +24,7 @@ public abstract class BinaryOperatorT<T> extends  Equalitable<T> implements  Bin
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return this.getClass().hashCode();
     }
     
 }

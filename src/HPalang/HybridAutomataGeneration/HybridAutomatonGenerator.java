@@ -47,6 +47,7 @@ public class HybridAutomatonGenerator
         
         ConvertVariables(modelDefinition, lts.InitialState().InnerState());
 
+        int counter = 0;
         for(LTSState<GlobalRunTimeState> globalState : lts.LTSStates())
         {
 
@@ -57,8 +58,12 @@ public class HybridAutomatonGenerator
                                 globalState.InTransitions(),
                                 globalState.OutTransitions()),
                         this);
+            
+            counter++;
+            if(counter%1000 == 0)
+                System.out.println("States visited: " + counter);
         }
-        
+        counter = 0;
         for(HPalang.Core.TransitionSystem.Transition transiton : lts.Transitions())
         {
 
@@ -66,6 +71,9 @@ public class HybridAutomatonGenerator
                 rule.TryApply(
                         transiton,
                         this);
+            counter++;
+            if(counter%1000 == 0)
+                System.out.println("Transitions visited: " + counter);
         }
         
         //hybridAutomaton.SetInitialState(LocationOf(lts.InitialState()));
@@ -75,7 +83,7 @@ public class HybridAutomatonGenerator
     
     public void AddLocationFor(Location location,GlobalRunTimeState runTimeState)
     {
-        hybridAutomaton.AddLocation(location);
+        hybridAutomaton.TryAddState(location);
         processedLocationsMap.put(runTimeState, location);
         idPostFix++;
     }

@@ -113,15 +113,15 @@ public class SingleCommunicationRealVariablePool  extends Equalitable<SingleComm
     
     public boolean HasAvailableVariable(Actor recevier, Message message)
     {
-        if(pool.containsKey(new ReceiverPacket(recevier, message))== false)
-        {
-            pool.containsKey(new ReceiverPacket(recevier, message));
-            System.err.println("No Reserver variable " + recevier.Name()+ ":" + message.toString());
-            for (Map.Entry<ReceiverPacket, ReservedVariables> entry : pool.entrySet()) 
-            {
-                System.out.println("Reserver variable " + entry.getKey().actor.Name()+ ":" + entry.getKey().message.toString());
-            }
-        }
+//        if(pool.containsKey(new ReceiverPacket(recevier, message))== false)
+//        {
+//            pool.containsKey(new ReceiverPacket(recevier, message));
+//            System.err.println("No Reserver variable " + recevier.Name()+ ":" + message.toString());
+//            for (Map.Entry<ReceiverPacket, ReservedVariables> entry : pool.entrySet()) 
+//            {
+//                System.out.println("Reserver variable " + entry.getKey().actor.Name()+ ":" + entry.getKey().message.toString());
+//            }
+//        }
         return pool.get(new ReceiverPacket(recevier, message)).isAvailable;
     }
     

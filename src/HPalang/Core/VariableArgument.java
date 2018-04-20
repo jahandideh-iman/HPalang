@@ -35,7 +35,7 @@ public class VariableArgument  extends Equalitable<VariableArgument>
     @Override
     protected int InternalHashCode()
     {
-        return 0;
+        return type.hashCode() + value.hashCode();
     }
 
     public Variable.Type Type()
