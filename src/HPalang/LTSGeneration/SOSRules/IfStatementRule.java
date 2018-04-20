@@ -57,7 +57,7 @@ public class IfStatementRule extends SoftwareActorLevelRule
         {
             Expression partialCondition = PartivalValuation(ifStatement.Expression(), actor, globalState);
             
-            partialCondition = new ExpressionScopeUnwrapper().Unwrap(partialCondition, actor.Name());
+            partialCondition = new ExpressionScopeUnwrapper().Unwrap(partialCondition, actor.Name(), actor.Type().Variables());
             
             GlobalRunTimeState truePathGlobalState = newGlobalState.DeepCopy();
             EnqueueStatements(ifStatement.TrueStatements(), actor, truePathGlobalState);

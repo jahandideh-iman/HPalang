@@ -26,6 +26,7 @@ import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
+import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapResetScope;
 import HPalang.LTSGeneration.TransitionCollector;
 import HPalang.LTSGeneration.Utilities.CreationUtility;
 import java.util.HashSet;
@@ -108,6 +109,7 @@ public abstract class MessageSendRule extends ActorLevelRule
         
         MaximalEvaluatedArgumentsResult maximalEvaluatoionResult = 
                 CreateMaximalEvaluatedArguments(
+                        senderState.Actor(),
                         receiver,
                         sendStatement.MessageLocator().Locate(actorState.Actor()), 
                         sendStatement.Arguments(),
@@ -144,7 +146,7 @@ public abstract class MessageSendRule extends ActorLevelRule
     abstract protected void InternalApply(GlobalRunTimeState newGlobalState, MessageQueueState newRecieverMessageQueueState, MessagePacket packet);
     
     // TODO: Refactor this crap.
-    private MaximalEvaluatedArgumentsResult  CreateMaximalEvaluatedArguments(Actor receiver, Message message, MessageArguments unEvaluatedArguments, ValuationContainer valuations, RealVariablePool pool)
+    private MaximalEvaluatedArgumentsResult  CreateMaximalEvaluatedArguments(Actor sender, Actor receiver, Message message, MessageArguments unEvaluatedArguments, ValuationContainer valuations, RealVariablePool pool)
     {   
         MessageArguments maximalEvaluatedarguments = new MessageArguments();
         Set<Reset> resets = new HashSet<>();
@@ -167,9 +169,13 @@ public abstract class MessageSendRule extends ActorLevelRule
                         parametersList.get(i).Type(), 
                         new VariableExpression(pooledVariable));
                 
-                resets.add(new Reset(
-                        pooledVariable, 
-                        unEvalutedValue.PartiallyEvaluate(valuations)));
+                resets.add(UnWrapResetScope(
+                        new Reset(
+                            pooledVariable, 
+                            unEvalutedValue.PartiallyEvaluate(valuations)),
+                        sender,
+                        valuations
+                        ));
                 
                 maximalEvaluatedarguments.Add(argument);
             }
@@ -198,9 +204,12 @@ public abstract class MessageSendRule extends ActorLevelRule
                         parametersList.get(i).Type(), 
                         new VariableExpression(pooledVariable));
                 
-                resets.add(new Reset(
+                Reset rawReset = new Reset(
                         pooledVariable, 
-                        unEvalutedValue.PartiallyEvaluate(valuations)));
+                        unEvalutedValue.PartiallyEvaluate(valuations));
+                
+                
+                resets.add(UnWrapResetScope(rawReset,sender, valuations));
             }
             
             maximalEvaluatedarguments.Add(argument);

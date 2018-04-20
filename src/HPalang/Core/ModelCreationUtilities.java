@@ -413,7 +413,7 @@ public class ModelCreationUtilities
                 actor, 
                 new NormalMessage(actor.Type().FindMessageHandler(handlerName)), 
                 size,
-                String.format("%s_%s", actor.Name(), handlerName));
+                String.format("%s__%s", actor.Name(), handlerName));
     }
 
 }

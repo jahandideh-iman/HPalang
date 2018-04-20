@@ -20,6 +20,7 @@ import HPalang.Core.ActorLocators.DirectActorLocator;
 import Mocks.FakeVariable;
 import Mocks.FakeMessage;
 import HPalang.Core.NullExpression;
+import HPalang.Core.ValuationContainers.NullValutationContainer;
 import Mocks.SingleRealVariablePoolMock;
 import Mocks.TransitionCollectorMock;
 import Mocks.UncomputableExpression;
@@ -30,6 +31,7 @@ import org.junit.Before;
 import static TestUtilities.CoreUtility.*;
 import static TestUtilities.NetworkingUtility.*;
 import HPalang.Core.Variables.RealVariable;
+import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapResetScope;
 import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockState;
 import static HPalang.LTSGeneration.Utilities.CreationUtility.CreateDeadlockTransition;
 
@@ -119,7 +121,9 @@ public abstract class MessageSendRuleTestFixture extends SOSRuleTestFixture
         VariableArgument generatedArgument =  FindSentLastPacket(receiverState.Actor(),transitionCollectorMock.GetState(0)).
                 Arguments().AsList().get(0);
         
-        Label expectedLabel = new SoftwareLabel(Reset.From(new Reset(pooledVariable, partialValue)));
+        Label expectedLabel = new SoftwareLabel(Reset.From(
+                UnWrapResetScope(new Reset(pooledVariable, partialValue), sender, new NullValutationContainer()))
+        );
         
         assertThat(generatedArgument.Value(), equalTo(new VariableExpression(pooledVariable)));
         assertThat(transitionCollectorMock.GetLabel(0), equalTo(expectedLabel));

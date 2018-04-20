@@ -13,6 +13,8 @@ import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;
+import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapExpressionScope;
+import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapVariableScope;
 
 /**
  *
@@ -45,16 +47,11 @@ public class AssignmentStatementRule extends StatementRule<AssignmentStatement>
         
         if(statement.Expression().IsComputable(actorState.ValuationState().Valuation()) == false)
         {
-            
-            ExpressionScopeUnwrapper scopeUnwrapper = new ExpressionScopeUnwrapper();
-            String actorName = actorState.Actor().Name();
-            
+
             return new SoftwareLabel(Reset.From(
                     new Reset(
-                            scopeUnwrapper.Unwrap(statement.Variable(), actorName),
-                            scopeUnwrapper.Unwrap(
-                                    statement.Expression().PartiallyEvaluate(valuation),
-                                    actorName)
+                            UnWrapVariableScope(statement.Variable(), actorState.Actor()),
+                            UnWrapExpressionScope( statement.Expression(), actorState.Actor(), valuation)
                     )));
         }
        

@@ -49,6 +49,6 @@ public class ContinuousBehaviorExpirationRule extends PhysicalActorLevelRule
     private Guard UnscopedGuard(Guard guard, Actor owner)
     {
         ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
-        return (Guard) unwrapper.Unwrap(guard, owner.Name());
+        return (Guard) unwrapper.Unwrap(guard, owner.Name(), owner.Type().Variables());
     }
 }

@@ -7,11 +7,8 @@ package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
-import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.Event.SendPacketAndResetNetworkAction;
-import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.MessageQueueState;
 import HPalang.LTSGeneration.RunTimeStates.NetworkState;
 import HPalang.LTSGeneration.SOSRule;
 import static HPalang.LTSGeneration.SOSRules.Utilities.HasSoftwareActions;

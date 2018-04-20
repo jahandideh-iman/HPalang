@@ -8,6 +8,7 @@ package HPalang.Core;
 import HPalang.Core.Variables.RealVariable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 
@@ -74,7 +75,7 @@ public class SingleCommunicationRealVariablePool  extends Equalitable<SingleComm
     {
         List<RealVariable> variables = new ArrayList<>(size);
         for(int i = 0 ; i < size; i++)
-            variables.add(new RealVariable(prefix+i));
+            variables.add(new RealVariable(prefix+"_"+i));
         
         ReceiverPacket packet = new ReceiverPacket(receiver, message);
         ReservedVariables reservedVariables = new ReservedVariables(variables,true);
@@ -159,7 +160,12 @@ public class SingleCommunicationRealVariablePool  extends Equalitable<SingleComm
     @Override
     public Iterable<RealVariable> AllVariables()
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        List<RealVariable> allVariables = new LinkedList<>();
+        for (Map.Entry<ReceiverPacket, ReservedVariables> entry : pool.entrySet()) {
+            allVariables.addAll(entry.getValue().variables);
+        }
+        
+        return allVariables;
     }
 
     @Override

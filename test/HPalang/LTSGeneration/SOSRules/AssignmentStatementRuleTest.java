@@ -13,6 +13,7 @@ import HPalang.Core.Variable;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
+import static HPalang.LTSGeneration.SOSRules.Utilities.ActorsVariablesPlusParameters;
 import Mocks.ComputableExpression;
 import Mocks.EmptyExpression;
 import Mocks.FakeVariable;
@@ -92,6 +93,6 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
     
     private Variable ConvertToScopedVariable(Variable var, ActorState actorState)
     {
-        return new ExpressionScopeUnwrapper().Unwrap(var, actorState.Actor().Name());
+        return new ExpressionScopeUnwrapper().Unwrap(var, actorState.Actor().Name(), ActorsVariablesPlusParameters(actorState.Actor().Type()) );
     }
 }

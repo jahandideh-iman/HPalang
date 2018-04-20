@@ -9,7 +9,7 @@ package HPalang.SpaceEx.Core;
  *
  * @author Iman Jahandideh
  */
-public class HybridTransition extends Transition<Location, HybridLabel> implements Visitable
+public class HybridTransition extends  HPalang.SpaceEx.Core.Transition<Location, HybridLabel> implements Visitable
 {
     private final boolean isASAP;
     public HybridTransition(Location origin, HybridLabel label, Location destination, boolean isASAP)

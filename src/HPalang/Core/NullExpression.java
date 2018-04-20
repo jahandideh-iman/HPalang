@@ -5,6 +5,8 @@
  */
 package HPalang.Core;
 
+import HPalang.Core.Expressions.Visitors.GeneralExpressionVisitor;
+
 /**
  *
  * @author Iman Jahandideh
@@ -37,7 +39,7 @@ public class NullExpression extends Equalitable<NullExpression> implements Expre
     @Override
     public Expression PartiallyEvaluate(ValuationContainer valuations)
     {
-        return null;
+        return this;
     }
 
     @Override
@@ -55,7 +57,8 @@ public class NullExpression extends Equalitable<NullExpression> implements Expre
     @Override
     public void Visit(Visitor visitor)
     {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        if(visitor instanceof GeneralExpressionVisitor)
+            ((GeneralExpressionVisitor)visitor).Visit(this);
     }
     
 }

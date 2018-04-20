@@ -19,6 +19,7 @@ import HPalang.Core.DiscreteExpressions.VariableExpression;
  *
  * @author Iman Jahandideh
  */
+@Deprecated 
 public interface ExpressionVisitor 
 {
     public void Visit(VariableExpression expr);

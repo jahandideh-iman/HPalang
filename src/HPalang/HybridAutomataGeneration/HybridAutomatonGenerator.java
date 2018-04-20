@@ -7,6 +7,8 @@ package HPalang.HybridAutomataGeneration;
 
 import HPalang.Core.Actor;
 import HPalang.Core.ActorType;
+import HPalang.Core.Message;
+import HPalang.Core.MessageHandler;
 import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
 import HPalang.Core.ModelDefinition;
 import HPalang.Core.Variable;
@@ -18,6 +20,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import HPalang.Core.TransitionSystem.LTSState;
+import HPalang.Core.VariableParameter;
+import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapExpressionScope;
+import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapVariableScope;
 
 /**
  *
@@ -106,17 +111,26 @@ public class HybridAutomatonGenerator
         if(definition == null)
             return;
         
-        ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
         for(Actor actor : definition.Actors())
+        {
             for(Variable var : actor.Type().Variables())
             {
                 if(var.Type() == Variable.Type.real || var.Type() == Variable.Type.floatingPoint)
-                    hybridAutomaton.AddVariable(unwrapper.Unwrap(var, actor.Name()).Name());
+                    hybridAutomaton.AddVariable(UnWrapVariableScope(var, actor).Name());
             }
-        
+            for(MessageHandler handler : actor.Type().MessageHandlers())
+            {
+                for(VariableParameter param : handler.Parameters().AsList())
+                    hybridAutomaton.AddVariable(UnWrapVariableScope(param.Variable(), actor).Name());
+            }
+        }
         
         for(Variable var : initialState.EventsState().PoolState().Pool().AllVariables())
             hybridAutomaton.AddVariable(var.Name());
+        
+        for(Variable var : initialState.VariablePoolState().Pool().AllVariables())
+            hybridAutomaton.AddVariable(var.Name());
+        
         hybridAutomaton.AddVariable("urg");
     }
     

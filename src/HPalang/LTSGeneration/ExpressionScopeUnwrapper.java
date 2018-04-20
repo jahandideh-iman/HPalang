@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration;
 
-import HPalang.LTSGeneration.PostorderExpressionCrawler;
 import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
 import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
@@ -22,6 +21,9 @@ import HPalang.Core.Variables.IntegerVariable;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.Reset;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
 import java.util.Stack;
 
 /**
@@ -33,6 +35,7 @@ public class ExpressionScopeUnwrapper  extends PostorderExpressionCrawler
     private String scopeName;
     
     private Stack<Expression> expressoins;
+    private Collection<Variable> unWrappableVariables;
 
     private class VariableScopeChanger implements VariableVisitor
     {
@@ -78,10 +81,16 @@ public class ExpressionScopeUnwrapper  extends PostorderExpressionCrawler
             convertedVariable = var;
         }
     }
+//    
+//    public Expression Unwrap(Expression expr, String scopeName)
+//    {
+//        return this.Unwrap(expr, scopeName, Collections.EMPTY_LIST);
+//    }
     
-    public Expression Unwrap(Expression expr, String scopeName)
+    public Expression Unwrap(Expression expr, String scopeName, Collection<Variable> unWrappableVariables)
     {
         this.scopeName = scopeName;
+        this.unWrappableVariables = unWrappableVariables;
         this.expressoins = new Stack<>();
         
         expr.Visit(this);
@@ -91,15 +100,20 @@ public class ExpressionScopeUnwrapper  extends PostorderExpressionCrawler
         return expressoins.pop();
     }
     
-    public Variable Unwrap(Variable var, String scopeName)
+    public Variable Unwrap(Variable var, String scopeName, Collection<Variable> unWrappableVariables)
     {
-        return new VariableScopeChanger().Convert(var, scopeName);
+        if(unWrappableVariables.contains(var))
+            return new VariableScopeChanger().Convert(var, scopeName);
+        return var;
     }
+    
     
     @Override
     protected void Process(VariableExpression expr)
     {
-        Variable convertedVariable = new VariableScopeChanger().Convert(expr.Variable(), scopeName);
+        Variable convertedVariable = expr.Variable();
+        if(unWrappableVariables.contains(expr.Variable()))
+            convertedVariable= new VariableScopeChanger().Convert(expr.Variable(), scopeName);
         expressoins.push(new VariableExpression(convertedVariable));
     }
 
@@ -162,7 +176,8 @@ public class ExpressionScopeUnwrapper  extends PostorderExpressionCrawler
         expressoins.push(new DifferentialEquation(
                 (RealVariable)Unwrap(
                         expr.GetVariable(), 
-                        scopeName)
+                        scopeName,
+                        unWrappableVariables)
                 ,expression));
     }
     

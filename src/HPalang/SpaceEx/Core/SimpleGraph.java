@@ -5,6 +5,7 @@
  */
 package HPalang.SpaceEx.Core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -20,9 +21,9 @@ import java.util.Set;
  */
 public class SimpleGraph<NodeT extends Node, LabelT extends Label, TransitionT extends Transition<NodeT, LabelT>>
 {   
-    private final List<NodeT> nodes = new LinkedList<>();  
-    private final List<TransitionT> transitions = new LinkedList<>();
-    private final List<GraphListener<NodeT>> listeners = new LinkedList<>();
+    private final Set<NodeT> nodes = new HashSet<>();  
+    private final Set<TransitionT> transitions = new HashSet<>();
+    private final List<GraphListener<NodeT>> listeners = new ArrayList<>();
     
     public void AddListener(GraphListener<NodeT> listener)
     {

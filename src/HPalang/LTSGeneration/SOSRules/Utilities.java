@@ -5,9 +5,12 @@
  */
 package HPalang.LTSGeneration.SOSRules;
 
+import HPalang.Core.Actor;
+import HPalang.Core.ActorType;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.EqualityOperator;
 import HPalang.Core.Expression;
+import HPalang.Core.MessageHandler;
 import HPalang.Core.SoftwareActor;
 import HPalang.Core.Statement;
 import HPalang.LTSGeneration.Labels.NetworkLabel;
@@ -15,7 +18,14 @@ import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.Core.TransitionSystem.Transition;
+import HPalang.Core.ValuationContainer;
+import HPalang.Core.Variable;
+import HPalang.Core.VariableParameter;
+import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
+import HPalang.LTSGeneration.Labels.Reset;
 import java.util.Collection;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Queue;
 
 /**
@@ -67,5 +77,50 @@ public class Utilities
     static public Expression PartivalValuation(Expression expression, SoftwareActor actor, GlobalRunTimeState globalState)
     {
         return expression.PartiallyEvaluate(FindActorState(actor, globalState).ValuationState().Valuation());
+    }
+    
+    static public Reset UnWrapResetScope(Reset reset, Actor actor, ValuationContainer valuation)
+    {
+        Variable unWrappedVariable = UnWrapVariableScope(reset.Variable(), actor);
+        Expression unWrappedExpression = UnWrapExpressionScope(reset.Expression(), actor, valuation);
+        return new Reset(unWrappedVariable, unWrappedExpression);
+    }
+    
+    static public Variable UnWrapVariableScope(Variable variable, Actor actor)
+    {
+        ExpressionScopeUnwrapper scopeUnwrapper = new ExpressionScopeUnwrapper();
+        String actorName = actor.Name();
+        
+        Variable unWrappedVariable = scopeUnwrapper.Unwrap(
+                variable, 
+                actorName,
+                ActorsVariablesPlusParameters(actor.Type()));
+        
+        return unWrappedVariable;
+    }
+    
+    static public Expression UnWrapExpressionScope(Expression expression, Actor actor, ValuationContainer valuation)
+    {
+        ExpressionScopeUnwrapper scopeUnwrapper = new ExpressionScopeUnwrapper();
+        String actorName = actor.Name();
+        
+        Expression unWrappedExpression = scopeUnwrapper.Unwrap(
+                                    expression.PartiallyEvaluate(valuation),
+                                    actorName,
+                                    ActorsVariablesPlusParameters(actor.Type())
+                                    );
+        return unWrappedExpression;
+    }
+    
+    static public Collection<Variable> ActorsVariablesPlusParameters(ActorType actorType)
+    {
+        List<Variable> allVariables = new LinkedList<>();
+        allVariables.addAll(actorType.Variables());
+        
+        for(MessageHandler m : actorType.MessageHandlers())
+            for(VariableParameter p : m.Parameters().AsList())
+                allVariables.add(p.Variable());
+        
+        return allVariables;
     }
 }

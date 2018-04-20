@@ -27,6 +27,10 @@ public class Reset extends  Equalitable<Reset> implements Expression
     {
         this.variable = variable;
         this.expression = expression;
+        
+        if(variable.Name().equals("wheel_controller_FR_wheel_FR__torque_port_0"))
+            System.out.println("HPalang.LTSGeneration.Labels.Reset.<init>()");
+        
     }
 
     @Override

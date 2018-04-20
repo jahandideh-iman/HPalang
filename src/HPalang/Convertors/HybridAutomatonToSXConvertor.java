@@ -12,9 +12,13 @@ import HPalang.SpaceEx.Core.BaseComponent;
 import HPalang.SpaceEx.Core.Flow;
 import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.Core.ContinuousExpressions.Invarient;
+import HPalang.Core.DiscreteExpressions.BinaryExpression;
+import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalOrOperator;
 import static HPalang.Core.ModelCreationUtilities.CreateInvarient;
 import HPalang.Core.TransitionSystem.Transition;
 import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.Labels.Guard;
+import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.SpaceEx.Convertor.ExpressionConvertor;
 import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
@@ -40,8 +44,6 @@ public class HybridAutomatonToSXConvertor
     public String Convert(HybridAutomaton hybridAutomaton)
     {
         SpaceExModel spaceExModel = ConvertHAToSpaceExModel(hybridAutomaton);
-       
-        
         
         return new SpaceExToXMLConvertor().Convert(spaceExModel);
     }
@@ -85,6 +87,43 @@ public class HybridAutomatonToSXConvertor
         }
         for(Transition<HPalang.HybridAutomataGeneration.Location> hybridTransition : automaton.Transitions())
         {
+            //------------------------------ AD HOCK SOLUTION ------------------------------
+            if(hybridTransition.GetLabel().Guard().Expression() instanceof BinaryExpression)
+            {
+                BinaryExpression bExpr= (BinaryExpression)hybridTransition.GetLabel().Guard().Expression();
+                if(bExpr.Operator()instanceof LogicalOrOperator)
+                {
+                    HPalang.SpaceEx.Core.HybridLabel spaceExLabel1 = new HybridLabel();
+                    Guard guard1 = new Guard(bExpr.Operand1());
+                    spaceExLabel1.AddGuard(expressionConvertor.Convert(guard1));
+                    hybridTransition.GetLabel().Resets().forEach((reset) -> spaceExLabel1.AddAssignment(expressionConvertor.Convert((Reset)reset)));
+            
+            
+                    HPalang.SpaceEx.Core.HybridLabel spaceExLabel2 = new HybridLabel();
+                    Guard guard2 = new Guard(bExpr.Operand2());
+                    spaceExLabel1.AddGuard(expressionConvertor.Convert(guard2));
+                    hybridTransition.GetLabel().Resets().forEach((reset) -> spaceExLabel2.AddAssignment(expressionConvertor.Convert((Reset)reset)));
+            
+                    model.AddTransition(
+                            new HybridTransition(
+                                    locationsMap.get(hybridTransition.GetOrign().InnerState()),
+                                    spaceExLabel1,
+                                    locationsMap.get(hybridTransition.GetDestination().InnerState()),
+                                    false
+                            ));
+
+                    model.AddTransition(
+                            new HybridTransition(
+                                    locationsMap.get(hybridTransition.GetOrign().InnerState()),
+                                    spaceExLabel2,
+                                    locationsMap.get(hybridTransition.GetDestination().InnerState()),
+                                    false
+                            ));
+                    
+                    continue;
+                }
+            }
+            //------------------------------------------------------------------------------
             HPalang.HybridAutomataGeneration.HybridLabel hybridLabel = (HPalang.HybridAutomataGeneration.HybridLabel)hybridTransition.GetLabel();
             
             HPalang.SpaceEx.Core.HybridLabel spaceExLabel = new HybridLabel();

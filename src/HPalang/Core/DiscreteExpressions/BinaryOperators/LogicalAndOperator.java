@@ -19,4 +19,10 @@ public class LogicalAndOperator extends BinaryOperatorT<LogicalAndOperator>
     {
         return ((operand1.Evaluate(valuations)>0) && (operand2.Evaluate(valuations)>0))? 1:0;
     }
+
+    @Override
+    public String toString()
+    {
+        return "&&";
+    }
 }

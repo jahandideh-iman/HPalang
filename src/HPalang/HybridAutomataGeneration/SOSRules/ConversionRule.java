@@ -32,8 +32,11 @@ import HPalang.Core.TransitionSystem.Transition;
 import java.util.Collection;
 import static HPalang.Core.ModelCreationUtilities.*;
 import HPalang.Core.Variable;
+import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import static HPalang.LTSGeneration.Utilities.QueryUtilities.IsDeadlock;
+import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapExpressionScope;
+import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapVariableScope;
 
 /**
  *
@@ -150,11 +153,17 @@ public class ConversionRule implements SOSRule
         {
             String actorName = actorState.Actor().Name();
             Invarient convertedInvarient = 
-                    (Invarient) unwrapper.Unwrap(actorState.Mode().GetInvarient(), actorName);
+                    (Invarient) unwrapper.Unwrap(
+                            actorState.Mode().GetInvarient(), 
+                            actorName, 
+                            actorState.Actor().Type().Variables());
             
             location.AddInvariant(convertedInvarient);
             for(DifferentialEquation equation : actorState.Mode().GetEquations())
-                location.AddEquation((DifferentialEquation) unwrapper.Unwrap(equation, actorName));
+                location.AddEquation((DifferentialEquation) unwrapper.Unwrap(
+                        equation, 
+                        actorName,
+                        actorState.Actor().Type().Variables()));
         }
         
         for(Event event : gs.EventsState().Events())
@@ -217,13 +226,12 @@ public class ConversionRule implements SOSRule
     private void AddConstantODEs(Location location, GlobalRunTimeState gs)
     {
  
-        ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
         for(ActorState actorState : gs.DiscreteState().ActorStates())
             for(Variable var : actorState.Actor().Type().Variables())
                 if(var.Type() == Variable.Type.floatingPoint)
                     location.AddEquation(
                             new DifferentialEquation(
-                                    unwrapper.Unwrap(var, actorState.Actor().Name()), 
+                                    UnWrapVariableScope(var, actorState.Actor()), 
                                     Const(0f)));
         
     }

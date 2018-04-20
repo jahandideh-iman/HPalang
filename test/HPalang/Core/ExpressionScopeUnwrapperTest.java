@@ -13,6 +13,9 @@ import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.TrueConst;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.Variables.IntegerVariable;
+import java.util.Collections;
+import java.util.LinkedList;
+import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
@@ -33,7 +36,7 @@ public class ExpressionScopeUnwrapperTest
                 new EqualityOperator(),
                 new TrueConst());
         
-        Expression result = new ExpressionScopeUnwrapper().Unwrap(input, "scopeName");
+        Expression result = new ExpressionScopeUnwrapper().Unwrap(input, "scopeName",Collections.EMPTY_LIST);
         
         assertThat(result, equalTo(input));
     }
@@ -41,10 +44,19 @@ public class ExpressionScopeUnwrapperTest
     @Test
     public void UnwrapsTheVariableExpressions()
     {
+        Variable var1 = new IntegerVariable("var1");  
+        Variable var2 = new IntegerVariable("var2");
+
+        
+        List<Variable> variables = new LinkedList<>();
+        variables.add(var1);        
+        variables.add(var2);
+
+        
         Expression input = new BinaryExpression(
-                new BinaryExpression(VariableExpression("var1"), new AddOperator(), Const(2)),
+                new BinaryExpression(VariableExpression(var1), new AddOperator(), Const(2)),
                 new EqualityOperator(),
-                VariableExpression("var2"));
+                VariableExpression(var2));
         
         
         Expression expected = new BinaryExpression(
@@ -52,7 +64,7 @@ public class ExpressionScopeUnwrapperTest
                 new EqualityOperator(),
                 VariableExpression("scopeName_var2"));
         
-        Expression result = new ExpressionScopeUnwrapper().Unwrap(input, "scopeName");
+        Expression result = new ExpressionScopeUnwrapper().Unwrap(input, "scopeName",variables);
         
         assertThat(result, equalTo(expected));
     }
@@ -65,5 +77,10 @@ public class ExpressionScopeUnwrapperTest
     private VariableExpression VariableExpression(String varName)
     {
         return new VariableExpression(new IntegerVariable(varName));
+    }
+    
+    private VariableExpression VariableExpression(Variable var)
+    {
+        return new VariableExpression(var);
     }
 }

@@ -52,7 +52,7 @@ public class Main {
         
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BrakeByWireModelTwoWheelSimplified.Create();
+            definition = BrakeByWireModelTwoWheel.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         

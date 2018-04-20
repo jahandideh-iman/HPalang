@@ -148,7 +148,7 @@ public class SpaceExToXMLConvertorVisitor implements ModelVisitor
     }
 
     @Override
-    public void Visit(HybridTransition transition)
+    public void Visit(HPalang.SpaceEx.Core.HybridTransition transition)
     {
         Element transElem = document.createElement("transition");
         transElem.setAttribute("source", transition.GetOrign().GetId());
