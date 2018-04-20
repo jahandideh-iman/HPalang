@@ -7,6 +7,7 @@ package HPalang.Core.TransitionSystem;
 
 import HPalang.Core.Equalitable;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -15,8 +16,8 @@ import java.util.List;
  */
 public class SimpleLTSState<T> extends  Equalitable<SimpleLTSState<T>> implements LTSState<T>
 {
-    private final List<Transition<T>> outTransitions = new ArrayList<>();
-    private final List<Transition<T>> inTransitions = new ArrayList<>();
+    private final Collection<Transition<T>> outTransitions = new ArrayList<>();
+    private final Collection<Transition<T>> inTransitions = new ArrayList<>();
     
     private final T innerState;
     
@@ -26,13 +27,13 @@ public class SimpleLTSState<T> extends  Equalitable<SimpleLTSState<T>> implement
     }
     
     @Override
-    public List<Transition<T>> OutTransitions()
+    public Collection<Transition<T>> OutTransitions()
     {
         return outTransitions;
     }
 
     @Override
-    public List<Transition<T>> InTransitions()
+    public Collection<Transition<T>> InTransitions()
     {
         return inTransitions;
     }

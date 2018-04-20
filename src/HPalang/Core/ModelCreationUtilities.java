@@ -48,6 +48,10 @@ public class ModelCreationUtilities
         return AddMessageHandler(type, handlerName, Message.MessageType.Control);
     }
     
+    public static MessageHandler AddDataMessageHandler(ActorType type, String handlerName)
+    {
+        return AddMessageHandler(type, handlerName, Message.MessageType.Data);
+    }
     
     public static void AddPort(ActorType actorType, String portName, Variable targetVariable)
     {
@@ -402,4 +406,14 @@ public class ModelCreationUtilities
     {
         return new NullExpression(expr);
     }
+    
+    public static void Reserve(SingleCommunicationRealVariablePool pool, Actor actor, String handlerName, int size)
+    {
+        pool.Reserve(
+                actor, 
+                new NormalMessage(actor.Type().FindMessageHandler(handlerName)), 
+                size,
+                String.format("%s_%s", actor.Name(), handlerName));
+    }
+
 }

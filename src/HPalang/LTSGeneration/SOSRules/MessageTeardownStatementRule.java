@@ -10,6 +10,7 @@ import HPalang.Core.Statements.MessageTeardownStatement;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 
 /**
@@ -26,7 +27,7 @@ public class MessageTeardownStatementRule extends SoftwareStatementRule<MessageT
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState newActorState, MessageTeardownStatement statement, HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState newGlobalState)
+    protected void ApplyStatement(SoftwareActorState newActorState, MessageTeardownStatement statement, GlobalRunTimeState newGlobalState)
     {
         for(VariableParameter parameter : statement.ParametersToRemove().AsSet())
             newActorState.ValuationState().Valuation().Remove(parameter.Variable());

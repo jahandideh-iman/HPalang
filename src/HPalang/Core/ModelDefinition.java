@@ -29,21 +29,48 @@ public class ModelDefinition
     private int eventSystemVariablePoolSize = 1;
     private int globalVariablePoolSize = 1;
     
+    private RealVariablePool initialEventSystemVariablePool;
+    private RealVariablePool initialGlobalVariablePool;
+    
+    public void SetInitialEventSystemVariablePool(RealVariablePool pool)
+    {
+        this.initialEventSystemVariablePool = pool;
+    }
+    
+    public void SetInitialGlobalVariablePool(RealVariablePool pool)
+    {
+        this.initialGlobalVariablePool = pool;
+    }
+    
+    public RealVariablePool InitialEventSystemVariablePool()
+    {
+        return initialEventSystemVariablePool;
+    }
+    
+    public RealVariablePool InitialGlobalVariablePool()
+    {
+        return initialGlobalVariablePool;
+    }
+    
+    @Deprecated //Use SetInitialEventSystemVariablePool.
     public void SetEventSystemVariablePoolSize(int size)
     {
         eventSystemVariablePoolSize = size;
     }
     
+    @Deprecated //Use InitialEventSystemVariablePool.
     public int EventSystemVariablePoolSize()
     {
         return eventSystemVariablePoolSize;
     }
     
+    @Deprecated //Use SetInitialGlobalVariablePool.
     public void SetGlobalVariablePoolSize(int size)
     {
         globalVariablePoolSize = size;
     }
     
+    @Deprecated //Use InitialGlobalVariablePool.
     public int GlobalVariablePoolSize()
     {
         return globalVariablePoolSize;

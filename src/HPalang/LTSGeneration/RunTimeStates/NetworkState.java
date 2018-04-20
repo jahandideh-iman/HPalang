@@ -10,6 +10,7 @@ import HPalang.Core.Message;
 import HPalang.Core.MessagePacket;
 import HPalang.LTSGeneration.CompositeStateT;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -46,6 +47,14 @@ public class NetworkState extends CompositeStateT<NetworkState>
     @Override
     protected boolean DataEquals(NetworkState other)
     {
+
+//        HashSet<MessagePacket> thisSet = new HashSet<>(buffer);
+//        HashSet<MessagePacket> otherSet = new HashSet<>(other.buffer);
+//        System.err.println(thisSet.equals(otherSet));
+//        
+//        return thisSet.equals(otherSet) &&
+//                this.isIdle == other.isIdle;
+        
         return buffer.equals(other.buffer) &&
                 this.isIdle == other.isIdle;
     }

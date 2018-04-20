@@ -15,6 +15,7 @@ import HPalang.Core.Message;
 import HPalang.Core.MessageArguments;
 import HPalang.Core.MessagePacket;
 import HPalang.Core.RealVariablePool;
+import HPalang.Core.SingleCommunicationRealVariablePool;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Statements.SendStatement;
@@ -31,7 +32,6 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import org.antlr.v4.runtime.misc.Pair;
 
 /**
  *
@@ -108,14 +108,15 @@ public abstract class MessageSendRule extends ActorLevelRule
         
         MaximalEvaluatedArgumentsResult maximalEvaluatoionResult = 
                 CreateMaximalEvaluatedArguments(
+                        receiver,
                         sendStatement.MessageLocator().Locate(actorState.Actor()), 
                         sendStatement.Arguments(),
                         valuations,
                         pool
                 );
         
-        if(maximalEvaluatoionResult.resets.size()>0)
-            System.out.println(maximalEvaluatoionResult.resets);
+//        if(maximalEvaluatoionResult.resets.size()>0)
+//            System.out.println(maximalEvaluatoionResult.resets);
         
         Message message = sendStatement.MessageLocator().Locate(actorState.Actor());
         int prioriy = MessagePriorityFor(receiverState.Actor(),message, globalState.NetworkState().CANSpecification());
@@ -143,7 +144,7 @@ public abstract class MessageSendRule extends ActorLevelRule
     abstract protected void InternalApply(GlobalRunTimeState newGlobalState, MessageQueueState newRecieverMessageQueueState, MessagePacket packet);
     
     // TODO: Refactor this crap.
-    private MaximalEvaluatedArgumentsResult  CreateMaximalEvaluatedArguments(Message message, MessageArguments unEvaluatedArguments, ValuationContainer valuations, RealVariablePool pool)
+    private MaximalEvaluatedArgumentsResult  CreateMaximalEvaluatedArguments(Actor receiver, Message message, MessageArguments unEvaluatedArguments, ValuationContainer valuations, RealVariablePool pool)
     {   
         MessageArguments maximalEvaluatedarguments = new MessageArguments();
         Set<Reset> resets = new HashSet<>();
@@ -151,6 +152,33 @@ public abstract class MessageSendRule extends ActorLevelRule
         
         List<VariableParameter> parametersList = message.Parameters().AsList();
         List<VariableArgument> unEvaluatedArgumentsList  = unEvaluatedArguments.AsList();
+        
+        //--------------------------- THIS IS AN AD HOCK (WRONG) SOLUTION -------------------------
+        if(pool instanceof SingleCommunicationRealVariablePool 
+                && parametersList.size()>0 )
+        {
+            List<RealVariable> variables = ((SingleCommunicationRealVariablePool) pool).Acquire(receiver, message);
+            for(int i = 0 ; i< parametersList.size(); i++ )
+            {
+                RealVariable pooledVariable = variables.get(i);
+                Expression unEvalutedValue = unEvaluatedArgumentsList.get(i).Value();
+                pooledVariables.add(pooledVariable);
+                VariableArgument argument = new VariableArgument(
+                        parametersList.get(i).Type(), 
+                        new VariableExpression(pooledVariable));
+                
+                resets.add(new Reset(
+                        pooledVariable, 
+                        unEvalutedValue.PartiallyEvaluate(valuations)));
+                
+                maximalEvaluatedarguments.Add(argument);
+            }
+            
+            return new MaximalEvaluatedArgumentsResult(maximalEvaluatedarguments, resets, pooledVariables);
+        }
+
+        //---------------------------------------------------------------------------------
+        
         for(int i = 0 ; i< parametersList.size(); i++ )
         {
             Expression unEvalutedValue = unEvaluatedArgumentsList.get(i).Value();
@@ -190,9 +218,23 @@ public abstract class MessageSendRule extends ActorLevelRule
         for(VariableArgument argument : sendStatement.Arguments().AsList())
             if(argument.Value().IsComputable(valuations) == false)
                 numberOfNeededVariables++;
-        
         //System.out.println("Number of needed:" + numberOfNeededVariables);
+        //--------------------------- THIS IS AN AD HOCK (WRONG) SOLUTION -------------------------
+        if(globalState.VariablePoolState().Pool() instanceof SingleCommunicationRealVariablePool)
+        {
+                if(sendStatement.Arguments().AsList().size()>0)
+                    return ((SingleCommunicationRealVariablePool)globalState.VariablePoolState().Pool())
+                    .HasAvailableVariable(
+                            sendStatement.ReceiverLocator().Locate(actorState),
+                            sendStatement.MessageLocator().Locate(actorState.Actor())
+                            );
+                else
+                    return true;
+        }
+        //---------------------------------------------------------------------------------
         return globalState.VariablePoolState().Pool().HasAvailableVariable(numberOfNeededVariables);
+        
+        
                 
     }
 

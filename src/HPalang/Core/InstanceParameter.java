@@ -14,7 +14,6 @@ public class InstanceParameter extends Equalitable<InstanceParameter>
     private final String name;
     private final ActorType type;
     
-    private SoftwareActor instance;
     
     public InstanceParameter(String name, ActorType type)
     {

@@ -5,6 +5,7 @@
  */
 package HPalang.LTSGeneration;
 
+import HPalang.Convertors.StringConversionUtilities;
 import HPalang.Core.TransitionSystem.Label;
 import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import static HPalang.LTSGeneration.Utilities.QueryUtilities.IsDeadlock;
@@ -66,7 +67,10 @@ public class LTSGenerator implements TransitionCollector
     public void AddTransition(Label label,GlobalRunTimeState destination)
     {
         if(transitionSystem.HasState(destination) == false)
+        {
+            //System.out.println(StringConversionUtilities.StringFor(destination));
             notVisitedStates.add(transitionSystem.TryAddState(destination));
+        }
         
         
         transitionSystem.AddTransition(currentGlobalState, label, transitionSystem.TryAddState(destination));

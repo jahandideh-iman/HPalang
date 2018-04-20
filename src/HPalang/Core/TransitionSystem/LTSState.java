@@ -6,6 +6,7 @@
 package HPalang.Core.TransitionSystem;
 
 import HPalang.Core.Equalitable;
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -14,8 +15,8 @@ import java.util.List;
  */
 public interface LTSState<T> 
 {
-    public List<Transition<T>> OutTransitions();
-    public List<Transition<T>> InTransitions();
+    public Collection<Transition<T>> OutTransitions();
+    public Collection<Transition<T>> InTransitions();
     public void AddInTransition(Transition<T> tr);
     public void AddOutTransition(Transition<T> tr);
     public T InnerState();

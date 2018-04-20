@@ -32,6 +32,7 @@ import HPalang.Core.Variable;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.RealVariable;
 import static HPalang.Core.ModelCreationUtilities.*;
+import HPalang.Core.SingleCommunicationRealVariablePool;
 import HPalang.LTSGeneration.Labels.Guard;
 
 /**
@@ -50,13 +51,13 @@ public class BrakeByWireModelSingleWheel
     public static final float Wheel__period_const = 0.05f;
     
     public static final String Wheel_Controller__wheel_instance = "wheel";
-    public static final String Wheel_Controller__wheel_rmp_port = "wheel_speed_port";
+    public static final String Wheel_Controller__wheel_speed_port = "wheel_speed_port";
     public static final String Wheel_Controller__wheel_speed = "wheel_speed";
     public static final String Wheel_Controller__slip_rate = "slip_rate";
     public static final String Wheel_Controller__apply_torque_handler = "applyTorque";
     public static final float Wheel_Controller__wheel_radius_const = 0.3f;
 
-    public static final String Global_Brake_Controller__wheel_rpm_FR_port = "wheel_speed_FR_port";
+    public static final String Global_Brake_Controller__wheel_speed_FR_port = "wheel_speed_FR_port";
 
     
     public static final String Global_Brake_Controller__brake_percent_port = "brake_percent_port";
@@ -99,7 +100,7 @@ public class BrakeByWireModelSingleWheel
         FillSkeletonForGlobalBrakeControllerType(globalBrakeControllerType, wheelControllerType);
         FillClockType(clockType);
         
-        FillFleshForWheelType(wheelType, wheelControllerType.FindMessageHandler(Wheel_Controller__wheel_rmp_port));
+        FillFleshForWheelType(wheelType, wheelControllerType.FindMessageHandler(Wheel_Controller__wheel_speed_port));
         FillFleshForWheelControllerType(wheelControllerType, wheelType.FindMode("Break"), wheelType.FindMode("NoBrake"), wheelType.FindMessageHandler(Wheel__torque_port));
         FillFleshForBrakeType(brakeType, globalBrakeControllerType.FindMessageHandler(Global_Brake_Controller__brake_percent_port));
         FillFleshForGlobalBrakeControllerType(globalBrakeControllerType, wheelControllerType.FindMessageHandler(Wheel_Controller__apply_torque_handler));
@@ -115,7 +116,7 @@ public class BrakeByWireModelSingleWheel
         
         PhysicalActor clock = new PhysicalActor("clock", clockType,1);
         
-        FillWheelActor(wheel_FR,wheel_controller_FR,global_brake_controller,Global_Brake_Controller__wheel_rpm_FR_port);
+        FillWheelActor(wheel_FR,wheel_controller_FR,global_brake_controller,Global_Brake_Controller__wheel_speed_FR_port);
   
         FillWheelControllerActor(wheel_controller_FR, wheel_FR);
  
@@ -147,11 +148,11 @@ public class BrakeByWireModelSingleWheel
         SetNetworkPriority(definition, wheel_controller_FR, Wheel_Controller__apply_torque_handler, 1);
 
         
-        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__wheel_rpm_FR_port, 3);
+        SetNetworkPriority(definition, global_brake_controller, Global_Brake_Controller__wheel_speed_FR_port, 3);
  
         
         
-        SetNetworkDelay(definition, wheel_FR, global_brake_controller, Global_Brake_Controller__wheel_rpm_FR_port, CAN__dealy_const);
+        SetNetworkDelay(definition, wheel_FR, global_brake_controller, Global_Brake_Controller__wheel_speed_FR_port, CAN__dealy_const);
 
 
 
@@ -159,9 +160,19 @@ public class BrakeByWireModelSingleWheel
        
 
         definition.SetEventSystemVariablePoolSize(1);
+        SingleCommunicationRealVariablePool globalPool = new SingleCommunicationRealVariablePool();
+        
+
+        Reserve(globalPool,wheel_FR, Wheel__torque_port,1);
+
+        Reserve(globalPool, wheel_controller_FR, Wheel_Controller__wheel_speed_port, 1);     
+        Reserve(globalPool, wheel_controller_FR, Wheel_Controller__apply_torque_handler, 2);
+        Reserve(globalPool, global_brake_controller, Global_Brake_Controller__wheel_speed_FR_port, 1);
+        Reserve(globalPool, global_brake_controller, Global_Brake_Controller__brake_percent_port, 1);
+        
+        definition.SetInitialGlobalVariablePool(globalPool);
+        
         definition.SetGlobalVariablePoolSize(4);
-        
-        
         return definition;
     }
 
@@ -234,7 +245,7 @@ public class BrakeByWireModelSingleWheel
         AddParameter(applyTorque, "vehicle_speed", FloatVariable.class);
         wheelControllerType.AddMessageHandler(Wheel_Controller__apply_torque_handler, applyTorque);
         
-        AddPort(wheelControllerType, Wheel_Controller__wheel_rmp_port, Wheel_Controller__wheel_speed);        
+        AddPort(wheelControllerType, Wheel_Controller__wheel_speed_port, Wheel_Controller__wheel_speed);        
     }
     
     private static void FillFleshForWheelControllerType(SoftwareActorType wheelControllerType, Mode brakeMode, Mode noBrakeMode, MessageHandler wheel_torque_port)
@@ -277,7 +288,7 @@ public class BrakeByWireModelSingleWheel
                         CreateModeChangeSendStatement(brakeMode, new ParametricActorLocator(wheel)))
         ));
         
-        AddPort(wheelControllerType, Wheel_Controller__wheel_rmp_port, wheel_speed);
+        
     }
 
     private static void FillSkeletonForBrakeType(PhysicalActorType brakeType, SoftwareActorType globalBrakeControllerType)
@@ -346,7 +357,7 @@ public class BrakeByWireModelSingleWheel
         globalBrakeControllerType.AddVariable(new FloatVariable(Global_Brake_Controller__estimated_speed));
         globalBrakeControllerType.AddVariable(new FloatVariable(Global_Brake_Controller__global_torque));
         
-        AddPort(globalBrakeControllerType, Global_Brake_Controller__wheel_rpm_FR_port, globalBrakeControllerType.FindVariable(Global_Brake_Controller__wheel_speed_FR));
+        AddPort(globalBrakeControllerType, Global_Brake_Controller__wheel_speed_FR_port, globalBrakeControllerType.FindVariable(Global_Brake_Controller__wheel_speed_FR));
         
         AddPort(globalBrakeControllerType, Global_Brake_Controller__brake_percent_port, globalBrakeControllerType.FindVariable(Global_Brake_Controller__brake_percent));
         

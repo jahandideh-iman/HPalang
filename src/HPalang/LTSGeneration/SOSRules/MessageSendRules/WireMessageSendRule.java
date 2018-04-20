@@ -39,6 +39,7 @@ public class WireMessageSendRule extends MessageSendRule
     @Override
     protected void InternalApply(GlobalRunTimeState newGlobalState, MessageQueueState newRecieverMessageQueueState, MessagePacket packet)
     {
+        //System.out.println(String.format("%s %s %s",packet.Sender().Name(), packet.Message().toString(), packet.Receiver().Name()));
         newRecieverMessageQueueState.Messages().Enqueue(packet);
     }
     

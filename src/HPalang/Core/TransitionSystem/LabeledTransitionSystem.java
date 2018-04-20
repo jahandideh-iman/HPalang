@@ -74,6 +74,8 @@ public class LabeledTransitionSystem<T>
         {
             if(transitions.contains(transtion))
                 return;
+//            if(transtion.GetOrign().OutTransitions().contains(transtion))
+//                return;
         }
         transtion.GetOrign().AddOutTransition(transtion);
         transtion.GetDestination().AddInTransition(transtion);
