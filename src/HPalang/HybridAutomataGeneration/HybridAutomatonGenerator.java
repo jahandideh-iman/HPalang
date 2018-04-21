@@ -65,7 +65,7 @@ public class HybridAutomatonGenerator
                         this);
             
             counter++;
-            if(counter%1000 == 0)
+            if(counter%5000 == 0)
                 System.out.println("States visited: " + counter);
         }
         counter = 0;
@@ -77,12 +77,12 @@ public class HybridAutomatonGenerator
                         transiton,
                         this);
             counter++;
-            if(counter%1000 == 0)
+            if(counter%5000 == 0)
                 System.out.println("Transitions visited: " + counter);
         }
         
-        //hybridAutomaton.SetInitialState(LocationOf(lts.InitialState()));
-            
+        hybridAutomaton.SetInitialState(LocationOf(lts.InitialState().InnerState()));
+           
         return hybridAutomaton;
     }
     

@@ -8,6 +8,7 @@ package HPalang.LTSGeneration.RunTimeStates;
 import HPalang.LTSGeneration.State;
 import HPalang.Core.PhysicalActor;
 import HPalang.LTSGeneration.CompositeStateT;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -32,7 +33,7 @@ public class ContinuousState extends CompositeStateT<ContinuousState>
     }
         
     
-    public Iterable<PhysicalActorState> ActorStates()
+    public Collection<PhysicalActorState> ActorStates()
     {
         return physicalActorStatesCache;
     }

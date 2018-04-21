@@ -41,7 +41,7 @@ public class HybridAutomatonGeneratorTest
 
         LTSState<GlobalRunTimeState> ltsState1=  lts.TryAddState(state1);
         LTSState<GlobalRunTimeState> ltsState2 = lts.TryAddState(state2);
-        lts.SetInitialState(state1);
+        lts.SetInitialState(ltsState1.InnerState());
         
         lts.AddTransition(ltsState1, new SoftwareLabel(), ltsState2);
         lts.AddTransition(ltsState1, new SoftwareLabel(), ltsState2);

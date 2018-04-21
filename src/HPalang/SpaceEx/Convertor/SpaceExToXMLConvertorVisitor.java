@@ -82,8 +82,12 @@ public class SpaceExToXMLConvertorVisitor implements ModelVisitor
         currentComElem.setAttribute("id", component.GetID());
         for(Parameter param : component.GetParameters())
             param.Accept(this);
+        
+        Location initialLoc = component.InitialLocation();
+        initialLoc.Accept(this);
         for(Location loc : component.GetLocations())
-            loc.Accept(this);
+            if(loc.equals(initialLoc) == false)
+                loc.Accept(this);
         for(HybridTransition tran : component.GetTransitions())
             tran.Accept(this);
            

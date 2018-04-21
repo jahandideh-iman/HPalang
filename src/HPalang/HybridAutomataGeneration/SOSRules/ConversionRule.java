@@ -13,7 +13,6 @@ import HPalang.Core.DiscreteExpressions.TrueConst;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
 import HPalang.Core.ContinuousExpressions.Invarient;
-import HPalang.Core.ModelCreationUtilities;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.HybridAutomataGeneration.HybridLabel;
@@ -32,10 +31,10 @@ import HPalang.Core.TransitionSystem.Transition;
 import java.util.Collection;
 import static HPalang.Core.ModelCreationUtilities.*;
 import HPalang.Core.Variable;
-import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
+import HPalang.LTSGeneration.RunTimeStates.DeadlockState;
+import static HPalang.LTSGeneration.SOSRules.Utilities.ActorVariablesPlusParameters;
 import static HPalang.LTSGeneration.Utilities.QueryUtilities.IsDeadlock;
-import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapExpressionScope;
 import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapVariableScope;
 
 /**
@@ -52,7 +51,10 @@ public class ConversionRule implements SOSRule
     {
         Location location;
         
-        if(AllAreSoftware(globalStateInfo.Outs()) || AllIsNetwork(globalStateInfo.Outs()))
+        if(IsDeadlock(globalStateInfo.State()))
+            location =  new Location("Deadlock_" + globalStateInfo.State().FindSubState(DeadlockState.class).Message());
+        
+        else if(AllAreSoftware(globalStateInfo.Outs()) || AllIsNetwork(globalStateInfo.Outs()))
             location =  CreateInstantaneousLocation(globalStateInfo.State(),generator.CreateAUniqueLocationName(globalStateInfo.State()));
         
         else if (AllArePhysical(globalStateInfo.Outs()))
@@ -121,13 +123,11 @@ public class ConversionRule implements SOSRule
     }
 
     private Location CreateInstantaneousLocation(GlobalRunTimeState gs, String locName)
-    {
+    {  
         Location location = new Location(locName+"_I");
-
-        if(IsDeadlock(gs))
-            return location;
         
         AddConstantODEs(location, gs);
+        AddConstantODEsForReals(location, gs);
         
         for (RealVariable var : gs.EventsState().PoolState().Pool().AllVariables()) {
             location.AddEquation(new DifferentialEquation(var, Const(0f)));
@@ -144,9 +144,6 @@ public class ConversionRule implements SOSRule
     private Location CreatePhyscialLocationFrom(GlobalRunTimeState gs, String locName)
     {
         Location location = new Location(locName+"_P");
-        
-        if(IsDeadlock(gs))
-            return location;
         
         ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
         for(PhysicalActorState actorState : gs.ContinuousState().ActorStates())
@@ -226,9 +223,25 @@ public class ConversionRule implements SOSRule
     private void AddConstantODEs(Location location, GlobalRunTimeState gs)
     {
  
-        for(ActorState actorState : gs.DiscreteState().ActorStates())
-            for(Variable var : actorState.Actor().Type().Variables())
+        for(ActorState actorState : gs.ActorStates())
+            for(Variable var :  ActorVariablesPlusParameters(actorState.Actor().Type()))
                 if(var.Type() == Variable.Type.floatingPoint)
+                    location.AddEquation(
+                            new DifferentialEquation(
+                                    UnWrapVariableScope(var, actorState.Actor()), 
+                                    Const(0f)));
+        
+        
+        for(Variable var : gs.VariablePoolState().Pool().AllVariables())
+            location.AddEquation(new DifferentialEquation(var,Const(0f)));
+        
+    }
+
+    private void AddConstantODEsForReals(Location location, GlobalRunTimeState gs)
+    {
+        for(ActorState actorState : gs.ActorStates())
+            for(Variable var : actorState.Actor().Type().Variables())
+                if(var.Type() == Variable.Type.real)
                     location.AddEquation(
                             new DifferentialEquation(
                                     UnWrapVariableScope(var, actorState.Actor()), 

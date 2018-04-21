@@ -26,7 +26,7 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
-public class PhysicalActorFIFOMessageTake extends PhysicalActorLevelRule
+public class PhysicalActorFIFOMessageTakeRule extends PhysicalActorLevelRule
 {
     @Override
     protected boolean IsRuleSatisfied(PhysicalActorState actorState, StateInfo globalStateInfo)
@@ -47,7 +47,6 @@ public class PhysicalActorFIFOMessageTake extends PhysicalActorLevelRule
         
         assert( packet.Arguments().Match(message.Parameters()));
         
-
         List<VariableParameter> parametersList =  message.Parameters().AsList();  
         List<VariableArgument> argumentsList = packet.Arguments().AsList();
         
@@ -62,6 +61,7 @@ public class PhysicalActorFIFOMessageTake extends PhysicalActorLevelRule
         }
         
         newActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
+        newActorState.ExecutionQueueState().Statements().Enqueue(new MessageTeardownStatement(message.Parameters(), packet.PooledVariables()));
         
         collector.AddTransition(new SoftwareLabel(), newGlobalState);
     }

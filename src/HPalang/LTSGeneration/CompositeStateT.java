@@ -65,6 +65,7 @@ public abstract class CompositeStateT<T extends CompositeStateT> extends Equalit
         T copy = NewInstance();
         CloneSubStates(copy);
         CloneData(copy);
+        
         return copy;
     }
     

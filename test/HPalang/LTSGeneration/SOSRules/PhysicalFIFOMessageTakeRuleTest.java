@@ -27,6 +27,11 @@ import static TestUtilities.NetworkingUtility.*;
 import Mocks.EmptyStatement;
 import Mocks.FakeMessage;
 import HPalang.Core.NullExpression;
+import HPalang.Core.PhysicalActor;
+import HPalang.Core.Variables.FloatVariable;
+import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
+import HPalang.LTSGeneration.RunTimeStates.PhysicalActorState;
 import static TestUtilities.CoreUtility.SimpleStateInfo;
 import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
@@ -40,19 +45,19 @@ import org.junit.Before;
  */
 
 // TODO: Find a better way for testing the expected outcome of the tests
-public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
+public class PhysicalFIFOMessageTakeRuleTest extends SOSRuleTestFixture
 {
-    SoftwareActor arbitrarySender = CreateSofwareActor("sender");
+    PhysicalActor arbitrarySender = CreatePhysicalActor("sender");
     
-    SoftwareActorState receiverState = CreateSoftwareActorState("receiver");
-    SoftwareActor receiver;
+    PhysicalActorState receiverState = CreatePhysicalActorState("receiver");
+    PhysicalActor receiver;
     
     @Before
     public void Setup()
     {
-        rule = new SoftwareActorFIFOMessageTakeRule();
+        rule = new PhysicalActorFIFOMessageTakeRule();
         
-        receiver = receiverState.SActor();
+        receiver = receiverState.PActor();
         
         AddActorState(receiverState, globalState);
     }
@@ -79,31 +84,12 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
-    @Test
-    public void IsNotAppliedWhenActorIsSuspended()
-    {
-        Message message = new FakeMessage(StatementsFrom(new EmptyStatement("s1"), new EmptyStatement("s2")));
-        
-        receiverState.SetSuspended(true);
-        MessagePacket messagePacket = MessagePacket(
-                arbitrarySender,
-                receiver,
-                message);
-        
-       
-        PutMessagePacketInActor(messagePacket, receiverState);
-        
-        ApplyRuleOn(globalState);
-     
-        transitionCollectorChecker.ExpectNoTransition();
-        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
-    }
     // TODO: Refactor the assertion.
     @Test
     public void AddsAnAssignmentStatementAtTheBeginingForEachArgument()
     {
-        VariableParameter param1 = new VariableParameter(new IntegerVariable("param1"));
-        VariableParameter param2 = new VariableParameter(new IntegerVariable("param2"));
+        VariableParameter param1 = new VariableParameter(new FloatVariable("param1"));
+        VariableParameter param2 = new VariableParameter(new FloatVariable("param2"));
         
         VariableArgument arg1 = new VariableArgument(param1.Type(), new NullExpression("e1"));
         VariableArgument arg2 = new VariableArgument(param2.Type(), new NullExpression("e2"));
@@ -132,37 +118,6 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
     }
     
     
-    // TODO: Refactor the assertion
-    @Test
-    public void AddsMessageArgumentsToActorsValuation()
-    {
-        VariableParameter param1 = new VariableParameter(new IntegerVariable("param1"));
-        VariableParameter param2 = new VariableParameter(new IntegerVariable("param2"));
-        
-        VariableArgument arg1 = new VariableArgument(param1.Type(), new NullExpression("e1"));
-        VariableArgument arg2 = new VariableArgument(param2.Type(), new NullExpression("e2"));
-        
-        Message message = new FakeMessage(
-                StatementsFrom(new EmptyStatement("s1")),
-                MessageParameters.From(param1, param2));
-        
-        MessagePacket messagePacket = MessagePacket(
-                arbitrarySender,
-                receiver,
-                message,
-                MessageArguments.From(arg1, arg2));
-        
-        PutMessagePacketInActor(messagePacket, receiverState);
-
-        GlobalRunTimeState expectedGlobalState = ExpectedGlobalStateWhenMessageIsTaken(globalState, receiverState, message);
-        
-        ApplyRuleOn(globalState);
-        //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
-        
-        transitionCollectorChecker.ExpectTransition(new SoftwareLabel(), expectedGlobalState);
-        VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
-    }
-
     @Test
     public void AddsATearDownStatementAfterMessageBodyToRemoveMessageParametersFromValuation()
     {
@@ -193,38 +148,38 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
     @Test
     public void TakeTheDataMessagesFirst()
     {
-        SoftwareActorState actorState =  CreateSoftwareActorState("actor");
+        PhysicalActorState actorState =  CreatePhysicalActorState("actor");
         Message controlMessage1 =  new EmptyMessage("controlMessage1", MessageType.Control);
         Message dataMessage = new EmptyMessage("dataMessage", MessageType.Data);
         Message controlMessage2 =  new EmptyMessage("controlMessag2", MessageType.Control);
         
-        MessagePacket controlMessagePacket1 = MessagePacket(arbitrarySender, actorState.SActor(), controlMessage1);
-        MessagePacket dataMessagePacket = MessagePacket(arbitrarySender, actorState.SActor(), dataMessage);
-        MessagePacket controlMessagePacket2 = MessagePacket(arbitrarySender, actorState.SActor(), controlMessage2);
+        MessagePacket controlMessagePacket1 = MessagePacket(arbitrarySender, actorState.Actor(), controlMessage1);
+        MessagePacket dataMessagePacket = MessagePacket(arbitrarySender, actorState.Actor(), dataMessage);
+        MessagePacket controlMessagePacket2 = MessagePacket(arbitrarySender, actorState.Actor(), controlMessage2);
 
 
         PutMessagePacketInActor(controlMessagePacket1, actorState);
         PutMessagePacketInActor(dataMessagePacket, actorState);
         PutMessagePacketInActor(controlMessagePacket2, actorState);
         
-        globalState.DiscreteState().AddSoftwareActorState(actorState);
+        globalState.ContinuousState().AddPhysicalActorState(actorState);
         
         ApplyRuleOn(globalState);
         //rule.TryApply(SimpleStateInfo(globalState), transitionCollectorChecker);
         
-        MessageQueueState expectedMessageQueue = FindActorState(actorState.SActor() , globalState.DeepCopy()).MessageQueueState();
+        MessageQueueState expectedMessageQueue = FindActorState(actorState.PActor(), globalState.DeepCopy()).MessageQueueState();
         RemoveMessagePacket(dataMessagePacket, expectedMessageQueue);
         
-        MessageQueueState actualMessageQueue = FindActorState(actorState.SActor(), CollectedGlobalState()).MessageQueueState();
+        MessageQueueState actualMessageQueue = FindActorState(actorState.PActor(), CollectedGlobalState()).MessageQueueState();
         
         assertThat(actualMessageQueue, equalTo(expectedMessageQueue));
         VerifyEqualOutputForMultipleApply(SimpleStateInfo(globalState));
     }
     
-    private GlobalRunTimeState ExpectedGlobalStateWhenMessageIsTaken(GlobalRunTimeState originalState, SoftwareActorState senderState , Message message)
+    private GlobalRunTimeState ExpectedGlobalStateWhenMessageIsTaken(GlobalRunTimeState originalState, ActorState senderState , Message message)
     {
         GlobalRunTimeState expectedGlobalState = originalState.DeepCopy();
-        SoftwareActorState expectedActorState = expectedGlobalState.DiscreteState().FindActorState(senderState.SActor());
+        ActorState expectedActorState = expectedGlobalState.FindActorState(senderState.Actor());
         MessagePacket packet =  expectedActorState.MessageQueueState().Messages().Dequeue();
         
         List<VariableParameter> parametersList = message.Parameters().AsList();
@@ -235,22 +190,12 @@ public class FIFOMessageTakeRuleTest extends SOSRuleTestFixture
         
         expectedActorState.ExecutionQueueState().Statements().Enqueue(message.GetMessageBody());
         
-        for (VariableParameter parameter : message.Parameters().AsSet()) {
-            expectedActorState.ValuationState().Valuation().Add(parameter.Variable());
-        }
+
         expectedActorState.ExecutionQueueState().Statements().Enqueue(
                 new MessageTeardownStatement(message.Parameters(), packet.PooledVariables()));
         
         return expectedGlobalState;
     }
     
-    private SoftwareActorState CreateBlankActorStateWith(MessagePacket packet)
-    {
-        SoftwareActorState actorState =  CreateSoftwareActorState("actor");
-        actorState.SetSuspended(false);
-        actorState.ExecutionQueueState().Statements().Clear();
-        
-        actorState.MessageQueueState().Messages().Enqueue(packet);
-        return actorState;
-    }
+
 }

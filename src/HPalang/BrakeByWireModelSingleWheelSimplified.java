@@ -5,7 +5,6 @@
  */
 package HPalang;
 
-import HPalang.Core.Actor;
 import HPalang.Core.ActorType;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.SoftwareActor;
@@ -13,16 +12,13 @@ import HPalang.Core.DelegationParameter;
 import HPalang.Core.ContinuousExpressions.DifferentialEquation;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.*;
-import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.Core.InstanceParameter;
 import HPalang.Core.MessageHandler;
 import HPalang.Core.Mode;
-import HPalang.Core.ActorLocators.ParametricActorLocator;
 import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.MainBlock;
 import HPalang.Core.Message;
-import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.PhysicalActorType;
 import HPalang.Core.ModelDefinition;
@@ -34,7 +30,6 @@ import HPalang.Core.Variable;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.RealVariable;
 import static HPalang.Core.ModelCreationUtilities.*;
-import HPalang.Core.RealVariablePool;
 import HPalang.Core.SingleCommunicationRealVariablePool;
 import HPalang.LTSGeneration.Labels.Guard;
 
@@ -52,7 +47,7 @@ public class BrakeByWireModelSingleWheelSimplified
     public static final String Wheel__torque = "torque";
     public static final String Wheel__timer = "timer";
     public static final String Wheel__brake_mode = "Brake";
-    public static final float Wheel__period_const = 0.05f;
+    public static final float Wheel__period_const = 0.1f;
     
     public static final String Wheel_Controller__wheel_instance = "wheel";
     public static final String Wheel_Controller__wheel_speed_port = "wheel_speed_port";
@@ -78,11 +73,11 @@ public class BrakeByWireModelSingleWheelSimplified
     public static final String Brake__timer = "timer";
     public static final String Brake__increasing_brake = "IncreasingBrake";
     public static final String Brake__constant_brake = "ConstantBrake";
-    public static final float Brake__period_const = 0.05f;
+    public static final float Brake__period_const = 0.1f;
     public static final float Brake__brake_rate_const = 1f;
     
     public static final String Clock__callback = "callback";
-    public static final float Clock__period_const = 0.05f;
+    public static final float Clock__period_const = 0.1f;
     
     public static final float CAN__dealy_const = 0.01f;
     
@@ -252,6 +247,22 @@ public class BrakeByWireModelSingleWheelSimplified
         FloatVariable requested_torque = (FloatVariable) applyTorque.Parameters().Find("requested_torque").Variable();
         FloatVariable vehicle_speed = (FloatVariable) applyTorque.Parameters().Find("vehicle_speed").Variable();
         
+//        applyTorque.AddStatement(
+//                new IfStatement(
+//                        CreateBinaryExpression(vehicle_speed, ">", Const(0f)), 
+//                        Statement.StatementsFrom(new AssignmentStatement(slip_rate, 
+//                            CreateBinaryExpression(
+//                                    CreateBinaryExpression(
+//                                            vehicle_speed, 
+//                                            "-", 
+//                                            CreateBinaryExpression(
+//                                                    wheel_speed,
+//                                                    "*", 
+//                                                    Const(Wheel_Controller__wheel_radius_const))),
+//                                    "/", 
+//                                        CreateBinaryExpression(vehicle_speed, Wheel__torque, e2) VariableExpression(vehicle_speed)))), 
+//                        Statement.StatementsFrom(new AssignmentStatement(slip_rate, Const(0f)))));
+        
         applyTorque.AddStatement(new AssignmentStatement(slip_rate, 
                 CreateBinaryExpression(
                         CreateBinaryExpression(
@@ -262,7 +273,19 @@ public class BrakeByWireModelSingleWheelSimplified
                                         "*", 
                                         Const(Wheel_Controller__wheel_radius_const))),
                         "/", 
-                        VariableExpression(vehicle_speed))));
+                        Const(1f))));
+        
+//        applyTorque.AddStatement(new AssignmentStatement(slip_rate, 
+//                CreateBinaryExpression(
+//                        CreateBinaryExpression(
+//                                vehicle_speed, 
+//                                "-", 
+//                                CreateBinaryExpression(
+//                                        wheel_speed,
+//                                        "*", 
+//                                        Const(Wheel_Controller__wheel_radius_const))),
+//                        "/", 
+//                        VariableExpression(vehicle_speed))));
         
         
         //applyTorque.AddStatement(CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)));
@@ -367,6 +390,7 @@ public class BrakeByWireModelSingleWheelSimplified
                 estimated_speed, VariableExpression(wheel_speed_FR))); 
         
         control.AddStatement(new AssignmentStatement(global_torque, new VariableExpression(brake_percent)));
+        
         
         control.AddStatement(CreateSendStatement(wheel_controller_FR, wheelControllerApply, VariableExpression(global_torque), VariableExpression(estimated_speed)));
     }

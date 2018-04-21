@@ -9,7 +9,6 @@ import HPalang.Core.Statement;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
-import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 import HPalang.LTSGeneration.TransitionCollector;
 
 /**
@@ -44,14 +43,14 @@ public abstract class StatementRule<T extends Statement> extends ActorLevelRule
         
         T statement = (T)newActorState.ExecutionQueueState().Statements().Head();
         newActorState.ExecutionQueueState().Statements().Dequeue();
-        ApplyStatement(newActorState, statement);
+        ApplyStatement(newActorState, statement, newGlobalState);
         
         SoftwareLabel label = CreateTransitionLabel(newActorState, statement);
         
         collector.AddTransition(label, newGlobalState);
     }
     
-    protected abstract void ApplyStatement(ActorState newActorState, T statement);
+    protected abstract void ApplyStatement(ActorState newActorState, T statement, GlobalRunTimeState newGlobalState);
     protected SoftwareLabel CreateTransitionLabel(ActorState actorState, T statement)
     {
         return new SoftwareLabel();

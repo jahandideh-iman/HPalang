@@ -14,16 +14,28 @@ import HPalang.LTSGeneration.SimpleState;
 public class DeadlockState extends SimpleState<DeadlockState>
 {
 
+    private final String message;
+    
+    public DeadlockState()
+    {
+        this("");
+    }
+    
+    public DeadlockState(String message)
+    {
+        this.message = message;
+    }
+    
     @Override
     protected DeadlockState NewInstance()
     {
-        return new DeadlockState();
+        return new DeadlockState(message);
     }
 
     @Override
     protected boolean DataEquals(DeadlockState other)
     {
-        return true;
+        return this.message.equals(other.message);
     }
 
     @Override
@@ -35,7 +47,11 @@ public class DeadlockState extends SimpleState<DeadlockState>
     @Override
     protected int InternalHashCode()
     {
-        return 13;
+        return message.hashCode();
     }
     
+    public String Message()
+    {
+        return message;
+    }
 }

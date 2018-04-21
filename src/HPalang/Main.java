@@ -10,6 +10,7 @@ import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
 import HPalang.Core.ModelDefinition;
+import HPalang.Core.TransitionSystem.LTSState;
 import HPalang.HybridAutomataGeneration.SOSRules.ConversionRule;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
@@ -19,8 +20,10 @@ import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.Core.Variable;
 import HPalang.HybridAutomataGeneration.HybridAutomaton;
 import HPalang.Core.TransitionSystem.Label;
+import HPalang.Core.TransitionSystem.Transition;
 import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.Guard;
+import HPalang.LTSGeneration.Labels.NetworkLabel;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.SOSRules.*;
 import HPalang.LTSGeneration.SOSRules.MessageSendRules.CANMessageSendRule;
@@ -32,6 +35,7 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
@@ -52,7 +56,7 @@ public class Main {
         
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BrakeByWireModelTwoWheel.Create();
+            definition = BrakeByWireModelSingleWheelSimplified.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
@@ -71,6 +75,8 @@ public class Main {
         System.out.println("LTS Generation duration: " + stopWatch.ElaspedTimeSeconds());
         stopWatch.Reset();
         
+        VerifyLTS(lts);
+        
         //OutputLTS("ReducedLTS",new LTSReducer().Reduce(lts), writer);
         
 
@@ -82,6 +88,7 @@ public class Main {
         System.out.println("HA Generation duration: " + stopWatch.ElaspedTimeSeconds());
         stopWatch.Reset();
         
+        System.out.println("Initial Location: " + automaton.InitialState().InnerState().Name() );
 
 //        
 //        writer.Write("output_LTS.xml", new LTSToXMLConvertor().Convert(lts));
@@ -123,7 +130,7 @@ public class Main {
         
         // Software
         genetator.AddSOSRule(new SoftwareActorFIFOMessageTakeRule());
-        genetator.AddSOSRule(new PhysicalActorFIFOMessageTake());
+        genetator.AddSOSRule(new PhysicalActorFIFOMessageTakeRule());
         genetator.AddSOSRule(new MessageTeardownStatementRule());
         genetator.AddSOSRule(new DelayStatementRule());
         genetator.AddSOSRule(new AssignmentStatementRule());
@@ -160,6 +167,38 @@ public class Main {
             return new SoftwareLabel(newGuard ,new LinkedHashSet<>(resets.values()));
         else
           return new ContinuousLabel(newGuard ,new LinkedHashSet<>(resets.values()));  
+    }
+
+    private static void VerifyLTS(LabeledTransitionSystem<GlobalRunTimeState> lts)
+    {
+        for(LTSState<GlobalRunTimeState> state : lts.LTSStates())
+        {
+            assert (ALLSoftware(state.OutTransitions()) || ALLNetwork(state.OutTransitions()) || ALLPhysical(state.OutTransitions()));
+        }
+    }
+
+    private static boolean ALLSoftware(Collection<Transition<GlobalRunTimeState>> outTransitions)
+    {
+        for(Transition<GlobalRunTimeState> t : outTransitions)
+            if((t.GetLabel() instanceof SoftwareLabel) == false)
+                return false;
+        return true;
+    }
+
+    private static boolean ALLNetwork(Collection<Transition<GlobalRunTimeState>> outTransitions)
+    {
+        for(Transition<GlobalRunTimeState> t : outTransitions)
+            if((t.GetLabel() instanceof NetworkLabel) == false)
+                return false;
+        return true;
+    }
+
+    private static boolean ALLPhysical(Collection<Transition<GlobalRunTimeState>> outTransitions)
+    {
+        for(Transition<GlobalRunTimeState> t : outTransitions)
+            if((t.GetLabel() instanceof ContinuousLabel) == false)
+                return false;
+        return true;
     }
 
 

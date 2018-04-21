@@ -12,6 +12,7 @@ import HPalang.Core.ValuationContainer;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.Labels.SoftwareLabel;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.ValuationState;
 import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapExpressionScope;
 import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapVariableScope;
@@ -30,7 +31,7 @@ public class AssignmentStatementRule extends StatementRule<AssignmentStatement>
     }
 
     @Override
-    protected void ApplyStatement(ActorState newActorState, AssignmentStatement statement)
+    protected void ApplyStatement(ActorState newActorState, AssignmentStatement statement, GlobalRunTimeState newGlobalState)
     {
         if(statement.Expression().IsComputable(newActorState.ValuationState().Valuation()))
         {

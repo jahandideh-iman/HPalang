@@ -10,6 +10,7 @@ import HPalang.Core.Statements.MessageTeardownStatement;
 import HPalang.Core.VariableArgument;
 import HPalang.Core.VariableParameter;
 import HPalang.Core.Variables.RealVariable;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
 
@@ -17,7 +18,7 @@ import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
  *
  * @author Iman Jahandideh
  */
-public class MessageTeardownStatementRule extends SoftwareStatementRule<MessageTeardownStatement>
+public class MessageTeardownStatementRule extends StatementRule<MessageTeardownStatement>
 {
 
     @Override
@@ -27,14 +28,15 @@ public class MessageTeardownStatementRule extends SoftwareStatementRule<MessageT
     }
 
     @Override
-    protected void ApplyStatement(SoftwareActorState newActorState, MessageTeardownStatement statement, GlobalRunTimeState newGlobalState)
+    protected void ApplyStatement(ActorState newActorState, MessageTeardownStatement statement, GlobalRunTimeState newGlobalState)
     {
-        for(VariableParameter parameter : statement.ParametersToRemove().AsSet())
-            newActorState.ValuationState().Valuation().Remove(parameter.Variable());
+        if(newActorState instanceof SoftwareActorState)
+        {
+            for(VariableParameter parameter : statement.ParametersToRemove().AsSet())
+                newActorState.ValuationState().Valuation().Remove(parameter.Variable());
+        }
         
         for(RealVariable variable : statement.VariablesToRelease())
             newGlobalState.VariablePoolState().Pool().Release(variable);
-        
-    }
-    
+    }   
 }

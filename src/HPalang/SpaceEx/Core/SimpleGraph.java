@@ -24,10 +24,21 @@ public class SimpleGraph<NodeT extends Node, LabelT extends Label, TransitionT e
     private final Set<NodeT> nodes = new HashSet<>();  
     private final Set<TransitionT> transitions = new HashSet<>();
     private final List<GraphListener<NodeT>> listeners = new ArrayList<>();
+    private NodeT initialNode;
     
     public void AddListener(GraphListener<NodeT> listener)
     {
         listeners.add(listener);
+    }
+    
+    public void SetInitialNode(NodeT node)
+    {
+        this.initialNode = node;
+    }
+    
+    public NodeT InitialNode()
+    {
+        return initialNode;
     }
     
     public void AddNode(NodeT node)

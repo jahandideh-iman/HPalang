@@ -96,7 +96,9 @@ public abstract class MessageSendRule extends ActorLevelRule
 
         if(PoolHasEnoughAvaialbeVariables(globalState, actorState , sendStatement) == false)
         {
-            collector.AddTransition(CreationUtility.CreateDeadlockTransition(), CreationUtility.CreateDeadlockState());
+            collector.AddTransition(
+                    CreationUtility.CreateDeadlockTransition(),
+                    CreationUtility.CreateDeadlockState(DeadlockMessage(senderState, sendStatement)));
             return;
         }
         
@@ -180,6 +182,8 @@ public abstract class MessageSendRule extends ActorLevelRule
                 maximalEvaluatedarguments.Add(argument);
             }
             
+            if(pooledVariables.size() != variables.size())
+                System.err.println("s");
             return new MaximalEvaluatedArgumentsResult(maximalEvaluatedarguments, resets, pooledVariables);
         }
 
@@ -255,4 +259,12 @@ public abstract class MessageSendRule extends ActorLevelRule
         return 0;
     }
 
+    private String DeadlockMessage(ActorState senderState, SendStatement statement)
+    {
+        Actor reciever = statement.ReceiverLocator().Locate(senderState);
+        Message message = statement.MessageLocator().Locate(senderState.Actor());
+        
+        //return String.format("PoolEmpty__%s__%s__%s", senderState.Actor().Name(), message.toString(), reciever.Name());
+        return "";
+    }
 }

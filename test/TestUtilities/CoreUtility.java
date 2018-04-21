@@ -156,6 +156,11 @@ public class CoreUtility
     {
         return globalState.DiscreteState().FindActorState(actor);
     }
+    
+    static public PhysicalActorState FindActorState(PhysicalActor actor, GlobalRunTimeState globalState )
+    {
+        return globalState.ContinuousState().FindActorState(actor);
+    }
    
     static public  void ClearStatementsFor(SoftwareActorState actorState)
     {

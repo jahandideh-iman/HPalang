@@ -38,9 +38,14 @@ public class CreationUtility
     
     static public GlobalRunTimeState CreateDeadlockState()
     {
+        return CreateDeadlockState("");
+    }
+    
+    static public GlobalRunTimeState CreateDeadlockState(String message)
+    {
         GlobalRunTimeState globalState = CreateEmptyGlobalState();
         
-        globalState.AddSubstate(new DeadlockState());
+        globalState.AddSubstate(new DeadlockState(message));
         return globalState;
     }
     

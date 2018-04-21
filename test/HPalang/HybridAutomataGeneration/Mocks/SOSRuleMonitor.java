@@ -10,6 +10,7 @@ import HPalang.HybridAutomataGeneration.SOSRule;
 import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import HPalang.LTSGeneration.StateInfo;
 import HPalang.Core.TransitionSystem.Transition;
+import HPalang.HybridAutomataGeneration.Location;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -24,6 +25,7 @@ public class SOSRuleMonitor implements SOSRule
     @Override
     public void TryApply(StateInfo globalStateInfo, HybridAutomatonGenerator generator)
     {
+        generator.AddLocationFor(new Location("l"), globalStateInfo.State());
         appliedStateInfos.add(globalStateInfo);
     }
 

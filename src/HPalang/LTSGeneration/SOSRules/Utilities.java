@@ -94,7 +94,7 @@ public class Utilities
         Variable unWrappedVariable = scopeUnwrapper.Unwrap(
                 variable, 
                 actorName,
-                ActorsVariablesPlusParameters(actor.Type()));
+                ActorVariablesPlusParameters(actor.Type()));
         
         return unWrappedVariable;
     }
@@ -107,12 +107,12 @@ public class Utilities
         Expression unWrappedExpression = scopeUnwrapper.Unwrap(
                                     expression.PartiallyEvaluate(valuation),
                                     actorName,
-                                    ActorsVariablesPlusParameters(actor.Type())
+                                    ActorVariablesPlusParameters(actor.Type())
                                     );
         return unWrappedExpression;
     }
     
-    static public Collection<Variable> ActorsVariablesPlusParameters(ActorType actorType)
+    static public Collection<Variable> ActorVariablesPlusParameters(ActorType actorType)
     {
         List<Variable> allVariables = new LinkedList<>();
         allVariables.addAll(actorType.Variables());

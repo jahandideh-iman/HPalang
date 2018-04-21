@@ -9,6 +9,7 @@ import HPalang.LTSGeneration.State;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.CompositeStateT;
+import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -33,7 +34,7 @@ public class DiscreteState extends CompositeStateT<DiscreteState>
     }
         
     
-    public Iterable<SoftwareActorState> ActorStates()
+    public Collection<SoftwareActorState> ActorStates()
     {
         return softwareActorStatesCache;
     }

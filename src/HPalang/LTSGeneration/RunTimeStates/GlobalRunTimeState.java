@@ -9,6 +9,8 @@ import HPalang.Core.Actor;
 import HPalang.Core.PhysicalActor;
 import HPalang.Core.SoftwareActor;
 import HPalang.LTSGeneration.CompositeStateT;
+import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  *
@@ -50,6 +52,19 @@ public class GlobalRunTimeState extends CompositeStateT<GlobalRunTimeState>
             return ContinuousState().FindActorState((PhysicalActor)actor);
         
         return null;
+    }
+    
+    public Collection<ActorState> ActorStates()
+    {
+        Collection<SoftwareActorState> softwareStates = DiscreteState().ActorStates();
+        Collection<PhysicalActorState> physicalStates = ContinuousState().ActorStates();
+        
+        Collection<ActorState> actorStates = new ArrayList<>(softwareStates.size()+physicalStates.size());
+        
+        actorStates.addAll(softwareStates);      
+        actorStates.addAll(physicalStates);
+        
+        return actorStates;
     }
     
     @Override

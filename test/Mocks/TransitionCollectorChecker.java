@@ -31,7 +31,6 @@ public class TransitionCollectorChecker implements TransitionCollector
         assertThat(collectedLabels, hasItem(equalTo(label)));
         assertThat(collectedGlobalStates, hasItem(equalTo(destination)));
     }
-    
     @Override
     public void AddTransition(Label label, GlobalRunTimeState destination)
     {

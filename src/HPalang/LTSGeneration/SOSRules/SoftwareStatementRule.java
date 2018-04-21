@@ -44,7 +44,7 @@ public abstract class SoftwareStatementRule<T extends Statement> extends Softwar
         T statement = (T)newActorState.ExecutionQueueState().Statements().Dequeue();
         
         if(MustGoToDeadlock(globalState, statement))
-            collector.AddTransition(new SoftwareLabel(), CreationUtility.CreateDeadlockState());
+            collector.AddTransition(CreationUtility.CreateDeadlockTransition(), CreationUtility.CreateDeadlockState());
         else
         {
             ApplyStatement(newActorState, statement, newGlobalState);

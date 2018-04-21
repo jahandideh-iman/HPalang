@@ -48,7 +48,6 @@ public class SoftwareActorFIFOMessageTakeRule extends SoftwareActorLevelRule
         
         assert( packet.Arguments().Match(message.Parameters()));
         
-        
         // TODO: DO I need this?
         for(VariableParameter parameter : message.Parameters().AsSet())
             newActorState.ValuationState().Valuation().Add(parameter.Variable());

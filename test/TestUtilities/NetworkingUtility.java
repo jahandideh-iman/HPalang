@@ -77,7 +77,7 @@ public class NetworkingUtility
         return CreateSendStatement(actor, new EmptyMessage());
     }
     
-    static public void PutMessagePacketInActor(MessagePacket packet, SoftwareActorState actorState)
+    static public void PutMessagePacketInActor(MessagePacket packet, ActorState actorState)
     {
         actorState.MessageQueueState().Messages().Enqueue(packet);
     }

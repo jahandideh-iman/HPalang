@@ -62,5 +62,15 @@ public class BaseComponent extends Component implements GraphListener<Location>
         visitor.Visit(this);
     }
 
+    public Location InitialLocation()
+    {
+        return automaton.InitialNode();
+    }
+
+    public void SetInitialLocation(Location spaceExLocation)
+    {
+        automaton.SetInitialNode(spaceExLocation);
+    }
+
 
 }

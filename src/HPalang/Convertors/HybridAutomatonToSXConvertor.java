@@ -69,6 +69,7 @@ public class HybridAutomatonToSXConvertor
         BaseComponent model = new BaseComponent("model");
         Map<HPalang.HybridAutomataGeneration.Location, HPalang.SpaceEx.Core.Location> locationsMap = new HashMap<>();
         int i = 0;
+        
         for(HPalang.HybridAutomataGeneration.Location hybridLocation : automaton.GetLocations())
         {
             HPalang.SpaceEx.Core.Location spaceExLocation = 
@@ -84,6 +85,9 @@ public class HybridAutomatonToSXConvertor
             i++;
             
             locationsMap.put(hybridLocation, spaceExLocation);
+            
+            if(automaton.InitialState().InnerState() == hybridLocation)
+                model.SetInitialLocation(spaceExLocation);
         }
         for(Transition<HPalang.HybridAutomataGeneration.Location> hybridTransition : automaton.Transitions())
         {
@@ -164,7 +168,7 @@ public class HybridAutomatonToSXConvertor
         
         timerComp.AddTransition(loc1, new HybridLabel().AddGuard("time == duration"), loc2);
 
-        
+        timerComp.SetInitialLocation(loc1);
         return timerComp;
     }
     

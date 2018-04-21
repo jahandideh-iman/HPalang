@@ -13,7 +13,6 @@ import HPalang.Core.Variable;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
-import static HPalang.LTSGeneration.SOSRules.Utilities.ActorsVariablesPlusParameters;
 import Mocks.ComputableExpression;
 import Mocks.EmptyExpression;
 import Mocks.FakeVariable;
@@ -27,6 +26,7 @@ import static TestUtilities.NetworkingUtility.*;
 import java.util.Set;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Before;
+import static HPalang.LTSGeneration.SOSRules.Utilities.ActorVariablesPlusParameters;
 
 /**
  *
@@ -93,6 +93,6 @@ public class AssignmentStatementRuleTest extends SOSRuleTestFixture
     
     private Variable ConvertToScopedVariable(Variable var, ActorState actorState)
     {
-        return new ExpressionScopeUnwrapper().Unwrap(var, actorState.Actor().Name(), ActorsVariablesPlusParameters(actorState.Actor().Type()) );
+        return new ExpressionScopeUnwrapper().Unwrap(var, actorState.Actor().Name(), ActorVariablesPlusParameters(actorState.Actor().Type()) );
     }
 }
