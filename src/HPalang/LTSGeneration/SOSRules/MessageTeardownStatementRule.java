@@ -18,7 +18,7 @@ import HPalang.LTSGeneration.RunTimeStates.SoftwareActorState;
  *
  * @author Iman Jahandideh
  */
-public class MessageTeardownStatementRule extends StatementRule<MessageTeardownStatement>
+public class MessageTeardownStatementRule extends SimpleStatementRule<MessageTeardownStatement>
 {
 
     @Override

@@ -6,6 +6,7 @@
 package HPalang.LTSGeneration.SOSRules;
 
 import HPalang.Core.Actor;
+import HPalang.Core.DiscreteExpressions.FalseConst;
 import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
 import HPalang.Core.Mode;
 import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;

@@ -18,10 +18,10 @@ import java.util.Set;
 public class LabeledTransitionSystem<T>
 {    
     private static final boolean APPLY_MEMORY_OPTIMIZATION = true;
-    private LTSState<T> initialState = null;
+    private StateWrapper<T> initialState = null;
         
         
-    private final Map<T,LTSState<T>> states = new HashMap<>();
+    private final Map<T,StateWrapper<T>> states = new HashMap<>();
     
     private final Set<Transition<T>> transitions = new HashSet<>();
     
@@ -33,15 +33,15 @@ public class LabeledTransitionSystem<T>
         initialState = TryAddState(state);;
     }
     
-    public LTSState<T> InitialState()
+    public StateWrapper<T> InitialState()
     {
         return initialState;
     }
     
     // TODO: Rename this crap.
-    public LTSState<T> TryAddState(T state)
+    public StateWrapper<T> TryAddState(T state)
     {
-        LTSState<T> ltsState  = states.getOrDefault(state, null);
+        StateWrapper<T> ltsState  = states.getOrDefault(state, null);
         
         if(ltsState == null)
         {
@@ -56,7 +56,7 @@ public class LabeledTransitionSystem<T>
         return states.containsKey(state);
     }
     
-    public Collection<LTSState<T>> LTSStates()
+    public Collection<StateWrapper<T>> StateWrappers()
     {
         return states.values();
     }
@@ -66,7 +66,7 @@ public class LabeledTransitionSystem<T>
         return states.keySet();
     }
     
-    public void AddTransition(LTSState<T> origin,Label label, LTSState<T> destination)
+    public void AddTransition(StateWrapper<T> origin,Label label, StateWrapper<T> destination)
     {
         Transition<T> transtion = new Transition<>(origin,label,destination);
         
@@ -88,7 +88,7 @@ public class LabeledTransitionSystem<T>
         return transitions;
     }
     
-    public boolean HasTransition(LTSState origin,Label label, LTSState destination)
+    public boolean HasTransition(StateWrapper origin,Label label, StateWrapper destination)
     {
         return transitions.contains(new Transition(origin, label, destination));
     }  

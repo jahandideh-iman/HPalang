@@ -14,7 +14,7 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
-public class SimpleLTSState<T> extends  Equalitable<SimpleLTSState<T>> implements LTSState<T>
+public class SimpleLTSState<T> extends  Equalitable<SimpleLTSState<T>> implements StateWrapper<T>
 {
     private final Collection<Transition<T>> outTransitions = new ArrayList<>();
     private final Collection<Transition<T>> inTransitions = new ArrayList<>();

@@ -14,23 +14,23 @@ import HPalang.Core.Equalitable;
  */
 public class Transition<T> extends Equalitable<Transition>
 {
-    private LTSState<T> origin;
-    private LTSState<T> destination;
+    private StateWrapper<T> origin;
+    private StateWrapper<T> destination;
     private Label label;
 
-    public Transition(LTSState<T> origin, Label label, LTSState<T> destination)
+    public Transition(StateWrapper<T> origin, Label label, StateWrapper<T> destination)
     {
         this.origin = origin;
         this.destination = destination;
         this.label = label;
     }
 
-    public LTSState<T> GetOrign()
+    public StateWrapper<T> GetOrign()
     {
         return origin;
     }
 
-    public LTSState<T> GetDestination()
+    public StateWrapper<T> GetDestination()
     {
         return destination;
     }

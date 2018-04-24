@@ -10,7 +10,6 @@ import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalAndOperator;
 import HPalang.Core.ModelDefinition;
-import HPalang.Core.TransitionSystem.LTSState;
 import HPalang.HybridAutomataGeneration.SOSRules.ConversionRule;
 import HPalang.LTSGeneration.LTSGenerator;
 import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
@@ -40,6 +39,7 @@ import java.util.HashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
+import HPalang.Core.TransitionSystem.StateWrapper;
 
 /**
  *
@@ -171,7 +171,7 @@ public class Main {
 
     private static void VerifyLTS(LabeledTransitionSystem<GlobalRunTimeState> lts)
     {
-        for(LTSState<GlobalRunTimeState> state : lts.LTSStates())
+        for(StateWrapper<GlobalRunTimeState> state : lts.StateWrappers())
         {
             assert (ALLSoftware(state.OutTransitions()) || ALLNetwork(state.OutTransitions()) || ALLPhysical(state.OutTransitions()));
         }

@@ -33,7 +33,6 @@ import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.SoftwareActorType;
 import Mocks.EmptyStatement;
 import HPalang.Core.NullExpression;
-import HPalang.Core.TransitionSystem.LTSState;
 import HPalang.Core.TransitionSystem.SimpleLTSState;
 import Mocks.LabelMock;
 import java.util.Collections;
@@ -42,6 +41,7 @@ import static org.hamcrest.CoreMatchers.equalTo;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.junit.Assert.assertThat;
+import HPalang.Core.TransitionSystem.StateWrapper;
 
 /**
  *
@@ -235,6 +235,16 @@ public class CoreUtility
     static public void AddActorState(PhysicalActorState actorState, GlobalRunTimeState globalState)
     {
         globalState.ContinuousState().AddPhysicalActorState(actorState);
+    }
+    
+    static public void AddActorState(ActorState actorState, GlobalRunTimeState globalState)
+    {
+        if(actorState instanceof SoftwareActorState)
+            AddActorState((SoftwareActorState)actorState , globalState);
+        else if(actorState instanceof PhysicalActorState)
+            AddActorState((PhysicalActorState)actorState , globalState);
+        
+        throw new RuntimeException("Unsupported ActorState type.");
     }
 
     static public Mode CreateEmptyMode(String name)

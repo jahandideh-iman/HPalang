@@ -5,7 +5,6 @@
  */
 package HPalang.LTSGeneration;
 
-import HPalang.Core.TransitionSystem.LTSState;
 import HPalang.Core.TransitionSystem.Label;
 import HPalang.Core.TransitionSystem.Transition;
 import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
@@ -18,6 +17,7 @@ import java.util.List;
 import static org.hamcrest.CoreMatchers.*;
 import org.junit.Test;
 import static org.junit.Assert.*;
+import HPalang.Core.TransitionSystem.StateWrapper;
 
 /**
  *
@@ -65,8 +65,8 @@ public class LabeledTransitionSystemTest
         Label labled = new SoftwareLabel();
         GlobalRunTimeState destinationGS = new GlobalRunTimeState();
         
-        LTSState<GlobalRunTimeState> originState = transitionSystem.TryAddState(originGS);
-        LTSState<GlobalRunTimeState> destinatioState = transitionSystem.TryAddState(destinationGS);
+        StateWrapper<GlobalRunTimeState> originState = transitionSystem.TryAddState(originGS);
+        StateWrapper<GlobalRunTimeState> destinatioState = transitionSystem.TryAddState(destinationGS);
         
         transitionSystem.AddTransition(originState, labled, destinatioState);
         
@@ -80,8 +80,8 @@ public class LabeledTransitionSystemTest
         Label label = new SoftwareLabel();
         GlobalRunTimeState destinationGS = new GlobalRunTimeState();
         
-        LTSState<GlobalRunTimeState> originState = transitionSystem.TryAddState(originGS);
-        LTSState<GlobalRunTimeState> destinatioState = transitionSystem.TryAddState(destinationGS);
+        StateWrapper<GlobalRunTimeState> originState = transitionSystem.TryAddState(originGS);
+        StateWrapper<GlobalRunTimeState> destinatioState = transitionSystem.TryAddState(destinationGS);
         
         transitionSystem.AddTransition(originState, label, destinatioState);
         transitionSystem.AddTransition(originState, label, destinatioState);
@@ -92,9 +92,9 @@ public class LabeledTransitionSystemTest
     @Test
     public void ComputesOutTransitionsCorrectly()
     {
-        LTSState<GlobalRunTimeState> gs1 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs1"));      
-        LTSState<GlobalRunTimeState> gs2 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs2"));
-        LTSState<GlobalRunTimeState> gs3 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs3"));
+        StateWrapper<GlobalRunTimeState> gs1 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs1"));      
+        StateWrapper<GlobalRunTimeState> gs2 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs2"));
+        StateWrapper<GlobalRunTimeState> gs3 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs3"));
 
         
         transitionSystem.AddTransition(gs1, CreateLabel("1-2"), gs2);   
@@ -110,9 +110,9 @@ public class LabeledTransitionSystemTest
     @Test
     public void ComputesInTransitionsCorrectly()
     {
-        LTSState<GlobalRunTimeState> gs1 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs1"));      
-        LTSState<GlobalRunTimeState> gs2 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs2"));
-        LTSState<GlobalRunTimeState> gs3 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs3"));
+        StateWrapper<GlobalRunTimeState> gs1 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs1"));      
+        StateWrapper<GlobalRunTimeState> gs2 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs2"));
+        StateWrapper<GlobalRunTimeState> gs3 = transitionSystem.TryAddState(CreateUniqueGlobalState("gs3"));
 
         transitionSystem.TryAddState(gs1);
         transitionSystem.TryAddState(gs2);

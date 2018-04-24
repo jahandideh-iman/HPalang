@@ -23,11 +23,11 @@ public class LTSGenerator implements TransitionCollector
 {
     private LabeledTransitionSystem<GlobalRunTimeState> transitionSystem;
         
-    private final Queue<HPalang.Core.TransitionSystem.LTSState<GlobalRunTimeState>> notVisitedStates = new LinkedList<>();
+    private final Queue<HPalang.Core.TransitionSystem.StateWrapper<GlobalRunTimeState>> notVisitedStates = new LinkedList<>();
     
     private final List<SOSRule> sosRules = new ArrayList<>();
     
-    private HPalang.Core.TransitionSystem.LTSState<GlobalRunTimeState> currentGlobalState;
+    private HPalang.Core.TransitionSystem.StateWrapper<GlobalRunTimeState> currentGlobalState;
     
     public void AddSOSRule(SOSRule rule)
     {

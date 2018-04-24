@@ -66,7 +66,7 @@ public class HybridAutomatonToSXConvertor
 
     private BaseComponent CreateModelComponent(HybridAutomaton automaton)
     {
-        BaseComponent model = new BaseComponent("model");
+        BaseComponent model = new BaseComponent("Model");
         Map<HPalang.HybridAutomataGeneration.Location, HPalang.SpaceEx.Core.Location> locationsMap = new HashMap<>();
         int i = 0;
         

@@ -13,7 +13,7 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
-public interface LTSState<T> 
+public interface StateWrapper<T> 
 {
     public Collection<Transition<T>> OutTransitions();
     public Collection<Transition<T>> InTransitions();

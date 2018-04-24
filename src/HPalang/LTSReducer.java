@@ -22,6 +22,8 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 import java.util.Stack;
+import HPalang.Core.TransitionSystem.StateWrapper;
+import java.util.Collection;
 
 /**
  *
@@ -29,49 +31,49 @@ import java.util.Stack;
  */
 public class LTSReducer
 {
-//    private LabeledTransitionSystem ltsToReduce;
-//    private LabeledTransitionSystem reducedLTS;
+//    private LabeledTransitionSystem<GlobalRunTimeState> ltsToReduce;
+//    private LabeledTransitionSystem<GlobalRunTimeState> reducedLTS;
 //    
-//    private Set<GlobalRunTimeState> visitedStates; 
-//    private Set<GlobalRunTimeState> notVisitedStates;
+//    private Set<StateWrapper<GlobalRunTimeState>> visitedStates; 
+//    private Set<StateWrapper<GlobalRunTimeState>> notVisitedStates;
 //    
-//    public LabeledTransitionSystem Reduce(LabeledTransitionSystem lts)
+//    public LabeledTransitionSystem Reduce(LabeledTransitionSystem<GlobalRunTimeState> lts)
 //    {
 //        visitedStates = new HashSet<>();
-//        notVisitedStates = new HashSet<>(lts.States());
+//        notVisitedStates = new HashSet<>(lts.StateWrappers());
 //        ltsToReduce = lts;
-//        reducedLTS = new LabeledTransitionSystem();
+//        reducedLTS = new LabeledTransitionSystem<>();
 //        
 //        Visit(ltsToReduce.InitialState());
 //        
-//        reducedLTS.SetInitialState(lts.InitialState());
+//        reducedLTS.SetInitialState(lts.InitialState().InnerState());
 //        
 //        RemoveUnreachableStates(reducedLTS);
 //        
 //        return reducedLTS;
 //    }
 //    
-//    private void Visit(GlobalRunTimeState state)
+//    private void Visit(StateWrapper<GlobalRunTimeState> originalWrapper)
 //    {
-//        if(visitedStates.contains(state))
+//        if(visitedStates.contains(originalWrapper))
 //            return;
-//        reducedLTS.AddState(state);
-//        visitedStates.add(state);
+//        StateWrapper<GlobalRunTimeState> newWrapper =  reducedLTS.TryAddState(originalWrapper.InnerState());
+//        visitedStates.add(originalWrapper);
 //        
-//        List<Transition> outTrans = ltsToReduce.GetOutTransitionsFor(state);
+//        Collection<Transition<GlobalRunTimeState>> outTrans = originalWrapper.OutTransitions();
 //        
-//        ReduceTransitionsFrom(state);
+//        ReduceTransitionsFrom(newWrapper);
 //        
-//        for(Transition tran : outTrans)
-//            Visit(tran.GetDestination());
+//        for(Transition<GlobalRunTimeState> tran : outTrans)
+//            Visit(tran.GetDestination().InnerState());
 //        
 //    }
 //
-//    private void ReduceTransitionsFrom(GlobalRunTimeState state)
+//    private void ReduceTransitionsFrom(StateWrapper<GlobalRunTimeState> staeWrapper)
 //    {
-//        List<Transition> outTrans = ltsToReduce.GetOutTransitionsFor(state);
+//        Collection<Transition<GlobalRunTimeState>> outTrans = staeWrapper.OutTransitions();
 //        
-//        for(Transition tran : outTrans)
+//        for(Transition<GlobalRunTimeState> tran : outTrans)
 //        {
 //            ReduceMaximumLengthTransitions(new LinkedList<>(Arrays.asList(tran)));
 //        }
@@ -79,10 +81,10 @@ public class LTSReducer
 //        
 //    }
 //
-//    private void ReduceMaximumLengthTransitions(Deque<Transition> transitionChain)
+//    private void ReduceMaximumLengthTransitions(Deque<Transition<GlobalRunTimeState>> transitionChain)
 //    {
 //        Transition lastTransition = transitionChain.peekLast();
-//        GlobalRunTimeState lastState = lastTransition.GetDestination();
+//        StateWrapper<GlobalRunTimeState> lastState = lastTransition.GetDestination();
 //        
 //        List<Transition> outTrans = ltsToReduce.GetOutTransitionsFor(lastState);
 //        

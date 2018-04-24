@@ -19,10 +19,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import HPalang.Core.TransitionSystem.LTSState;
 import HPalang.Core.VariableParameter;
 import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapExpressionScope;
 import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapVariableScope;
+import HPalang.Core.TransitionSystem.StateWrapper;
 
 /**
  *
@@ -55,7 +55,7 @@ public class HybridAutomatonGenerator
         ConvertVariables(modelDefinition, lts.InitialState().InnerState());
 
         int counter = 0;
-        for(LTSState<GlobalRunTimeState> globalState : lts.LTSStates())
+        for(StateWrapper<GlobalRunTimeState> globalState : lts.StateWrappers())
         {
             ApplyRulesOn(globalState);
             counter++;
@@ -80,7 +80,7 @@ public class HybridAutomatonGenerator
         return hybridAutomaton;
     }
 
-    private void ApplyRulesOn(LTSState<GlobalRunTimeState> globalState)
+    private void ApplyRulesOn(StateWrapper<GlobalRunTimeState> globalState)
     {
         for(SOSRule rule : sosRules)
             rule.TryApply(

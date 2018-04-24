@@ -5,7 +5,6 @@
  */
 package HPalang.HybridAutomataGeneration;
 
-import HPalang.Core.TransitionSystem.LTSState;
 import HPalang.Core.TransitionSystem.LabeledTransitionSystem;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -13,6 +12,7 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import HPalang.Core.TransitionSystem.StateWrapper;
 
 /**
  *
@@ -47,16 +47,16 @@ public class HybridAutomaton extends LabeledTransitionSystem<Location>
     
     public void AddTransition(Location origin,HybridLabel label, Location destination)
     {
-        LTSState<Location> orignLoc = this.TryAddState(origin);
-        LTSState<Location> destLoc = this.TryAddState(destination);
+        StateWrapper<Location> orignLoc = this.TryAddState(origin);
+        StateWrapper<Location> destLoc = this.TryAddState(destination);
         this.AddTransition(orignLoc, label, destLoc);
     }
     
     
     public boolean HasTransition(Location origin, HybridLabel label, Location destination)
     {
-        LTSState<Location> orignLoc = this.TryAddState(origin);
-        LTSState<Location> destLoc = this.TryAddState(destination);
+        StateWrapper<Location> orignLoc = this.TryAddState(origin);
+        StateWrapper<Location> destLoc = this.TryAddState(destination);
         return this.HasTransition(orignLoc, label, destLoc);
     }  
     

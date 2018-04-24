@@ -20,7 +20,7 @@ public class IfStatement extends AbstractStatement<IfStatement>
 {
 
     private final Expression expression;
-    
+    // NOTE: Is Queue really necessary?!! Can List be used?
     private final Queue<Statement> trueStatements = new LinkedList<>();
     private final Queue<Statement> falseStatements = new LinkedList<>();
     

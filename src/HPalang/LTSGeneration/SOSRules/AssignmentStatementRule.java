@@ -21,7 +21,7 @@ import static HPalang.LTSGeneration.SOSRules.Utilities.UnWrapVariableScope;
  *
  * @author Iman Jahandideh
  */
-public class AssignmentStatementRule extends StatementRule<AssignmentStatement>
+public class AssignmentStatementRule extends SimpleStatementRule<AssignmentStatement>
 {
 
     @Override

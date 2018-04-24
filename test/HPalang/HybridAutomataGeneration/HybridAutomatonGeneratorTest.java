@@ -18,7 +18,7 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 import static TestUtilities.CoreUtility.CreateGlobalState;
 import static TestUtilities.CoreUtility.CreateSoftwareActorState;
-import HPalang.Core.TransitionSystem.LTSState;
+import HPalang.Core.TransitionSystem.StateWrapper;
 
 /**
  *
@@ -39,8 +39,8 @@ public class HybridAutomatonGeneratorTest
         GlobalRunTimeState state2 = CoreUtility.CreateGlobalState();
         state2.DiscreteState().AddSoftwareActorState(CreateSoftwareActorState("1"));
 
-        LTSState<GlobalRunTimeState> ltsState1=  lts.TryAddState(state1);
-        LTSState<GlobalRunTimeState> ltsState2 = lts.TryAddState(state2);
+        StateWrapper<GlobalRunTimeState> ltsState1=  lts.TryAddState(state1);
+        StateWrapper<GlobalRunTimeState> ltsState2 = lts.TryAddState(state2);
         lts.SetInitialState(ltsState1.InnerState());
         
         lts.AddTransition(ltsState1, new SoftwareLabel(), ltsState2);

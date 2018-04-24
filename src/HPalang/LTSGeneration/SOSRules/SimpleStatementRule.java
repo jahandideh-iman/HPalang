@@ -15,7 +15,7 @@ import HPalang.LTSGeneration.TransitionCollector;
  *
  * @author Iman Jahandideh
  */
-public abstract class StatementRule<T extends Statement> extends ActorLevelRule
+public abstract class SimpleStatementRule<T extends Statement> extends ActorLevelRule
 {
     @Override
     protected final boolean IsRuleSatisfied(ActorState actorState, GlobalRunTimeState globalState)

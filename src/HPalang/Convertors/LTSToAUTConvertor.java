@@ -13,7 +13,7 @@ import java.util.Dictionary;
 import java.util.HashMap;
 import java.util.Map;
 import static HPalang.Convertors.StringConversionUtilities.*;
-import HPalang.Core.TransitionSystem.LTSState;
+import HPalang.Core.TransitionSystem.StateWrapper;
 
 /**
  *
@@ -33,7 +33,7 @@ public class LTSToAUTConvertor
         indexes.put(lts.InitialState().InnerState(), 0);
         
         int i =1;
-        for(LTSState<GlobalRunTimeState> state : lts.LTSStates())
+        for(StateWrapper<GlobalRunTimeState> state : lts.StateWrappers())
         {
             if(state != lts.InitialState())
             {
