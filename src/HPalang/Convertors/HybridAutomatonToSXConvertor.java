@@ -105,7 +105,7 @@ public class HybridAutomatonToSXConvertor
             
                     HPalang.SpaceEx.Core.HybridLabel spaceExLabel2 = new HybridLabel();
                     Guard guard2 = new Guard(bExpr.Operand2());
-                    spaceExLabel1.AddGuard(expressionConvertor.Convert(guard2));
+                    spaceExLabel2.AddGuard(expressionConvertor.Convert(guard2));
                     hybridTransition.GetLabel().Resets().forEach((reset) -> spaceExLabel2.AddAssignment(expressionConvertor.Convert((Reset)reset)));
             
                     model.AddTransition(
@@ -155,7 +155,7 @@ public class HybridAutomatonToSXConvertor
     {
         BaseComponent timerComp = new BaseComponent("Timer");
         
-        timerComp.AddParameter(new RealParameter("duration", false, RealParameter.Dynamic.Const));       
+        timerComp.AddParameter(new RealParameter("duration", false));       
         timerComp.AddParameter(new RealParameter("time", false));
         
         Location loc1 = new Location("loc1");
@@ -163,8 +163,10 @@ public class HybridAutomatonToSXConvertor
         
         loc1.AddInvarient(CreateInvarient(new RealVariable("time"), "<=", new RealVariable("duration")));
         loc1.AddFlow(new Flow("time' == 1"));
+        loc1.AddFlow(new Flow("duration' == 0"));
         
         loc2.AddFlow(new Flow("time' == 0"));
+        loc2.AddFlow(new Flow("duration' == 0"));
         
         timerComp.AddTransition(loc1, new HybridLabel().AddGuard("time == duration"), loc2);
 
@@ -178,8 +180,9 @@ public class HybridAutomatonToSXConvertor
         NetworkComponent system = new NetworkComponent("System");
         ComponentInstance timerInst = new ComponentInstance("timer", timer);
         system.AddParameter(new RealParameter("time", false));
+        system.AddParameter(new RealParameter("duration", false));
         timerInst.SetBinding("time", "time");
-        timerInst.SetBinding("duration", "15");
+        timerInst.SetBinding("duration", "duration");
         system.AddInstance(timerInst);
         
         system.AddInstance(new ComponentInstance("model", model));

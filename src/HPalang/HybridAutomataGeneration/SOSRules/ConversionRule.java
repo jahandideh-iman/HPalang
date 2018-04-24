@@ -13,6 +13,7 @@ import HPalang.Core.DiscreteExpressions.TrueConst;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
 import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
 import HPalang.Core.ContinuousExpressions.Invarient;
+import HPalang.Core.Mode;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.HybridAutomataGeneration.HybridAutomatonGenerator;
 import HPalang.HybridAutomataGeneration.HybridLabel;
@@ -148,6 +149,19 @@ public class ConversionRule implements SOSRule
         ExpressionScopeUnwrapper unwrapper = new ExpressionScopeUnwrapper();
         for(PhysicalActorState actorState : gs.ContinuousState().ActorStates())
         {
+            // --------------------------- AD HOCK SOLUTION ------------------
+            if(actorState.Mode().equals(Mode.None()))
+            {
+                for(Variable var : actorState.Actor().Type().Variables())
+                    if(var instanceof RealVariable)
+                        location.AddEquation(
+                            new DifferentialEquation(
+                                    UnWrapVariableScope(var, actorState.Actor()), 
+                                    Const(0f)));
+                
+                continue;
+            }
+            //----------------------------------------------------------------
             String actorName = actorState.Actor().Name();
             Invarient convertedInvarient = 
                     (Invarient) unwrapper.Unwrap(

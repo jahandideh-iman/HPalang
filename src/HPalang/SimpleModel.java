@@ -5,19 +5,7 @@
  */
 package HPalang;
 
-import HPalang.Core.SoftwareActor;
-import HPalang.Core.ContinuousExpressions.ConstantContinuousExpression;
-import HPalang.Core.ContinuousVariable;
-import HPalang.Core.ContinuousExpressions.DifferentialEquation;
-import HPalang.Core.MainBlock;
-import HPalang.Core.MessageHandler;
-import HPalang.Core.Messages.NormalMessage;
 import HPalang.Core.ModelDefinition;
-import HPalang.Core.Statement;
-import HPalang.Core.Statements.ContinuousAssignmentStatement;
-import HPalang.Core.Statements.DelayStatement;
-import HPalang.Core.Statements.SendStatement;
-import HPalang.LTSGeneration.RunTimeStates.ContinuousBehavior;
 
 /**
  *

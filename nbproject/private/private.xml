@@ -5,10 +5,9 @@
         <group>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/HybridTransition.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/VariableParameter.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SingleBrakeAndBrakeController.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/Node.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/BaseComponent.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/TransitionSystem/LabeledTransitionSystem.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/BrakeByWireModelSingleWheelNoParam.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ContinuousExpressions/ConstantContinuousExpression.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/MessageSendRules/WireMessageSendRuleTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/ContinuousBehaviorExpirationRuleTest.java</file>
@@ -18,28 +17,33 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/Labels/Reset.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/BrakeByWireModelSimple.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Statements/ModeChangeStatement.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/BrakeByWireModelTwoWheelNoParam11.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/MessageTeardownStatementRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/ActorLevelRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/HybridAutomataGeneration/HybridAutomatonTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpression.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/ModeChangeStatementRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/RunTimeStates/VariablePoolState.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/SoftwareActorFIFOMessageTakeRule.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/Mocks/TransitionCollectorChecker.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/Mocks/SOSRuleMock.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Convertors/HybridAutomatonToDMEConvertor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/Core/ActorTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/Core/SimpleContinuousVariablePoolTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/PhysicalActorFIFOMessageTake.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ModelDefinition.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/LTSGeneratorTest.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryOperators/LesserOperator.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/ComponentInstance.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/PhysicalActor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/RunTimeStates/DeadlockState.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/BrakeByWireModelTwoWheelNoParam1.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/VariableArgument.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/FIFOMessageTakeRuleTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/TransitionTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/TestUtilities/CoreUtility.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/RunTimeStates/NetworkStateTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/MessageLocators/MessageLocatorT.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Utilities/StopWatch.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/Mocks/EmptyExpression.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/Location.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/Core/CANSpecificationTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/ExpressionConvertor.java</file>
@@ -53,9 +57,9 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/AssignmentStatementRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/RunTimeStates/ContinuousBehavior.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/TrueConst.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/MessageSendRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/SOSRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ContinuousExpressions/ContinuousExpressionT.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/MessageSendRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Variables/FloatVariable.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/ActorHandlersCreator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ActorType.java</file>
@@ -71,6 +75,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/CANScheduleRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Main.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ActorLocator.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SingleBrakeModel.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Variable.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/Utilities/MiscUtilities.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/SpaceExModel.java</file>
@@ -98,10 +103,12 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/SpaceExToXMLConvertorVisitor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryOperators/LogicalAndOperator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Expressions/Visitors/GeneralExpressionVisitor.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SingleBrakeAndBrakeControllerNoParam.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SimpleModel.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/LTSGenerator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/MessageLocators/DelegationMessageLocator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Messages/NormalMessage.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/MessageTeardownStatementRuleTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/NullExpression.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/HybridAutomatonGenerator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/PriorityBasedMessageTakeRuleTest.java</file>
@@ -126,14 +133,17 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/HPalangToCompositionalSXConvertor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/HybridTransitionBuilder.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/HybridAutomataGeneration/HybridLabel.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Expressions/Visitors/BinaryExpressionVisitor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/LabeledTransitionSystemTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/BinaryExpression.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/CompositioanlConvertionMain.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/VariableExpression.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/MessageSendRules/CANMessageSendRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/FalseConst.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SingleBrakeAndBrakeControllerAndClock.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/RunTimeStates/Event/SendPacketAndResetNetworkActionTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/MessageSendRules/WireMessageSendRule.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SingleClockMode.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/State.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/CANSpecification.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/Component.java</file>
@@ -143,26 +153,26 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/SimpleRealVariablePool.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/Builders/StateInfoBuilder.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Variables/RealVariable.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/TransitionSystem/LTSState.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Expressions/Crawlers/PostorderBinaryExpressionCrawler.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Convertor/StatementToLocationConvertor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ActorLocators/ParametricActorLocator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/Mocks/ActionMonitor.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/TransitionSystem/SimpleLTSState.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/ContinuousVariable.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/BrakeByWireModelTwoWheelSimplified.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/AssignmentStatementRuleTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DeepClonable.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/CompositeStateT.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/TestUtilities/NetworkingUtility.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/MessageHandler.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/Builders/GlobalRunTimeStateBuilder.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/TransitionSystem/Label.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/HybridLabel.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/MessageParameters.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DelegationParameter.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/BrakeByWireModelTwoWheel1.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SimpleState.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SingleWheelModel.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/RunTimeStates/NetworkState.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Message.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/BrakeByWireModelTwoWheelNoParam.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/TransitionCollector.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/HybridAutomataGeneration/HybridAutomatonGeneratorTest.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Equalitable.java</file>
@@ -175,8 +185,8 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/IfStatementRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/InstanceParameter.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/MessageSendRules/CANMessageSendRuleTest.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/SpaceEx/Core/RealParameter.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/EventExpirationRuleTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Utilities/EqualitableArrayDeque.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/EventExpirationRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Convertors/LTSToAUTConvertor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Statements/AssignmentStatement.java</file>
@@ -199,12 +209,11 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/Labels/Guard.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/RunTimeStates/ContinuousBehaviorContianer.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/PhysicalActorType.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/SingleCommunicationRealVariablePool.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/CompositeState.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/MessageSendRuleTestFixture.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Actor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/LTSGeneration/SOSRules/ModeChangeStatementRuleTest.java</file>
-            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/TransitionSystem/Transition.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/test/HPalang/HybridAutomataGeneration/Mocks/SOSRuleMonitor.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/StateInfo.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/MessageLocators/DirectMessageLocator.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/PhysicalStatementRule.java</file>
@@ -212,6 +221,7 @@
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSReducer.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Expressions/Negation.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/DiscreteExpressions/ComparisonExpression.java</file>
+            <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/SoftwareStatementRule.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/Core/Statements/IfStatement.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/Utilities/CreationUtility.java</file>
             <file>file:/E:/Projects/Tehran/CPS/Implementation/HPalang/src/HPalang/LTSGeneration/SOSRules/PriorityBasedMessageTakeRule.java</file>

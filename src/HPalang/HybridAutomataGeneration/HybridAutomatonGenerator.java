@@ -44,6 +44,8 @@ public class HybridAutomatonGenerator
         sosRules.add(rule);
     }
 
+    
+    // TODO: Refactor this crap.
     public HybridAutomaton Generate(LabeledTransitionSystem<GlobalRunTimeState> lts, ModelDefinition modelDefinition)
     {
         this.lts = lts;
@@ -55,15 +57,7 @@ public class HybridAutomatonGenerator
         int counter = 0;
         for(LTSState<GlobalRunTimeState> globalState : lts.LTSStates())
         {
-
-            for(SOSRule rule : sosRules)
-                rule.TryApply(
-                        new StateInfo(
-                                globalState.InnerState().DeepCopy(), 
-                                globalState.InTransitions(),
-                                globalState.OutTransitions()),
-                        this);
-            
+            ApplyRulesOn(globalState);
             counter++;
             if(counter%5000 == 0)
                 System.out.println("States visited: " + counter);
@@ -84,6 +78,17 @@ public class HybridAutomatonGenerator
         hybridAutomaton.SetInitialState(LocationOf(lts.InitialState().InnerState()));
            
         return hybridAutomaton;
+    }
+
+    private void ApplyRulesOn(LTSState<GlobalRunTimeState> globalState)
+    {
+        for(SOSRule rule : sosRules)
+            rule.TryApply(
+                    new StateInfo(
+                            globalState.InnerState().DeepCopy(),
+                            globalState.InTransitions(),
+                            globalState.OutTransitions()),
+                    this);
     }
     
     public void AddLocationFor(Location location,GlobalRunTimeState runTimeState)
@@ -138,7 +143,7 @@ public class HybridAutomatonGenerator
     
     public String CreateAUniqueLocationName(GlobalRunTimeState state)
     {
-        if(lts.InitialState().equals(state))
+        if(lts.InitialState().InnerState().equals(state))
             return "InitalLoc";
         return String.format("Loc_%d", idPostFix);
     }

@@ -5,6 +5,7 @@
  */
 package HPalang.Core;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedList;
@@ -20,10 +21,14 @@ public class MessageParameters extends Equalitable<MessageParameters>
 {
     private final Map<String, VariableParameter> parameters = new HashMap<>();
     
+    // NOTE: parametersLists is an ad hock solution for keeping the order of the parameters.
+    private final List<VariableParameter> parametersLists = new ArrayList<>();
+    
     public void Add(VariableParameter variableParameter)
     {
         assert (parameters.containsKey(variableParameter.Name()) == false);
         parameters.put(variableParameter.Name(),variableParameter);
+        parametersLists.add(variableParameter);
     }
     
     public void AddAll(MessageParameters other)
@@ -44,13 +49,14 @@ public class MessageParameters extends Equalitable<MessageParameters>
     
     public List<VariableParameter> AsList()
     {
-        return new LinkedList<>(parameters.values());
+        return parametersLists;
     }
     
     @Override
     protected boolean InternalEquals(MessageParameters other)
     {
-       return this.parameters.equals(other.parameters);
+       return this.parameters.equals(other.parameters)
+               && this.parametersLists.equals(other.parametersLists);
     }
 
     @Override

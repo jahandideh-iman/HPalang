@@ -41,6 +41,7 @@ public class ContinuousBehaviorExpirationRule extends PhysicalActorLevelRule
         
         Mode mode = newActorState.Mode();
         
+        newActorState.SetMode(Mode.None());
         newActorState.ExecutionQueueState().Statements().Enqueue(mode.Actions());
         
         collector.AddTransition(new ContinuousLabel(UnscopedGuard(mode.Guard(),actorState.Actor())), newGlobalState);

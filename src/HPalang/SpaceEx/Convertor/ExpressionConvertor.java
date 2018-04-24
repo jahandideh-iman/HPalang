@@ -90,6 +90,9 @@ public class ExpressionConvertor extends PostorderExpressionCrawler
                 Push(new BinaryExpression(operand1, new LesserEqualOperator(), operand2));
             else if(expr.Operator() instanceof LesserOperator)
                 Push(new BinaryExpression(operand1, new GreaterEqualOperator(), operand2));
+            
+            else if (expr.Operator() instanceof GreaterEqualOperator)
+                Push(new BinaryExpression(operand1, new LesserOperator(), operand2));
             else
                 throw new RuntimeException(String.format(
                         "Operator \"%s\" is not supported yet",

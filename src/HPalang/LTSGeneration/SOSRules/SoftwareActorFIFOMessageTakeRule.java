@@ -25,6 +25,8 @@ import java.util.List;
  *
  * @author Iman Jahandideh
  */
+
+// TODO: Merge this with PhysicalActorFIFOMessageTakeRule 
 public class SoftwareActorFIFOMessageTakeRule extends SoftwareActorLevelRule
 {
 

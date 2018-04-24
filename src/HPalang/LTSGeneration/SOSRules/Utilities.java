@@ -23,6 +23,7 @@ import HPalang.Core.Variable;
 import HPalang.Core.VariableParameter;
 import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
 import HPalang.LTSGeneration.Labels.Reset;
+import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
@@ -59,9 +60,14 @@ public class Utilities
         return true;
     }
     
-    static public void EnqueueStatements(Queue<Statement> statements, SoftwareActor actor, GlobalRunTimeState globalState)
+    static public void EnqueueStatements(Queue<Statement> statements, Actor actor, GlobalRunTimeState globalState)
     {
         FindActorState(actor, globalState).ExecutionQueueState().Statements().Enqueue(statements);
+    }
+    
+    static public ActorState FindActorState(Actor actor, GlobalRunTimeState globalState )
+    {
+        return globalState.FindActorState(actor);
     }
     
     static public SoftwareActorState FindActorState(SoftwareActor actor, GlobalRunTimeState globalState )
@@ -74,7 +80,7 @@ public class Utilities
         return new BinaryExpression(oprand1, new EqualityOperator(), oprand2);
     }
     
-    static public Expression PartivalValuation(Expression expression, SoftwareActor actor, GlobalRunTimeState globalState)
+    static public Expression PartivalValuation(Expression expression, Actor actor, GlobalRunTimeState globalState)
     {
         return expression.PartiallyEvaluate(FindActorState(actor, globalState).ValuationState().Valuation());
     }

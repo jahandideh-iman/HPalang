@@ -52,6 +52,7 @@ public class ContinuousBehaviorExpirationRuleTest extends SOSRuleTestFixture
         
         GlobalRunTimeState nextGlobalState = globalState.DeepCopy();
         PhysicalActorState nextActorState = nextGlobalState.ContinuousState().FindActorState(pActor);
+        nextActorState.SetMode(Mode.None());
         nextActorState.ExecutionQueueState().Statements().Enqueue(mode.Actions());
         
         ApplyRuleOn(globalState);

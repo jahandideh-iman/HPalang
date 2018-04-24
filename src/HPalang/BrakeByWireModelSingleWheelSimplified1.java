@@ -39,10 +39,9 @@ import HPalang.LTSGeneration.Labels.Guard;
  *
  * @author Iman Jahandideh
  */
-public class BrakeByWireModelSingleWheelSimplified
+public class BrakeByWireModelSingleWheelSimplified1
 {
     public static final boolean ADD_TIME_PROPERTY_MONITOR = false;
-    
     public static final float arbitrartDelay = 13.0f;
     public static final String Wheel__controller_instance = "controller";
     public static final String Wheel__speed_delegation = "wheel_speed_delegation";
@@ -51,7 +50,7 @@ public class BrakeByWireModelSingleWheelSimplified
     public static final String Wheel__torque = "torque";
     public static final String Wheel__timer = "timer";
     public static final String Wheel__brake_mode = "Brake";
-    public static final float Wheel__period_const = 0.05f;
+    public static final float Wheel__period_const = 0.1f;
     
     public static final String Wheel_Controller__wheel_instance = "wheel";
     public static final String Wheel_Controller__wheel_speed_port = "wheel_speed_port";
@@ -79,11 +78,11 @@ public class BrakeByWireModelSingleWheelSimplified
     public static final String Brake__timer = "timer";
     public static final String Brake__increasing_brake = "IncreasingBrake";
     public static final String Brake__constant_brake = "ConstantBrake";
-    public static final float Brake__period_const = 0.05f;
+    public static final float Brake__period_const = 0.5f;
     public static final float Brake__brake_rate_const = 1f;
     
     public static final String Clock__callback = "callback";
-    public static final float Clock__period_const = 0.05f;
+    public static final float Clock__period_const = 0.5f;
     
     public static final float CAN__dealy_const = 0.01f;
     
@@ -432,8 +431,8 @@ public class BrakeByWireModelSingleWheelSimplified
         
         MessageHandler control = globalBrakeControllerType.FindMessageHandler(Global_Brake_Controller__control_handler);
         
-        control.AddStatement(new AssignmentStatement(
-                estimated_speed, VariableExpression(wheel_speed_FR))); 
+        //control.AddStatement(new AssignmentStatement(
+                //estimated_speed, VariableExpression(wheel_speed_FR))); 
         
         control.AddStatement(new AssignmentStatement(global_torque, CreateBinaryExpression(brake_percent, "/", Const(100f)) ));
         
@@ -475,7 +474,7 @@ public class BrakeByWireModelSingleWheelSimplified
         
         BindInstance(wheel,Wheel__controller_instance, wheelController, CommunicationType.Wire );
         
-        BindDelagation(wheel, Wheel__speed_delegation, global_brake_controller, delegationHandlerName, CommunicationType.CAN);
+        BindDelagation(wheel, Wheel__speed_delegation, global_brake_controller, delegationHandlerName, CommunicationType.Wire);
     }
     
     private static void FillWheelControllerActor(SoftwareActor wheel_controller, PhysicalActor wheel)
@@ -493,7 +492,7 @@ public class BrakeByWireModelSingleWheelSimplified
                 global_brake_controller,
                 Global_Brake_Controller__wheel_controller_FR_Instance,
                 wheel_controller_FR,
-                CommunicationType.CAN);    
+                CommunicationType.Wire);    
     }
 
     private static void FillBrake(PhysicalActor brake, SoftwareActor global_brake_controller)
