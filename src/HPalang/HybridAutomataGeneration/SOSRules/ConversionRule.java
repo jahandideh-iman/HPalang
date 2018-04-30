@@ -190,7 +190,6 @@ public class ConversionRule implements SOSRule
         AddConstantODEs(location, gs);
         location.AddEquation(new DifferentialEquation(urgVariable, Const(0f)));
                
-        
         return location;
     }
     

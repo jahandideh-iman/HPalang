@@ -45,9 +45,9 @@ import HPalang.LTSGeneration.Labels.Guard;
 public class BrakeByWireModelTwoWheelSimplified
 {
     public static final float arbitrartDelay = 13.0f;
-    public static final String Wheel__controller_instance = "controller";
-    public static final String Wheel__speed_delegation = "wheel_speed_delegation";
-    public static final String Wheel__torque_port = "torque_port";
+    public static final String Wheel__controller_instance = "ctrl";
+    public static final String Wheel__speed_delegation = "speedDel";
+    public static final String Wheel__torque_port = "torquePort";
     public static final String Wheel__speed = "speed";
     public static final String Wheel__torque = "torque";
     public static final String Wheel__timer = "timer";
@@ -55,32 +55,32 @@ public class BrakeByWireModelTwoWheelSimplified
     public static final float Wheel__period_const = 0.05f;
     
     public static final String Wheel_Controller__wheel_instance = "wheel";
-    public static final String Wheel_Controller__wheel_speed_port = "wheel_speed_port";
-    public static final String Wheel_Controller__wheel_speed = "wheel_speed";
-    public static final String Wheel_Controller__slip_rate = "slip_rate";
+    public static final String Wheel_Controller__wheel_speed_port = "wspeedPort";
+    public static final String Wheel_Controller__wheel_speed = "wspeed";
+    public static final String Wheel_Controller__slip_rate = "sliprate";
     public static final String Wheel_Controller__apply_torque_handler = "applyTorque";
     public static final float Wheel_Controller__wheel_radius_const = 0.3f;
 
-    public static final String Global_Brake_Controller__wheel_rpm_FR_port = "wheel_speed_FR_port";
-    public static final String Global_Brake_Controller__wheel_rpm_FL_port = "wheel_speed_FL_port";
+    public static final String Global_Brake_Controller__wheel_rpm_FR_port = "wspeedFRport";
+    public static final String Global_Brake_Controller__wheel_rpm_FL_port = "wspeedFLport";
 
     
-    public static final String Global_Brake_Controller__brake_percent_port = "brake_percent_port";
+    public static final String Global_Brake_Controller__brake_percent_port = "brakePort";
     public static final String Global_Brake_Controller__control_handler = "control";
-    public static final String Global_Brake_Controller__wheel_controller_FR_Instance = "wheel_controller_FR";
-    public static final String Global_Brake_Controller__wheel_controller_FL_Instance = "wheel_controller_FL";
-    public static final String Global_Brake_Controller__wheel_speed_FR = "wheel_speed_FR";
-    public static final String Global_Brake_Controller__wheel_speed_FL = "wheel_speed_FL";
-    public static final String Global_Brake_Controller__brake_percent = "brake_percent";
-    public static final String Global_Brake_Controller__estimated_speed = "estimated_speed";
-    public static final String Global_Brake_Controller__global_torque = "global_torque";
+    public static final String Global_Brake_Controller__wheel_controller_FR_Instance = "wcontrollerFR";
+    public static final String Global_Brake_Controller__wheel_controller_FL_Instance = "wcontrollerFL";
+    public static final String Global_Brake_Controller__wheel_speed_FR = "wspeedFR";
+    public static final String Global_Brake_Controller__wheel_speed_FL = "wspeedFL";
+    public static final String Global_Brake_Controller__brake_percent = "brakePer";
+    public static final String Global_Brake_Controller__estimated_speed = "estSpeed";
+    public static final String Global_Brake_Controller__global_torque = "gTorque";
 
     
     public static final String Brake__controller_instance = "controller";
-    public static final String Brake__brake_percent = "brake_percent";
+    public static final String Brake__brake_percent = "brakePerc";
     public static final String Brake__timer = "timer";
-    public static final String Brake__increasing_brake = "IncreasingBrake";
-    public static final String Brake__constant_brake = "ConstantBrake";
+    public static final String Brake__increasing_brake = "Increasing";
+    public static final String Brake__constant_brake = "Constant";
     public static final float Brake__period_const = 0.05f;
     public static final float Brake__brake_rate_const = 1f;
     
@@ -113,14 +113,14 @@ public class BrakeByWireModelTwoWheelSimplified
         FillFleshForGlobalBrakeControllerType(globalBrakeControllerType, wheelControllerType.FindMessageHandler(Wheel_Controller__apply_torque_handler));
         
         PhysicalActor brake_pedal = new PhysicalActor("brake", brakeType, 1);
-        SoftwareActor global_brake_controller = new SoftwareActor("global_brake_controller", globalBrakeControllerType, 4);
+        SoftwareActor global_brake_controller = new SoftwareActor("gbrakeController", globalBrakeControllerType, 4);
         
-        SoftwareActor wheel_controller_FR = new SoftwareActor("wheel_controller_FR",wheelControllerType, 2);     
-        SoftwareActor wheel_controller_FL = new SoftwareActor("wheel_controller_FL",wheelControllerType, 2);
+        SoftwareActor wheel_controller_FR = new SoftwareActor("wcontrollerFR",wheelControllerType, 2);     
+        SoftwareActor wheel_controller_FL = new SoftwareActor("wcontrollerFL",wheelControllerType, 2);
 
 
-        PhysicalActor wheel_FR = new PhysicalActor("wheel_FR", wheelType,1);       
-        PhysicalActor wheel_FL = new PhysicalActor("wheel_FL", wheelType,1);
+        PhysicalActor wheel_FR = new PhysicalActor("wheelFR", wheelType,1);       
+        PhysicalActor wheel_FL = new PhysicalActor("wheelFL", wheelType,1);
 
         
         PhysicalActor clock = new PhysicalActor("clock", clockType,1);
@@ -239,7 +239,11 @@ public class BrakeByWireModelTwoWheelSimplified
         brakeMode.AddAction(CreateResetFor(timer));
         brakeMode.AddAction(CreateSendStatement(controllerInstance, wheel_speed_port, VariableExpression(speed)));
         brakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation, VariableExpression(speed)));
-        brakeMode.AddAction(CreateModeChangeStatement(brakeMode));
+        brakeMode.AddAction(new IfStatement(
+            CreateBinaryExpression(speed, ">=", Const(0f)),
+            Statement.StatementsFrom(CreateModeChangeStatement(brakeMode)), 
+            Statement.EmptyStatements()));
+        
     }
     
     private static void FillSkeletonForWheelControllerType(SoftwareActorType wheelControllerType, ActorType wheelType)

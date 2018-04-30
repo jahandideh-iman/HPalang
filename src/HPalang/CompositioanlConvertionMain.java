@@ -26,8 +26,6 @@ public class CompositioanlConvertionMain
         
         spaceExConvertor.Convert(definition);
         SpaceExModel spaceExModel = spaceExConvertor.GetConvertedModel();
- 
-        
         
         writer.Write("output/CompostionalSpaceEx.xml", xmlConvertor.Convert(spaceExModel));
     }
