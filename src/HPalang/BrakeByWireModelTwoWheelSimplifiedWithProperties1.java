@@ -40,7 +40,7 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class BrakeByWireModelTwoWheelSimplifiedWithProperties
+public class BrakeByWireModelTwoWheelSimplifiedWithProperties1
 {
     public static final boolean ADD_TIME_PROPERTY_MONITOR = false;
     public static final boolean ADD_SAFETY_PROPERTY_MONITOR = false;
@@ -333,27 +333,27 @@ public class BrakeByWireModelTwoWheelSimplifiedWithProperties
         Queue<Statement> truePath  = Statement.StatementsFrom();
         
         
-        truePath.add(new AssignmentStatement(slip_rate, 
-                    CreateBinaryExpression(
-                            CreateBinaryExpression(
-                                    vehicle_speed, 
-                                    "-", 
-                                    CreateBinaryExpression(
-                                            wheel_speed,
-                                            "*", 
-                                            Const(Wheel_Controller__wheel_radius_const))),
-                            "/", 
-                            VariableExpression(vehicle_speed))));
-        truePath.add(new IfStatement(
-                  new BinaryExpression(
-                                new VariableExpression(slip_rate),
-                                new GreaterOperator(),
-                                Const(0.2f)),
-                Statement.StatementsFrom(CreateSendStatement(wheel, wheel_torque_port , Const(0.0f))), 
-                Statement.StatementsFrom(
-                        CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)))
-        ));
-   
+//        truePath.add(new AssignmentStatement(slip_rate, 
+//                    CreateBinaryExpression(
+//                            CreateBinaryExpression(
+//                                    vehicle_speed, 
+//                                    "-", 
+//                                    CreateBinaryExpression(
+//                                            wheel_speed,
+//                                            "*", 
+//                                            Const(Wheel_Controller__wheel_radius_const))),
+//                            "/", 
+//                            VariableExpression(vehicle_speed))));
+//        truePath.add(new IfStatement(
+//                  new BinaryExpression(
+//                                new VariableExpression(slip_rate),
+//                                new GreaterOperator(),
+//                                Const(0.2f)),
+//                Statement.StatementsFrom(CreateSendStatement(wheel, wheel_torque_port , Const(0.0f))), 
+//                Statement.StatementsFrom(
+//                        CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)))
+//        ));
+//   
         applyTorque.AddStatement(new IfStatement(
                 CreateBinaryExpression(vehicle_speed, ">", Const(0f)), 
                 truePath, 

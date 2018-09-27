@@ -22,6 +22,7 @@ import HPalang.Core.ValuationContainer;
 import HPalang.Core.Variable;
 import HPalang.Core.VariableParameter;
 import HPalang.LTSGeneration.ExpressionScopeUnwrapper;
+import HPalang.LTSGeneration.Labels.ContinuousLabel;
 import HPalang.LTSGeneration.Labels.Reset;
 import HPalang.LTSGeneration.RunTimeStates.ActorState;
 import java.util.Collection;
@@ -60,6 +61,19 @@ public class Utilities
         return true;
     }
     
+    public static boolean HasPhysicalActions(Collection<Transition<GlobalRunTimeState>> transitions)
+    {
+        return ! NoPhysicalActions(transitions);
+    }
+    
+    public static boolean NoPhysicalActions(Collection<Transition<GlobalRunTimeState>> transitions)
+    {
+        for(Transition tr : transitions)
+            if(tr.GetLabel() instanceof ContinuousLabel)
+                return false;
+        return true;
+    }
+        
     static public void EnqueueStatements(Queue<Statement> statements, Actor actor, GlobalRunTimeState globalState)
     {
         FindActorState(actor, globalState).ExecutionQueueState().Statements().Enqueue(statements);

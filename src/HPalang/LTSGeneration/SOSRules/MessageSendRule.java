@@ -10,6 +10,7 @@ import HPalang.Core.CANSpecification;
 import HPalang.Core.CommunicationType;
 import HPalang.Core.DiscreteExpressions.ConstantDiscreteExpression;
 import HPalang.Core.DiscreteExpressions.VariableExpression;
+import HPalang.Core.EmptyActor;
 import HPalang.Core.Expression;
 import HPalang.Core.Message;
 import HPalang.Core.MessageArguments;
@@ -67,6 +68,10 @@ public abstract class MessageSendRule extends ActorLevelRule
         SendStatement sendStatement = (SendStatement)actorState.ExecutionQueueState().Statements().Head();
         
         Actor receiver = sendStatement.ReceiverLocator().Locate(actorState);
+        
+        if(receiver instanceof EmptyActor)
+            return true;
+        
         ActorState receiverState = globalState.FindActorState(receiver);
         Message message = sendStatement.MessageLocator().Locate(actorState.Actor());
         
@@ -92,7 +97,13 @@ public abstract class MessageSendRule extends ActorLevelRule
 
         ActorState senderState = newGlobalState.FindActorState(actorState.Actor());
         SendStatement sendStatement = (SendStatement)senderState.ExecutionQueueState().Statements().Dequeue();
-        
+        Actor receiver = sendStatement.ReceiverLocator().Locate(actorState);
+         
+         if(receiver instanceof EmptyActor)
+         {
+             collector.AddTransition(new SoftwareLabel(), newGlobalState);
+             return;
+         }
 
         if(PoolHasEnoughAvaialbeVariables(globalState, actorState , sendStatement) == false)
         {
@@ -102,7 +113,7 @@ public abstract class MessageSendRule extends ActorLevelRule
             return;
         }
         
-        Actor receiver = sendStatement.ReceiverLocator().Locate(actorState);
+       
         ActorState receiverState = newGlobalState.FindActorState(receiver);
         MessageQueueState reciverMessageQueueState = receiverState.MessageQueueState();
         

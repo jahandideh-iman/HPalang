@@ -29,7 +29,7 @@ import java.util.Stack;
  *
  * @author Iman Jahandideh
  */
-public class ExpressionConvertor extends PostorderExpressionCrawler
+public class SXExpressionFixer extends PostorderExpressionCrawler
 {  
     
     private class GuardConverter extends BasicPostorderExpressionCrawler
@@ -47,25 +47,38 @@ public class ExpressionConvertor extends PostorderExpressionCrawler
         protected void Process(Guard expr)
         {
             Expression e = Pop();
-            if(e instanceof BinaryExpression && ((BinaryExpression)e).Operator() instanceof EqualityOperator )
-            {
-                BinaryExpression be = (BinaryExpression) e;
-                if(be.Operand2() instanceof TrueConst)
-                    Push(new Guard(be.Operand1()));
-                else if (be.Operand2() instanceof FalseConst)
-                    Push(new Guard(Negate(be.Operand1())));
-                else
-                    Push(expr);
-                
-            }
-            else
-                Push(expr);   
+            Push(new Guard(e));
         }        
 
+        @Override
+        protected void Process(BinaryExpression expr)
+        {
+            Expression operand2 = Pop();
+            Expression operand1 = Pop();
+            if(expr.Operator() instanceof EqualityOperator)
+            {          
+                if(operand2 instanceof TrueConst)
+                    Push(operand1);
+                else if (operand2 instanceof FalseConst)
+                    Push(Negate(operand1));
+                else
+                    Push(expr);
+            }
+            else
+            {
+                this.Push(new BinaryExpression(operand1, expr.Operator(), operand2));
+            }
+            
+        }
+        
         private Expression Negate(Expression expr)
         {
             return new Negator().Negate(expr);
         }
+
+
+        
+        
     }
     
     private class Negator extends BasicPostorderExpressionCrawler

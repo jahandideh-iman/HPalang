@@ -19,5 +19,8 @@ public interface StateWrapper<T>
     public Collection<Transition<T>> InTransitions();
     public void AddInTransition(Transition<T> tr);
     public void AddOutTransition(Transition<T> tr);
+    public void RemoveInTransition(Transition<T> tr);
+    public void RemoveOutTransition(Transition<T> tr);
+    
     public T InnerState();
 }

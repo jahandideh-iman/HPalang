@@ -62,6 +62,11 @@ public class Actor<T extends ActorType>
         SetCommunicationType(instance, communicationType);
     }
     
+    public void BindToEmpty(InstanceParameter parameter)
+    {
+        instanceArguments.put(parameter, new EmptyActor());
+    }
+    
     public Actor GetInstanceFor(InstanceParameter parameter)
     {
         return instanceArguments.get(parameter);

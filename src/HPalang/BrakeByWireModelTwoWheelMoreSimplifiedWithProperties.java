@@ -40,10 +40,11 @@ import java.util.Queue;
  *
  * @author Iman Jahandideh
  */
-public class BrakeByWireModelTwoWheelSimplifiedWithProperties
+public class BrakeByWireModelTwoWheelMoreSimplifiedWithProperties
 {
     public static final boolean ADD_TIME_PROPERTY_MONITOR = false;
-    public static final boolean ADD_SAFETY_PROPERTY_MONITOR = false;
+    public static final boolean ADD_SAFETY_PROPERTY_MONITOR = true;
+    public static final int WHEEL_INDEX_FOR_APPLYING_PROPERTY = 0;
     
     public static final float arbitrartDelay = 13.0f;
     public static final String Wheel__controller_instance = "ctlr";
@@ -81,8 +82,8 @@ public class BrakeByWireModelTwoWheelSimplifiedWithProperties
     public static final String Brake__brake_percent = "brk";
     public static final String Brake__max_brake_percent = "mxbrk";
     public static final String Brake__timer = "t";
-    public static final String Brake__increasing_brake = "IncreasingBrake";
-    public static final String Brake__constant_brake = "ConstantBrake";
+    public static final String Brake__braking = "braking";
+    public static final String Brake__rate = "r";
     public static final float Brake__period_const = 0.05f;
     public static final float Brake__brake_rate_const = 1f;
     
@@ -192,16 +193,13 @@ public class BrakeByWireModelTwoWheelSimplifiedWithProperties
         
         if(ADD_TIME_PROPERTY_MONITOR)
         {
-            PhysicalActor timeMonitorFR = new PhysicalActor("timeMonitorFR", monitorType, 1);
-            PhysicalActor timeMonitorFL = new PhysicalActor("timeMonitorFL", monitorType, 1);
+            PhysicalActor timeMonitor = new PhysicalActor("monitor", monitorType, 1);
+            //PhysicalActor timeMonitorFL = new PhysicalActor("timeMonitorFL", monitorType, 1);
             
             InstanceParameter brakeParam = new InstanceParameter("timeMonitor", monitorType);
             brakeType.AddInstanceParameter(brakeParam);
-            Mode brakeIncreasingMode = brakeType.FindMode(Brake__increasing_brake);
-            Mode brakeConstantMode = brakeType.FindMode(Brake__constant_brake);
+            Mode brakeConstantMode = brakeType.FindMode(Brake__braking);
             
-            brakeIncreasingMode.AddAction(
-                    CreateSendStatement(brakeParam, monitorType.FindMessageHandler(Time_Monitor__start)));
             brakeConstantMode.AddAction(
                     CreateSendStatement(brakeParam, monitorType.FindMessageHandler(Time_Monitor__start)));
             
@@ -210,18 +208,26 @@ public class BrakeByWireModelTwoWheelSimplifiedWithProperties
             MessageHandler wheelSetTorqueHandler = wheelType.FindMessageHandler(Wheel__torque_port);
             wheelSetTorqueHandler.AddStatement(CreateSendStatement(wheelParam, monitorType.FindMessageHandler(Time_Monitor__stop)));
             
-            brake_pedal.BindInstance(brakeParam, timeMonitorFR, CommunicationType.Wire);
-            wheel_FR.BindInstance(wheelParam, timeMonitorFR, CommunicationType.Wire);
-            wheel_FL.BindInstance(wheelParam, timeMonitorFL, CommunicationType.Wire);
+            brake_pedal.BindInstance(brakeParam, timeMonitor, CommunicationType.Wire);
             
-            definition.AddActor(timeMonitorFR); 
-            definition.AddActor(timeMonitorFL); 
+            if(WHEEL_INDEX_FOR_APPLYING_PROPERTY == 0)
+            {
+                wheel_FR.BindInstance(wheelParam, timeMonitor, CommunicationType.Wire);
+                wheel_FL.BindToEmpty(wheelParam);
+            }
+            else
+            {
+                wheel_FR.BindToEmpty(wheelParam);
+                wheel_FL.BindInstance(wheelParam, timeMonitor, CommunicationType.Wire);
+            }
+            
+            definition.AddActor(timeMonitor); 
         }
         
         if(ADD_SAFETY_PROPERTY_MONITOR)
         {
-            PhysicalActor timeMonitorFR = new PhysicalActor("sfMntrFR", monitorType, 2);
-            PhysicalActor timeMonitorFL = new PhysicalActor("sfMntrFL", monitorType, 2);
+            PhysicalActor timeMonitor = new PhysicalActor("sfMntr", monitorType, 2);
+            //PhysicalActor timeMonitorFL = new PhysicalActor("sfMntrFL", monitorType, 2);
             
             InstanceParameter wheelControllerParam = new InstanceParameter("monitor", monitorType);
             
@@ -237,16 +243,28 @@ public class BrakeByWireModelTwoWheelSimplifiedWithProperties
             MessageHandler wheelSetTorqueHandler = wheelType.FindMessageHandler(Wheel__torque_port);
             wheelSetTorqueHandler.AddStatement(CreateSendStatement(wheelParam, monitorType.FindMessageHandler(Time_Monitor__stop)));
             
-            wheel_controller_FR.BindInstance(wheelControllerParam, timeMonitorFR, CommunicationType.Wire);
-            wheel_FR.BindInstance(wheelParam, timeMonitorFR, CommunicationType.Wire);
+
             
-            wheel_controller_FL.BindToEmpty(wheelControllerParam);
-            wheel_FL.BindToEmpty(wheelParam);
-            
+            if(WHEEL_INDEX_FOR_APPLYING_PROPERTY == 0)
+            {
+                wheel_controller_FR.BindInstance(wheelControllerParam, timeMonitor, CommunicationType.Wire);
+                wheel_FR.BindInstance(wheelParam, timeMonitor, CommunicationType.Wire);
+
+                wheel_controller_FL.BindToEmpty(wheelControllerParam);
+                wheel_FL.BindToEmpty(wheelParam);
+            }
+            else
+            {
+                wheel_controller_FR.BindToEmpty(wheelControllerParam);
+                wheel_FR.BindToEmpty(wheelParam);
+                
+                wheel_controller_FL.BindInstance(wheelControllerParam, timeMonitor, CommunicationType.Wire);
+                wheel_FL.BindInstance(wheelParam, timeMonitor, CommunicationType.Wire);
+            }
             //wheel_controller_FL.BindInstance(wheelControllerParam, timeMonitorFL, CommunicationType.Wire);
             //wheel_FL.BindInstance(wheelParam, timeMonitorFL, CommunicationType.Wire);
             
-            definition.AddActor(timeMonitorFR);
+            definition.AddActor(timeMonitor);
             //definition.AddActor(timeMonitorFL);
         }
         
@@ -299,7 +317,7 @@ public class BrakeByWireModelTwoWheelSimplifiedWithProperties
         brakeMode.AddAction(CreateSendStatement(wheel_rpm_delegation, VariableExpression(speed)));
         //brakeMode.AddAction(CreateModeChangeStatement(brakeMode));
         brakeMode.AddAction(new IfStatement(
-            CreateBinaryExpression(speed, ">=", Const(0f)),
+            CreateBinaryExpression(speed, ">", Const(0f)),
             Statement.StatementsFrom(CreateModeChangeStatement(brakeMode)), 
             Statement.EmptyStatements()));
     }
@@ -343,7 +361,7 @@ public class BrakeByWireModelTwoWheelSimplifiedWithProperties
                                             "*", 
                                             Const(Wheel_Controller__wheel_radius_const))),
                             "/", 
-                            VariableExpression(vehicle_speed))));
+                            Const(2.0f))));
         truePath.add(new IfStatement(
                   new BinaryExpression(
                                 new VariableExpression(slip_rate),
@@ -371,12 +389,12 @@ public class BrakeByWireModelTwoWheelSimplifiedWithProperties
         
         brakeType.AddVariable(new RealVariable(Brake__brake_percent));  
         brakeType.AddVariable(new FloatVariable(Brake__max_brake_percent));
+        brakeType.AddVariable(new FloatVariable(Brake__rate));
         brakeType.AddVariable(new RealVariable(Brake__timer));
         
-        brakeType.AddMode(new Mode(Brake__increasing_brake));    
-        brakeType.AddMode(new Mode(Brake__constant_brake));
+        brakeType.AddMode(new Mode(Brake__braking));    
 
-        brakeType.SetInitialMode(brakeType.FindMode(Brake__increasing_brake));
+        brakeType.SetInitialMode(brakeType.FindMode(Brake__braking));
     }
     
     private static void FillFleshForBrakeType(PhysicalActorType brakeType, MessageHandler brakePercentPort)
@@ -385,37 +403,30 @@ public class BrakeByWireModelTwoWheelSimplifiedWithProperties
         
         RealVariable brake_percent = (RealVariable) brakeType.FindVariable(Brake__brake_percent);
         FloatVariable max_brake_percent = (FloatVariable) brakeType.FindVariable(Brake__max_brake_percent);
+        FloatVariable rate = (FloatVariable) brakeType.FindVariable(Brake__rate);
         RealVariable timer = (RealVariable) brakeType.FindVariable(Brake__timer);
         
-        Mode increasingBrakeMode = brakeType.FindMode(Brake__increasing_brake);
-        Mode constantBrakeMode = brakeType.FindMode(Brake__constant_brake);
+        Mode braking = brakeType.FindMode(Brake__braking);
                 
-        increasingBrakeMode.SetInvarient(new Invarient(
+        braking.SetInvarient(new Invarient(
                 CreateBinaryExpression(timer, "<=", Const(Brake__period_const))));
         
-        increasingBrakeMode.SetGuard(new Guard(
+        braking.SetGuard(new Guard(
                 CreateBinaryExpression(timer, "==", Const(Brake__period_const))));
         
-        increasingBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
-        increasingBrakeMode.AddDifferentialEquation(new DifferentialEquation(brake_percent, Const(Brake__brake_rate_const)));
-        increasingBrakeMode.AddAction(new IfStatement(
-                CreateBinaryExpression(brake_percent,"<",VariableExpression(max_brake_percent)),
-                Statement.StatementsFrom(CreateModeChangeStatement(increasingBrakeMode)), 
-                Statement.StatementsFrom(CreateModeChangeStatement(constantBrakeMode))
+        braking.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
+        braking.AddDifferentialEquation(new DifferentialEquation(brake_percent, VariableExpression(rate)));
+        
+        braking.AddAction(CreateModeChangeStatement(braking));
+        braking.AddAction(new IfStatement(
+                CreateBinaryExpression(brake_percent,">",VariableExpression(max_brake_percent)),
+                Statement.StatementsFrom(new AssignmentStatement(rate, Const(0f))), 
+                Statement.EmptyStatements()
         ));
-        increasingBrakeMode.AddAction(CreateResetFor(timer)); 
-        increasingBrakeMode.AddAction(CreateSendStatement(controller, brakePercentPort, VariableExpression(brake_percent)));
+        braking.AddAction(CreateResetFor(timer)); 
+        braking.AddAction(CreateSendStatement(controller, brakePercentPort, VariableExpression(brake_percent)));
         
         
-
-        constantBrakeMode.SetInvarient(new Invarient(CreateBinaryExpression(timer, "<=", Const(Brake__period_const))));
-        constantBrakeMode.SetGuard(CreateGuard(timer, "==", Brake__period_const));
-        
-        constantBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
-        constantBrakeMode.AddDifferentialEquation(new DifferentialEquation(brake_percent, Const(0)));
-        constantBrakeMode.AddAction(CreateResetFor(timer)); 
-        constantBrakeMode.AddAction(CreateSendStatement(controller, brakePercentPort, VariableExpression(brake_percent)));
-        constantBrakeMode.AddAction(CreateModeChangeStatement(constantBrakeMode));
     }
 
     private static void FillSkeletonForGlobalBrakeControllerType(SoftwareActorType globalBrakeControllerType, SoftwareActorType wheelControllerType)

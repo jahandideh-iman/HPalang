@@ -40,6 +40,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import HPalang.Core.TransitionSystem.StateWrapper;
+import HPalang.LTSGeneration.Utilities.QueryUtilities;
+import static HPalang.LTSGeneration.Utilities.QueryUtilities.IsDeadlock;
 
 /**
  *
@@ -56,7 +58,7 @@ public class Main {
         
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BrakeByWireModelTwoWheelSimplifiedWithProperties.Create();
+            definition = BrakeByWireModelTwoWheelMoreSimplifiedWithProperties.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
@@ -75,13 +77,18 @@ public class Main {
         System.out.println("LTS Generation duration: " + stopWatch.ElaspedTimeSeconds());
         stopWatch.Reset();
         
-        VerifyLTS(lts);
-        
-        //OutputLTS("ReducedLTS",new LTSReducer().Reduce(lts), writer);
+        //VerifyLTS(lts);
         
 
-        //LabeledTransitionSystem reduceLTS =  new LTSReducer().Reduce(lts);
-        //OutputLTS("ReducedLTS", reduceLTS, writer);
+        stopWatch.Reset();
+        lts =  new LTSPhysicalReducer2().Reduce(lts);
+        OutputLTS("ReducedLTS", lts, writer);
+        System.out.println("Reduction duration: " + stopWatch.ElaspedTimeSeconds());
+          
+        //VerifyLTS(reduceLTS);
+        stopWatch.Reset();
+        
+        
         
         HybridAutomaton automaton = hybridAutomatonGenerator.Generate(lts, definition);
         OutputHA("HA", automaton, writer);
@@ -174,6 +181,7 @@ public class Main {
         for(StateWrapper<GlobalRunTimeState> state : lts.StateWrappers())
         {
             assert (ALLSoftware(state.OutTransitions()) || ALLNetwork(state.OutTransitions()) || ALLPhysical(state.OutTransitions()));
+            //assert (IsDeadlock(state.InnerState()) || state.OutTransitions().size() > 0);
         }
     }
 

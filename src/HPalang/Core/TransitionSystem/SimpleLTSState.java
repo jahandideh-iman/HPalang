@@ -69,4 +69,16 @@ public class SimpleLTSState<T> extends  Equalitable<SimpleLTSState<T>> implement
         return innerState.hashCode();
     }
 
+    @Override
+    public void RemoveInTransition(Transition<T> tr)
+    {
+        inTransitions.remove(tr);
+    }
+
+    @Override
+    public void RemoveOutTransition(Transition<T> tr)
+    {
+        outTransitions.remove(tr);
+    }
+
 }

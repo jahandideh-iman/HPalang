@@ -14,12 +14,13 @@ import HPalang.SpaceEx.Core.HybridLabel;
 import HPalang.Core.ContinuousExpressions.Invarient;
 import HPalang.Core.DiscreteExpressions.BinaryExpression;
 import HPalang.Core.DiscreteExpressions.BinaryOperators.LogicalOrOperator;
+import HPalang.Core.Expression;
 import static HPalang.Core.ModelCreationUtilities.CreateInvarient;
 import HPalang.Core.TransitionSystem.Transition;
 import HPalang.Core.Variables.RealVariable;
 import HPalang.LTSGeneration.Labels.Guard;
 import HPalang.LTSGeneration.Labels.Reset;
-import HPalang.SpaceEx.Convertor.ExpressionConvertor;
+import HPalang.SpaceEx.Convertor.SXExpressionFixer;
 import HPalang.SpaceEx.Core.Component;
 import HPalang.SpaceEx.Core.ComponentInstance;
 import HPalang.SpaceEx.Core.HybridTransition;
@@ -27,7 +28,10 @@ import HPalang.SpaceEx.Core.Location;
 import HPalang.SpaceEx.Core.NetworkComponent;
 import HPalang.SpaceEx.Core.RealParameter;
 import HPalang.SpaceEx.Core.SpaceExModel;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -37,7 +41,7 @@ import java.util.Map;
 public class HybridAutomatonToSXConvertor
 {
     
-    private ExpressionConvertor expressionConvertor = new ExpressionConvertor();
+    private SXExpressionFixer sxExpressionFixer = new SXExpressionFixer();
     
     
     
@@ -91,50 +95,41 @@ public class HybridAutomatonToSXConvertor
         }
         for(Transition<HPalang.HybridAutomataGeneration.Location> hybridTransition : automaton.Transitions())
         {
-            //------------------------------ AD HOCK SOLUTION ------------------------------
-            if(hybridTransition.GetLabel().Guard().Expression() instanceof BinaryExpression)
+            
+            //------------------------------ AD HOCK SOLUTION FOR Logical OR------------------------------
+            Expression dnfGuardExpr = new DisjunctiveNormalFormConvertor().Convert(hybridTransition.GetLabel().Guard().Expression());
+            if (IsDisjunction(dnfGuardExpr)) 
             {
-                BinaryExpression bExpr= (BinaryExpression)hybridTransition.GetLabel().Guard().Expression();
-                if(bExpr.Operator()instanceof LogicalOrOperator)
+                Expression partialExpr = dnfGuardExpr;
+                while (IsDisjunction(partialExpr)) 
                 {
-                    HPalang.SpaceEx.Core.HybridLabel spaceExLabel1 = new HybridLabel();
-                    Guard guard1 = new Guard(bExpr.Operand1());
-                    spaceExLabel1.AddGuard(expressionConvertor.Convert(guard1));
-                    hybridTransition.GetLabel().Resets().forEach((reset) -> spaceExLabel1.AddAssignment(expressionConvertor.Convert((Reset)reset)));
-            
-            
-                    HPalang.SpaceEx.Core.HybridLabel spaceExLabel2 = new HybridLabel();
-                    Guard guard2 = new Guard(bExpr.Operand2());
-                    spaceExLabel2.AddGuard(expressionConvertor.Convert(guard2));
-                    hybridTransition.GetLabel().Resets().forEach((reset) -> spaceExLabel2.AddAssignment(expressionConvertor.Convert((Reset)reset)));
-            
-                    model.AddTransition(
-                            new HybridTransition(
-                                    locationsMap.get(hybridTransition.GetOrign().InnerState()),
-                                    spaceExLabel1,
-                                    locationsMap.get(hybridTransition.GetDestination().InnerState()),
-                                    false
-                            ));
+                    BinaryExpression bPartialExpr = (BinaryExpression)partialExpr;
+                    
+                    HPalang.SpaceEx.Core.HybridLabel spaceExLabel = new HybridLabel();
+                    Guard guard = new Guard(bPartialExpr.Operand1());
+                    spaceExLabel.AddGuard(sxExpressionFixer.Convert(guard));
+                    hybridTransition.GetLabel().Resets().forEach((reset) -> spaceExLabel.AddAssignment(sxExpressionFixer.Convert((Reset) reset)));
 
                     model.AddTransition(
                             new HybridTransition(
                                     locationsMap.get(hybridTransition.GetOrign().InnerState()),
-                                    spaceExLabel2,
+                                    spaceExLabel,
                                     locationsMap.get(hybridTransition.GetDestination().InnerState()),
                                     false
                             ));
                     
-                    continue;
+                    partialExpr = bPartialExpr.Operand2();
                 }
+                continue;
             }
             //------------------------------------------------------------------------------
             HPalang.HybridAutomataGeneration.HybridLabel hybridLabel = (HPalang.HybridAutomataGeneration.HybridLabel)hybridTransition.GetLabel();
             
             HPalang.SpaceEx.Core.HybridLabel spaceExLabel = new HybridLabel();
             
-            spaceExLabel.AddGuard(expressionConvertor.Convert(hybridLabel.Guard()));
+            spaceExLabel.AddGuard(sxExpressionFixer.Convert(hybridLabel.Guard()));
             
-            hybridLabel.Resets().forEach((reset) -> spaceExLabel.AddAssignment(expressionConvertor.Convert(reset)));
+            hybridLabel.Resets().forEach((reset) -> spaceExLabel.AddAssignment(sxExpressionFixer.Convert(reset)));
             
             
             model.AddTransition(
@@ -146,6 +141,9 @@ public class HybridAutomatonToSXConvertor
                     ));
        
         }
+        
+
+        
         for(String variable : automaton.Variables())
             model.AddParameter(new RealParameter(variable, true));
         return model;
@@ -190,6 +188,11 @@ public class HybridAutomatonToSXConvertor
         return system;
     }
 
-
-
+    private boolean IsDisjunction(Expression expr)
+    {
+        if(expr instanceof BinaryExpression)
+            return ((BinaryExpression)expr).Operator() instanceof LogicalOrOperator;
+        else
+            return false;
+    }
 }

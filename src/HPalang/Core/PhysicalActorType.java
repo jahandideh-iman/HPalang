@@ -20,7 +20,7 @@ public class PhysicalActorType extends ActorType
 
     public PhysicalActorType(String name)
     {
-        super(name, Arrays.asList(Variable.Type.real));
+        super(name, Arrays.asList(Variable.Type.real, Variable.Type.floatingPoint));
     }
     
     public void AddMode(Mode mode)

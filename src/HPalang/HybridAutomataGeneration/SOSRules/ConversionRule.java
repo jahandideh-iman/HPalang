@@ -205,7 +205,13 @@ public class ConversionRule implements SOSRule
         if(transition.GetLabel().IsGuarded())
             guard = transition.GetLabel().Guard();
         else 
+        {
             guard =  new Guard(CreateBinaryExpression(urgVariable, "==", Const(0))); 
+            
+            //----------------------------------- AD Hoc Soloution ---------------------------//
+            
+            //---------------------------------------------------------------------------------
+        }
         return new HybridLabel(
                 guard,
                 transition.GetLabel().Resets(),

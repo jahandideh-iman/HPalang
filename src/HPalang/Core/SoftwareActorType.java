@@ -22,6 +22,6 @@ public class SoftwareActorType extends ActorType
 { 
     public SoftwareActorType(String name)
     {
-        super(name, Arrays.asList(Type.integer,Type.integer));
+        super(name, Arrays.asList(Type.integer,Type.floatingPoint));
     }
 }

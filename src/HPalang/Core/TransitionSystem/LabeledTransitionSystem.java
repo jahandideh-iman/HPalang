@@ -5,6 +5,7 @@
  */
 package HPalang.Core.TransitionSystem;
 
+import HPalang.LTSGeneration.RunTimeStates.GlobalRunTimeState;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -30,7 +31,7 @@ public class LabeledTransitionSystem<T>
     
     public void SetInitialState(T state)
     {
-        initialState = TryAddState(state);;
+        initialState = TryAddState(state);
     }
     
     public StateWrapper<T> InitialState()
@@ -48,6 +49,12 @@ public class LabeledTransitionSystem<T>
             ltsState = new SimpleLTSState<>(state);
             states.put(state, ltsState);
         }
+        return ltsState;
+    }
+    
+    public StateWrapper<T> WrapperFor(T state)
+    {
+        StateWrapper<T> ltsState  = states.getOrDefault(state, null);
         return ltsState;
     }
     
@@ -97,12 +104,23 @@ public class LabeledTransitionSystem<T>
     public void RemoveTranstion(Transition t)
     {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-        //transitions.remove(t);
     }
 
 
     public int TransitionsSize()
     {
         return transitions.size();
+    }
+
+    public void RemoveState(StateWrapper<T> state)
+    {
+        // TODO: Check for initial state.
+        
+        state.OutTransitions().forEach(t -> transitions.remove(t));
+        state.OutTransitions().forEach(t -> t.GetDestination().RemoveInTransition(t));
+        state.InTransitions().forEach(t -> transitions.remove(t));
+        state.InTransitions().forEach(t -> t.GetOrign().RemoveOutTransition(t));
+        
+        states.remove(state.InnerState());
     }
 }

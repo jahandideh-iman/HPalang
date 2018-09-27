@@ -102,7 +102,7 @@ public class HybridAutomaton extends LabeledTransitionSystem<Location>
         variables.add(name);
     }
 
-    public Iterable<String> Variables()
+    public Collection<String> Variables()
     {
         return variables;
     }

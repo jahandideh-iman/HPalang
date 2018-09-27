@@ -5,8 +5,10 @@
  */
 package HPalang.SpaceEx.Core;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -37,4 +39,21 @@ public abstract class Component implements Visitable
     {
         return parameters;
     }
+    
+    public Collection<Parameter> GetSortedParameters()
+    {
+        return SortedParamters(parameters);
+    }
+    
+    private Collection<Parameter> SortedParamters(Set<Parameter> parameters)
+    {
+        List<Parameter> result = new ArrayList<>(parameters);
+        
+        result.sort((a,b) ->a.GetName().compareTo(b.GetName()));
+        
+        return result;
+        
+    }
+
+
 }

@@ -49,7 +49,7 @@ public class LTSGenerator implements TransitionCollector
             
             if(IsDeadlock(currentGlobalState.InnerState()))
                 continue;
-            
+                     
             for(SOSRule rule : sosRules)
                 rule.TryApply(
                         new StateInfo(

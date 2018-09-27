@@ -42,7 +42,7 @@ import java.util.Queue;
  */
 public class BrakeByWireModelSingleWheelSimplified
 {
-    public static final boolean ADD_TIME_PROPERTY_MONITOR = false;
+    public static final boolean ADD_TIME_PROPERTY_MONITOR = true;
     public static final boolean ADD_SAFETY_PROPERTY_MONITOR = false;
     
     public static final float arbitrartDelay = 13.0f;
@@ -78,6 +78,7 @@ public class BrakeByWireModelSingleWheelSimplified
     
     public static final String Brake__controller_instance = "controller";
     public static final String Brake__brake_percent = "brake_percent";
+    public static final String Brake__max_brake_percent = "max_brake_percent";
     public static final String Brake__timer = "timer";
     public static final String Brake__increasing_brake = "IncreasingBrake";
     public static final String Brake__constant_brake = "ConstantBrake";
@@ -330,49 +331,23 @@ public class BrakeByWireModelSingleWheelSimplified
         FloatVariable requested_torque = (FloatVariable) applyTorque.Parameters().Find(Wheel_Controller__requested_torque).Variable();
         FloatVariable vehicle_speed = (FloatVariable) applyTorque.Parameters().Find(Wheel_Controller__estimated_speed).Variable();
         
-//        applyTorque.AddStatement(
-//                new IfStatement(
-//                        CreateBinaryExpression(vehicle_speed, ">", Const(0f)), 
-//                        Statement.StatementsFrom(new AssignmentStatement(slip_rate, 
-//                            CreateBinaryExpression(
-//                                    CreateBinaryExpression(
-//                                            vehicle_speed, 
-//                                            "-", 
-//                                            CreateBinaryExpression(
-//                                                    wheel_speed,
-//                                                    "*", 
-//                                                    Const(Wheel_Controller__wheel_radius_const))),
-//                                    "/", 
-//                                        CreateBinaryExpression(vehicle_speed, Wheel__torque, e2) VariableExpression(vehicle_speed)))), 
-//                        Statement.StatementsFrom(new AssignmentStatement(slip_rate, Const(0f)))));
+        Queue<Statement> truePath  = Statement.StatementsFrom();
         
-        applyTorque.AddStatement(new AssignmentStatement(slip_rate, 
-                CreateBinaryExpression(
-                        CreateBinaryExpression(
-                                vehicle_speed, 
-                                "-", 
-                                CreateBinaryExpression(
-                                        wheel_speed,
-                                        "*", 
-                                        Const(Wheel_Controller__wheel_radius_const))),
-                        "/", 
-                        Const(0.5f))));
         
-//        applyTorque.AddStatement(new AssignmentStatement(slip_rate, 
-//                CreateBinaryExpression(
-//                        CreateBinaryExpression(
-//                                vehicle_speed, 
-//                                "-", 
-//                                CreateBinaryExpression(
-//                                        wheel_speed,
-//                                        "*", 
-//                                        Const(Wheel_Controller__wheel_radius_const))),
-//                        "/", 
-//                        VariableExpression(vehicle_speed))));
+        truePath.add(new AssignmentStatement(slip_rate, 
+                    CreateBinaryExpression(
+                                    vehicle_speed, 
+                                    "-", 
+                                    CreateBinaryExpression(
+                                            wheel_speed,
+                                            "*", 
+                                            Const(Wheel_Controller__wheel_radius_const)))));
         
-
-        //applyTorque.AddStatement(CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)));
-        applyTorque.AddStatement(new IfStatement(
+        //truePath.add(new AssignmentStatement(vehicle_speed, C)));
+        //truePath.add(new AssignmentStatement(slip_rate, CreateBinaryExpression(slip_rate, "/",  CreateBinaryExpression(vehicle_speed, "+", Const(10f)))));
+        
+        truePath.add(new AssignmentStatement(slip_rate, CreateBinaryExpression(slip_rate, "/",  Const(2f))));
+        truePath.add(new IfStatement(
                   new BinaryExpression(
                                 new VariableExpression(slip_rate),
                                 new GreaterOperator(),
@@ -381,6 +356,14 @@ public class BrakeByWireModelSingleWheelSimplified
                 Statement.StatementsFrom(
                         CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)))
         ));
+   
+        applyTorque.AddStatement(new IfStatement(
+                CreateBinaryExpression(vehicle_speed, ">", Const(0)), 
+                truePath, 
+                Statement.StatementsFrom(CreateSendStatement(wheel, wheel_torque_port , VariableExpression(requested_torque)))
+                
+        ));
+
         
         
     }
@@ -390,7 +373,8 @@ public class BrakeByWireModelSingleWheelSimplified
         brakeType.AddInstanceParameter(new InstanceParameter(Brake__controller_instance, globalBrakeControllerType));
         
         
-        brakeType.AddVariable(new RealVariable(Brake__brake_percent));        
+        brakeType.AddVariable(new RealVariable(Brake__brake_percent));    
+        brakeType.AddVariable(new FloatVariable(Brake__max_brake_percent));
         brakeType.AddVariable(new RealVariable(Brake__timer));
         
         brakeType.AddMode(new Mode(Brake__increasing_brake));    
@@ -404,26 +388,21 @@ public class BrakeByWireModelSingleWheelSimplified
         InstanceParameter controller = brakeType.FindInstanceParameter(Brake__controller_instance);
         
         RealVariable brake_percent = (RealVariable) brakeType.FindVariable(Brake__brake_percent);
+        FloatVariable max_brake_percent = (FloatVariable) brakeType.FindVariable(Brake__max_brake_percent);
         RealVariable timer = (RealVariable) brakeType.FindVariable(Brake__timer);
         
         Mode increasingBrakeMode = brakeType.FindMode(Brake__increasing_brake);
         Mode constantBrakeMode = brakeType.FindMode(Brake__constant_brake);
                 
         increasingBrakeMode.SetInvarient(new Invarient(
-                CreateBinaryExpression(
-                        CreateBinaryExpression(timer, "<=", Const(Brake__period_const)),
-                        "&&",
-                        CreateBinaryExpression(brake_percent, "<=", Const(100f)) )));
+                CreateBinaryExpression(timer, "<=", Const(Brake__period_const))));
         
-        increasingBrakeMode.SetGuard(new Guard(CreateBinaryExpression(
-                        CreateBinaryExpression(timer, "==", Const(Brake__period_const)),
-                        "||",
-                        CreateBinaryExpression(brake_percent, "==", Const(100f)))));
+        increasingBrakeMode.SetGuard(new Guard(CreateBinaryExpression(timer, "==", Const(Brake__period_const))));
         
         increasingBrakeMode.AddDifferentialEquation(new DifferentialEquation(timer, Const(1f)));
         increasingBrakeMode.AddDifferentialEquation(new DifferentialEquation(brake_percent, Const(Brake__brake_rate_const)));
         increasingBrakeMode.AddAction(new IfStatement(
-                CreateBinaryExpression(brake_percent,"<",Const(100)),
+                CreateBinaryExpression(brake_percent,"<",VariableExpression(max_brake_percent)),
                 Statement.StatementsFrom(CreateModeChangeStatement(increasingBrakeMode)), 
                 Statement.StatementsFrom(CreateModeChangeStatement(constantBrakeMode))
         ));

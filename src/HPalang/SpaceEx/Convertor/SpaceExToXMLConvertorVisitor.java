@@ -39,7 +39,7 @@ public class SpaceExToXMLConvertorVisitor implements ModelVisitor
     private Document document;
     private Element currentComElem;
     
-    private ExpressionConvertor expressionConvertor = new ExpressionConvertor();
+    private SXExpressionFixer expressionConvertor = new SXExpressionFixer();
     
     public SpaceExToXMLConvertorVisitor()
     {
@@ -68,7 +68,7 @@ public class SpaceExToXMLConvertorVisitor implements ModelVisitor
     {
         currentComElem = document.createElement("component");
         currentComElem.setAttribute("id", component.GetID());
-        for(Parameter param : component.GetParameters())
+        for(Parameter param : component.GetSortedParameters())
             param.Accept(this);
         for(ComponentInstance ins : component.GetInstances())
             ins.Accept(this); 
@@ -80,7 +80,7 @@ public class SpaceExToXMLConvertorVisitor implements ModelVisitor
     {
         currentComElem = document.createElement("component"); 
         currentComElem.setAttribute("id", component.GetID());
-        for(Parameter param : component.GetParameters())
+        for(Parameter param : component.GetSortedParameters())
             param.Accept(this);
         
         Location initialLoc = component.InitialLocation();
