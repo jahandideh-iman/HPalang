@@ -361,10 +361,7 @@ public class ModelCreationUtilities
     
     public static Guard CreateGuard(Expression expr1, String operator, Expression expr2)
     {
-        if(operator.equals("=="))
-            return new Guard(CreateEqualityExpression(expr1, expr2));
-        
-        throw new RuntimeException(String.format("Operator %s is not defined yet.", operator));
+        return new Guard(CreateBinaryExpression(expr1, operator, expr2));
     }
     
     public static Guard CreateGuard(Variable var1, String operator, Variable var2)
