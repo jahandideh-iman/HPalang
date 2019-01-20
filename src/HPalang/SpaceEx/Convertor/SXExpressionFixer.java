@@ -106,6 +106,8 @@ public class SXExpressionFixer extends PostorderExpressionCrawler
             
             else if (expr.Operator() instanceof GreaterEqualOperator)
                 Push(new BinaryExpression(operand1, new LesserOperator(), operand2));
+            else if (expr.Operator() instanceof  LesserEqualOperator)
+                Push(new BinaryExpression(operand1, new GreaterOperator(), operand2));
             else
                 throw new RuntimeException(String.format(
                         "Operator \"%s\" is not supported yet",

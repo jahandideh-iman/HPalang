@@ -20,6 +20,7 @@ import HPalang.Core.MessageLocators.DelegationMessageLocator;
 import HPalang.Core.MessageLocators.DirectMessageLocator;
 import HPalang.Core.Messages.MessageWithBody;
 import HPalang.Core.Messages.NormalMessage;
+import HPalang.Core.Messages.SetModeMessage;
 import HPalang.Core.Statements.AssignmentStatement;
 import HPalang.Core.Statements.ModeChangeStatement;
 import HPalang.Core.Statements.SendStatement;
@@ -89,9 +90,19 @@ public class ModelCreationUtilities
         definition.CANSpecification().SetNetworkPriority(actor, new NormalMessage(handler), priority);
     }
     
+    public static void SetNetworkPriority(ModelDefinition definition, Actor actor, Message message, int priority)
+    {
+        definition.CANSpecification().SetNetworkPriority(actor, message, priority);
+    }
+    
     public static void SetNetworkDelay(ModelDefinition definition, Actor sender, Actor reciever, String messageHandler, float delay)
     {
         Message message = new NormalMessage(reciever.Type().FindMessageHandler(messageHandler));
+        definition.CANSpecification().SetNetworkDelay(sender, reciever, message , delay);
+    }
+    
+    public static void SetNetworkDelay(ModelDefinition definition, Actor sender, Actor reciever, Message message, float delay)
+    {
         definition.CANSpecification().SetNetworkDelay(sender, reciever, message , delay);
     }
     
@@ -104,10 +115,7 @@ public class ModelCreationUtilities
     {
         return ModelCreationUtilities.CreateSendStatement(
                 actorLocator, 
-                new MessageWithBody(
-                        Statement.StatementsFrom(new ModeChangeStatement(mode)), Message.MessageType.Control
-                )
-        );
+                new  SetModeMessage(mode));
     }
     
     public static SendStatement CreateModeChangeSendStatement(String mode, InstanceParameter instance)

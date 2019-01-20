@@ -11,6 +11,8 @@ import java.util.Objects;
  *
  * @author Iman Jahandideh
  */
+
+// TODO: Don't use enum for type. Refactor this.
 public abstract class Variable extends Equalitable<Variable> 
 {
     public enum Type { real, integer, floatingPoint};

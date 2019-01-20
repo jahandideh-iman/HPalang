@@ -40,6 +40,8 @@ import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Set;
 import HPalang.Core.TransitionSystem.StateWrapper;
+import HPalang.Examples.ComplexHeaterModel;
+import HPalang.Examples.SimpleHeaterModel;
 import HPalang.LTSGeneration.Utilities.QueryUtilities;
 import static HPalang.LTSGeneration.Utilities.QueryUtilities.IsDeadlock;
 
@@ -58,7 +60,7 @@ public class Main {
         
         ModelDefinition definition;
         if(args.length ==0)
-            definition = BrakeByWireModelTwoWheelMoreSimplifiedMoreHybridWithProperties.Create();
+            definition = ComplexHeaterModel.Create();
         else
             definition = new Parser().ParseModel(Read(args[0]));
         
