@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<sspaceex>
+  <component id="Model">
+    <param d1="1" d2="1" dynamics="any" local="true" name="heater_temp" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="urg" type="real" />
+    <location id="1" name="InitalLoc_P" x="227.0" y="125.0" width="118.0" height="78.0">
+      <flow>urg' == 0.0&amp;&amp;heater_temp' == (4 - (0.1 * heater_temp))</flow>
+      <invariant>heater_temp &lt;= 22.0</invariant>
+    </location>
+    <location id="0" name="Loc_1_P" x="501.0" y="289.0" width="152.0" height="72.0">
+      <flow>urg' == 0.0&amp;&amp;heater_temp' == (0 - (0.1 * heater_temp))</flow>
+      <invariant>heater_temp &gt;= 18.0</invariant>
+    </location>
+    <transition source="1" target="0">
+      <guard>heater_temp == 22.0</guard>
+      <assignment />
+      <labelposition x="-37.0" y="-79.0" width="162.0" height="52.0" />
+      <middlepoint x="463.5" y="143.5" />
+    </transition>
+    <transition source="0" target="1">
+      <guard>heater_temp == 18.0</guard>
+      <assignment />
+      <labelposition x="-35.0" y="36.0" width="190.0" height="58.0" />
+      <middlepoint x="300.5" y="304.5" />
+    </transition>
+  </component>
+  <component id="Timer">
+    <param d1="1" d2="1" dynamics="any" local="false" name="duration" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="time" type="real" />
+    <location id="0" name="loc1">
+      <flow>time' == 1&amp;&amp;duration' == 0</flow>
+      <invariant>time &lt;= duration</invariant>
+    </location>
+    <location id="1" name="loc2">
+      <flow>time' == 0&amp;&amp;duration' == 0</flow>
+      <invariant />
+    </location>
+    <transition source="0" target="1">
+      <guard>time == duration</guard>
+      <assignment />
+    </transition>
+  </component>
+  <component id="System">
+    <param d1="1" d2="1" dynamics="any" local="false" name="duration" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="time" type="real" />
+    <bind as="timer" component="Timer">
+      <map key="duration">duration</map>
+      <map key="time">time</map>
+    </bind>
+    <bind as="model" component="Model" />
+  </component>
+</sspaceex>
+

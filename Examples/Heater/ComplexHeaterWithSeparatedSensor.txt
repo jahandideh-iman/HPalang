@@ -1,0 +1,97 @@
+physicalclass Heater
+{
+	knownrebecs{ 
+	}
+	
+	statevars{
+		readonly-shared real temp; 
+	}
+	
+	msgsrv initial(float temp_){
+		temp = temp_;
+		setmode(On);
+	}
+	
+	mode On{
+		inv(true){
+			temp' = 4-0.1*temp;
+		}
+		guard(false){
+		}
+	}
+	
+	mode Off{
+		inv(true){
+			temp' = -0.1*temp;
+		}
+		guard(false){
+		}
+	}
+}
+
+physicalclass Sensor
+{
+	knownrebecs{ 
+		Controller controller;
+		Heater heater;
+	}
+	
+	statevars{
+		real timer;
+	}
+	
+	msgsrv initial(){
+		setmode(Active);
+	}
+	
+	mode Active{
+		inv(timer<=0.05){
+			timer' = 1;
+		}
+		guard(timer==0.05){
+			timer = 0;
+			setmode(Active);
+			controller.control(heater.temp);
+		}
+	}
+}
+
+softwareclass Controller
+{
+	knownrebecs { 
+		Heater heater;
+	}
+	statevars {}
+	
+	msgsrv initial(){
+	}
+	
+	msgsrv control(float temp)
+	{
+		if(temp >= 22)
+			heater.SetMode(Off);
+		
+		if(temp <= 18)
+			heater.SetMode(On);
+	}
+}
+
+main 
+{
+	Heater heater ():(20);	
+	Sensor sensor(@CAN controller, @Wire heater):();
+	Controller controller (@CAN heater):();
+
+	
+	CAN{
+		priorities{
+			sensor 		controller.control 	0
+			controller 	heater.SetMode 	1
+		}
+		delays{
+			sensor 		controller.control  	 0.01
+			controller 	heater.SetMode 	 0.01
+			
+		}
+	}
+}

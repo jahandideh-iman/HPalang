@@ -1,0 +1,38 @@
+physicalclass Heater
+{
+	knownrebecs{}
+	statevars{
+		real temp;
+	}
+	
+	msgsrv initial(float temp_){
+		temp = temp_;
+		setmode(On);
+	}
+	
+	mode On{
+		inv(temp<=22){
+			temp'=4-0.1*temp;
+		}
+		guard(temp==22)
+			setmode(Off);
+	}
+	
+	mode Off{
+		inv(temp>=18){
+			temp'=-0.1*temp;
+		}
+		guard(temp==18)
+			setmode(On);
+	}
+}
+
+main 
+{
+	Heater heater ():(20);
+	
+	CAN{
+		priorities{}
+		delays{}
+	}
+}

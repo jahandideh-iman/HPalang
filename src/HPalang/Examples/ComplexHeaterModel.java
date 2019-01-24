@@ -79,7 +79,7 @@ public class ComplexHeaterModel
         SetNetworkDelay(definition, heater, controller, Controller__control, 0.01f);
         SetNetworkDelay(definition, controller, heater, new SetModeMessage(null), 0.01f);
 
-        definition.SetInitialEventSystemVariablePool(new SimpleRealVariablePool(2));
+        definition.SetInitialEventSystemVariablePool(new SimpleRealVariablePool(0));
         definition.SetInitialGlobalVariablePool(new SimpleRealVariablePool(1));
     
         return definition;
@@ -119,7 +119,8 @@ public class ComplexHeaterModel
                         "-", 
                         CreateBinaryExpression(Const(0.1f), "*", VariableExpression(temperature)))));
         
-        onMode.AddAction(CreateResetFor(timer));
+        //onMode.AddAction(CreateResetFor(timer));        
+        onMode.AddAction(CreateModeChangeStatement(onMode));
         onMode.AddAction(CreateSendStatement(controllerInstance, controller_control, VariableExpression(temperature)));
         
         offMode.SetInvarient(CreateInvarient(timer, "<=", Const(Heater_period_const)));
@@ -132,8 +133,9 @@ public class ComplexHeaterModel
                         "-", 
                         CreateBinaryExpression(Const(0.1f), "*", VariableExpression(temperature)))));
         
-        offMode.AddAction(CreateResetFor(timer));
-        offMode.AddAction(CreateSendStatement(controllerInstance, controller_control, VariableExpression(temperature)));
+        //offMode.AddAction(CreateModeChangeStatement(offMode));
+        //offMode.AddAction(CreateResetFor(timer));
+        //offMode.AddAction(CreateSendStatement(controllerInstance, controller_control, VariableExpression(temperature)));
 
     }
     
@@ -157,12 +159,13 @@ public class ComplexHeaterModel
         control.AddStatement(new IfStatement(
                 CreateBinaryExpression(temperature, ">=", Const(22)),
                 Statement.StatementsFrom(CreateModeChangeSendStatement(Heater__offMode, heater)), 
-                Statement.EmptyStatements()));
+                Statement.StatementsFrom(
+                        new IfStatement(CreateBinaryExpression(
+                                temperature, "<=", Const(18)),
+                                Statement.StatementsFrom(CreateModeChangeSendStatement(Heater__onMode, heater)),
+                                Statement.EmptyStatements()))));
         
-        control.AddStatement(new IfStatement(
-                CreateBinaryExpression(temperature, "<=", Const(18)),
-                Statement.StatementsFrom(CreateModeChangeSendStatement(Heater__onMode, heater)), 
-                Statement.EmptyStatements()));
+
 
     }
 

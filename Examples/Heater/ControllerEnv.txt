@@ -1,0 +1,64 @@
+physicalclass HeaterWithSensor
+{
+	knownrebecs{ 
+		Controller controller;
+	}
+	statevars{
+		real tempr; 
+		real timer;
+	}
+	
+	msgsrv initial(float tempr_){
+		tempr = tempr_;
+		setmode(On);
+	}
+	
+	mode On{
+		inv(timer<=0.05){
+			timer' = 1;
+			tempr' = 4-0.1*tempr;
+		}
+		guard(timer==0.05){
+			timer = 0;
+			controller.control(tempr);
+		}
+	}
+	
+	mode Off{
+		inv(timer<=0.05){
+			timer' = 1;
+			tempr' = -0.1*tempr;
+		}
+		guard(timer==0.05){
+			timer = 0;
+			controller.control(tempr);
+		}
+	}
+}
+
+softwareclass Controller
+{
+	knownrebecs { 
+		HeaterWithSensor hws;
+	}
+	statevars {}
+	
+	msgsrv initial(){
+	}
+	
+	msgsrv control(float tempr)
+	{
+		if(tempr >= 22)
+			hws.SetMode(Off);
+		
+		if(tempr <= 18)
+			hws.SetMode(On);
+	}
+}
+
+main 
+{
+	HeaterWithSensor hws(@Wire controller):(20);	
+	Controller controller (@Wire hws):();
+	
+}
