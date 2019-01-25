@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<sspaceex>
+  <component id="Model">
+    <param d1="1" d2="1" dynamics="any" local="true" name="controller_temp" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="heater_temp" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="heater_timer" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="reserved_0" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="true" name="urg" type="real" />
+    <location id="1" name="InitalLoc_P" x="231.0" y="206.0">
+      <flow>reserved_0' == 0.0&amp;&amp;urg' == 0.0&amp;&amp;heater_timer' == 1.0&amp;&amp;heater_temp' == (4 - (0.1 * heater_temp))&amp;&amp;controller_temp' == 0.0</flow>
+      <invariant>heater_timer &lt;= 0.1</invariant>
+    </location>
+    <location id="0" name="Loc_1_P" x="591.0" y="217.0">
+      <flow>reserved_0' == 0.0&amp;&amp;urg' == 0.0&amp;&amp;heater_timer' == 1.0&amp;&amp;controller_temp' == 0.0&amp;&amp;heater_temp' == (0 - (0.1 * heater_temp))</flow>
+      <invariant>heater_timer &lt;= 0.1</invariant>
+    </location>
+    <transition source="0" target="1">
+      <guard>( ( heater_timer == 0.1 ) &amp;&amp; ( controller_temp &lt; 22 ) ) &amp;&amp; ( controller_temp &lt;= 18 )</guard>
+      <assignment>reserved_0 := heater_temp&amp;&amp;heater_timer := 0.0&amp;&amp;controller_temp := reserved_0</assignment>
+      <labelposition x="-12.0" y="19.0" width="108.0" height="60.0" />
+      <middlepoint x="402.5" y="115.5" />
+    </transition>
+    <transition source="0" target="0">
+      <guard>( heater_timer == 0.1 ) &amp;&amp; ( controller_temp &gt;= 22 )</guard>
+      <assignment>reserved_0 := heater_temp&amp;&amp;heater_timer := 0.0&amp;&amp;controller_temp := reserved_0</assignment>
+      <labelposition x="-54.0" y="-66.0" width="192.0" height="72.0" />
+      <middlepoint x="7.0" y="-107.0" />
+    </transition>
+    <transition source="1" target="1">
+      <guard>( ( heater_timer == 0.1 ) &amp;&amp; ( controller_temp &lt; 22 ) ) &amp;&amp; ( controller_temp &gt; 18 )</guard>
+      <assignment>reserved_0 := heater_temp&amp;&amp;heater_timer := 0.0&amp;&amp;controller_temp := reserved_0</assignment>
+      <labelposition x="-70.0" y="-71.0" width="154.0" height="52.0" />
+      <middlepoint x="3.0" y="-115.0" />
+    </transition>
+    <transition source="1" target="1">
+      <guard>( ( heater_timer == 0.1 ) &amp;&amp; ( controller_temp &lt; 22 ) ) &amp;&amp; ( controller_temp &lt;= 18 )</guard>
+      <assignment>reserved_0 := heater_temp&amp;&amp;heater_timer := 0.0&amp;&amp;controller_temp := reserved_0</assignment>
+      <labelposition x="26.0" y="2.0" width="170.0" height="62.0" />
+      <middlepoint x="-2.0" y="132.0" />
+    </transition>
+    <transition source="1" target="0">
+      <guard>( heater_timer == 0.1 ) &amp;&amp; ( controller_temp &gt;= 22 )</guard>
+      <assignment>reserved_0 := heater_temp&amp;&amp;heater_timer := 0.0&amp;&amp;controller_temp := reserved_0</assignment>
+      <labelposition x="12.0" y="22.0" width="142.0" height="56.0" />
+      <middlepoint x="401.5" y="301.5" />
+    </transition>
+    <transition source="0" target="0">
+      <guard>( ( heater_timer == 0.1 ) &amp;&amp; ( controller_temp &lt; 22 ) ) &amp;&amp; ( controller_temp &gt; 18 )</guard>
+      <assignment>reserved_0 := heater_temp&amp;&amp;heater_timer := 0.0&amp;&amp;controller_temp := reserved_0</assignment>
+      <labelposition x="-36.0" y="16.0" width="174.0" height="84.0" />
+      <middlepoint x="7.0" y="120.0" />
+    </transition>
+  </component>
+  <component id="Timer">
+    <param d1="1" d2="1" dynamics="any" local="false" name="duration" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="time" type="real" />
+    <location id="0" name="loc1">
+      <flow>time' == 1&amp;&amp;duration' == 0</flow>
+      <invariant>time &lt;= duration</invariant>
+    </location>
+    <location id="1" name="loc2">
+      <flow>time' == 0&amp;&amp;duration' == 0</flow>
+      <invariant />
+    </location>
+    <transition source="0" target="1">
+      <guard>time == duration</guard>
+      <assignment />
+    </transition>
+  </component>
+  <component id="System">
+    <param d1="1" d2="1" dynamics="any" local="false" name="duration" type="real" />
+    <param d1="1" d2="1" dynamics="any" local="false" name="time" type="real" />
+    <bind as="timer" component="Timer">
+      <map key="duration">duration</map>
+      <map key="time">time</map>
+    </bind>
+    <bind as="model" component="Model" />
+  </component>
+</sspaceex>
+

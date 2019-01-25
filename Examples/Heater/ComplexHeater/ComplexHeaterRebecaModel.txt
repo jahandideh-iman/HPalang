@@ -14,11 +14,11 @@ physicalclass Heater
 	}
 	
 	mode On{
-		inv(timer<=0.05){
+		inv(timer<=0.1){
 			timer' = 1;
 			temp' = 4-0.1*temp;
 		}
-		guard(timer==0.05){
+		guard(timer==0.1){
 			timer = 0;
 			setmode(On);
 			controller.control(temp);
@@ -26,11 +26,11 @@ physicalclass Heater
 	}
 	
 	mode Off{
-		inv(timer<=0.05){
+		inv(timer<=1){
 			timer' = 1;
 			temp' = -0.1*temp;
 		}
-		guard(timer==0.05){
+		guard(timer==1){
 			timer = 0;
 			setmode(Off);
 			controller.control(temp);
