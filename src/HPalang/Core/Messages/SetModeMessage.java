@@ -21,11 +21,12 @@ public class SetModeMessage extends Equalitable<SetModeMessage> implements Messa
 {
     static final MessageParameters EMPTY_MESSAGE_PARAMS  = new MessageParameters();
     
-
+    private final Mode mode;
     private final Queue<Statement> changeModeStatements;
     
     public SetModeMessage(Mode mode)
     {
+        this.mode = mode;
         this.changeModeStatements = Statement.StatementsFrom(new ModeChangeStatement(mode));
     }
 
@@ -50,13 +51,13 @@ public class SetModeMessage extends Equalitable<SetModeMessage> implements Messa
     @Override
     protected boolean InternalEquals(SetModeMessage other)
     {
-        return true;
+        return other.mode.equals(this.mode);
     }
 
     @Override
     protected int InternalHashCode()
     {
-        return 1;
+        return mode.hashCode();
     }
     
 }

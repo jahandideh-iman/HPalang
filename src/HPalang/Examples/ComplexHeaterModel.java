@@ -5,23 +5,11 @@
  */
 package HPalang.Examples;
 
-
-import HPalang.Core.CommunicationType;
 import HPalang.Core.ContinuousExpressions.DifferentialEquation;
-import HPalang.Core.InstanceParameter;
-import HPalang.Core.MainBlock;
-import HPalang.Core.Message;
-import HPalang.Core.MessageHandler;
+
 import HPalang.Core.Messages.SetModeMessage;
-import HPalang.Core.Mode;
+import HPalang.Core.*;
 import static HPalang.Core.ModelCreationUtilities.*;
-import HPalang.Core.ModelDefinition;
-import HPalang.Core.PhysicalActor;
-import HPalang.Core.PhysicalActorType;
-import HPalang.Core.SimpleRealVariablePool;
-import HPalang.Core.SoftwareActor;
-import HPalang.Core.SoftwareActorType;
-import HPalang.Core.Statement;
 import HPalang.Core.Statements.IfStatement;
 import HPalang.Core.Variables.FloatVariable;
 import HPalang.Core.Variables.RealVariable;
@@ -37,7 +25,7 @@ public class ComplexHeaterModel
     public static final String Heater__timer = "timer";
     public static final String Heater__onMode = "On";
     public static final String Heater__offMode = "Off";
-    public static final float Heater_period_const = 0.05f;
+    public static final float Heater_period_const = 0.1f;
     
     public static final String Controller__heater_instance = "heater";
     public static final String Controller__control = "control";
@@ -74,11 +62,13 @@ public class ComplexHeaterModel
          
         SetNetworkPriority(definition, controller , Controller__control, 0);
         // TODO: Find a less hacky way.
-        SetNetworkPriority(definition, heater , new SetModeMessage(null), 1);
+        SetNetworkPriority(definition, heater , new SetModeMessage(heaterType.FindMode(Heater__onMode)), 1);
+        SetNetworkPriority(definition, heater , new SetModeMessage(heaterType.FindMode(Heater__offMode)), 1);
         
         SetNetworkDelay(definition, heater, controller, Controller__control, 0.01f);
-        SetNetworkDelay(definition, controller, heater, new SetModeMessage(null), 0.01f);
-
+        SetNetworkDelay(definition, controller, heater, new SetModeMessage(heaterType.FindMode(Heater__onMode)), 0.01f);
+        SetNetworkDelay(definition, controller, heater, new SetModeMessage(heaterType.FindMode(Heater__offMode)), 0.01f);
+        
         definition.SetInitialEventSystemVariablePool(new SimpleRealVariablePool(0));
         definition.SetInitialGlobalVariablePool(new SimpleRealVariablePool(1));
     
@@ -119,7 +109,7 @@ public class ComplexHeaterModel
                         "-", 
                         CreateBinaryExpression(Const(0.1f), "*", VariableExpression(temperature)))));
         
-        //onMode.AddAction(CreateResetFor(timer));        
+        onMode.AddAction(CreateResetFor(timer));        
         onMode.AddAction(CreateModeChangeStatement(onMode));
         onMode.AddAction(CreateSendStatement(controllerInstance, controller_control, VariableExpression(temperature)));
         
@@ -133,9 +123,9 @@ public class ComplexHeaterModel
                         "-", 
                         CreateBinaryExpression(Const(0.1f), "*", VariableExpression(temperature)))));
         
-        //offMode.AddAction(CreateModeChangeStatement(offMode));
-        //offMode.AddAction(CreateResetFor(timer));
-        //offMode.AddAction(CreateSendStatement(controllerInstance, controller_control, VariableExpression(temperature)));
+        offMode.AddAction(CreateModeChangeStatement(offMode));
+        offMode.AddAction(CreateResetFor(timer));
+        offMode.AddAction(CreateSendStatement(controllerInstance, controller_control, VariableExpression(temperature)));
 
     }
     
